@@ -58,8 +58,8 @@ This is a MERN stack project using TypeScript, with auto-linting and formatting 
 
 1. Install the ESLint and Prettier extensions in your code editor (e.g., Visual Studio Code):
 
-  - [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
-  - [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+- [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+- [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
 
 2. Enable "format on save" in your code editor settings. For example, in Visual Studio Code, add the following to your `settings.json`:
 
