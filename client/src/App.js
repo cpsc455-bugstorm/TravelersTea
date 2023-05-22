@@ -1,9 +1,11 @@
-import {useState} from "react";
 import {SideBar} from "./components/sideBar";
 import {Button} from "./components/common";
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleSidebar } from './reducers/sidebarSlice';
 
 function App() {
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const isSidebarOpen = useSelector((state) => state.sidebar.isOpen);
+    const dispatch = useDispatch();
     return (
         <div className="h-screen w-screen overflow-hidden relative">
             <div className="h-1/2 w-full bg-slate-100 relative">
@@ -20,13 +22,13 @@ function App() {
             </div>
             <span className={`fixed top-0 z-10 h-full flex items-center rounded-none transition-all ${isSidebarOpen ? 'left-[20vw]' : 'left-0'}`}>
                 <Button
-                text={isSidebarOpen ? '‹' : '›'} onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                text={isSidebarOpen ? '‹' : '›'} onClick={() => dispatch(toggleSidebar())}
                 className='text-6xl h-full rounded-none w-12 bg-slate-300'/>
             </span>
             {isSidebarOpen && (
                 <div
                     className={`fixed top-0 left-0 z-[5] w-full h-full bg-slate-800 opacity-30`}
-                    onClick={() => setIsSidebarOpen(false)}
+                    onClick={() => dispatch(toggleSidebar())}
                 />
             )}
         </div>
