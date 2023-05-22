@@ -83,15 +83,15 @@ This project is for users who would like to create plans in some location X, and
 
 User input
 
-![User Input](mocks/mocka.png)
+![User Input](mocks/mock-a.png)
 
 ### App Response: Plan Overview
 
 With sidebar closed
 
-![Plan Overview - Closed Sidebar](mocks/mockb.png)
+![Plan Overview - Closed Sidebar](mocks/mock-b.png)
 
 With sidebar open: Specific details about a day in the plan
 
-![Plan Overview - Open Sidebar](mocks/mockc.png)
+![Plan Overview - Open Sidebar](mocks/mock-c.png)
 
