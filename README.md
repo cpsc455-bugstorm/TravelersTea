@@ -1,6 +1,6 @@
 # TravelersTea
 
-## Table of contents
+## Table of Contents
 * [Project Description](#project-description)
 * [Team Members](#team-members)
 * [Project Requirements](#project-requirements)
