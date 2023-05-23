@@ -97,7 +97,7 @@ With sidebar open: Specific details about a day in the plan
 
 ## Development
 
-This is a MERN stack project using TypeScript, with auto-linting and formatting set up using ESLint and Prettier.
+This is a MERN stack project using JavaScript, with auto-linting and formatting set up using ESLint and Prettier.
 
 #### Prerequisites
 
