@@ -2,15 +2,48 @@
 
 ## Running the app
 
-`yarn install` to install any dependencies
+#### Make sure you are in the `client` folder when running these commands. 
 
-`cd client; yarn start` to start the app on [http://localhost:3000](http://localhost:3000)
+_Install dependencies:_
+```bash
+yarn install
+``` 
 
-- Make sure you are in the `client` folder
+_Start app on [http://localhost:3000](http://localhost:3000)_
+```bash
+yarn start
+```
 
-## Important folders
+#### Alternatively, if you are in the root directory or `TravelersTea/`, then do these commands.
 
-- `src`
+_Install dependencies:_
+```bash
+cd client; yarn install
+``` 
+
+_Start app on [http://localhost:3000](http://localhost:3000)_
+```bash
+cd client; yarn start
+```
+
+## Folder Structure
+
+#### Under `src`
   - `components`: where react elements go.
     - `common`: reusable components, such as `Button`, `Dropdown`, `Alert` etc. 
-  - `App.js`: 
+  - `reducers`: put redux reducers here.
+  - `App.js`: the top-level React app. 
+  - `index.css`: imports tailwind. Try not to modify this.
+  - `store.js`: configures redux; link any new reducers here.
+
+#### Under `public`
+
+This is where assets (e.g. images) go, as well as the `index.html`.
+
+#### tailwind.config.js
+
+Configure tailwind and add custom tailwind keywords. 
+
+Troubleshooting tips:
+- Restart your IDE to fix tailwind autocomplete.
+
