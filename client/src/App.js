@@ -1,25 +1,25 @@
-import { SideBar } from './components/sideBar'
-import { Button } from './components/common'
 import { useDispatch, useSelector } from 'react-redux'
+import { Button } from './components/common'
+import { SideBar } from './components/sideBar'
 import { toggleSidebar } from './reducers/sidebarSlice'
 
 function App() {
   const isSidebarOpen = useSelector((state) => state.sidebar.isOpen)
   const dispatch = useDispatch()
   return (
-    <div className="h-screen w-screen overflow-hidden relative">
-      <div className="h-1/2 w-full bg-slate-100 relative">
-        <h1 className="text-center absolute top-1/2 w-full text-5xl">
+    <div className="relative h-screen w-screen overflow-hidden">
+      <div className="relative h-1/2 w-full bg-slate-100">
+        <h1 className="absolute top-1/2 w-full text-center text-5xl">
           Map (placeholder)
         </h1>
       </div>
-      <div className="h-1/2 w-full relative">
-        <h1 className="text-center absolute top-1/3 w-full text-5xl">
+      <div className="relative h-1/2 w-full">
+        <h1 className="absolute top-1/3 w-full text-center text-5xl">
           Timeline (placeholder)
         </h1>
       </div>
       <div
-        className={`fixed flex flex-row z-10 top-0 left-0 h-full overflow-hidden transition-all
+        className={`fixed left-0 top-0 z-10 flex h-full flex-row overflow-hidden transition-all
                 ${
                   isSidebarOpen
                     ? 'w-1/5 translate-x-0'
@@ -29,19 +29,19 @@ function App() {
         {isSidebarOpen && <SideBar />}
       </div>
       <span
-        className={`fixed top-0 z-10 h-full flex items-center rounded-none transition-all ${
+        className={`fixed top-0 z-10 flex h-full items-center rounded-none transition-all ${
           isSidebarOpen ? 'left-[20vw]' : 'left-0'
         }`}
       >
         <Button
           text={isSidebarOpen ? '‹' : '›'}
           onClick={() => dispatch(toggleSidebar())}
-          className="text-6xl h-full rounded-none w-12 bg-slate-300"
+          className="h-full w-12 rounded-none bg-slate-300 text-6xl"
         />
       </span>
       {isSidebarOpen && (
         <div
-          className={`fixed top-0 left-0 z-[5] w-full h-full bg-slate-800 opacity-30`}
+          className={`fixed left-0 top-0 z-[5] h-full w-full bg-slate-800 opacity-30`}
           onClick={() => dispatch(toggleSidebar())}
         />
       )}
