@@ -86,7 +86,7 @@ User input
 
 ![User Input](mocks/mock-a.png)
 
-#### App Response: Plan Overview
+### App Response: Plan Overview
 
 With sidebar closed
 
@@ -96,73 +96,3 @@ With sidebar open: Specific details about a day in the plan
 
 ![Plan Overview - Open Sidebar](mocks/mock-c.png)
 
-## Development
-
-This is a MERN stack project using JavaScript, with auto-linting and formatting set up using ESLint and Prettier.
-
-#### Prerequisites
-
-1. Install [Node.js](https://nodejs.org/en). This will include Yarn as well.
-2. Install [MongoDB](https://www.mongodb.com/docs/manual/installation/).
-
-#### Installation
-
-1. Clone the repository:
-
-```
-git clone https://github.com/cpsc455-bugstorm/TravelersTea.git
-```
-
-2. Change to the server directory (make sure you are in root directory (TravelersTea/)):
-
-```
-cd server
-```
-
-3. Install the backend dependencies:
-
-```
-yarn install
-```
-
-4. Change to the client directory (make sure you are in root directory (TravelersTea/)):
-
-```
-cd client
-```
-
-5. Install the frontend dependencies:
-
-```
-yarn install
-```
-
-#### Running the Project
-
-1. Start the backend server (make sure you are in server directory (TravelersTea/server/)):
-
-```
-yarn start
-```
-
-2. In a new terminal, change to the client directory (from the root) and start the frontend development server:
-
-```
-yarn start
-```
-
-#### Setting Up Auto-Linting and Formatting
-
-
-```
-# run linter
-yarn lint
-
-# run formatter
-yarn format
-
-# check for formatting errors
-yarn format:check
-```
-
-We use [Husky](https://typicode.github.io/husky/) to run pre-commit hooks with [lint-staged](https://github.com/okonet/lint-staged) to run linters on git staged files. This ensures that our code is formatted correctly when we commit our codes.
