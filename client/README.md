@@ -2,7 +2,19 @@
 
 ## Running the app
 
-Make sure you are in the `client` (or the root, `TravelersTea`) folder when running these commands. 
+#### Make sure you are in the `client` folder when running these commands. 
+
+_Install dependencies:_
+```bash
+yarn install
+``` 
+
+_Start app on [http://localhost:3000](http://localhost:3000)_
+```bash
+yarn start
+```
+
+#### Alternatively, if you are in the root directory or `TravelersTea/`, then do these commands.
 
 _Install dependencies:_
 ```bash
