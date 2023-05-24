@@ -1,6 +1,6 @@
 # TravelersTea
 
-## Table of contents
+## Table of Contents
 * [Project Description](#project-description)
 * [Team Members](#team-members)
 * [Project Requirements](#project-requirements)
@@ -45,6 +45,7 @@ This project is for users who would like to create plans in some location X, and
 - Colloquial prompts (e.g. instead of “{ destination: ‘Vancouver’, budget: 300 }”, just input “I want to tour Vancouver and spend $300 max.”)
 - Users can generate different plans based on the weather.
 - Multi-language support.
+- Entire application should be mobile-friendly
 - Users can share plans on a global list.
 - Users can vote on plans.
 - Share itinerary as a link.

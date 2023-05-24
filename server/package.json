@@ -1,6 +1,7 @@
 {
   "name": "server",
-  "version": "1.0.0",
+  "version": "0.1.0",
+  "license": "MIT",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -10,7 +11,6 @@
     "format": "prettier --write \"**/*.+(js|jsx|json|yml|yaml|css|md)\"",
     "prepare": "cd .. && husky install server/.husky"
   },
-  "license": "MIT",
   "dependencies": {
     "add": "^2.0.6",
     "cors": "^2.8.5",
