@@ -1,4 +1,4 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-cd server && yarn format
+cd server && npx lint-staged && cd ../client && npx lint-staged 

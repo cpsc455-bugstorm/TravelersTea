@@ -6,13 +6,6 @@
   "extends": ["eslint:recommended", "plugin:node/recommended", "prettier"],
   "plugins": ["prettier"],
   "rules": {
-    "prettier/prettier": "error",
-    "react/react-in-jsx-scope": "off",
-    "react/jsx-uses-react": "off",
-    "node/no-unsupported-features/es-syntax": [
-      "error",
-      { "ignores": ["modules"] }
-    ],
-    "react/prop-types": "error"
+    "prettier/prettier": "error"
   }
 }

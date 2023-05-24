@@ -28,6 +28,7 @@
     "eject": "react-scripts eject",
     "lint": "eslint 'src/**/*.{js,jsx}'",
     "format": "prettier --write 'src/**/*.{js,jsx,json,css}'",
+    "format:check": "prettier --check 'src/**/*.{js,jsx,json,css}'",
     "prepare": "cd .. && husky install client/.husky"
   },
   "eslintConfig": {
@@ -49,6 +50,11 @@
     ]
   },
   "devDependencies": {
-    "husky": "^8.0.3"
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.2"
+  },
+  "lint-staged": {
+    "*.{js,jsx}": "eslint --cache --fix",
+    "*.{js,jsx,json,css}": "prettier --write"
   }
 }
