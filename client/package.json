@@ -27,7 +27,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint 'src/**/*.{js,jsx}'",
-    "format": "prettier --write 'src/**/*.{js,jsx,json,css}'",
+    "format": "prettier --write \"src/**/*.{js,jsx,json,css}\"",
     "format:check": "prettier --check 'src/**/*.{js,jsx,json,css}'",
     "prepare": "cd .. && husky install client/.husky"
   },
