@@ -165,4 +165,4 @@ yarn format
 yarn format:check
 ```
 
-We use [Husky](https://typicode.github.io/husky/) to run pre-commit hooks. This ensures that our code is formatted correctly when we commit our codes.
+We use [Husky](https://typicode.github.io/husky/) to run pre-commit hooks with [lint-staged](https://github.com/okonet/lint-staged) to run linters on git staged files. This ensures that our code is formatted correctly when we commit our codes.
