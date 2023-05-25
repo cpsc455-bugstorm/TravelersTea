@@ -14,8 +14,8 @@ const userRoute = new UserRoute()
 userRoute.initRoutes(apiRouter)
 
 app.get('/', (req, res) => {
-  res.send('Hello, world!');
-});
+  res.send('Hello, world!')
+})
 
 const connectDB = async () => {
   try {
