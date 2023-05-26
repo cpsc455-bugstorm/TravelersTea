@@ -17,10 +17,10 @@
     "lint": "eslint . && cd server && yarn lint && cd ../client && yarn lint",
     "format": "prettier --write . && cd server && yarn format && cd ../client && yarn format",
     "format:check": "prettier --check . && cd server && yarn format:check && cd ../client && yarn format:check",
-    "prepare": "husky install"
+    "prepare": "cd client && yarn prepare"
   },
   "lint-staged": {
     "*.{js,jsx}": "eslint --cache --fix",
-    "*.{js,jsx,css,md,json,yml,yaml}": "prettier --write"
+    "*.{js,jsx,json,yml,yaml,css,md}": "prettier --write"
   }
 }
