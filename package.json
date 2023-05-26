@@ -1,0 +1,26 @@
+{
+  "name": "travelers-tea",
+  "version": "0.1.0",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "start-client": "cd client && yarn start",
+    "start-server": "cd server && yarn start",
+    "start": "cd server && yarn start && cd ../client && yarn start",
+    "test-client": "cd client && yarn test",
+    "test-server": "cd server && yarn test",
+    "test": "cd server && yarn test && cd ../client && yarn test",
+    "lint": "eslint . && cd server && yarn lint && cd ../client && yarn lint",
+    "format": "prettier --write . && cd server && yarn format && cd ../client && yarn format",
+    "format:check": "prettier --check . && cd server && yarn format:check && cd ../client && yarn format:check",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "*.{js,jsx}": "eslint --cache --fix",
+    "*.{js,jsx,css,md,json,yml,yaml}": "prettier --write"
+  }
+}

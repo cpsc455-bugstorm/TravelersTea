@@ -18,4 +18,4 @@ export function Button({ text, onClick, className = '' }) {
       {text}
     </button>
   )
-}
+};

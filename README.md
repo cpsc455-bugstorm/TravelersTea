@@ -95,4 +95,3 @@ With sidebar closed
 With sidebar open: Specific details about a day in the plan
 
 ![Plan Overview - Open Sidebar](mocks/mock-c.png)
-
