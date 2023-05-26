@@ -18,7 +18,7 @@
     "lint:fix": "eslint --cache --fix && cd server && yarn lint:fix && cd ../client && yarn lint:fix",
     "format": "prettier --write . && cd server && yarn format && cd ../client && yarn format",
     "format:check": "prettier --check . && cd server && yarn format:check && cd ../client && yarn format:check",
-    "prepare": "husky install && npx husky add .husky/pre-commit \"npx lint-staged && cd client && npx lint-staged && cd ../server && npx lint-staged\""
+    "prepare": "husky install"
   },
   "lint-staged": {
     "*.{js,jsx}": "eslint --cache --fix",
