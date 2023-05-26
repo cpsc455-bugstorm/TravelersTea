@@ -19,3 +19,4 @@ export function Button({ text, onClick, className = '' }) {
     </button>
   )
 }
+;
