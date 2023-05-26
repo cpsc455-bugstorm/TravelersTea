@@ -34,10 +34,11 @@ function App() {
         }`}
       >
         <Button
-          text={isSidebarOpen ? '‹' : '›'}
           onClick={() => dispatch(toggleSidebar())}
           className="h-full w-12 rounded-none bg-slate-300 text-6xl"
-        />
+        >
+          {isSidebarOpen ? '‹' : '›'}
+        </Button>
       </span>
       {isSidebarOpen && (
         <div
