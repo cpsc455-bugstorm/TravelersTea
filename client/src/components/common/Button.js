@@ -1,13 +1,5 @@
 import PropTypes from 'prop-types'
 
-/**
- * Generic button for Traveler's Tea
- *
- * @param children - elements to go into button
- * @param onClick - what to do when clicked
- * @param className? - tailwind classnames to be added to the element
- * @return {JSX.Element}
- */
 Button.propTypes = {
   children: PropTypes.node.isRequired,
   onClick: PropTypes.func.isRequired,
@@ -16,7 +8,10 @@ Button.propTypes = {
 
 export function Button({ children, onClick, className = '' }) {
   return (
-    <button className={`rounded-md border-0 ${className}`} onClick={onClick}>
+    <button
+      className={`w-full items-center rounded-md border-0 bg-slate-300/40 p-2 hover:bg-slate-400/40 ${className}`}
+      onClick={onClick}
+    >
       {children}
     </button>
   )

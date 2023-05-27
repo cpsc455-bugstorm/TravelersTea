@@ -14,10 +14,11 @@
   },
   "plugins": ["react", "prettier"],
   "rules": {
-    "prettier/prettier": "error",
+    "prettier/prettier": "warn",
     "react/react-in-jsx-scope": "off",
     "react/jsx-uses-react": "off",
-    "react/prop-types": "error"
+    "react/prop-types": ["error", {}],
+    "no-unused-vars": "warn"
   },
   "settings": {
     "react": {
