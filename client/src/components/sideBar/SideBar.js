@@ -22,6 +22,18 @@ export function SideBar() {
     ])
   }, [])
 
+  const newTripButton = useMemo(() => {
+    return (
+      <Button
+        className="box-border flex h-12 w-full flex-row border-2 border-yellow-300 bg-yellow-200/20 hover:bg-yellow-300/20"
+        onClick={() => dispatch(setAppView(AppView.NEW_TRIP))}
+      >
+        <AddIcon className="mx-2" />
+        <h3>New Trip</h3>
+      </Button>
+    )
+  }, [])
+
   const tripEntries = useMemo(() => {
     return trips.map((trip) => {
       return (
@@ -40,17 +52,11 @@ export function SideBar() {
         </Button>
       )
     })
-  }, [trips, activeTripId])
+  }, [trips, activeTripId, appView])
 
   return (
     <div className="h-full w-full overflow-hidden bg-slate-300 bg-[url('../public/little-prince.jpg')] bg-cover bg-center p-2 bg-blend-soft-light">
-      <Button
-        className="box-border flex h-12 w-full flex-row border-2 border-yellow-300 bg-yellow-200/20 hover:bg-yellow-300/20"
-        onClick={() => dispatch(setAppView(AppView.NEW_TRIP))}
-      >
-        <AddIcon className="mx-2" />
-        <h3>New Trip</h3>
-      </Button>
+      {newTripButton}
       <div className="my-2 grid w-full grid-cols-1 gap-2 border-y-2 border-slate-300 py-2">
         {tripEntries}
       </div>

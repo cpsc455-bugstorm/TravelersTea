@@ -13,11 +13,13 @@ export function MapElement({ className }) {
 
   const newTripForm = useMemo(() => {
     return (
-      <span className="absolute top-1/2 inline-flex w-full flex-row justify-center">
-        <h1 className="w-fit rounded-md bg-slate-100 bg-opacity-40 p-4 text-5xl">
-          New Trip Form
-        </h1>
-      </span>
+      <div className="z-[5]">
+        <span className="absolute top-1/2 inline-flex w-full flex-row justify-center">
+          <h1 className="w-fit rounded-md bg-slate-100 bg-opacity-40 p-4 text-5xl">
+            New Trip Form
+          </h1>
+        </span>
+      </div>
     )
   }, [])
 
