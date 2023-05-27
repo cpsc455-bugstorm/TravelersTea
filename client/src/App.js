@@ -45,7 +45,7 @@ function App() {
       >
         <Button
           onClick={() => dispatch(toggleSidebar())}
-          className="h-full w-12 rounded-none bg-slate-300 text-6xl"
+          className="h-full w-12 rounded-none bg-slate-300 text-6xl hover:bg-slate-300"
         >
           {isSidebarOpen ? '‹' : '›'}
         </Button>

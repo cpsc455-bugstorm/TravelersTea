@@ -8,6 +8,7 @@ import { setActiveTripId, setAppView } from '../../redux/reducers/viewSlice'
 
 export function SideBar() {
   const dispatch = useDispatch()
+  const appView = useSelector((state) => state.view.appView)
   const activeTripId = useSelector((state) => state.view.activeTripId)
 
   const [trips, setTrips] = useState([])
@@ -29,10 +30,10 @@ export function SideBar() {
           onClick={() => {
             dispatch(setActiveTripId(trip.id))
           }}
-          className={
-            trip.id === activeTripId
-              ? 'bg-green-300/40 font-medium hover:bg-green-400/40'
-              : ''
+          className="bg-opacity-40 hover:bg-opacity-40"
+          active={
+            trip.id === activeTripId &&
+            (appView === AppView.TRIP_OVERVIEW || appView === AppView.TRIP_DAY)
           }
         >
           {trip.tripName}
@@ -42,7 +43,7 @@ export function SideBar() {
   }, [trips])
 
   return (
-    <div className="h-full w-full overflow-hidden bg-slate-200 p-2">
+    <div className="h-full w-full overflow-hidden bg-slate-300 bg-[url('../public/little-prince.jpg')] bg-cover bg-center p-2 bg-blend-soft-light">
       <Button
         className="box-border flex h-12 w-full flex-row border-2 border-yellow-300 bg-yellow-200/20 hover:bg-yellow-300/20"
         onClick={() => dispatch(setAppView(AppView.NEW_TRIP))}
