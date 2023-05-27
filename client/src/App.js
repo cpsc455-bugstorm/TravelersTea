@@ -3,6 +3,7 @@ import { Button } from './components/common'
 import { SideBar } from './components/sideBar'
 import { closeSidebar, toggleSidebar } from './redux/reducers/viewSlice'
 import { AppView } from './constants/enums'
+import { MapElement } from './components/MapElement'
 
 function App() {
   const isSidebarOpen = useSelector((state) => state.view.isSidebarOpen)
@@ -10,15 +11,11 @@ function App() {
   const dispatch = useDispatch()
   return (
     <div className="relative h-screen w-screen overflow-hidden">
-      <div
-        className={`relative w-full bg-slate-100 ${
+      <MapElement
+        className={`relative left-10 w-[calc(100%-2.5rem)] transition-all ${
           appView === AppView.NEW_TRIP ? 'h-full' : 'h-1/2'
         }`}
-      >
-        <h1 className="absolute top-1/2 w-full text-center text-5xl">
-          Map (placeholder)
-        </h1>
-      </div>
+      />
       <div
         className={`relative w-full ${
           appView === AppView.NEW_TRIP ? 'h-0' : 'h-1/2'
@@ -29,14 +26,10 @@ function App() {
         </h1>
       </div>
       <div
-        className={`fixed left-0 top-0 z-10 flex h-full flex-row overflow-hidden transition-all
-                ${
-                  isSidebarOpen
-                    ? 'w-1/5 translate-x-0'
-                    : 'w-0 -translate-x-full'
-                } `}
+        className={`fixed left-0 top-0 z-10 flex h-full w-1/5 flex-row overflow-hidden transition-all
+                ${isSidebarOpen ? 'left-0' : '-left-[20vw]'}`}
       >
-        {isSidebarOpen && <SideBar />}
+        <SideBar />
       </div>
       <span
         className={`fixed top-0 z-10 flex h-full items-center rounded-none transition-all ${
@@ -45,7 +38,7 @@ function App() {
       >
         <Button
           onClick={() => dispatch(toggleSidebar())}
-          className="h-full w-12 rounded-none bg-slate-300 text-6xl hover:bg-slate-300"
+          className="h-full w-10 rounded-none bg-slate-300 text-6xl hover:bg-slate-300"
         >
           {isSidebarOpen ? '‹' : '›'}
         </Button>

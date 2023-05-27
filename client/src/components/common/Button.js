@@ -17,7 +17,7 @@ export function Button({ children, onClick, active, className = '' }) {
 
   return (
     <button
-      className={`w-full items-center rounded-md border-0 p-2 transition-colors ${activeStyling} ${className}`}
+      className={`items-center rounded-md border-0 p-2 transition-colors ${activeStyling} ${className}`}
       onClick={onClick}
     >
       {children}

@@ -30,7 +30,7 @@ export function SideBar() {
           onClick={() => {
             dispatch(setActiveTripId(trip.id))
           }}
-          className="bg-opacity-40 hover:bg-opacity-40"
+          className="w-full bg-opacity-40 hover:bg-opacity-40"
           active={
             trip.id === activeTripId &&
             (appView === AppView.TRIP_OVERVIEW || appView === AppView.TRIP_DAY)
@@ -40,7 +40,7 @@ export function SideBar() {
         </Button>
       )
     })
-  }, [trips])
+  }, [trips, activeTripId])
 
   return (
     <div className="h-full w-full overflow-hidden bg-slate-300 bg-[url('../public/little-prince.jpg')] bg-cover bg-center p-2 bg-blend-soft-light">
