@@ -87,7 +87,7 @@ function App() {
       </div>
       <div
         className={`fixed left-0 top-0 z-10 flex h-full w-1/5 flex-row overflow-hidden transition-all
-                ${isSidebarOpen ? 'left-0' : '-left-[20vw]'}`}
+                ${isSidebarOpen ? 'left-0' : 'left-[-20vw]'}`}
       >
         <SideBar />
       </div>
