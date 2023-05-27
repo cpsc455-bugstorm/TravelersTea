@@ -9,7 +9,7 @@ Button.propTypes = {
 export function Button({ children, onClick, className = '' }) {
   return (
     <button
-      className={`w-full items-center rounded-md border-0 bg-slate-300/40 p-2 hover:bg-slate-400/40 ${className}`}
+      className={`w-full items-center rounded-md border-0 bg-slate-300/40 p-2 transition-colors hover:bg-slate-400/40 ${className}`}
       onClick={onClick}
     >
       {children}

@@ -1,11 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { Button } from './components/common'
 import { SideBar } from './components/sideBar'
-import { toggleSidebar } from './redux/reducers/sidebarSlice'
+import { closeSidebar, toggleSidebar } from './redux/reducers/viewSlice'
 import { AppView } from './constants/enums'
 
 function App() {
-  const isSidebarOpen = useSelector((state) => state.sidebar.isOpen)
+  const isSidebarOpen = useSelector((state) => state.view.isSidebarOpen)
   const appView = useSelector((state) => state.view.appView)
   const dispatch = useDispatch()
   return (
@@ -53,7 +53,7 @@ function App() {
       {isSidebarOpen && (
         <div
           className={`fixed left-0 top-0 z-[5] h-full w-full bg-slate-800 opacity-30`}
-          onClick={() => dispatch(toggleSidebar())}
+          onClick={() => dispatch(closeSidebar())}
         />
       )}
     </div>
