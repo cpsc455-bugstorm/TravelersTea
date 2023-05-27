@@ -18,23 +18,6 @@ const exampleItinerary = new Itinerary({
       Days: ${exampleItinerary.days}
       Stages per day: ${exampleItinerary.stages}
       Preferences: ${exampleItinerary.preferences.join(', ')}
-      
-      Respond with only JSON in the following structure:
-      {
-        plan:[
-          {
-            stage: Number,
-            place: String,
-            description: String,
-            address: String,
-          }
-        ]
-      }
-      
-      If there are any confusing values respond with:
-      {
-        error: String (reason)
-      }
     `;
 
         const itinerary = await generateItinerary(itineraryConstraints);

@@ -5,7 +5,24 @@ async function generateItinerary(constraints) {
     const conversation = [
       {
         role: 'system',
-        content: `You are an AI that generates travel itineraries. Respond with JSON that contains the plan for each stage. If there are any confusing values, respond with an error.`,
+        content: `You are an AI that generates travel itineraries. Respond with JSON that contains the plan for each stage. 
+        Only respond with the following format:
+        {
+          plan:[
+            {
+              stage: Number,
+              place: String,
+              description: String,
+              address: String,
+            }
+          ]
+        }
+        
+        If there are any confusing values respond with:
+        {
+          error: String (reason)
+        }
+        `,
       },
       {
         role: 'user',
@@ -13,25 +30,14 @@ async function generateItinerary(constraints) {
       },
     ]
 
-    const response = await openaiClient.post(
-      '/v1/engines/davinci-codex/completions',
-      {
-        model: 'codex',
-        messages: conversation,
-        max_tokens: 200,
-        n: 1,
-        stop: null,
-        temperature: 0.8,
-        top_p: 1,
-      },
-    )
+    const response = await openaiClient(conversation)
 
     if (
-      response.data &&
-      response.data.choices &&
-      response.data.choices.length > 0
+      response.choices &&
+      response.choices.length > 0 &&
+      response.choices[0].message.content
     ) {
-      return response.data.choices[0].text.trim()
+      return response.choices[0].message.content.trim()
     }
 
     return 'Unable to generate a travel itinerary. Please try again later.'
