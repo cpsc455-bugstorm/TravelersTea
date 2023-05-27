@@ -12,7 +12,6 @@
     "react/react-in-jsx-scope": "off",
     "react/jsx-uses-react": "off",
     "react/prop-types": ["error", {}],
-    "jsx-quotes": ["warn", "prefer-single"],
     "no-unused-vars": "warn"
   },
   "settings": {
