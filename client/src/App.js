@@ -18,12 +18,12 @@ function App() {
   const detailsContent = useMemo(() => {
     if (appView === AppView.TRIP_OVERVIEW) {
       return (
-        <div className="flex h-full w-full flex-col justify-center overflow-y-auto p-4">
+        <div className="flex h-full w-full flex-row items-center overflow-x-auto p-4">
           <div
             onClick={() => {
               dispatch(setAppView(AppView.TRIP_DAY))
             }}
-            className="my-2 box-border h-64 w-full cursor-pointer bg-red-200 p-4 transition-all hover:scale-[1.01]"
+            className="mx-2 box-border h-4/5 w-64 cursor-pointer bg-red-200 p-4 transition-all hover:scale-[1.01]"
           >
             <h3 className="mb-2 text-2xl font-black text-red-900">DAY 1</h3>
             <p className="mt-2 text-lg font-bold">Stanley Park</p>
@@ -31,7 +31,7 @@ function App() {
               A beautiful park full of bears, coyotes, bigfoot, and dracula.
             </p>
           </div>
-          <div className="my-2 box-border h-64 w-full cursor-pointer bg-cyan-200 p-4 transition-all hover:scale-[1.01]">
+          <div className="mx-2 box-border h-4/5 w-64 bg-cyan-200 p-4 transition-all hover:scale-[1.01]">
             <h3 className="mb-2 text-2xl font-black text-cyan-900">DAY 2</h3>
             <p className="mt-2 text-lg font-bold">Insert Place with Rabbits</p>
             <p className="w-64 text-base font-normal">Yay bunnies are great</p>
@@ -40,27 +40,14 @@ function App() {
               Then we had lunch somewhere.
             </p>
           </div>
-          <div className="my-2 box-border h-64 w-full cursor-pointer bg-emerald-200 p-4 transition-all hover:scale-[1.01]"></div>
         </div>
       )
     }
     if (appView === AppView.TRIP_DAY) {
       return (
-        <div className="w-full items-center overflow-y-auto bg-gradient-to-r from-indigo-950 to-black py-4">
+        <div className="inline-flex w-full flex-row items-center justify-center border-b-4">
           <Pin
-            className={'ml-4 box-border border-l-4 py-8 pl-4'}
-            emoji={'🏠'}
-            titleText="Technically,"
-            bodyText="this would show the emoji that represents your destination, but I am not coding that in tonight."
-          />
-          <Pin
-            className={'ml-4 box-border border-l-4 py-8 pl-4'}
-            emoji={'🏠'}
-            titleText="Technically,"
-            bodyText="this would show the emoji that represents your destination, but I am not coding that in tonight."
-          />
-          <Pin
-            className={'ml-4 box-border border-l-4 py-8 pl-4'}
+            color={'#ef4444'}
             emoji={'🏠'}
             titleText="Technically,"
             bodyText="this would show the emoji that represents your destination, but I am not coding that in tonight."
@@ -72,15 +59,15 @@ function App() {
   }, [appView])
 
   return (
-    <div className="relative flex h-screen w-screen flex-row justify-end overflow-hidden">
+    <div className="relative h-screen w-screen overflow-hidden">
       <MapElement
-        className={`relative left-0 top-0 h-full transition-all ${
-          appView === AppView.NEW_TRIP ? 'w-full' : 'w-3/4'
+        className={`relative left-10 w-[calc(100%-2.5rem)] transition-all ${
+          appView === AppView.NEW_TRIP ? 'h-full' : 'h-1/2'
         }`}
       />
       <div
-        className={`relative top-0 flex h-full flex-col justify-center ${
-          appView === AppView.NEW_TRIP ? 'w-0' : 'w-[calc(25%-2.5rem)]'
+        className={`relative left-10 flex w-[calc(100%-2.5rem)] flex-col justify-center ${
+          appView === AppView.NEW_TRIP ? 'h-0' : 'h-1/2'
         }`}
       >
         {detailsContent}
