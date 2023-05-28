@@ -1,21 +1,26 @@
 import PropTypes from 'prop-types'
-/**
- * Generic button for Traveler's Tea
- *
- * @param text - text to go into button
- * @param onClick - what to do when clicked
- * @param className? - tailwind classnames to be added to the element
- * @return {JSX.Element}
- */
+import { useMemo } from 'react'
+
 Button.propTypes = {
-  text: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
   onClick: PropTypes.func.isRequired,
+  active: PropTypes.bool,
   className: PropTypes.string,
 }
-export function Button({ text, onClick, className = '' }) {
+
+export function Button({ children, onClick, active, className = '' }) {
+  const activeStyling = useMemo(() => {
+    return active
+      ? 'bg-green-300/40 font-medium hover:bg-green-400/40'
+      : 'bg-slate-300 hover:bg-slate-400'
+  }, [active])
+
   return (
-    <button className={`rounded-md border-0 ${className}`} onClick={onClick}>
-      {text}
+    <button
+      className={`items-center rounded-md border-0 p-2 transition-colors ${activeStyling} ${className}`}
+      onClick={onClick}
+    >
+      {children}
     </button>
   )
 }
