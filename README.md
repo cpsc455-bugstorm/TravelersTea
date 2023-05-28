@@ -87,7 +87,7 @@ User input
 
 ![User Input](mocks/mock-a.png)
 
-### App Response: Plan Overview
+#### App Response: Plan Overview
 
 With sidebar closed
 

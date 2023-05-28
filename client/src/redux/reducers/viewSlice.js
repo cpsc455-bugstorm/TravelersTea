@@ -13,6 +13,18 @@ const _setActiveTripId = (state, action) => {
   _setAppView(state, { payload: AppView.TRIP_OVERVIEW })
 }
 
+const _toggleSidebar = (state) => {
+  state.isSidebarOpen = !state.isSidebarOpen
+}
+
+const _openSidebar = (state) => {
+  state.isSidebarOpen = true
+}
+
+const _closeSidebar = (state) => {
+  state.isSidebarOpen = false
+}
+
 const viewSlice = createSlice({
   name: 'view',
   initialState: {
@@ -23,9 +35,9 @@ const viewSlice = createSlice({
   reducers: {
     setAppView: _setAppView,
     setActiveTripId: _setActiveTripId,
-    toggleSidebar: (state) => (state.isSidebarOpen = !state.isSidebarOpen),
-    openSidebar: (state) => (state.isSidebarOpen = true),
-    closeSidebar: (state) => (state.isSidebarOpen = false),
+    toggleSidebar: _toggleSidebar,
+    openSidebar: _openSidebar,
+    closeSidebar: _closeSidebar,
   },
 })
 
