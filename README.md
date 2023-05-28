@@ -1,14 +1,15 @@
 # TravelersTea
 
 ## Table of Contents
-* [Project Description](#project-description)
-* [Team Members](#team-members)
-* [Project Requirements](#project-requirements)
-  * [Minimal Requirements](#minimal-requirements)
-  * [Standard Requirements](#standard-requirements)
-  * [Stretch Requirements](#stretch-requirements)
-* [Task Breakdown](#task-breakdown)
-* [Prototypes](#prototypes)
+
+- [Project Description](#project-description)
+- [Team Members](#team-members)
+- [Project Requirements](#project-requirements)
+  - [Minimal Requirements](#minimal-requirements)
+  - [Standard Requirements](#standard-requirements)
+  - [Stretch Requirements](#stretch-requirements)
+- [Task Breakdown](#task-breakdown)
+- [Prototypes](#prototypes)
 
 ## Project Description
 
@@ -73,20 +74,20 @@ This project is for users who would like to create plans in some location X, and
 
 #### Users can create, read, update, and delete plan metadata
 
-- Create: this creates the plan, along with the metadata fields `Name` and `Description`. 
+- Create: this creates the plan, along with the metadata fields `Name` and `Description`.
 - Read: display the metadata in an UI
 - Update: can update the plan’s metadata or destinations
 - Delete: this deletes the entire plan
 
 ## Prototypes
 
-#### Top-level plan: Homepage 
+#### Top-level plan: Homepage
 
 User input
 
 ![User Input](mocks/mock-a.png)
 
-### App Response: Plan Overview
+#### App Response: Plan Overview
 
 With sidebar closed
 
@@ -95,4 +96,3 @@ With sidebar closed
 With sidebar open: Specific details about a day in the plan
 
 ![Plan Overview - Open Sidebar](mocks/mock-c.png)
-

@@ -2,7 +2,6 @@
   "name": "client",
   "version": "0.1.0",
   "license": "MIT",
-  "private": true,
   "dependencies": {
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
@@ -12,6 +11,9 @@
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
+    "concurrently": "^8.0.1",
+    "cross-env": "^7.0.3",
+    "eslint": "^8.41.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
@@ -20,7 +22,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.5",
-    "react-scripts": "5.0.1",
+    "react-scripts": "^5.0.1",
     "tailwindcss": "^3.3.2",
     "web-vitals": "^2.1.0"
   },
@@ -30,16 +32,15 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint 'src/**/*.{js,jsx}'",
-    "format": "prettier --write \"src/**/*.{js,jsx,json,css}\"",
-    "format:check": "prettier --check 'src/**/*.{js,jsx,json,css}'",
-    "prepare": "cd .. && husky install client/.husky"
+    "lint": "eslint .",
+    "lint:fix": "eslint --cache --fix",
+    "format": "prettier --write \"**/*.+(js|jsx|json|yml|yaml|css|md)\"",
+    "format:check": "prettier --check \"**/*.+(js|jsx|json|yml|yaml|css|md)\""
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+  "devDependencies": {
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.2",
+    "prettier-plugin-tailwindcss": "^0.3.0"
   },
   "browserslist": {
     "production": [
@@ -53,13 +54,8 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
-    "husky": "^8.0.3",
-    "lint-staged": "^13.2.2",
-    "prettier-plugin-tailwindcss": "^0.3.0"
-  },
   "lint-staged": {
     "*.{js,jsx}": "eslint --cache --fix",
-    "*.{js,jsx,json,css}": "prettier --write"
+    "*.{js,jsx,json,yml,yaml,css,md}": "prettier --write"
   }
 }
