@@ -15,13 +15,13 @@
     "test:server": "cd server && yarn test",
     "test": "cd server && yarn test && cd ../client && yarn test",
     "lint": "eslint . && cd server && yarn lint && cd ../client && yarn lint",
-    "lint:fix": "eslint --cache --fix && cd server && yarn lint:fix && cd ../client && yarn lint:fix",
+    "lint:fix": "eslint . --cache --fix && cd server && yarn lint:fix && cd ../client && yarn lint:fix",
     "format": "prettier --write . && cd server && yarn format && cd ../client && yarn format",
     "format:check": "prettier --check . && cd server && yarn format:check && cd ../client && yarn format:check",
     "prepare": "husky install"
   },
   "lint-staged": {
-    "*.{js,jsx}": "eslint --cache --fix",
+    "*.{js,jsx}": "eslint . --cache --fix",
     "*.{js,jsx,json,yml,yaml,css,md}": "prettier --write"
   }
 }
