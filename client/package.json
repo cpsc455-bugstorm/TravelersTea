@@ -33,7 +33,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint .",
-    "lint:fix": "eslint --cache --fix",
+    "lint:fix": "eslint . --cache --fix",
     "format": "prettier --write \"**/*.+(js|jsx|json|yml|yaml|css|md)\"",
     "format:check": "prettier --check \"**/*.+(js|jsx|json|yml|yaml|css|md)\""
   },
@@ -55,7 +55,7 @@
     ]
   },
   "lint-staged": {
-    "*.{js,jsx}": "eslint --cache --fix",
+    "*.{js,jsx}": "eslint . --cache --fix",
     "*.{js,jsx,json,yml,yaml,css,md}": "prettier --write"
   }
 }
