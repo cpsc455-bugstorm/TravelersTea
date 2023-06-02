@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { login } from '../../redux/reducers/userSlice'
 import { Button } from '../common'
+import { setAppView } from '../../redux/reducers/viewSlice'
+import { AppView } from '../../constants/enums'
 
 export function LoginScreen() {
   const dispatch = useDispatch()
@@ -55,7 +57,7 @@ export function LoginScreen() {
             <Button
               type='submit'
               className='bg-blue-600 bg-opacity-80 px-4 py-2 text-white hover:bg-blue-400'
-              onClick={() => {}}
+              onClick={() => dispatch(setAppView(AppView.NEW_TRIP))}
             >
               Login
             </Button>
