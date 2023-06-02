@@ -5,7 +5,7 @@ import AddIcon from '@mui/icons-material/Add'
 import { Button, Toggle } from '../common'
 import { AppView } from '../../constants/enums'
 import { setActiveTripId, setAppView } from '../../redux/reducers/viewSlice'
-
+import { Logout } from '../user/Logout'
 export function SideBar() {
   const dispatch = useDispatch()
   const appView = useSelector((state) => state.view.appView)
@@ -76,6 +76,7 @@ export function SideBar() {
       <div className='box-border w-full shrink-0 py-2'>
         {preferencesModalBtn}
       </div>
+      <Logout />
     </div>
   )
 }
