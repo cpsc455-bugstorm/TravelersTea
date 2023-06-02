@@ -10,7 +10,7 @@ const _setAppView = (state, action) => {
 // payload: number (the id of the active trip)
 const _setActiveTripId = (state, action) => {
   state.activeTripId = action.payload
-  _setAppView(state, { payload: AppView.TRIP_OVERVIEW })
+  _setAppView(state, { payload: AppView.TRIP_VIEW })
 }
 
 const _toggleSidebar = (state) => {

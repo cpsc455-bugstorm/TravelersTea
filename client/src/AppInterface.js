@@ -15,35 +15,54 @@ export function AppInterface() {
   const appView = useSelector((state) => state.view.appView)
   const dispatch = useDispatch()
 
+  const data = [
+    {
+      stages: [
+        {
+          stageName: 'breakfast',
+          locationName: 'Medina Cafe',
+          description: 'A favourite breakfast spot for gourmet foodies.',
+        },
+        {
+          stageName: '1-1',
+          locationName: 'Stanley Park',
+          description: 'A park with many trees... or maybe not?',
+        },
+      ],
+    },
+  ]
+
   const detailsContent = useMemo(() => {
-    if (appView === AppView.TRIP_OVERVIEW) {
-      return (
-        <div className='flex h-full w-full flex-row items-center overflow-x-auto p-4'>
+    if (appView === AppView.TRIP_VIEW) {
+      return data.map((item, index) => {
+        return (
           <div
+            key={`trip-day-${index + 1}`}
             onClick={() => {
-              dispatch(setAppView(AppView.TRIP_DAY))
+              dispatch(setAppView(AppView.DAY_VIEW))
             }}
             className='mx-2 box-border h-4/5 w-64 cursor-pointer bg-red-200 p-4 transition-all hover:scale-[1.01]'
           >
-            <h3 className='mb-2 text-2xl font-black text-red-900'>DAY 1</h3>
-            <p className='mt-2 text-lg font-bold'>Stanley Park</p>
-            <p className='w-64 text-base font-normal'>
-              A beautiful park full of bears, coyotes, bigfoot, and dracula.
-            </p>
+            <h3 className='mb-2 text-2xl font-black text-red-900'>
+              DAY {index + 1}
+            </h3>
+            {item.stages.map((stage, stageIndex) => {
+              return (
+                <div key={`stage-${index + 1}-${stageIndex}`}>
+                  <p className='mt-2 w-full text-lg font-bold'>
+                    {stage.stageName}: {stage.locationName}
+                  </p>
+                  <p className='w-64 w-full text-base font-normal'>
+                    {stage.description}
+                  </p>
+                </div>
+              )
+            })}
           </div>
-          <div className='mx-2 box-border h-4/5 w-64 bg-cyan-200 p-4 transition-all hover:scale-[1.01]'>
-            <h3 className='mb-2 text-2xl font-black text-cyan-900'>DAY 2</h3>
-            <p className='mt-2 text-lg font-bold'>Insert Place with Rabbits</p>
-            <p className='w-64 text-base font-normal'>Yay bunnies are great</p>
-            <p className='mt-2 text-lg font-bold'>A Cafe</p>
-            <p className='w-64 text-base font-normal'>
-              Then we had lunch somewhere.
-            </p>
-          </div>
-        </div>
-      )
+        )
+      })
     }
-    if (appView === AppView.TRIP_DAY) {
+    if (appView === AppView.DAY_VIEW) {
       return (
         <div className='inline-flex w-full flex-row items-center justify-center border-b-4'>
           <Pin
@@ -59,40 +78,36 @@ export function AppInterface() {
   }, [appView])
 
   return (
-    <div className='relative h-screen w-screen overflow-hidden'>
-      <MapElement
-        className={`relative left-10 w-[calc(100%-2.5rem)] transition-all ${
-          appView === AppView.NEW_TRIP ? 'h-full' : 'h-1/2'
-        }`}
-      />
+    <div className='h-screen w-screen overflow-hidden'>
+      <MapElement className={`relative left-10 h-full w-[calc(100%-2.5rem)]`} />
       <div
-        className={`relative left-10 flex w-[calc(100%-2.5rem)] flex-col justify-center ${
+        className={`fixed bottom-0 left-10 z-10 flex w-[calc(100%-2.5rem)] overflow-x-auto overflow-y-hidden bg-gradient-to-b from-transparent to-slate-100 px-4 transition-all ${
           appView === AppView.NEW_TRIP ? 'h-0' : 'h-1/2'
         }`}
       >
         {detailsContent}
       </div>
       <div
-        className={`fixed left-0 top-0 z-10 flex h-full w-1/5 flex-row overflow-hidden transition-all
+        className={`fixed left-0 top-0 z-50 flex h-full w-1/5 flex-row overflow-hidden transition-all
                        ${isSidebarOpen ? 'left-0' : 'left-[-20vw]'}`}
       >
         <SideBar />
       </div>
       <span
-        className={`fixed top-0 z-10 flex h-full items-center rounded-none transition-all ${
+        className={`fixed top-0 z-50 flex h-full items-center rounded-none transition-all ${
           isSidebarOpen ? 'left-[20vw]' : 'left-0'
         }`}
       >
         <Button
           onClick={() => dispatch(toggleSidebar())}
-          className='h-full w-10 rounded-none bg-slate-300 text-6xl hover:bg-slate-300'
+          className='h-full w-10 rounded-none bg-slate-300 text-6xl hover:bg-slate-400'
         >
           {isSidebarOpen ? '‹' : '›'}
         </Button>
       </span>
       {isSidebarOpen && (
         <div
-          className={`fixed left-0 top-0 z-[5] h-full w-full bg-slate-800 opacity-30`}
+          className={`fixed left-0 top-0 z-[45] h-full w-full bg-slate-800 opacity-30`}
           onClick={() => dispatch(closeSidebar())}
         />
       )}

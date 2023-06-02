@@ -6,11 +6,19 @@ import { Button, Toggle } from '../common'
 import { AppView } from '../../constants/enums'
 import { setActiveTripId, setAppView } from '../../redux/reducers/viewSlice'
 import { Logout } from '../user'
+import {
+  toggleCompactView,
+  toggleVerticalTimelines,
+} from '../../redux/reducers/preferencesSlice'
 
 export function SideBar() {
   const dispatch = useDispatch()
   const appView = useSelector((state) => state.view.appView)
   const activeTripId = useSelector((state) => state.view.activeTripId)
+  const isCompactView = useSelector((state) => state.preferences.compactView)
+  const isVerticalTimelines = useSelector(
+    (state) => state.preferences.verticalTimelines,
+  )
 
   const [trips, setTrips] = useState([])
 
@@ -37,17 +45,19 @@ export function SideBar() {
 
   const tripEntries = useMemo(() => {
     return trips.map((trip) => {
+      const buttonColor =
+        trip.id === activeTripId &&
+        (appView === AppView.TRIP_VIEW || appView === AppView.DAY_VIEW)
+          ? 'bg-green-300/40 font-medium hover:bg-green-400/40'
+          : 'bg-slate-300/40 hover:bg-slate-400/40'
+
       return (
         <Button
           key={`sidebar-trip-${trip.id}`}
           onClick={() => {
             dispatch(setActiveTripId(trip.id))
           }}
-          className='w-full bg-opacity-40 hover:bg-opacity-40'
-          active={
-            trip.id === activeTripId &&
-            (appView === AppView.TRIP_OVERVIEW || appView === AppView.TRIP_DAY)
-          }
+          className={`w-full ${buttonColor}`}
         >
           {trip.tripName}
         </Button>
@@ -64,13 +74,21 @@ export function SideBar() {
         <Toggle
           className='mb-2'
           label='Compact View'
-          onClick={() => {}}
-          active={false}
+          onClick={() => {
+            dispatch(toggleCompactView())
+          }}
+          active={isCompactView}
         />
-        <Toggle label='Vertical Timelines' onClick={() => {}} active={false} />
+        <Toggle
+          label='Vertical Timelines'
+          onClick={() => {
+            dispatch(toggleVerticalTimelines())
+          }}
+          active={isVerticalTimelines}
+        />
       </div>
     )
-  }, [])
+  }, [isVerticalTimelines, isCompactView])
 
   return (
     <div className="flex h-full w-full flex-col justify-between overflow-hidden bg-slate-300 bg-[url('../public/little-prince.jpg')] bg-cover bg-center p-2 bg-blend-soft-light">
