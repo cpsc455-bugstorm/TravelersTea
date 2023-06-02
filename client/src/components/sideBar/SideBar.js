@@ -5,7 +5,7 @@ import AddIcon from '@mui/icons-material/Add'
 import { Button } from '../common'
 import { AppView } from '../../constants/enums'
 import { setActiveTripId, setAppView } from '../../redux/reducers/viewSlice'
-
+import { Logout } from '../user/Logout'
 export function SideBar() {
   const dispatch = useDispatch()
   const appView = useSelector((state) => state.view.appView)
@@ -60,6 +60,7 @@ export function SideBar() {
       <div className='my-2 grid w-full grid-cols-1 gap-2 border-y-2 border-slate-300 py-2'>
         {tripEntries}
       </div>
+      <Logout />
     </div>
   )
 }

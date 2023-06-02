@@ -1,13 +1,14 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { login } from '../../redux/reducers/userSlice'
+import { Button } from '../common'
 
 export default function LoginScreen() {
   const dispatch = useDispatch()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const handleLogin = (event) => {
-    // TODO login authentication
+    // TODO user authentication
     event.preventDefault()
     dispatch(
       login({
@@ -51,12 +52,12 @@ export default function LoginScreen() {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-            <button
+            <Button
               type='submit'
-              className='rounded-lg bg-blue-500 bg-opacity-50 px-4 py-2 text-white hover:bg-opacity-75'
+              className='bg-blue-600 bg-opacity-80 px-4 py-2 text-white hover:bg-blue-400'
             >
               Login
-            </button>
+            </Button>
           </form>
         </div>
       </div>

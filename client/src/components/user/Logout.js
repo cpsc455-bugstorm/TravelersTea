@@ -12,7 +12,7 @@ export function Logout() {
   return (
     <div>
       <Button
-        className='fixed bottom-2 bg-red-500 bg-opacity-80 text-white hover:bg-gray-400'
+        className='fixed bottom-2 bg-red-500 bg-opacity-80 text-white hover:bg-red-300'
         onClick={(e) => handleLogout(e)}
       >
         Logout{user ? ` ${user.username}` : ''}
