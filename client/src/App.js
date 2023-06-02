@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux'
-import LoginScreen from './components/user/LoginScreen'
-import AppInterface from './AppInterface'
+import { LoginScreen } from './components/user'
+import { AppInterface } from './AppInterface'
 import { selectUser } from './redux/reducers/userSlice'
 
 function App() {

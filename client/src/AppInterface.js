@@ -9,7 +9,8 @@ import {
 import { AppView } from './constants/enums'
 import { MapElement } from './components/MapElement'
 import { useMemo } from 'react'
-function AppInterface() {
+
+export function AppInterface() {
   const isSidebarOpen = useSelector((state) => state.view.isSidebarOpen)
   const appView = useSelector((state) => state.view.appView)
   const dispatch = useDispatch()
@@ -98,5 +99,3 @@ function AppInterface() {
     </div>
   )
 }
-
-export default AppInterface

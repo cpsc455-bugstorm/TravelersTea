@@ -5,7 +5,8 @@ import AddIcon from '@mui/icons-material/Add'
 import { Button, Toggle } from '../common'
 import { AppView } from '../../constants/enums'
 import { setActiveTripId, setAppView } from '../../redux/reducers/viewSlice'
-import { Logout } from '../user/Logout'
+import { Logout } from '../user'
+
 export function SideBar() {
   const dispatch = useDispatch()
   const appView = useSelector((state) => state.view.appView)
@@ -58,9 +59,15 @@ export function SideBar() {
     // TODO refactor this to return a button that opens a modal.
     //    Please follow any conventions that Meng uses when styling / storing modal content
     return (
-      <div className='w-full rounded-md bg-slate-100/40 p-2'>
-        <h3 className='text-lg font-semibold'>Preferences</h3>
-        <Toggle label='Compact View' onClick={() => {}} active={false} />
+      <div className='mb-2 w-full rounded-md bg-slate-100/40 p-2'>
+        <h3 className='mb-1 text-lg font-semibold'>Preferences</h3>
+        <Toggle
+          className='mb-2'
+          label='Compact View'
+          onClick={() => {}}
+          active={false}
+        />
+        <Toggle label='Vertical Timelines' onClick={() => {}} active={false} />
       </div>
     )
   }, [])
@@ -75,8 +82,8 @@ export function SideBar() {
       </div>
       <div className='box-border w-full shrink-0 py-2'>
         {preferencesModalBtn}
+        <Logout />
       </div>
-      <Logout />
     </div>
   )
 }

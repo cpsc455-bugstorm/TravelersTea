@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import { login } from '../../redux/reducers/userSlice'
 import { Button } from '../common'
 
-export default function LoginScreen() {
+export function LoginScreen() {
   const dispatch = useDispatch()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -55,6 +55,7 @@ export default function LoginScreen() {
             <Button
               type='submit'
               className='bg-blue-600 bg-opacity-80 px-4 py-2 text-white hover:bg-blue-400'
+              onClick={() => {}}
             >
               Login
             </Button>
