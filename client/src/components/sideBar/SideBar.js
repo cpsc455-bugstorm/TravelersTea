@@ -2,14 +2,23 @@ import { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import AddIcon from '@mui/icons-material/Add'
 
-import { Button } from '../common'
+import { Button, Toggle } from '../common'
 import { AppView } from '../../constants/enums'
 import { setActiveTripId, setAppView } from '../../redux/reducers/viewSlice'
-import { Logout } from '../user/Logout'
+import { Logout } from '../user'
+import {
+  toggleCompactView,
+  toggleVerticalTimelines,
+} from '../../redux/reducers/preferencesSlice'
+
 export function SideBar() {
   const dispatch = useDispatch()
   const appView = useSelector((state) => state.view.appView)
   const activeTripId = useSelector((state) => state.view.activeTripId)
+  const isCompactView = useSelector((state) => state.preferences.compactView)
+  const isVerticalTimelines = useSelector(
+    (state) => state.preferences.verticalTimelines,
+  )
 
   const [trips, setTrips] = useState([])
 
@@ -36,17 +45,19 @@ export function SideBar() {
 
   const tripEntries = useMemo(() => {
     return trips.map((trip) => {
+      const buttonColor =
+        trip.id === activeTripId &&
+        (appView === AppView.TRIP_VIEW || appView === AppView.DAY_VIEW)
+          ? 'bg-green-300/40 font-medium hover:bg-green-400/40'
+          : 'bg-slate-300/40 hover:bg-slate-400/40'
+
       return (
         <Button
           key={`sidebar-trip-${trip.id}`}
           onClick={() => {
             dispatch(setActiveTripId(trip.id))
           }}
-          className='w-full bg-opacity-40 hover:bg-opacity-40'
-          active={
-            trip.id === activeTripId &&
-            (appView === AppView.TRIP_OVERVIEW || appView === AppView.TRIP_DAY)
-          }
+          className={`w-full ${buttonColor}`}
         >
           {trip.tripName}
         </Button>
@@ -54,13 +65,43 @@ export function SideBar() {
     })
   }, [trips, activeTripId, appView])
 
-  return (
-    <div className="h-full w-full overflow-hidden bg-slate-300 bg-[url('../public/little-prince.jpg')] bg-cover bg-center p-2 bg-blend-soft-light">
-      {newTripButton}
-      <div className='my-2 grid w-full grid-cols-1 gap-2 border-y-2 border-slate-300 py-2'>
-        {tripEntries}
+  const preferencesModalBtn = useMemo(() => {
+    // TODO refactor this to return a button that opens a modal.
+    //    Please follow any conventions that Meng uses when styling / storing modal content
+    return (
+      <div className='mb-2 w-full rounded-md bg-slate-100/40 p-2'>
+        <h3 className='mb-1 text-lg font-semibold'>Preferences</h3>
+        <Toggle
+          className='mb-2'
+          label='Compact View'
+          onClick={() => {
+            dispatch(toggleCompactView())
+          }}
+          active={isCompactView}
+        />
+        <Toggle
+          label='Vertical Timelines'
+          onClick={() => {
+            dispatch(toggleVerticalTimelines())
+          }}
+          active={isVerticalTimelines}
+        />
       </div>
-      <Logout />
+    )
+  }, [isVerticalTimelines, isCompactView])
+
+  return (
+    <div className="flex h-full w-full flex-col justify-between overflow-hidden bg-slate-300 bg-[url('../public/little-prince.jpg')] bg-cover bg-center p-2 bg-blend-soft-light">
+      <div className='overflow-x-auto'>
+        {newTripButton}
+        <div className='my-2 grid w-full grid-cols-1 gap-2 border-y-2 border-slate-300 py-2'>
+          {tripEntries}
+        </div>
+      </div>
+      <div className='box-border w-full shrink-0 py-2'>
+        {preferencesModalBtn}
+        <Logout />
+      </div>
     </div>
   )
 }

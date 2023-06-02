@@ -5,7 +5,7 @@ import { Button } from '../common'
 import { setAppView } from '../../redux/reducers/viewSlice'
 import { AppView } from '../../constants/enums'
 
-export default function LoginScreen() {
+export function LoginScreen() {
   const dispatch = useDispatch()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
