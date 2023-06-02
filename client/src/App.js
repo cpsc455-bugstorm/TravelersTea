@@ -31,15 +31,6 @@ function App() {
               A beautiful park full of bears, coyotes, bigfoot, and dracula.
             </p>
           </div>
-          <div className='mx-2 box-border h-4/5 w-64 bg-cyan-200 p-4 transition-all hover:scale-[1.01]'>
-            <h3 className='mb-2 text-2xl font-black text-cyan-900'>DAY 2</h3>
-            <p className='mt-2 text-lg font-bold'>Insert Place with Rabbits</p>
-            <p className='w-64 text-base font-normal'>Yay bunnies are great</p>
-            <p className='mt-2 text-lg font-bold'>A Cafe</p>
-            <p className='w-64 text-base font-normal'>
-              Then we had lunch somewhere.
-            </p>
-          </div>
         </div>
       )
     }
