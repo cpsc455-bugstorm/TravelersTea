@@ -4,6 +4,7 @@ import { useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppView } from '../../constants/enums'
+import { closeNewTripModal } from '../../redux/reducers/modalsSlice'
 import { setAppView } from '../../redux/reducers/viewSlice'
 import { Button, Modal } from '../common'
 
@@ -14,6 +15,9 @@ MapElement.propTypes = {
 export function MapElement({ className }) {
   const appView = useSelector((state) => state.view.appView)
   const activeTripId = useSelector((state) => state.view.activeTripId)
+  const newTripModalIsOpen = useSelector(
+    (state) => state.modals.newTripModalIsOpen,
+  )
   const dispatch = useDispatch()
 
   const {
@@ -24,20 +28,21 @@ export function MapElement({ className }) {
   } = useForm()
 
   const handleCloseNewTripModal = () => {
-    dispatch(setAppView(AppView.TRIP_VIEW))
+    dispatch(closeNewTripModal())
     reset()
   }
 
   const onSubmit = (data) => {
     // TODO: make api call to create new trip
     console.log(data)
+    dispatch(setAppView(AppView.TRIP_VIEW))
     handleCloseNewTripModal()
   }
 
   const newTripForm = useMemo(() => {
     return (
       <Modal
-        open={appView === AppView.NEW_TRIP}
+        open={appView === AppView.NEW_TRIP && newTripModalIsOpen}
         handleClose={handleCloseNewTripModal}
         title='Manifesting A New Trip...'
         footer={
@@ -78,7 +83,7 @@ export function MapElement({ className }) {
         />
       </Modal>
     )
-  }, [appView, register, handleSubmit, errors])
+  }, [appView, register, handleSubmit, errors, newTripModalIsOpen])
 
   const mapContent = useMemo(() => {
     if (appView === AppView.NEW_TRIP) {

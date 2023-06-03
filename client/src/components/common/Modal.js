@@ -12,7 +12,7 @@ import Draggable from 'react-draggable'
 
 /*
  * @param {boolean} open - whether the modal is open
- * @param {function} handleClose - callback when closing the modal
+ * @param {function} handleClose - callback when closing the modal (also triggered when clicking outside the modal)
  * @param {node} children - content of the modal
  * @param {node} footer - usually buttons with actions
  * @returns {node} - modal component

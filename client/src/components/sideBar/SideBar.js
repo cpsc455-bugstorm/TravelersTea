@@ -1,15 +1,20 @@
+import AddIcon from '@mui/icons-material/Add'
 import { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import AddIcon from '@mui/icons-material/Add'
 
-import { Button, Toggle } from '../common'
 import { AppView } from '../../constants/enums'
-import { setActiveTripId, setAppView } from '../../redux/reducers/viewSlice'
-import { Logout } from '../user'
+import { openNewTripModal } from '../../redux/reducers/modalsSlice'
 import {
   toggleCompactView,
   toggleVerticalTimelines,
 } from '../../redux/reducers/preferencesSlice'
+import {
+  closeSidebar,
+  setActiveTripId,
+  setAppView,
+} from '../../redux/reducers/viewSlice'
+import { Button, Toggle } from '../common'
+import { Logout } from '../user'
 
 export function SideBar() {
   const dispatch = useDispatch()
@@ -35,7 +40,11 @@ export function SideBar() {
     return (
       <Button
         className='box-border flex h-12 w-full flex-row border-2 border-yellow-300 bg-yellow-200/20 hover:bg-yellow-300/20'
-        onClick={() => dispatch(setAppView(AppView.NEW_TRIP))}
+        onClick={() => {
+          dispatch(setAppView(AppView.NEW_TRIP))
+          dispatch(openNewTripModal())
+          dispatch(closeSidebar())
+        }}
       >
         <AddIcon className='mx-2' />
         <h3>New Trip</h3>
