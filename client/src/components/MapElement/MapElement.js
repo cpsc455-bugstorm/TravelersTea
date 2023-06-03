@@ -1,6 +1,7 @@
 import { TextField } from '@mui/material'
 import PropTypes from 'prop-types'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
+import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppView } from '../../constants/enums'
 import { setAppView } from '../../redux/reducers/viewSlice'
@@ -9,37 +10,26 @@ import { Button, Modal } from '../common'
 MapElement.propTypes = {
   className: PropTypes.string,
 }
-
 export function MapElement({ className }) {
   const appView = useSelector((state) => state.view.appView)
   const activeTripId = useSelector((state) => state.view.activeTripId)
   const dispatch = useDispatch()
 
-  const [destination, setDestination] = useState('')
-  const [stagesPerDay, setStagesPerDay] = useState('')
-  const [budget, setBudget] = useState('')
-  const [numberOfDays, setNumberOfDays] = useState('')
-  const [invalidForm, setInvalidForm] = useState(false)
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm()
 
-  const resetForm = () => {
-    setDestination('')
-    setStagesPerDay('')
-    setBudget('')
-    setNumberOfDays('')
-    setInvalidForm(false)
-  }
   const handleCloseNewTripModal = () => {
     dispatch(setAppView(AppView.TRIP_VIEW))
-    resetForm()
+    reset()
   }
-  const handleSubmitNewTripForm = () => {
-    if (destination && stagesPerDay && budget && numberOfDays) {
-      // api call with form data
-      console.log(destination, stagesPerDay, budget, numberOfDays)
-      handleCloseNewTripModal()
-    } else {
-      setInvalidForm(true)
-    }
+
+  const onSubmit = (data) => {
+    console.log(data)
+    handleCloseNewTripModal()
   }
 
   const newTripForm = useMemo(() => {
@@ -51,7 +41,7 @@ export function MapElement({ className }) {
         footer={
           <Button
             className='font-bolder mt-4 w-full bg-slate-300 hover:bg-slate-400'
-            onClick={handleSubmitNewTripForm}
+            onClick={handleSubmit(onSubmit)}
             type='submit'
           >
             Brew 🍵
@@ -59,42 +49,34 @@ export function MapElement({ className }) {
         }
       >
         <TextField
+          {...register('destination', { required: true })}
           label='Destination'
           placeholder='Tell me where you want to go...'
-          value={destination}
-          onChange={(event) => setDestination(event.target.value)}
-          error={invalidForm && !destination}
-          required
+          error={!!errors.destination}
         />
         <TextField
+          {...register('stagesPerDay', { required: true })}
           label='Stages per day'
           placeholder='Tell me how many places you want to visit..'
           type='number'
-          value={stagesPerDay}
-          onChange={(event) => setStagesPerDay(event.target.value)}
-          error={invalidForm && !stagesPerDay}
-          required
+          error={!!errors.stagesPerDay}
         />
         <TextField
+          {...register('budget', { required: true })}
           label='Budget'
           placeholder='Tell me how much you want to spend...'
-          value={budget}
-          onChange={(event) => setBudget(event.target.value)}
-          error={invalidForm && !budget}
-          required
+          error={!!errors.budget}
         />
         <TextField
+          {...register('numberOfDays', { required: true })}
           label='Number of days'
           placeholder='Tell me how long you are going for...'
           type='number'
-          value={numberOfDays}
-          onChange={(event) => setNumberOfDays(event.target.value)}
-          error={invalidForm && !numberOfDays}
-          required
+          error={!!errors.numberOfDays}
         />
       </Modal>
     )
-  }, [appView, destination, stagesPerDay, budget, numberOfDays, invalidForm])
+  }, [appView, register, handleSubmit, errors])
 
   const mapContent = useMemo(() => {
     if (appView === AppView.NEW_TRIP) {
