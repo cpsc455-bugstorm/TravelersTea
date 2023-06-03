@@ -5,14 +5,14 @@ import { useMemo } from 'react'
 
 const PIN_WIDTH_PX = 128
 
-CoffeeCup.propTypes = {
+TeaCup.propTypes = {
   tailwindBgColor: PropTypes.string.isRequired,
   displayNumber: PropTypes.number.isRequired,
   titleText: PropTypes.string,
   locationNames: PropTypes.arrayOf(PropTypes.string),
 }
 
-export function CoffeeCup({
+export function TeaCup({
   tailwindBgColor,
   displayNumber,
   titleText,
