@@ -1,8 +1,10 @@
+import { TextField } from '@mui/material'
 import PropTypes from 'prop-types'
-import { useSelector } from 'react-redux'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { AppView } from '../../constants/enums'
-import { Button } from '../common'
+import { setAppView } from '../../redux/reducers/viewSlice'
+import { Button, Modal } from '../common'
 
 MapElement.propTypes = {
   className: PropTypes.string,
@@ -11,32 +13,88 @@ MapElement.propTypes = {
 export function MapElement({ className }) {
   const appView = useSelector((state) => state.view.appView)
   const activeTripId = useSelector((state) => state.view.activeTripId)
+  const dispatch = useDispatch()
+
+  const [destination, setDestination] = useState('')
+  const [stagesPerDay, setStagesPerDay] = useState('')
+  const [budget, setBudget] = useState('')
+  const [numberOfDays, setNumberOfDays] = useState('')
+  const [invalidForm, setInvalidForm] = useState(false)
+
+  const resetForm = () => {
+    setDestination('')
+    setStagesPerDay('')
+    setBudget('')
+    setNumberOfDays('')
+    setInvalidForm(false)
+  }
+  const handleCloseNewTripModal = () => {
+    dispatch(setAppView(AppView.TRIP_VIEW))
+    resetForm()
+  }
+  const handleSubmitNewTripForm = () => {
+    if (destination && stagesPerDay && budget && numberOfDays) {
+      // api call with form data
+      console.log(destination, stagesPerDay, budget, numberOfDays)
+      handleCloseNewTripModal()
+    } else {
+      setInvalidForm(true)
+    }
+  }
 
   const newTripForm = useMemo(() => {
     return (
-      <div className='z-[5] flex h-full w-full flex-row items-center justify-center'>
-        <span className='inline-flex w-1/2 flex-col justify-center rounded-md bg-slate-100 bg-opacity-80 p-4'>
-          <h1 className='pb-8 font-mono text-5xl'>Dear Traveler...</h1>
-          <form className='flex w-full flex-col items-center'>
-            <input
-              placeholder='Tell me where you want to go...'
-              className='mb-2 w-2/3 rounded-md border-4 border-indigo-950 p-2'
-            />
-            <input
-              placeholder="Tell me how long you're going for..."
-              className='mb-2 w-2/3 rounded-md border-4 border-indigo-950 p-2'
-            />
-          </form>
+      <Modal
+        open={appView === AppView.NEW_TRIP}
+        handleClose={handleCloseNewTripModal}
+        title='Manifesting A New Trip...'
+        footer={
           <Button
-            onClick={() => {}}
-            className='font-bolder mt-4 bg-slate-300 hover:bg-slate-400'
+            className='font-bolder mt-4 w-full bg-slate-300 hover:bg-slate-400'
+            onClick={handleSubmitNewTripForm}
+            type='submit'
           >
             Brew 🍵
           </Button>
-        </span>
-      </div>
+        }
+      >
+        <TextField
+          label='Destination'
+          placeholder='Tell me where you want to go...'
+          value={destination}
+          onChange={(event) => setDestination(event.target.value)}
+          error={invalidForm && !destination}
+          required
+        />
+        <TextField
+          label='Stages per day'
+          placeholder='Tell me how many places you want to visit..'
+          type='number'
+          value={stagesPerDay}
+          onChange={(event) => setStagesPerDay(event.target.value)}
+          error={invalidForm && !stagesPerDay}
+          required
+        />
+        <TextField
+          label='Budget'
+          placeholder='Tell me how much you want to spend...'
+          value={budget}
+          onChange={(event) => setBudget(event.target.value)}
+          error={invalidForm && !budget}
+          required
+        />
+        <TextField
+          label='Number of days'
+          placeholder='Tell me how long you are going for...'
+          type='number'
+          value={numberOfDays}
+          onChange={(event) => setNumberOfDays(event.target.value)}
+          error={invalidForm && !numberOfDays}
+          required
+        />
+      </Modal>
     )
-  }, [])
+  }, [appView, destination, stagesPerDay, budget, numberOfDays, invalidForm])
 
   const mapContent = useMemo(() => {
     if (appView === AppView.NEW_TRIP) {
@@ -49,7 +107,7 @@ export function MapElement({ className }) {
         </h1>
       </span>
     )
-  }, [appView, activeTripId])
+  }, [appView, activeTripId, newTripForm])
 
   const bgUrl = useMemo(() => {
     if (appView === AppView.NEW_TRIP) return "bg-[url('../public/globe.png')]"
