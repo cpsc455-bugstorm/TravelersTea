@@ -8,20 +8,28 @@
     "server"
   ],
   "scripts": {
-    "start:client": "cd client && yarn start",
-    "start:server": "cd server && yarn start",
+    "start:client": "yarn workspace client start",
+    "start:server": "yarn workspace server start",
     "start": "concurrently \"yarn workspace server start\" \"yarn workspace client start\"",
-    "test:client": "cd client && yarn test",
-    "test:server": "cd server && yarn test",
-    "test": "cd server && yarn test && cd ../client && yarn test",
-    "lint": "eslint . && cd server && yarn lint && cd ../client && yarn lint",
-    "lint:fix": "eslint . --cache --fix && cd server && yarn lint:fix && cd ../client && yarn lint:fix",
-    "format": "prettier --write . && cd server && yarn format && cd ../client && yarn format",
-    "format:check": "prettier --check . && cd server && yarn format:check && cd ../client && yarn format:check",
+    "test:client": "yarn workspace client test",
+    "test:server": "yarn workspace server test",
+    "test": "yarn workspace client test && yarn workspace server test",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --cache --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "prepare": "husky install"
   },
   "lint-staged": {
     "*.{js,jsx}": "eslint . --cache --fix",
     "*.{js,jsx,json,yml,yaml,css,md}": "prettier --write"
+  },
+  "devDependencies": {
+    "eslint": "^8.42.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.2",
+    "prettier": "^2.8.8"
   }
 }
