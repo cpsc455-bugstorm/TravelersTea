@@ -3,7 +3,7 @@
     "color": "bg-red-400",
     "stages": [
       {
-        "stageName": "breakfast",
+        "stageName": "Breakfast",
         "locationName": "Medina Cafe",
         "description": "A favourite breakfast spot for gourmet foodies."
       },
@@ -18,7 +18,7 @@
     "color": "bg-amber-400",
     "stages": [
       {
-        "stageName": "breakfast",
+        "stageName": "Breakfast",
         "locationName": "Tim Hortons",
         "description": "Coffee chain."
       },
@@ -33,7 +33,7 @@
     "color": "bg-blue-400",
     "stages": [
       {
-        "stageName": "breakfast",
+        "stageName": "Breakfast",
         "locationName": "Cafe Medina",
         "description": "Famous for its waffles and lavender lattes."
       },
@@ -48,7 +48,7 @@
     "color": "bg-black",
     "stages": [
       {
-        "stageName": "breakfast",
+        "stageName": "Breakfast",
         "locationName": "Nelson the Seagull",
         "description": "Artisan bakery with delicious bread and pastries."
       },
@@ -63,7 +63,7 @@
     "color": "bg-green-400",
     "stages": [
       {
-        "stageName": "breakfast",
+        "stageName": "Breakfast",
         "locationName": "Jam Cafe",
         "description": "Indulge in hearty breakfast dishes."
       },
@@ -78,7 +78,7 @@
     "color": "bg-pink-400",
     "stages": [
       {
-        "stageName": "breakfast",
+        "stageName": "Breakfast",
         "locationName": "Nemesis Coffee",
         "description": "Specialty coffee and innovative brunch."
       },
@@ -93,7 +93,7 @@
     "color": "bg-teal-400",
     "stages": [
       {
-        "stageName": "breakfast",
+        "stageName": "Breakfast",
         "locationName": "Purebread",
         "description": "Heaven for bread and pastry lovers."
       },
@@ -108,7 +108,7 @@
     "color": "bg-lime-400",
     "stages": [
       {
-        "stageName": "breakfast",
+        "stageName": "Breakfast",
         "locationName": "Ask for Luigi",
         "description": "Delicious Italian cuisine in a cozy setting."
       },
@@ -123,7 +123,7 @@
     "color": "bg-yellow-700",
     "stages": [
       {
-        "stageName": "breakfast",
+        "stageName": "Breakfast",
         "locationName": "OEB Breakfast Co.",
         "description": "Inventive breakfast creations."
       },
@@ -138,7 +138,7 @@
     "color": "bg-fuchsia-400",
     "stages": [
       {
-        "stageName": "breakfast",
+        "stageName": "Breakfast",
         "locationName": "Nelson the Seagull",
         "description": "Artisan bakery with delicious bread and pastries."
       },
