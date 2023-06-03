@@ -63,15 +63,14 @@ export function Modal({
         open={open}
         onClose={handleClose}
       >
-        <Box my='0.5rem'>
+        <Box m='0'>
           <DialogTitle
             id='draggable-dialog-title'
             fontSize='2rem'
-            className={`cursor-grab border-b-4 border-black text-center ${classNameTitle}`}
-          >
-            {title}
-          </DialogTitle>
+            className={`cursor-grab bg-slate-100 ${classNameTitle}`}
+          />
           <Box my='0.5rem' p='0'>
+            <h1 className='pb-8 text-center font-mono text-5xl'>{title}</h1>
             <DialogContent
               className={`flex flex-col space-y-4 text-center ${classNameContent}`}
             >
