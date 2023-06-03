@@ -23,7 +23,7 @@ export function MapElement({ className }) {
         </h1>
       </span>
     )
-  }, [appView, activeTripId, NewTripForm])
+  }, [appView, activeTripId])
 
   const bgUrl = useMemo(() => {
     if (appView === AppView.NEW_TRIP) return "bg-[url('../public/globe.png')]"
