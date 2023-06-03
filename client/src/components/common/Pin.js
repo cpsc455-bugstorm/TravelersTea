@@ -1,16 +1,20 @@
 import RoomIcon from '@mui/icons-material/Room'
 import PropTypes from 'prop-types'
+import { useMemo } from 'react'
+import { getHexCode } from '../../utils/translateTailwindColors'
 
 const PIN_WIDTH_PX = 128
 
 Pin.propTypes = {
-  color: PropTypes.string.isRequired,
+  tailwindBgColor: PropTypes.string.isRequired,
   emoji: PropTypes.string.isRequired,
   titleText: PropTypes.string,
   bodyText: PropTypes.string,
 }
 
-export function Pin({ color, emoji, titleText, bodyText }) {
+export function Pin({ tailwindBgColor, emoji, titleText, bodyText }) {
+  const hexColor = useMemo(() => getHexCode(tailwindBgColor), [tailwindBgColor])
+
   return (
     <div>
       <p className='text-lg font-bold'>{titleText}</p>
@@ -20,7 +24,7 @@ export function Pin({ color, emoji, titleText, bodyText }) {
       >
         <RoomIcon
           className='absolute -bottom-3 left-0'
-          sx={{ color, fontSize: PIN_WIDTH_PX }}
+          sx={{ color: hexColor, fontSize: PIN_WIDTH_PX }}
         />
         <span className='absolute left-0 top-8 w-full cursor-pointer text-center text-5xl'>
           {emoji}

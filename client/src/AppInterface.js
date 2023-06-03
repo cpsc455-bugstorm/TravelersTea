@@ -1,64 +1,36 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Pin } from './components/common'
 import { SideBar } from './components/sideBar'
-import {
-  closeSidebar,
-  setAppView,
-  toggleSidebar,
-} from './redux/reducers/viewSlice'
+import { closeSidebar, toggleSidebar } from './redux/reducers/viewSlice'
 import { AppView } from './constants/enums'
 import { MapElement } from './components/MapElement'
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { CoffeeCup } from './components/Timeline'
+import TripViewJson from './temp/tripViewData.json'
 
 export function AppInterface() {
   const isSidebarOpen = useSelector((state) => state.view.isSidebarOpen)
   const appView = useSelector((state) => state.view.appView)
   const dispatch = useDispatch()
 
-  const data = [
-    {
-      stages: [
-        {
-          stageName: 'breakfast',
-          locationName: 'Medina Cafe',
-          description: 'A favourite breakfast spot for gourmet foodies.',
-        },
-        {
-          stageName: '1-1',
-          locationName: 'Stanley Park',
-          description: 'A park with many trees... or maybe not?',
-        },
-      ],
-    },
-  ]
+  const [tripData, setTripData] = useState([])
+
+  useEffect(() => {
+    setTripData(TripViewJson)
+  }, [])
 
   const detailsContent = useMemo(() => {
     if (appView === AppView.TRIP_VIEW) {
-      return data.map((item, index) => {
+      return tripData.map((item, index) => {
+        const displayNumber = index + 1
         return (
-          <div
-            key={`trip-day-${index + 1}`}
-            onClick={() => {
-              dispatch(setAppView(AppView.DAY_VIEW))
-            }}
-            className='mx-2 box-border h-4/5 w-64 cursor-pointer bg-red-200 p-4 transition-all hover:scale-[1.01]'
-          >
-            <h3 className='mb-2 text-2xl font-black text-red-900'>
-              DAY {index + 1}
-            </h3>
-            {item.stages.map((stage, stageIndex) => {
-              return (
-                <div key={`stage-${index + 1}-${stageIndex}`}>
-                  <p className='mt-2 w-full text-lg font-bold'>
-                    {stage.stageName}: {stage.locationName}
-                  </p>
-                  <p className='w-64 w-full text-base font-normal'>
-                    {stage.description}
-                  </p>
-                </div>
-              )
-            })}
-          </div>
+          <CoffeeCup
+            key={`overview-pin-${index}`}
+            tailwindBgColor={item.color}
+            displayNumber={displayNumber}
+            titleText={'Day ' + displayNumber}
+            locationNames={item.stages.map((stage) => stage.locationName)}
+          />
         )
       })
     }
@@ -66,7 +38,7 @@ export function AppInterface() {
       return (
         <div className='inline-flex w-full flex-row items-center justify-center border-b-4'>
           <Pin
-            color={'#ef4444'}
+            tailwindBgColor={'#ef4444'}
             emoji={'🏠'}
             titleText='Technically,'
             bodyText='this would show the emoji that represents your destination, but I am not coding that in tonight.'
@@ -81,11 +53,15 @@ export function AppInterface() {
     <div className='h-screen w-screen overflow-hidden'>
       <MapElement className={`relative left-10 h-full w-[calc(100%-2.5rem)]`} />
       <div
-        className={`fixed bottom-0 left-10 z-10 flex w-[calc(100%-2.5rem)] overflow-x-auto overflow-y-hidden bg-gradient-to-b from-transparent to-slate-100 px-4 transition-all ${
+        className={`pointer-events-none fixed bottom-0 left-10 z-10 flex w-[calc(100%-2.5rem)] items-end overflow-x-hidden overflow-y-hidden bg-gradient-to-b from-transparent to-slate-100 transition-all ${
           appView === AppView.NEW_TRIP ? 'h-0' : 'h-1/2'
         }`}
       >
-        {detailsContent}
+        <div
+          className={`pointer-events-auto flex w-full items-end overflow-x-auto p-8 pt-0 mac-scrollbar`}
+        >
+          {detailsContent}
+        </div>
       </div>
       <div
         className={`fixed left-0 top-0 z-50 flex h-full w-1/5 flex-row overflow-hidden transition-all

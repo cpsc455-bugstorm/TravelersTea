@@ -1,0 +1,152 @@
+[
+  {
+    "color": "bg-red-400",
+    "stages": [
+      {
+        "stageName": "breakfast",
+        "locationName": "Medina Cafe",
+        "description": "A favourite breakfast spot for gourmet foodies."
+      },
+      {
+        "stageName": "1-1",
+        "locationName": "Stanley Park",
+        "description": "A park with many trees... or maybe not?"
+      }
+    ]
+  },
+  {
+    "color": "bg-amber-400",
+    "stages": [
+      {
+        "stageName": "breakfast",
+        "locationName": "Tim Hortons",
+        "description": "Coffee chain."
+      },
+      {
+        "stageName": "1-1",
+        "locationName": "Gastown",
+        "description": "Don't wander past Abbot street..."
+      }
+    ]
+  },
+  {
+    "color": "bg-blue-400",
+    "stages": [
+      {
+        "stageName": "breakfast",
+        "locationName": "Cafe Medina",
+        "description": "Famous for its waffles and lavender lattes."
+      },
+      {
+        "stageName": "1-1",
+        "locationName": "Capilano Suspension Bridge",
+        "description": "A thrilling walk amidst towering trees."
+      }
+    ]
+  },
+  {
+    "color": "bg-black",
+    "stages": [
+      {
+        "stageName": "breakfast",
+        "locationName": "Nelson the Seagull",
+        "description": "Artisan bakery with delicious bread and pastries."
+      },
+      {
+        "stageName": "1-1",
+        "locationName": "Granville Island",
+        "description": "Explore the public market and local shops."
+      }
+    ]
+  },
+  {
+    "color": "bg-green-400",
+    "stages": [
+      {
+        "stageName": "breakfast",
+        "locationName": "Jam Cafe",
+        "description": "Indulge in hearty breakfast dishes."
+      },
+      {
+        "stageName": "1-1",
+        "locationName": "Queen Elizabeth Park",
+        "description": "Gorgeous gardens and panoramic views."
+      }
+    ]
+  },
+  {
+    "color": "bg-pink-400",
+    "stages": [
+      {
+        "stageName": "breakfast",
+        "locationName": "Nemesis Coffee",
+        "description": "Specialty coffee and innovative brunch."
+      },
+      {
+        "stageName": "1-1",
+        "locationName": "English Bay",
+        "description": "Relax on the sandy beach and watch the sunset."
+      }
+    ]
+  },
+  {
+    "color": "bg-teal-400",
+    "stages": [
+      {
+        "stageName": "breakfast",
+        "locationName": "Purebread",
+        "description": "Heaven for bread and pastry lovers."
+      },
+      {
+        "stageName": "1-1",
+        "locationName": "Vancouver Aquarium",
+        "description": "Discover fascinating marine life."
+      }
+    ]
+  },
+  {
+    "color": "bg-lime-400",
+    "stages": [
+      {
+        "stageName": "breakfast",
+        "locationName": "Ask for Luigi",
+        "description": "Delicious Italian cuisine in a cozy setting."
+      },
+      {
+        "stageName": "1-1",
+        "locationName": "Dr. Sun Yat-Sen Classical Chinese Garden",
+        "description": "A serene oasis in the heart of the city."
+      }
+    ]
+  },
+  {
+    "color": "bg-yellow-700",
+    "stages": [
+      {
+        "stageName": "breakfast",
+        "locationName": "OEB Breakfast Co.",
+        "description": "Inventive breakfast creations."
+      },
+      {
+        "stageName": "1-1",
+        "locationName": "Lynn Canyon Park",
+        "description": "Experience the suspension bridge and waterfalls."
+      }
+    ]
+  },
+  {
+    "color": "bg-fuchsia-400",
+    "stages": [
+      {
+        "stageName": "breakfast",
+        "locationName": "Nelson the Seagull",
+        "description": "Artisan bakery with delicious bread and pastries."
+      },
+      {
+        "stageName": "1-1",
+        "locationName": "The Museum of Anthropology",
+        "description": "Explore indigenous art and artifacts."
+      }
+    ]
+  }
+]
