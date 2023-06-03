@@ -67,9 +67,9 @@ export function Modal({
           <DialogTitle
             id='draggable-dialog-title'
             fontSize='2rem'
-            className='cursor-grab bg-slate-100'
+            className='cursor-grab bg-slate-300'
           />
-          <Box my='0.5rem' p='0'>
+          <Box my='0.5rem' pt='1rem'>
             <h1
               className={`pb-8 text-center font-mono text-5xl ${classNameTitle}`}
             >
