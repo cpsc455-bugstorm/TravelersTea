@@ -77,7 +77,9 @@ export function Modal({
             >
               {children}
             </DialogContent>
-            <DialogActions>{footer}</DialogActions>
+            <Box p='20px' px='24px'>
+              <DialogActions sx={{ padding: 0 }}>{footer}</DialogActions>
+            </Box>
           </Box>
         </Box>
       </Dialog>

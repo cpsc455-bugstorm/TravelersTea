@@ -10,6 +10,7 @@ import { Button, Modal } from '../common'
 MapElement.propTypes = {
   className: PropTypes.string,
 }
+
 export function MapElement({ className }) {
   const appView = useSelector((state) => state.view.appView)
   const activeTripId = useSelector((state) => state.view.activeTripId)
@@ -28,6 +29,7 @@ export function MapElement({ className }) {
   }
 
   const onSubmit = (data) => {
+    // TODO: make api call to create new trip
     console.log(data)
     handleCloseNewTripModal()
   }
@@ -40,7 +42,7 @@ export function MapElement({ className }) {
         title='Manifesting A New Trip...'
         footer={
           <Button
-            className='font-bolder mt-4 w-full bg-slate-300 hover:bg-slate-400'
+            className='mt-4 w-full rounded bg-slate-300 hover:bg-slate-400'
             onClick={handleSubmit(onSubmit)}
             type='submit'
           >
