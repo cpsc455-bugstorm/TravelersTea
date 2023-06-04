@@ -38,10 +38,12 @@ export function TripViewContent() {
   const cardContent = useMemo(() => {
     return tripData.map((item, index) => {
       const dayNumber = index + 1
+      const colorName = item['color'].slice(3).slice(0, -4)
+
       return (
         <div
           key={`details-${dayNumber}`}
-          className={`${item['color']} my-2 box-border w-full rounded-md bg-opacity-40 p-4`}
+          className={`from-${colorName}-400 to-${colorName}-500 my-4 box-border w-full rounded-md bg-gradient-to-br p-4 shadow-xl`}
         >
           <h3 className='text-lg font-bold'>Day {dayNumber}</h3>
           {item['stages'].map((stage, stageIndex) => {
@@ -62,7 +64,7 @@ export function TripViewContent() {
   const renderTeacupRow = useMemo(() => {
     return (
       <div
-        className={`pointer-events-auto flex w-full items-end overflow-x-scroll p-8 pt-0 mac-scrollbar`}
+        className={`pointer-events-auto flex w-full items-end overflow-x-scroll px-8 mac-scrollbar`}
       >
         {teaCups}
       </div>
@@ -72,8 +74,7 @@ export function TripViewContent() {
   const renderShowMoreLessButton = useMemo(() => {
     return (
       <Button
-        className={`font-bolder pointer-events-auto h-8 w-full cursor-pointer rounded-none bg-gradient-to-r py-1 transition-all duration-300 hover:from-slate-300 hover:via-transparent hover:to-slate-300 
-          ${isContentFullscreen ? '' : 'hover:h-9'}`}
+        className={`font-bolder pointer-events-auto h-8 w-full cursor-pointer rounded-none bg-gradient-to-r py-1 transition-all duration-300 hover:from-slate-300 hover:via-transparent hover:to-slate-300`}
         onClick={() => {
           dispatch(toggleContentFullscreen())
         }}
@@ -87,7 +88,7 @@ export function TripViewContent() {
     return (
       <div
         className={`pointer-events-auto w-full overflow-y-auto bg-slate-100 
-          ${isContentFullscreen ? 'h-1/2 p-2' : 'h-0'}`}
+          ${isContentFullscreen ? 'h-1/2 p-4' : 'h-0'}`}
       >
         {cardContent}
       </div>

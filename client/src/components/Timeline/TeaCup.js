@@ -33,7 +33,7 @@ export function TeaCup({
         ))}
       </ul>
     )
-  }, [])
+  }, [displayNumber, locationNames])
 
   return (
     <div className='flex h-full flex-col justify-between px-2'>
@@ -45,7 +45,7 @@ export function TeaCup({
         className={`relative h-32 w-32 cursor-pointer transition hover:drop-shadow-[0_5px_6px_rgba(0,0,0,0.25)]`}
       >
         <LocalCafeTwoTone
-          className='absolute -bottom-3 left-0'
+          className='absolute -bottom-4 left-0'
           sx={{ color: hexColor, fontSize: PIN_WIDTH_PX }}
         />
         <span className='absolute left-0 top-10 w-[90%] cursor-pointer text-center text-5xl font-bold'>

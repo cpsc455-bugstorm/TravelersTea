@@ -52,7 +52,7 @@ export function SideBar() {
         <h3>New Trip</h3>
       </Button>
     )
-  }, [])
+  }, [dispatch])
 
   const tripEntries = useMemo(() => {
     return trips.map((trip) => {
@@ -74,7 +74,7 @@ export function SideBar() {
         </Button>
       )
     })
-  }, [trips, activeTripId, appView])
+  }, [trips, activeTripId, appView, dispatch])
 
   const preferencesModalBtn = useMemo(() => {
     // TODO refactor this to return a button that opens a modal.
@@ -106,7 +106,7 @@ export function SideBar() {
         {verticalTimelinesToggle}
       </div>
     )
-  }, [isVerticalTimelines, isCompactView])
+  }, [isVerticalTimelines, isCompactView, dispatch])
 
   const renderSidebarMainPortion = useMemo(() => {
     return (
