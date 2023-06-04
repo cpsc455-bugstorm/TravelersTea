@@ -15,9 +15,10 @@ export function TripViewContent() {
   const [tripData, setTripData] = useState([])
 
   useEffect(() => {
+    // TODO edit this entire block to fetch from backend
     const endIndex = 1 + activeTripId * 3
-    const data = TripViewJson.slice(0, endIndex)
-    setTripData(data)
+    const mockData = TripViewJson.slice(0, endIndex)
+    setTripData(mockData)
   }, [activeTripId])
 
   const teaCups = useMemo(() => {
@@ -64,7 +65,7 @@ export function TripViewContent() {
   const renderTeacupRow = useMemo(() => {
     return (
       <div
-        className={`pointer-events-auto flex w-full items-end overflow-x-scroll px-8 mac-scrollbar`}
+        className={`pointer-events-auto flex w-full items-end overflow-x-scroll px-4 mac-scrollbar`}
       >
         {teaCups}
       </div>
