@@ -98,7 +98,6 @@ With sidebar open: Specific details about a day in the plan
 
 ![Plan Overview - Open Sidebar](mocks/mock-c.png)
 
-
 ## Instructions
 
 This is a MERN stack project using JavaScript, with auto-linting and formatting set up using ESLint and Prettier. We use [Yarn Workspaces](https://classic.yarnpkg.com/lang/en/docs/workspaces/) to simplify installation and running scripts.
