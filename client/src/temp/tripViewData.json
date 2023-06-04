@@ -45,7 +45,7 @@
     ]
   },
   {
-    "color": "bg-black",
+    "color": "bg-gray-400",
     "stages": [
       {
         "stageName": "Breakfast",
@@ -60,7 +60,7 @@
     ]
   },
   {
-    "color": "bg-green-400",
+    "color": "bg-lime-400",
     "stages": [
       {
         "stageName": "Breakfast",
@@ -105,7 +105,7 @@
     ]
   },
   {
-    "color": "bg-lime-400",
+    "color": "bg-violet-400",
     "stages": [
       {
         "stageName": "Breakfast",
@@ -135,7 +135,7 @@
     ]
   },
   {
-    "color": "bg-fuchsia-400",
+    "color": "bg-green-400",
     "stages": [
       {
         "stageName": "Breakfast",
