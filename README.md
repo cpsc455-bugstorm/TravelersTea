@@ -10,6 +10,7 @@
   - [Stretch Requirements](#stretch-requirements)
 - [Task Breakdown](#task-breakdown)
 - [Prototypes](#prototypes)
+- [Instructions](#instructions)
 
 ## Project Description
 
@@ -96,3 +97,98 @@ With sidebar closed
 With sidebar open: Specific details about a day in the plan
 
 ![Plan Overview - Open Sidebar](mocks/mock-c.png)
+
+## Instructions
+
+This is a MERN stack project using JavaScript, with auto-linting and formatting set up using ESLint and Prettier. We use [Yarn Workspaces](https://classic.yarnpkg.com/lang/en/docs/workspaces/) to simplify installation and running scripts.
+
+#### Prerequisites
+
+1. Install [Node.js](https://nodejs.org/en). This will include Yarn as well.
+2. Install [MongoDB](https://www.mongodb.com/docs/manual/installation/).
+
+#### Installation
+
+1. Clone the repository:
+
+```
+git clone https://github.com/cpsc455-bugstorm/TravelersTea.git
+```
+
+2. Install the dependencies:
+
+```
+yarn install
+```
+
+#### Running the Project
+
+1. Start both the server and client using [concurrently](https://www.npmjs.com/package/concurrently)
+
+```
+yarn start
+```
+
+Alternatively, you can start either server or client using the commands below:
+
+```
+# starting only server
+yarn start:server
+
+# starting only client
+yarn start:client
+```
+
+#### Auto-Linting and Formatting
+
+```
+# run linter
+yarn lint:fix
+
+# check for linting errors
+yarn lint
+
+# run formatter
+yarn format
+
+# check for formatting errors
+yarn format:check
+```
+
+We use [Husky](https://typicode.github.io/husky/) to run pre-commit hooks with [lint-staged](https://github.com/okonet/lint-staged) to run linters on git staged files. This ensures that our code is formatted correctly when we commit our codes and when we open a pull-request on `main` branch.
+
+## Client
+
+### Folder Structure
+
+#### Under `client/src`
+
+- `components`: where react elements go.
+  - `common`: reusable components, such as `Button`, `Dropdown`, `Alert` etc.
+- `reducers`: put redux reducers here.
+- `App.js`: the top-level React app.
+- `index.css`: imports tailwind. Try not to modify this.
+- `store.js`: configures redux; link any new reducers here.
+
+#### Under `client/public`
+
+This is where assets (e.g. images) go, as well as the `index.html`.
+
+#### tailwind.config.js
+
+Configure tailwind and add custom tailwind keywords.
+
+Troubleshooting tips:
+
+- Restart your IDE to fix tailwind autocomplete.
+
+## Server
+
+### How to see our database?
+
+1. Log in to Mongo Atlas
+2. Press `Database` -> `Browse Collection`
+   ![image](https://github.com/cpsc455-bugstorm/TravelersTea/assets/69891690/6f477213-5d60-4a99-b9a4-0ce6ff65f468)
+
+3. Here is our database! Our collections (think of SQL Tables) can be found here:
+   ![image](https://github.com/cpsc455-bugstorm/TravelersTea/assets/69891690/4178e00d-87e5-419f-bef3-3d60c636432f)

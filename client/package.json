@@ -13,12 +13,6 @@
     "@testing-library/user-event": "^13.2.1",
     "concurrently": "^8.0.1",
     "cross-env": "^7.0.3",
-    "eslint": "^8.41.0",
-    "eslint-config-prettier": "^8.8.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "eslint-plugin-react": "^7.32.2",
-    "prettier": "^2.8.8",
-    "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-draggable": "^4.4.5",
@@ -40,9 +34,10 @@
     "format:check": "prettier --check \"**/*.+(js|jsx|json|yml|yaml|css|md)\""
   },
   "devDependencies": {
-    "husky": "^8.0.3",
-    "lint-staged": "^13.2.2",
-    "prettier-plugin-tailwindcss": "^0.3.0"
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "prettier-plugin-tailwindcss": "^0.3.0",
+    "prop-types": "^15.8.1"
   },
   "browserslist": {
     "production": [
