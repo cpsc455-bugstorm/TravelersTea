@@ -78,7 +78,7 @@ export function TripViewContent() {
   const renderShowMoreLessButton = useMemo(() => {
     return (
       <Button
-        className={`font-bolder pointer-events-auto h-8 w-full cursor-pointer rounded-none bg-gradient-to-r py-1 transition-all duration-300 hover:from-slate-300 hover:via-transparent hover:to-slate-300`}
+        className={`font-bolder pointer-events-auto h-8 w-full cursor-pointer rounded-none bg-gradient-to-r from-transparent to-transparent py-1 transition-all duration-300 hover:from-slate-300 hover:via-transparent hover:to-slate-300`}
         onClick={() => {
           dispatch(toggleContentFullscreen())
         }}
@@ -91,7 +91,7 @@ export function TripViewContent() {
   const renderDetails = useMemo(() => {
     return (
       <div
-        className={`pointer-events-auto w-full overflow-y-auto bg-slate-900 
+        className={`pointer-events-auto w-full overflow-y-auto bg-slate-100 
           ${isContentFullscreen ? 'h-1/2 p-4' : 'h-0'}`}
       >
         {cardContent}
