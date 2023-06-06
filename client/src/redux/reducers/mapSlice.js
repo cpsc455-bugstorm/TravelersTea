@@ -9,19 +9,19 @@ import {
 const mapSlice = createSlice({
   name: 'map',
   initialState: {
-    currentLocationAndZoom: {
+    currentCoordinatesAndZoom: {
       long: VANCOUVER_LONGITUDE,
       lat: VANCOUVER_LATITUDE,
       zoom: ZOOM_GLOBE_LEVEL,
     },
   },
   reducers: {
-    changeLocationAndZoom: (state, action) => {
-      state.currentLocationAndZoom = action.payload
+    changeCoordinatesAndZoom: (state, action) => {
+      state.currentCoordinatesAndZoom = action.payload
     },
   },
 })
 
-export const { changeLocationAndZoom } = mapSlice.actions
+export const { changeCoordinatesAndZoom } = mapSlice.actions
 
 export default mapSlice.reducer

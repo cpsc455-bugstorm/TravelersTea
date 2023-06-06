@@ -4,22 +4,18 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppView } from '../../constants/enums'
 import { NewTripForm } from '../TripElement'
 import mapboxgl from '!mapbox-gl'
-import { changeLocationAndZoom } from '../../redux/reducers/mapSlice'
+import { changeCoordinatesAndZoom } from '../../redux/reducers/mapSlice'
 
 MapElement.propTypes = {
   className: PropTypes.string,
 }
 
 export function MapElement({ className }) {
-  const ZOOM_GLOBE_LEVEL = 2
-  const ZOOM_CITY_LEVEL = 11
-  const VANCOUVER_LONGITUDE = -123.116226
-  const VANCOUVER_LATITUDE = 49.246292
   const appView = useSelector((state) => state.view.appView)
-  const defaultLocationAndZoom = useSelector(
-    (state) => state.map.currentLocationAndZoom,
+  const defaultCoordinatesAndZoom = useSelector(
+    (state) => state.map.currentCoordinatesAndZoom,
   )
-  const { long, lat, zoom } = defaultLocationAndZoom
+  const { long, lat, zoom } = defaultCoordinatesAndZoom
   const activeTripId = useSelector((state) => state.view.activeTripId)
   const dispatch = useDispatch()
 
@@ -41,6 +37,15 @@ export function MapElement({ className }) {
   }, [appView, activeTripId])
 
   useEffect(() => {
+    console.log(map)
+    // map.current.state.map.flyTo({
+    //   center: [long, lat],
+    //   zoom: zoom,
+    //   essential: true,
+    // })
+  }, [long, lat, zoom])
+
+  useEffect(() => {
     if (map.current) return // initialize map only once
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
@@ -53,12 +58,12 @@ export function MapElement({ className }) {
   useEffect(() => {
     if (!map.current) return // wait for map to initialize
     map.current.on('move', () => {
-      const newLocationAndZoom = {
+      const newCooordinatesAndZoom = {
         long: map.current.getCenter().lng.toFixed(4),
         lat: map.current.getCenter().lat.toFixed(4),
         zoom: map.current.getZoom().toFixed(2),
       }
-      dispatch(changeLocationAndZoom(newLocationAndZoom))
+      dispatch(changeCoordinatesAndZoom(newCooordinatesAndZoom))
     })
   })
 

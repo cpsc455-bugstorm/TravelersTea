@@ -15,6 +15,7 @@ import {
 } from '../../redux/reducers/viewSlice'
 import { Button, Toggle } from '../common'
 import { Logout } from '../user'
+import mocktrips from './mock/trips'
 
 export function SideBar() {
   const dispatch = useDispatch()
@@ -29,11 +30,7 @@ export function SideBar() {
 
   useEffect(() => {
     // TODO link up to backend
-    setTrips([
-      { id: 1, tripName: 'My First Trip' },
-      { id: 2, tripName: 'Another Trip' },
-      { id: 3, tripName: 'A Third Trip' },
-    ])
+    setTrips(mocktrips)
   }, [])
 
   const newTripButton = useMemo(() => {

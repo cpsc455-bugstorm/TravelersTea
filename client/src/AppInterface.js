@@ -8,7 +8,9 @@ import {
 } from './redux/reducers/viewSlice'
 import { AppView } from './constants/enums'
 import { MapElement } from './components/MapElement'
-import { useMemo } from 'react'
+import { useMemo, useState, useEffect } from 'react'
+import { changeCoordinatesAndZoom } from './redux/reducers/mapSlice'
+import { ZOOM_CITY_LEVEL } from './constants/mapDefaultInfo'
 
 export function AppInterface() {
   const isSidebarOpen = useSelector((state) => state.view.isSidebarOpen)
@@ -31,6 +33,24 @@ export function AppInterface() {
       ],
     },
   ]
+
+  // when we go into trip view, lets zoom into the first destination city of trip or smt
+  useEffect(() => {
+    if (appView === AppView.TRIP_VIEW) {
+      // use api to get info on trip
+      console.log('In trip view: ', appView)
+
+      const mockLongCoordinatesToronto = 43.6532
+      const mockLatCoordinatesToronto = 79.3832
+      dispatch(
+        changeCoordinatesAndZoom({
+          long: mockLongCoordinatesToronto,
+          lat: mockLatCoordinatesToronto,
+          zoom: ZOOM_CITY_LEVEL,
+        }),
+      )
+    }
+  }, [appView])
 
   const detailsContent = useMemo(() => {
     if (appView === AppView.TRIP_VIEW) {
