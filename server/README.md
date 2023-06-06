@@ -8,7 +8,7 @@ Install dependencies
 Configure `.env` file.
 
 1. Create a new file `.env` in the `server` folder at the root level.
-2. Go to discord's secret channel. Paste the contents inside the `.env`
+2. Go to discord's [secret](https://discord.com/channels/1106050152587874364/1110797187463512116) channel. Paste the contents inside the `.env`
 
 Actually run the backend  
 `nodemon` (if you are developing)  
