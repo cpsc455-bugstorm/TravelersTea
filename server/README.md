@@ -19,7 +19,7 @@ Now the following link : http://localhost:5001/api/user
 
 To see some particular database, whether it is the shared one, of your own, follow the steps below.
 
-1. Log in to [Mongo Atlas](https://www.mongodb.com/atlas/database) (press Sign In on the top right) 
+1. Log in to [Mongo Atlas](https://www.mongodb.com/atlas/database) (press Sign In on the top right)
 2. Press `Database` -> `Browse Collection`
    ![image](https://github.com/cpsc455-bugstorm/TravelersTea/assets/69891690/6f477213-5d60-4a99-b9a4-0ce6ff65f468)
 
