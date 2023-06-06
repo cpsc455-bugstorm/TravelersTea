@@ -121,6 +121,24 @@ git clone https://github.com/cpsc455-bugstorm/TravelersTea.git
 yarn install
 ```
 
+Now, you will need `.env` file.
+
+3. Create a new file `.env` in the `server` folder:
+
+```
+touch server/.env
+```
+
+4. Find the correct `<value>` for `ENV`, `MONGO_USERNAME`, and `MONGO_PASSWORD` in discord's [secret](https://discord.com/channels/1106050152587874364/1110797187463512116) channel.
+
+The content of `.env` file should look like this (with the `<value>` replaced with the correct constant) :
+
+```
+ENV = <value>
+MONGO_USERNAME = <value>
+MONGO_PASSWORD = <value>
+```
+
 #### Running the Project
 
 1. Start both the server and client using [concurrently](https://www.npmjs.com/package/concurrently)
@@ -139,6 +157,10 @@ yarn start:server
 yarn start:client
 ```
 
+follow the `client` link here: http://localhost:3000
+
+follow the `server` link here: http://localhost:5001/api/user
+
 #### Auto-Linting and Formatting
 
 ```
@@ -156,6 +178,11 @@ yarn format:check
 ```
 
 We use [Husky](https://typicode.github.io/husky/) to run pre-commit hooks with [lint-staged](https://github.com/okonet/lint-staged) to run linters on git staged files. This ensures that our code is formatted correctly when we commit our codes and when we open a pull-request on `main` branch.
+
+#### Troubleshooting tips:
+
+- Restart your IDE to fix tailwind autocomplete.
+- Delete all node_modules and do `yarn install` in the root directory.
 
 ## Client
 
@@ -178,17 +205,20 @@ This is where assets (e.g. images) go, as well as the `index.html`.
 
 Configure tailwind and add custom tailwind keywords.
 
-Troubleshooting tips:
-
-- Restart your IDE to fix tailwind autocomplete.
-
 ## Server
 
-### How to see our database?
+### How to see our databases and how to use your own database?
 
-1. Log in to Mongo Atlas
+To see some particular database, whether it is the shared one, of your own, follow the steps below.
+
+1. Log in to [Mongo Atlas](https://www.mongodb.com/atlas/database) (press Sign In on the top right)
 2. Press `Database` -> `Browse Collection`
    ![image](https://github.com/cpsc455-bugstorm/TravelersTea/assets/69891690/6f477213-5d60-4a99-b9a4-0ce6ff65f468)
 
-3. Here is our database! Our collections (think of SQL Tables) can be found here:
-   ![image](https://github.com/cpsc455-bugstorm/TravelersTea/assets/69891690/4178e00d-87e5-419f-bef3-3d60c636432f)
+3. Here is our database! Our collections (think of SQL Tables), along with other helpful buttons, can be found here:
+   ![image](https://github.com/cpsc455-bugstorm/TravelersTea/assets/69891690/b27d3f88-12b9-495d-bb9e-726ae3b1bd44)
+
+To use your own database. Navigate to `config.js` in the `server` folder.
+
+1. Simply change the `DB_USER_FLAG` to your name in all capital letters.
+   ![image](https://github.com/cpsc455-bugstorm/TravelersTea/assets/69891690/8afeb6c7-e791-4e63-85ee-b6c41aa1282e)
