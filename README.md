@@ -124,6 +124,7 @@ yarn install
 Now, you will need `.env` file.
 
 3. Create a new file `.env` in the `server` folder:
+
 ```
 touch server/.env
 ```
@@ -131,6 +132,7 @@ touch server/.env
 4. Find the correct `<value>` for `ENV`, `MONGO_USERNAME`, and `MONGO_PASSWORD` in discord's [secret](https://discord.com/channels/1106050152587874364/1110797187463512116) channel.
 
 The content of `.env` file should look like this (with the `<value>` replaced with the correct constant) :
+
 ```
 ENV = <value>
 MONGO_USERNAME = <value>
