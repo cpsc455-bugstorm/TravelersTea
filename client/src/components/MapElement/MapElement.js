@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppView } from '../../constants/enums'
 import { NewTripForm } from '../TripElement'
 import mapboxgl from '!mapbox-gl'
+import { Map, useMap } from 'react-map-gl'
+
 import { changeCoordinatesAndZoom } from '../../redux/reducers/mapSlice'
 
 MapElement.propTypes = {
@@ -36,42 +38,45 @@ export function MapElement({ className }) {
     )
   }, [appView, activeTripId])
 
-  useEffect(() => {
-    console.log(map)
-    // map.current.state.map.flyTo({
-    //   center: [long, lat],
-    //   zoom: zoom,
-    //   essential: true,
-    // })
-  }, [long, lat, zoom])
+  // useEffect(() => {
+  //   console.log(map)
+  //   // map.current.state.map.flyTo({
+  //   //   center: [long, lat],
+  //   //   zoom: zoom,
+  //   //   essential: true,
+  //   // })
+  // }, [long, lat, zoom])
 
-  useEffect(() => {
-    if (map.current) return // initialize map only once
-    map.current = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/streets-v12',
-      center: [long, lat],
-      zoom: zoom,
-    })
-  })
+  // useEffect(() => {
+  //   if (map.current) return // initialize map only once
+  //   map.current = new mapboxgl.Map({
+  //     container: mapContainer.current,
+  //     style: 'mapbox://styles/mapbox/streets-v12',
+  //     center: [long, lat],
+  //     zoom: zoom,
+  //   })
+  // })
 
-  useEffect(() => {
-    if (!map.current) return // wait for map to initialize
-    map.current.on('move', () => {
-      const newCooordinatesAndZoom = {
-        long: map.current.getCenter().lng.toFixed(4),
-        lat: map.current.getCenter().lat.toFixed(4),
-        zoom: map.current.getZoom().toFixed(2),
-      }
-      dispatch(changeCoordinatesAndZoom(newCooordinatesAndZoom))
-    })
-  })
+  const flyTo = () => {
+    map.current.getMap().flyTo({ center: [-122.4, 37.8], zoom: 10 })
+  }
 
   return (
     <div ref={mapContainer} className='h-screen'>
-      <div className='sidebar'>
-        Longitude: {long} | Latitude: {lat} | Zoom: {zoom}
-      </div>
+      <button onClick={flyTo}>Click me</button>
+      <Map
+        ref={map}
+        initialViewState={{
+          longitude: long,
+          latitude: lat,
+          zoom: -1000,
+        }}
+        mapStyle='mapbox://styles/mapbox/streets-v12'
+        mapboxAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
+        onMove={(event) => {
+          dispatch(changeCoordinatesAndZoom(event.viewState))
+        }}
+      />
       {mapContent}
     </div>
   )
