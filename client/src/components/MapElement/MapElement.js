@@ -1,16 +1,31 @@
 import PropTypes from 'prop-types'
-import { useMemo } from 'react'
-import { useSelector } from 'react-redux'
+import { useMemo, useRef, useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { AppView } from '../../constants/enums'
 import { NewTripForm } from '../TripElement'
+import mapboxgl from '!mapbox-gl'
+import { changeLocationAndZoom } from '../../redux/reducers/mapSlice'
 
 MapElement.propTypes = {
   className: PropTypes.string,
 }
 
 export function MapElement({ className }) {
+  const ZOOM_GLOBE_LEVEL = 2
+  const ZOOM_CITY_LEVEL = 11
+  const VANCOUVER_LONGITUDE = -123.116226
+  const VANCOUVER_LATITUDE = 49.246292
   const appView = useSelector((state) => state.view.appView)
+  const defaultLocationAndZoom = useSelector(
+    (state) => state.map.currentLocationAndZoom,
+  )
+  const { long, lat, zoom } = defaultLocationAndZoom
   const activeTripId = useSelector((state) => state.view.activeTripId)
+  const dispatch = useDispatch()
+
+  mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN
+  const mapContainer = useRef(null)
+  const map = useRef(null)
 
   const mapContent = useMemo(() => {
     if (appView === AppView.NEW_TRIP) {
@@ -25,13 +40,33 @@ export function MapElement({ className }) {
     )
   }, [appView, activeTripId])
 
-  const bgUrl = useMemo(() => {
-    if (appView === AppView.NEW_TRIP) return "bg-[url('../public/globe.png')]"
-    return "bg-[url('https://assets.website-files.com/5e832e12eb7ca02ee9064d42/5f7db426b676b95755fb2844_Group%20805.jpg')]"
-  }, [appView])
+  useEffect(() => {
+    if (map.current) return // initialize map only once
+    map.current = new mapboxgl.Map({
+      container: mapContainer.current,
+      style: 'mapbox://styles/mapbox/streets-v12',
+      center: [long, lat],
+      zoom: zoom,
+    })
+  })
+
+  useEffect(() => {
+    if (!map.current) return // wait for map to initialize
+    map.current.on('move', () => {
+      const newLocationAndZoom = {
+        long: map.current.getCenter().lng.toFixed(4),
+        lat: map.current.getCenter().lat.toFixed(4),
+        zoom: map.current.getZoom().toFixed(2),
+      }
+      dispatch(changeLocationAndZoom(newLocationAndZoom))
+    })
+  })
 
   return (
-    <div className={`${bgUrl} bg-cover bg-center ${className}`}>
+    <div ref={mapContainer} className='h-screen'>
+      <div className='sidebar'>
+        Longitude: {long} | Latitude: {lat} | Zoom: {zoom}
+      </div>
       {mapContent}
     </div>
   )
