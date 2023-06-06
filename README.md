@@ -121,6 +121,22 @@ git clone https://github.com/cpsc455-bugstorm/TravelersTea.git
 yarn install
 ```
 
+Now, you will need `.env` file.
+
+3. Create a new file `.env` in the `server` folder:
+```
+touch server/.env
+```
+
+4. Find the correct `<value>` for `ENV`, `MONGO_USERNAME`, and `MONGO_PASSWORD` in discord's [secret](https://discord.com/channels/1106050152587874364/1110797187463512116) channel.
+
+The content of `.env` file should look like this (with the `<value>` replaced with the correct constant) :
+```
+ENV = <value>
+MONGO_USERNAME = <value>
+MONGO_PASSWORD = <value>
+```
+
 #### Running the Project
 
 1. Start both the server and client using [concurrently](https://www.npmjs.com/package/concurrently)
@@ -139,6 +155,10 @@ yarn start:server
 yarn start:client
 ```
 
+follow the `client` link here: http://localhost:3000
+
+follow the `server` link here: http://localhost:5001/api/user
+
 #### Auto-Linting and Formatting
 
 ```
@@ -156,6 +176,11 @@ yarn format:check
 ```
 
 We use [Husky](https://typicode.github.io/husky/) to run pre-commit hooks with [lint-staged](https://github.com/okonet/lint-staged) to run linters on git staged files. This ensures that our code is formatted correctly when we commit our codes and when we open a pull-request on `main` branch.
+
+#### Troubleshooting tips:
+
+- Restart your IDE to fix tailwind autocomplete.
+- Delete all node_modules and do `yarn install` in the root directory.
 
 ## Client
 
@@ -178,28 +203,7 @@ This is where assets (e.g. images) go, as well as the `index.html`.
 
 Configure tailwind and add custom tailwind keywords.
 
-Troubleshooting tips:
-
-- Restart your IDE to fix tailwind autocomplete.
-
 ## Server
-
-### How run the backend?
-
-Go into our server folder.
-`cd server`  
-Install dependencies
-`yarn install`
-
-Configure `.env` file.
-
-1. Create a new file `.env` in the `server` folder at the root level.
-2. Go to discord's [secret](https://discord.com/channels/1106050152587874364/1110797187463512116) channel. Paste the contents inside the `.env`
-
-Actually run the backend  
-`nodemon` (if you are developing)  
-`yarn start` (if we are deploying I guess?)  
-Now the following link : http://localhost:5001/api/user
 
 ### How to see our databases and how to use your own database?
 
