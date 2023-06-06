@@ -216,4 +216,3 @@ To use your own database. Navigate to `config.js` in the `server` folder.
 
 1. Simply change the `DB_USER_FLAG` to your name in all capital letters.
    ![image](https://github.com/cpsc455-bugstorm/TravelersTea/assets/69891690/8afeb6c7-e791-4e63-85ee-b6c41aa1282e)
-
