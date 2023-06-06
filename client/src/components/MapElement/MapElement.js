@@ -31,7 +31,9 @@ export function MapElement({ className }) {
   }, [appView])
 
   return (
-    <div className={`${bgUrl} bg-cover bg-center ${className}`}>
+    <div
+      className={`${bgUrl} bg-cover bg-center hover:brightness-95 ${className}`}
+    >
       {mapContent}
     </div>
   )

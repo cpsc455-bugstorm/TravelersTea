@@ -5,9 +5,10 @@ import { AppView } from '../../constants/enums'
 const _setAppView = (state, action) => {
   state.appView = action.payload
   state.isSidebarOpen = false
+  state.fullscreenContent = false
 }
 
-// payload: number (the id of the active trip)
+// payload: number (the id of the active trip). ** This is 1-indexed **
 const _setActiveTripId = (state, action) => {
   state.activeTripId = action.payload
   _setAppView(state, { payload: AppView.TRIP_VIEW })
@@ -25,6 +26,18 @@ const _closeSidebar = (state) => {
   state.isSidebarOpen = false
 }
 
+const _setContentFullscreen = (state) => {
+  state.fullscreenContent = true
+}
+
+const _setContentNonFullscreen = (state) => {
+  state.fullscreenContent = false
+}
+
+const _toggleContentFullscreen = (state) => {
+  state.fullscreenContent = !state.fullscreenContent
+}
+
 const viewSlice = createSlice({
   name: 'view',
   initialState: {
@@ -38,6 +51,9 @@ const viewSlice = createSlice({
     toggleSidebar: _toggleSidebar,
     openSidebar: _openSidebar,
     closeSidebar: _closeSidebar,
+    setContentFullscreen: _setContentFullscreen,
+    setContentNonFullscreen: _setContentNonFullscreen,
+    toggleContentFullscreen: _toggleContentFullscreen,
   },
 })
 
@@ -47,6 +63,9 @@ export const {
   toggleSidebar,
   closeSidebar,
   openSidebar,
+  setContentFullscreen,
+  setContentNonFullscreen,
+  toggleContentFullscreen,
 } = viewSlice.actions
 
 export default viewSlice.reducer

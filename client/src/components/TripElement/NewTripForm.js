@@ -1,5 +1,4 @@
 import { TextField } from '@mui/material'
-import { useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppView } from '../../constants/enums'
@@ -33,51 +32,47 @@ export function NewTripForm() {
     handleCloseNewTripModal()
   }
 
-  const newTripForm = useMemo(() => {
-    return (
-      <Modal
-        open={appView === AppView.NEW_TRIP && newTripModalIsOpen}
-        handleClose={handleCloseNewTripModal}
-        title='Manifesting A New Trip...'
-        footer={
-          <Button
-            className='mt-4 w-full rounded bg-slate-300 hover:bg-slate-400'
-            onClick={handleSubmit(onSubmit)}
-            type='submit'
-          >
-            Brew 🍵
-          </Button>
-        }
-      >
-        <TextField
-          {...register('destination', { required: true })}
-          label='Destination'
-          placeholder='Tell me where you want to go...'
-          error={!!errors.destination}
-        />
-        <TextField
-          {...register('stagesPerDay', { required: true })}
-          label='Stages per day'
-          placeholder='Tell me how many places you want to visit..'
-          type='number'
-          error={!!errors.stagesPerDay}
-        />
-        <TextField
-          {...register('budget', { required: true })}
-          label='Budget'
-          placeholder='Tell me how much you want to spend...'
-          error={!!errors.budget}
-        />
-        <TextField
-          {...register('numberOfDays', { required: true })}
-          label='Number of days'
-          placeholder='Tell me how long you are going for...'
-          type='number'
-          error={!!errors.numberOfDays}
-        />
-      </Modal>
-    )
-  }, [appView, register, handleSubmit, errors, newTripModalIsOpen])
-
-  return newTripForm
+  return (
+    <Modal
+      open={appView === AppView.NEW_TRIP && newTripModalIsOpen}
+      handleClose={handleCloseNewTripModal}
+      title='Manifesting A New Trip...'
+      footer={
+        <Button
+          className='mt-4 w-full rounded bg-slate-300 hover:bg-slate-400'
+          onClick={handleSubmit(onSubmit)}
+          type='submit'
+        >
+          Brew 🍵
+        </Button>
+      }
+    >
+      <TextField
+        {...register('destination', { required: true })}
+        label='Destination'
+        placeholder='Tell me where you want to go...'
+        error={!!errors.destination}
+      />
+      <TextField
+        {...register('stagesPerDay', { required: true })}
+        label='Stages per day'
+        placeholder='Tell me how many places you want to visit..'
+        type='number'
+        error={!!errors.stagesPerDay}
+      />
+      <TextField
+        {...register('budget', { required: true })}
+        label='Budget'
+        placeholder='Tell me how much you want to spend...'
+        error={!!errors.budget}
+      />
+      <TextField
+        {...register('numberOfDays', { required: true })}
+        label='Number of days'
+        placeholder='Tell me how long you are going for...'
+        type='number'
+        error={!!errors.numberOfDays}
+      />
+    </Modal>
+  )
 }
