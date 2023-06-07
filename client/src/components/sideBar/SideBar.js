@@ -1,13 +1,13 @@
 import AddIcon from '@mui/icons-material/Add'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-
 import { AppView } from '../../constants/enums'
 import { openNewTripModal } from '../../redux/reducers/modalsSlice'
 import {
   toggleCompactView,
   toggleVerticalTimelines,
 } from '../../redux/reducers/preferencesSlice'
+import { selectTrips } from '../../redux/reducers/userSlice'
 import {
   closeSidebar,
   setAppView,
@@ -27,16 +27,7 @@ export function SideBar() {
     (state) => state.preferences.verticalTimelines,
   )
 
-  const [trips, setTrips] = useState([])
-
-  useEffect(() => {
-    // TODO link up to backend
-    setTrips([
-      { id: 1, tripName: 'My First Trip' },
-      { id: 2, tripName: 'Another Trip' },
-      { id: 3, tripName: 'A Third Trip' },
-    ])
-  }, [])
+  const trips = useSelector(selectTrips)
 
   const newTripButton = useMemo(() => {
     return (
@@ -45,7 +36,6 @@ export function SideBar() {
         onClick={() => {
           dispatch(setAppView(AppView.NEW_TRIP))
           dispatch(openNewTripModal())
-          dispatch(closeSidebar())
         }}
       >
         <AddIcon className='mx-2' />

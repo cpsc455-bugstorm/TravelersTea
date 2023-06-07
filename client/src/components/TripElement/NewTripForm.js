@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { AppView } from '../../constants/enums'
 import { closeNewTripModal } from '../../redux/reducers/modalsSlice'
+import { addTrip } from '../../redux/reducers/userSlice'
 import { setAppView } from '../../redux/reducers/viewSlice'
 import { Modal } from '../common'
 import { TripForm } from './TripForm'
@@ -19,8 +20,9 @@ export function NewTripForm() {
   const onSubmit = (data) => {
     // TODO: make api call to create new trip
     console.log(data)
+    dispatch(addTrip(data))
     dispatch(setAppView(AppView.TRIP_VIEW))
-    handleCloseNewTripModal()
+    dispatch(closeNewTripModal())
   }
 
   return (
