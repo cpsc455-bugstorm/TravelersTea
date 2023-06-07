@@ -2,7 +2,7 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
 import PropTypes from 'prop-types'
 import { useDispatch, useSelector } from 'react-redux'
 import { openEditTripModal } from '../../redux/reducers/modalsSlice'
-import { setActiveTripId } from '../../redux/reducers/viewSlice'
+import { setActiveTripId, closeSidebar } from '../../redux/reducers/viewSlice'
 import { Button } from '../common'
 
 TripEntry.propTypes = {
@@ -27,7 +27,10 @@ export function TripEntry({ id, buttonClassName, buttonContent }) {
       </Button>
       <Button
         key={`sidebar-trip-button-${id}-edit`}
-        onClick={() => dispatch(openEditTripModal())}
+        onClick={() => {
+          dispatch(closeSidebar())
+          dispatch(openEditTripModal())
+        }}
         className={`${isSelected} absolute right-0 hover:text-red-400`}
       >
         <EditOutlinedIcon />

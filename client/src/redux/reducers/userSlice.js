@@ -1,6 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 // currently, trips have mock datas, TODO: remove mock data
+/**
+ * @property {trips}: [{
+ *  id: number, - Unique identifier for the trip, starts from 1 and auto-increments
+ *  tripName: string, - Name of the trip, auto-generated
+ *  destination: string, - Destination of the trip (user input)
+ *  stagesPerDay: number, - Number of stages or activities planned per day (user input)
+ *  budget: number, - Total budget for the trip (user input)
+ *  numberOfDays: number - Total number of days for the trip (user input)
+ * }]
+ */
 export const userSlice = createSlice({
   name: 'user',
   initialState: {

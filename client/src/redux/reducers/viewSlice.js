@@ -4,7 +4,6 @@ import { AppView } from '../../constants/enums'
 // payload: AppView (e.g. AppView.NEW_TRIP)
 const _setAppView = (state, action) => {
   state.appView = action.payload
-  state.isSidebarOpen = false
   state.fullscreenContent = false
 }
 

@@ -34,6 +34,7 @@ export function SideBar() {
       <Button
         className='box-border flex h-12 w-full flex-row border-2 border-yellow-300 bg-yellow-200/20 hover:bg-yellow-300/20'
         onClick={() => {
+          dispatch(closeSidebar())
           dispatch(setAppView(AppView.NEW_TRIP))
           dispatch(openNewTripModal())
         }}
