@@ -5,17 +5,17 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppView } from '../../constants/enums'
 import { openNewTripModal } from '../../redux/reducers/modalsSlice'
 import {
-  closeSidebar,
-  setActiveTripId,
-  setAppView,
-  toggleSidebar,
-} from '../../redux/reducers/viewSlice'
-import { Logout } from '../user'
-import {
   toggleCompactView,
   toggleVerticalTimelines,
 } from '../../redux/reducers/preferencesSlice'
+import {
+  closeSidebar,
+  setAppView,
+  toggleSidebar,
+} from '../../redux/reducers/viewSlice'
+import { TripEntry } from '../TripElement'
 import { Button, Toggle } from '../common'
+import { Logout } from '../user'
 
 export function SideBar() {
   const dispatch = useDispatch()
@@ -63,18 +63,15 @@ export function SideBar() {
           : 'bg-slate-300/40 hover:bg-slate-400/40'
 
       return (
-        <Button
-          key={`sidebar-trip-${trip.id}`}
-          onClick={() => {
-            dispatch(setActiveTripId(trip.id))
-          }}
-          className={`w-full ${buttonColor}`}
-        >
-          {trip.tripName}
-        </Button>
+        <TripEntry
+          id={trip.id}
+          key={`trip-entry-${trip.id}`}
+          buttonClassName={`w-full ${buttonColor}`}
+          buttonContent={trip.tripName}
+        />
       )
     })
-  }, [trips, activeTripId, appView, dispatch])
+  }, [trips, activeTripId, appView])
 
   const preferencesModalBtn = useMemo(() => {
     // TODO refactor this to return a button that opens a modal.

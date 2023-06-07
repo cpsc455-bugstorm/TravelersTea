@@ -1,33 +1,34 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { AppView } from '../../constants/enums'
-import { closeNewTripModal } from '../../redux/reducers/modalsSlice'
+import { closeEditTripModal } from '../../redux/reducers/modalsSlice'
 import { setAppView } from '../../redux/reducers/viewSlice'
 import { Modal } from '../common'
 import { TripForm } from './TripForm'
 
-export function NewTripForm() {
+export function EditTripForm() {
   const appView = useSelector((state) => state.view.appView)
-  const newTripModalIsOpen = useSelector(
-    (state) => state.modals.newTripModalIsOpen,
+  const activeTripId = useSelector((state) => state.view.activeTripId)
+
+  const editTripModalIsOpen = useSelector(
+    (state) => state.modals.editTripModalIsOpen,
   )
   const dispatch = useDispatch()
 
-  const handleCloseNewTripModal = () => {
-    dispatch(closeNewTripModal())
+  const handleCloseEditTripModal = () => {
+    dispatch(closeEditTripModal())
   }
 
   const onSubmit = (data) => {
     // TODO: make api call to create new trip
     console.log(data)
-    dispatch(setAppView(AppView.TRIP_VIEW))
-    handleCloseNewTripModal()
+    handleCloseEditTripModal()
   }
 
   return (
     <Modal
-      open={appView === AppView.NEW_TRIP && newTripModalIsOpen}
-      handleClose={handleCloseNewTripModal}
-      title='Manifesting A New Trip...'
+      open={editTripModalIsOpen}
+      handleClose={handleCloseEditTripModal}
+      title='Adjusting Course...'
     >
       <TripForm onSubmit={onSubmit} />
     </Modal>
