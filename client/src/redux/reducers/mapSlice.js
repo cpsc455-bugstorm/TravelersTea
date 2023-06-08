@@ -10,9 +10,9 @@ const mapSlice = createSlice({
   name: 'map',
   initialState: {
     currentCoordinatesAndZoom: {
-      longitude: -79.347015,
-      latitude: 43.6532,
-      zoom: 10,
+      longitude: VANCOUVER_LONGITUDE,
+      latitude: VANCOUVER_LATITUDE,
+      zoom: ZOOM_GLOBE_LEVEL,
     },
     markers: [],
   },
