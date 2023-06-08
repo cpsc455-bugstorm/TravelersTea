@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-// currently, trips have mock datas, TODO: remove mock data
 /**
  * @property {trips}: [{
  *  id: number, - Unique identifier for the trip, starts from 1 and auto-increments
@@ -15,7 +14,9 @@ export const userSlice = createSlice({
   name: 'user',
   initialState: {
     user: null,
+    currentId: 4, // will start with 1 after removing mock data
     trips: [
+      // currently, trips have mock datas, TODO: remove mock data
       {
         id: 1,
         tripName: 'My First Trip',
@@ -51,13 +52,13 @@ export const userSlice = createSlice({
       state.trips = []
     },
     addTrip: (state, action) => {
-      const maxId = Math.max(...state.trips.map((trip) => trip.id), 0)
       const newTrip = {
         ...action.payload,
-        id: maxId + 1,
-        tripName: `Your Trip ${maxId + 1}`,
+        id: state.currentId,
+        tripName: `Your Trip ${state.currentId}`,
       }
       state.trips.push(newTrip)
+      state.currentId += 1
     },
     editTrip: (state, action) => {
       const tripIndex = state.trips.findIndex(
@@ -73,4 +74,5 @@ export const userSlice = createSlice({
 export const { login, logout, addTrip, editTrip } = userSlice.actions
 export const selectUser = (state) => state.user.user
 export const selectTrips = (state) => state.user.trips
+export const selectCurrentId = (state) => state.user.currentId
 export default userSlice.reducer

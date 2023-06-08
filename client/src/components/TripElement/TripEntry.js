@@ -5,6 +5,7 @@ import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined'
 import PropTypes from 'prop-types'
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { AppView } from '../../constants/enums'
 import { openEditTripModal } from '../../redux/reducers/modalsSlice'
 import { editTrip } from '../../redux/reducers/userSlice'
 import { closeSidebar, setActiveTripId } from '../../redux/reducers/viewSlice'
@@ -19,10 +20,13 @@ TripEntry.propTypes = {
 export function TripEntry({ id, buttonClassName, buttonContent }) {
   const dispatch = useDispatch()
   const activeTripId = useSelector((state) => state.view.activeTripId)
-  const isSelected = activeTripId === id ? '' : 'hidden'
+  const appView = useSelector((state) => state.view.appView)
+  const isSelected =
+    activeTripId === id && appView !== AppView.NEW_TRIP ? '' : 'hidden'
   const [isRenaming, setIsRenaming] = useState(false)
-  const inputRef = useRef(null)
   const [tripName, setTripName] = useState(buttonContent)
+
+  const inputRef = useRef(null)
 
   const handleInputChange = (event) => {
     setTripName(event.target.value)
@@ -43,7 +47,7 @@ export function TripEntry({ id, buttonClassName, buttonContent }) {
       setIsRenaming(false)
       setTripName(buttonContent)
     }
-  }, [isSelected, buttonContent])
+  }, [isSelected, buttonContent, appView])
 
   return (
     <div className='group relative'>

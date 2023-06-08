@@ -1,13 +1,14 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { AppView } from '../../constants/enums'
 import { closeNewTripModal } from '../../redux/reducers/modalsSlice'
-import { addTrip } from '../../redux/reducers/userSlice'
-import { setAppView } from '../../redux/reducers/viewSlice'
+import { addTrip, selectCurrentId } from '../../redux/reducers/userSlice'
+import { setActiveTripId, setAppView } from '../../redux/reducers/viewSlice'
 import { Modal } from '../common'
 import { TripForm } from './TripForm'
 
 export function NewTripForm() {
   const appView = useSelector((state) => state.view.appView)
+  const currentId = useSelector(selectCurrentId)
   const newTripModalIsOpen = useSelector(
     (state) => state.modals.newTripModalIsOpen,
   )
@@ -21,6 +22,7 @@ export function NewTripForm() {
     // TODO: make api call to create new trip
     console.log(data)
     dispatch(addTrip(data))
+    dispatch(setActiveTripId(currentId))
     dispatch(setAppView(AppView.TRIP_VIEW))
     dispatch(closeNewTripModal())
   }
