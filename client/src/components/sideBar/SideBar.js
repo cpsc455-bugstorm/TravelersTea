@@ -1,3 +1,4 @@
+import MoreVertIcon from '@mui/icons-material/MoreVert'
 import AddIcon from '@mui/icons-material/Add'
 import { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -41,7 +42,7 @@ export function SideBar() {
   const newTripButton = useMemo(() => {
     return (
       <Button
-        className='box-border flex h-12 w-full flex-row border-2 border-yellow-300 bg-yellow-200/20 hover:bg-yellow-300/20'
+        className='box-border flex h-12 w-full flex-row border-2 border-emerald-200 bg-emerald-200/80 hover:bg-emerald-400/100'
         onClick={() => {
           dispatch(setAppView(AppView.NEW_TRIP))
           dispatch(openNewTripModal())
@@ -63,15 +64,22 @@ export function SideBar() {
           : 'bg-slate-300/40 hover:bg-slate-400/40'
 
       return (
-        <Button
-          key={`sidebar-trip-${trip.id}`}
-          onClick={() => {
-            dispatch(setActiveTripId(trip.id))
-          }}
-          className={`w-full ${buttonColor}`}
-        >
-          {trip.tripName}
-        </Button>
+        <div key={`sidebar-trip-${trip.id}`} className='flex items-center'>
+          <Button
+            onClick={() => {
+              dispatch(setActiveTripId(trip.id))
+            }}
+            className={`w-full ${buttonColor}`}
+          >
+            {trip.tripName}
+          </Button>
+          <Button
+            onClick={() => {}}
+            className={`ml-1 flex h-full items-center ${buttonColor} rounded-md p-0`}
+          >
+            <MoreVertIcon />
+          </Button>
+        </div>
       )
     })
   }, [trips, activeTripId, appView, dispatch])
@@ -100,7 +108,7 @@ export function SideBar() {
     )
 
     return (
-      <div className='mb-2 w-full rounded-md bg-slate-100/40 p-2'>
+      <div className='mb-2 w-full rounded-md bg-slate-300/40 p-2'>
         <h3 className='mb-1 text-lg font-semibold'>Preferences</h3>
         {compactViewToggle}
         {verticalTimelinesToggle}
@@ -108,7 +116,7 @@ export function SideBar() {
     )
   }, [isVerticalTimelines, isCompactView, dispatch])
 
-  const renderSidebarMainPortion = useMemo(() => {
+  const renderSidebarTrips = useMemo(() => {
     return (
       <div className='overflow-x-auto'>
         {newTripButton}
@@ -134,13 +142,13 @@ export function SideBar() {
         className={`fixed left-0 top-0 z-50 flex h-full w-1/5 flex-row overflow-hidden transition-all
                        ${isSidebarOpen ? 'left-0' : 'left-[-20vw]'}`}
       >
-        <div className="flex h-full w-full flex-col justify-between overflow-hidden bg-slate-300 bg-[url('../public/little-prince.jpg')] bg-cover bg-center p-2 bg-blend-soft-light">
-          {renderSidebarMainPortion}
+        <div className='flex h-full w-full flex-col justify-between overflow-hidden bg-slate-300 bg-gradient-slate bg-cover p-2 '>
+          {renderSidebarTrips}
           {renderSidebarBottomPortion}
         </div>
       </div>
     )
-  }, [isSidebarOpen, renderSidebarMainPortion, renderSidebarBottomPortion])
+  }, [isSidebarOpen, renderSidebarTrips, renderSidebarBottomPortion])
 
   const renderSidebarToggleButton = useMemo(() => {
     return (
@@ -151,7 +159,7 @@ export function SideBar() {
       >
         <Button
           onClick={() => dispatch(toggleSidebar())}
-          className='h-full w-10 rounded-none bg-slate-300 text-6xl hover:bg-slate-400'
+          className='h-full w-10 rounded-none bg-slate-100 text-6xl hover:bg-slate-300'
         >
           {isSidebarOpen ? '‹' : '›'}
         </Button>
