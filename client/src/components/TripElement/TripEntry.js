@@ -1,8 +1,13 @@
+import CheckIcon from '@mui/icons-material/Check'
+import CloseIcon from '@mui/icons-material/Close'
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined'
 import PropTypes from 'prop-types'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { openEditTripModal } from '../../redux/reducers/modalsSlice'
-import { setActiveTripId, closeSidebar } from '../../redux/reducers/viewSlice'
+import { editTrip } from '../../redux/reducers/userSlice'
+import { closeSidebar, setActiveTripId } from '../../redux/reducers/viewSlice'
 import { Button } from '../common'
 
 TripEntry.propTypes = {
@@ -15,26 +20,93 @@ export function TripEntry({ id, buttonClassName, buttonContent }) {
   const dispatch = useDispatch()
   const activeTripId = useSelector((state) => state.view.activeTripId)
   const isSelected = activeTripId === id ? '' : 'hidden'
+  const [isRenaming, setIsRenaming] = useState(false)
+  const inputRef = useRef(null)
+  const [tripName, setTripName] = useState(buttonContent)
+
+  const handleInputChange = (event) => {
+    setTripName(event.target.value)
+  }
+
+  const handleCheckClick = () => {
+    dispatch(editTrip({ id, tripName }))
+    setIsRenaming(false)
+  }
+
+  const handleCancelClick = () => {
+    setTripName(buttonContent)
+    setIsRenaming(false)
+  }
+
+  useEffect(() => {
+    if (isSelected === 'hidden') {
+      setIsRenaming(false)
+      setTripName(buttonContent)
+    }
+  }, [isSelected, buttonContent])
 
   return (
-    <div className='group'>
+    <div className='group relative'>
       <Button
         key={`sidebar-trip-button-${id}`}
         onClick={() => dispatch(setActiveTripId(id))}
         className={buttonClassName}
       >
-        {buttonContent}
+        {!isRenaming ? (
+          buttonContent
+        ) : (
+          <input
+            ref={inputRef}
+            className='items-center bg-green-200/40 font-medium'
+            placeholder={buttonContent}
+            value={tripName}
+            onChange={handleInputChange}
+          />
+        )}
       </Button>
-      <Button
-        key={`sidebar-trip-button-${id}-edit`}
-        onClick={() => {
-          dispatch(closeSidebar())
-          dispatch(openEditTripModal())
-        }}
-        className={`${isSelected} absolute right-0 hover:text-red-400`}
-      >
-        <EditOutlinedIcon />
-      </Button>
+      <div className='absolute right-0 top-0 flex flex-row'>
+        {!isRenaming ? (
+          <>
+            <Button
+              key={`sidebar-trip-button-${id}-edit`}
+              onClick={() => {
+                setIsRenaming(true)
+              }}
+              className={`${isSelected} px-0 hover:text-red-400`}
+            >
+              <EditOutlinedIcon className='align-baseline' />
+            </Button>
+            <Button
+              key={`sidebar-trip-button-${id}-edit`}
+              onClick={() => {
+                dispatch(closeSidebar())
+                dispatch(openEditTripModal())
+              }}
+              className={`${isSelected} hover:text-red-400`}
+            >
+              <SettingsOutlinedIcon className='align-baseline' />
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button
+              key={`sidebar-trip-button-${id}-edit`}
+              onClick={handleCheckClick}
+              className={`${isSelected} px-0 hover:text-red-400`}
+            >
+              <CheckIcon className='align-baseline' />
+            </Button>
+
+            <Button
+              key={`sidebar-trip-button-${id}-edit`}
+              onClick={handleCancelClick}
+              className={`${isSelected} hover:text-red-400`}
+            >
+              <CloseIcon className='align-baseline' />
+            </Button>
+          </>
+        )}
+      </div>
     </div>
   )
 }
