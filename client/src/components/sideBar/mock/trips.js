@@ -3,6 +3,8 @@ const mocktrips = [
     id: 1,
     tripName: 'My First Trip',
     destinationCity: 'Toronto',
+    destinationLongitude: -79.347015,
+    destinationLatitude: 43.6532,
     stagesPerDay: 5,
     budget: 1000,
     numberOfDays: 5,
@@ -17,7 +19,16 @@ const mocktrips = [
     //       },
     //     ],
   },
-  { id: 2, tripName: 'Another Trip' },
+  {
+    id: 2,
+    tripName: 'Another Trip UWU',
+    destinationCity: 'Etobicoke',
+    destinationLongitude: -79.5132,
+    destinationLatitude: 43.6205,
+    stagesPerDay: 5,
+    budget: 1000,
+    numberOfDays: 5,
+  },
   { id: 3, tripName: 'A Third Trip' },
 ]
 

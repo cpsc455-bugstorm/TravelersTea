@@ -10,18 +10,35 @@ const mapSlice = createSlice({
   name: 'map',
   initialState: {
     currentCoordinatesAndZoom: {
-      longitude: VANCOUVER_LONGITUDE,
-      latitude: VANCOUVER_LATITUDE,
-      zoom: ZOOM_GLOBE_LEVEL,
+      longitude: -79.347015,
+      latitude: 43.6532,
+      zoom: 10,
     },
+    markers: [],
   },
   reducers: {
     changeCoordinatesAndZoom: (state, action) => {
       state.currentCoordinatesAndZoom = action.payload
     },
+    addMarker: (state, action) => {
+      state.markers.push(action.payload)
+    },
+    deleteMarker: (state, action) => {
+      const updatedMarkers = [...state.markers]
+      updatedMarkers.slice(action.payload, 1) // should be an index
+      state.markers = updatedMarkers
+    },
+    clearMarkers: (state) => {
+      state.markers = []
+    },
+    clearAllMarkersAndAdd_Store: (state, action) => {
+      const newCoordinates = action.payload // can be array of coordinates
+      state.markers = newCoordinates
+    },
   },
 })
 
-export const { changeCoordinatesAndZoom } = mapSlice.actions
+export const { changeCoordinatesAndZoom, clearAllMarkersAndAdd_Store } =
+  mapSlice.actions
 
 export default mapSlice.reducer
