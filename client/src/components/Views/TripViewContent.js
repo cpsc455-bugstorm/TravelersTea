@@ -100,7 +100,7 @@ export function TripViewContent() {
   }, [cardContent, isContentFullscreen])
 
   return (
-    <div className='flex h-full w-full flex-col justify-end'>
+    <div className='flex h-full w-full flex-col justify-end bg-gradient-to-b from-transparent to-slate-100'>
       {renderTeacupRow}
       {renderShowMoreLessButton}
       {renderDetails}

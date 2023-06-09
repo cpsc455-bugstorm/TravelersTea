@@ -32,7 +32,7 @@ export function MapElement({ className }) {
 
   return (
     <div
-      className={`${bgUrl} bg-cover bg-center hover:brightness-95 ${className}`}
+      className={`${bgUrl} fixed left-0 top-0 bg-cover bg-center ${className}`}
     >
       {mapContent}
     </div>

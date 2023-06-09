@@ -1,6 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { AppView } from '../../constants/enums'
 
+const initialState = {
+  activeDayNumber: undefined,
+  activeTripId: undefined,
+  appView: AppView.NEW_TRIP,
+  isSidebarOpen: false,
+  fullscreenContent: false,
+}
+
 // payload: AppView (e.g. AppView.NEW_TRIP)
 const _setAppView = (state, action) => {
   state.appView = action.payload
@@ -11,6 +19,12 @@ const _setAppView = (state, action) => {
 // payload: number (the id of the active trip). ** This is 1-indexed **
 const _setActiveTripId = (state, action) => {
   state.activeTripId = action.payload
+  _setAppView(state, { payload: AppView.TRIP_VIEW })
+}
+
+// payload: number (the day number we are interested in). ** This is 1-indexed **
+const _setActiveDayNumber = (state, action) => {
+  state.activeDayNumber = action.payload
   _setAppView(state, { payload: AppView.TRIP_VIEW })
 }
 
@@ -40,11 +54,7 @@ const _toggleContentFullscreen = (state) => {
 
 const viewSlice = createSlice({
   name: 'view',
-  initialState: {
-    isSidebarOpen: false,
-    appView: AppView.NEW_TRIP,
-    activeTripId: undefined,
-  },
+  initialState: initialState,
   reducers: {
     setAppView: _setAppView,
     setActiveTripId: _setActiveTripId,
@@ -54,12 +64,14 @@ const viewSlice = createSlice({
     setContentFullscreen: _setContentFullscreen,
     setContentNonFullscreen: _setContentNonFullscreen,
     toggleContentFullscreen: _toggleContentFullscreen,
+    setActiveDayNumber: _setActiveDayNumber,
   },
 })
 
 export const {
   setAppView,
   setActiveTripId,
+  setActiveDayNumber,
   toggleSidebar,
   closeSidebar,
   openSidebar,
