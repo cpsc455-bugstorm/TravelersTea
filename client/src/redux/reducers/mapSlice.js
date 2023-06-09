@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 import {
-  VANCOUVER_LONGITUDE,
   VANCOUVER_LATITUDE,
+  VANCOUVER_LONGITUDE,
   ZOOM_GLOBE_LEVEL,
 } from '../../constants/mapDefaultInfo'
 
@@ -12,6 +12,8 @@ const mapSlice = createSlice({
     currentCoordinatesAndZoom: {
       longitude: VANCOUVER_LONGITUDE,
       latitude: VANCOUVER_LATITUDE,
+      imgSrc: 'https://pngimg.com/d/google_maps_pin_PNG56.png',
+      label: 'Marker Icon',
       zoom: ZOOM_GLOBE_LEVEL,
     },
     markers: [],
@@ -20,8 +22,18 @@ const mapSlice = createSlice({
     changeCoordinatesAndZoom: (state, action) => {
       state.currentCoordinatesAndZoom = action.payload
     },
+    /**
+     *   payload (markersWithProps): should have the following structure:
+     *     {
+     *       longitude: number, - The longitude coordinate of the marker
+     *       latitude: number, - The latitude coordinate of the marker
+     *       imgSrc: string, - The image source URL for the marker icon
+     *       label: string, - The label or name for the marker
+     *       zoom: number, - The zoom level at which the marker should be displayed
+     *     }
+     */
     clearAllMarkersAndAdd_Store: (state, action) => {
-      const markersWithProps = action.payload // should be array of props for markers
+      const markersWithProps = action.payload
       state.markers = markersWithProps
     },
   },

@@ -41,10 +41,14 @@ export function MapElement({ className }) {
   }, [appView, activeTripId])
 
   const addMarkerOnMap = useCallback(
-    (longitude, latitude) => {
+    (
+      longitude,
+      latitude,
+      imgSrc = 'https://pngimg.com/d/google_maps_pin_PNG56.png',
+      altText = 'Marker Icon',
+    ) => {
       const markerElement = document.createElement('div')
-      markerElement.innerHTML =
-        '<img src="https://cdn-icons-png.flaticon.com/512/1670/1670080.png" alt="Marker Icon" style="width: 40px; height: 40px;"/>'
+      markerElement.innerHTML = `<img src="${imgSrc}" alt="${altText}" style="width: 40px; height: 40px;"/>`
       const marker = new mapboxgl.Marker(markerElement)
         .setLngLat([longitude, latitude])
         .addTo(map)
@@ -61,9 +65,14 @@ export function MapElement({ className }) {
   useEffect(() => {
     clearMarkersOnMap()
     for (let markerWithProps of markersWithProps) {
-      addMarkerOnMap(markerWithProps.longitude, markerWithProps.latitude)
+      addMarkerOnMap(
+        markerWithProps.longitude,
+        markerWithProps.latitude,
+        markerWithProps.imgSrc,
+        markerWithProps.label,
+      )
     }
-    // tracking 'markersOnMap' in this useffect would trigger constant reruns.
+    // tracking 'markersOnMap' in this useEffect would trigger constant reruns.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [markersWithProps, map])
 
