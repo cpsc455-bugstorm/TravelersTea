@@ -40,32 +40,30 @@ export function MapElement({ className }) {
     )
   }, [appView, activeTripId])
 
-  useEffect(() => {
-    const addMarkerOnMap = (longitude, latitude) => {
+  const addMarkerOnMap = useCallback(
+    (longitude, latitude) => {
       const markerElement = document.createElement('div')
       markerElement.innerHTML =
         '<img src="https://cdn-icons-png.flaticon.com/512/1670/1670080.png" alt="Marker Icon" style="width: 40px; height: 40px;"/>'
       const marker = new mapboxgl.Marker(markerElement)
         .setLngLat([longitude, latitude])
         .addTo(map)
-      return marker
-    }
+      setMarkersOnMap((prevMarkers) => [...prevMarkers, marker])
+    },
+    [map],
+  )
 
-    const clearMarkersOnMap = () => {
-      markersOnMap.forEach((marker) => marker.remove())
-    }
+  const clearMarkersOnMap = useCallback(() => {
+    markersOnMap.forEach((marker) => marker.remove())
+    setMarkersOnMap([])
+  }, [markersOnMap])
 
+  useEffect(() => {
     clearMarkersOnMap()
-    const newMarkers = []
     for (let markerWithProps of markersWithProps) {
-      const marker = addMarkerOnMap(
-        markerWithProps.longitude,
-        markerWithProps.latitude,
-      )
-      newMarkers.push(marker)
+      addMarkerOnMap(markerWithProps.longitude, markerWithProps.latitude)
     }
-    setMarkersOnMap(newMarkers)
-    //updating 'markersOnMap' in this useffect would trigger constant reruns.
+    // tracking 'markersOnMap' in this useffect would trigger constant reruns.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [markersWithProps, map])
 
