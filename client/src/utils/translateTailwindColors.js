@@ -30,3 +30,7 @@ const tailwindColorsMap = {
 export function getHexCode(tailwindName) {
   return tailwindColorsMap[tailwindName]
 }
+
+export function getColorName(tailwindName) {
+  return tailwindName.slice(3).slice(0, -4)
+}

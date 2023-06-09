@@ -49,7 +49,9 @@ export function DayViewContent() {
 
   const renderTimelineLine = useMemo(() => {
     return (
-      <div className='absolute left-0 top-0 h-full w-14 border-r-4 border-slate-800' />
+      <div
+        className={`absolute left-0 top-0 h-full w-14 border-r-4 border-slate-600`}
+      />
     )
   }, [])
 

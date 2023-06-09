@@ -4,6 +4,7 @@ import { toggleContentFullscreen } from '../../redux/reducers/viewSlice'
 import { useEffect, useMemo, useState } from 'react'
 import TripViewJson from '../../temp/tripViewData.json'
 import { useDispatch, useSelector } from 'react-redux'
+import { getColorName } from '../../utils/translateTailwindColors'
 
 export function TripViewContent() {
   const activeTripId = useSelector((state) => state.view.activeTripId)
@@ -39,7 +40,7 @@ export function TripViewContent() {
   const cardContent = useMemo(() => {
     return tripData.map((item, index) => {
       const dayNumber = index + 1
-      const colorName = item['color'].slice(3).slice(0, -4)
+      const colorName = getColorName(item['color'])
 
       return (
         <div
@@ -68,7 +69,7 @@ export function TripViewContent() {
   const renderTeacupRow = useMemo(() => {
     return (
       <div
-        className={`pointer-events-auto flex w-full items-end overflow-x-scroll px-4 mac-scrollbar`}
+        className={`pointer-events-auto flex w-full items-end overflow-y-hidden overflow-x-scroll px-4 mac-scrollbar`}
       >
         {teaCups}
       </div>
