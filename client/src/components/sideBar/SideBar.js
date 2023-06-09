@@ -58,7 +58,7 @@ export function SideBar() {
           id={trip.id}
           key={`trip-entry-${trip.id}`}
           buttonClassName={`w-full ${buttonColor}`}
-          buttonContent={trip.tripName}
+          trip={trip}
         />
       )
     })

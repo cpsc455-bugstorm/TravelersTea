@@ -8,6 +8,8 @@ import { createSlice } from '@reduxjs/toolkit'
  *  stagesPerDay: number, - Number of stages or activities planned per day (user input)
  *  budget: number, - Total budget for the trip (user input)
  *  numberOfDays: number - Total number of days for the trip (user input)
+ *  destinationLongitude: number - longitude (generated from BE)
+ *  destinationLatitude: number - latitude (generated from BE)
  * }]
  */
 export const userSlice = createSlice({
@@ -20,26 +22,32 @@ export const userSlice = createSlice({
       {
         id: 1,
         tripName: 'My First Trip',
-        destination: 'mock',
+        destination: 'Toronto',
         stagesPerDay: 2,
         budget: 1,
         numberOfDays: 4,
+        destinationLongitude: -79.347015,
+        destinationLatitude: 43.6532,
       },
       {
         id: 2,
         tripName: 'Another Trip',
-        destination: 'mock',
+        destination: 'Etobicoke',
         stagesPerDay: 2,
         budget: 1,
         numberOfDays: 7,
+        destinationLongitude: -79.5132,
+        destinationLatitude: 43.6205,
       },
       {
         id: 3,
         tripName: 'A Third Trip',
-        destination: 'mock',
+        destination: 'Vancouver',
         stagesPerDay: 2,
         budget: 1,
         numberOfDays: 10,
+        destinationLongitude: -123.1216,
+        destinationLatitude: 49.2827,
       },
     ],
   },
@@ -65,7 +73,11 @@ export const userSlice = createSlice({
         (trip) => trip.id === action.payload.id,
       )
       if (tripIndex !== -1) {
-        state.trips[tripIndex] = action.payload
+        // Update the trip while preserving existing properties
+        state.trips[tripIndex] = {
+          ...state.trips[tripIndex],
+          ...action.payload,
+        }
       }
     },
   },
