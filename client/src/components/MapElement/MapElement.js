@@ -76,7 +76,6 @@ export function MapElement({ className }) {
 
   useEffect(() => {
     const { longitude, latitude, zoom } = defaultCoordinatesAndZoom
-    console.log(longitude, latitude)
     if (map) {
       flyToLocation(longitude, latitude, zoom)
     }
