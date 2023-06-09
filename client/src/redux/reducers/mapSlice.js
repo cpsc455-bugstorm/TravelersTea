@@ -20,20 +20,9 @@ const mapSlice = createSlice({
     changeCoordinatesAndZoom: (state, action) => {
       state.currentCoordinatesAndZoom = action.payload
     },
-    addMarker: (state, action) => {
-      state.markers.push(action.payload)
-    },
-    deleteMarker: (state, action) => {
-      const updatedMarkers = [...state.markers]
-      updatedMarkers.slice(action.payload, 1) // should be an index
-      state.markers = updatedMarkers
-    },
-    clearMarkers: (state) => {
-      state.markers = []
-    },
     clearAllMarkersAndAdd_Store: (state, action) => {
-      const newCoordinates = action.payload // can be array of coordinates
-      state.markers = newCoordinates
+      const markersWithProps = action.payload // should be array of props for markers
+      state.markers = markersWithProps
     },
   },
 })

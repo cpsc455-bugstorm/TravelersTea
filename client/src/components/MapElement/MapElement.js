@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import { useMemo, useRef, useState, useEffect, useCallback } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { AppView } from '../../constants/enums'
 import { NewTripForm } from '../TripElement'
 import {
@@ -8,7 +8,6 @@ import {
   VANCOUVER_LATITUDE,
   ZOOM_GLOBE_LEVEL,
 } from '../../constants/mapDefaultInfo'
-
 import mapboxgl from '!mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 
@@ -42,10 +41,12 @@ export function MapElement({ className }) {
   }, [appView, activeTripId])
 
   const addMarkerOnMap = (longitude, latitude) => {
-    const marker = new mapboxgl.Marker()
+    const markerElement = document.createElement('div')
+    markerElement.innerHTML =
+      '<img src="https://cdn-icons-png.flaticon.com/512/1670/1670080.png" alt="Marker Icon" style="width: 40px; height: 40px;"/>'
+    const marker = new mapboxgl.Marker(markerElement)
       .setLngLat([longitude, latitude])
       .addTo(map)
-    console.log(marker)
     const updatedMarkersOnMap = [...markersOnMap, marker]
     setMarkersOnMap(updatedMarkersOnMap)
   }
@@ -67,7 +68,6 @@ export function MapElement({ className }) {
   )
 
   useEffect(() => {
-    console.log('Markers w props: ', markersWithProps)
     clearMarkersOnMap()
     for (let markerWithProps of markersWithProps) {
       addMarkerOnMap(markerWithProps.longitude, markerWithProps.latitude)
@@ -94,17 +94,8 @@ export function MapElement({ className }) {
     return () => map.remove()
   }, [])
 
-  // const handleClick = useCallback(() => {
-  //   const { longitude, latitude, zoom } = defaultCoordinatesAndZoom
-  //   console.log(longitude, latitude)
-  //   const marker = new mapboxgl.Marker()
-  //     .setLngLat([-79.347015, 43.6532])
-  //     .addTo(map)
-  // }, [map])
-
   return (
     <div ref={mapContainerRef} className='h-screen'>
-      {/* <button onClick={handleClick}>Click me</button> */}
       {mapContent}
     </div>
   )

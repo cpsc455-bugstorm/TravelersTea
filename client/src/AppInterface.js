@@ -3,9 +3,7 @@ import { Pin } from './components/common'
 import { SideBar } from './components/sideBar'
 import { AppView } from './constants/enums'
 import { MapElement } from './components/MapElement'
-import { useMemo, useState, useEffect } from 'react'
-import { changeCoordinatesAndZoom } from './redux/reducers/mapSlice'
-import { ZOOM_CITY_LEVEL } from './constants/mapDefaultInfo'
+import { useMemo } from 'react'
 import { TripViewContent } from './components/Timeline'
 
 export function AppInterface() {
