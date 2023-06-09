@@ -40,23 +40,34 @@ export function MapElement({ className }) {
     )
   }, [appView, activeTripId])
 
-  const addMarkerOnMap = useCallback(
-    (longitude, latitude) => {
+  useEffect(() => {
+    const addMarkerOnMap = (longitude, latitude) => {
       const markerElement = document.createElement('div')
       markerElement.innerHTML =
         '<img src="https://cdn-icons-png.flaticon.com/512/1670/1670080.png" alt="Marker Icon" style="width: 40px; height: 40px;"/>'
       const marker = new mapboxgl.Marker(markerElement)
         .setLngLat([longitude, latitude])
         .addTo(map)
-      setMarkersOnMap((prevMarkers) => [...prevMarkers, marker])
-    },
-    [map],
-  )
+      return marker
+    }
 
-  const clearMarkersOnMap = useCallback(() => {
-    markersOnMap.forEach((marker) => marker.remove())
-    setMarkersOnMap([])
-  }, [markersOnMap])
+    const clearMarkersOnMap = () => {
+      markersOnMap.forEach((marker) => marker.remove())
+    }
+
+    clearMarkersOnMap()
+    const newMarkers = []
+    for (let markerWithProps of markersWithProps) {
+      const marker = addMarkerOnMap(
+        markerWithProps.longitude,
+        markerWithProps.latitude,
+      )
+      newMarkers.push(marker)
+    }
+    setMarkersOnMap(newMarkers)
+    //updating 'markersOnMap' in this useffect would trigger constant reruns.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [markersWithProps, map])
 
   const flyToLocation = useCallback(
     (longitude, latitude, zoom) => {
@@ -68,13 +79,6 @@ export function MapElement({ className }) {
     },
     [map],
   )
-
-  useEffect(() => {
-    clearMarkersOnMap()
-    for (let markerWithProps of markersWithProps) {
-      addMarkerOnMap(markerWithProps.longitude, markerWithProps.latitude)
-    }
-  }, [markersWithProps, addMarkerOnMap, clearMarkersOnMap])
 
   useEffect(() => {
     const { longitude, latitude, zoom } = defaultCoordinatesAndZoom
@@ -96,7 +100,8 @@ export function MapElement({ className }) {
   }, [])
 
   return (
-    <div ref={mapContainerRef} className={`h-screen ${className}`}>
+    <div className={`${className}`}>
+      <div ref={mapContainerRef} className='h-screen' />
       {mapContent}
     </div>
   )
