@@ -8,16 +8,6 @@ const mocktrips = [
     stagesPerDay: 5,
     budget: 1000,
     numberOfDays: 5,
-    //     days: [
-    //       {
-    //         day: 'day1',
-    //         stages: [
-    //           '5172a61b-eb40-4029-97c1-b299838ba871',
-    //           'e04a8085-5f8d-4deb-865d-aecdeb8d1fd3',
-    //         ],
-
-    //       },
-    //     ],
   },
   {
     id: 2,
@@ -29,14 +19,16 @@ const mocktrips = [
     budget: 1000,
     numberOfDays: 5,
   },
-  { id: 3, tripName: 'A Third Trip' },
+  {
+    id: 3,
+    tripName: 'A Third Trip',
+    destinationCity: 'Vancouver',
+    destinationLongitude: -123.1216,
+    destinationLatitude: 49.2827,
+    stagesPerDay: 4,
+    budget: 1500,
+    numberOfDays: 7,
+  },
 ]
-
-const stage1 = {
-  id: '5172a61b-eb40-4029-97c1-b299838ba871',
-  stageName: 'breakfast',
-  locationName: 'Cute Cafe',
-  description: 'A favourite breakfast spot for gourmet foodies',
-}
 
 export default mocktrips

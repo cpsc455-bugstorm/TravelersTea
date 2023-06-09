@@ -121,7 +121,7 @@ git clone https://github.com/cpsc455-bugstorm/TravelersTea.git
 yarn install
 ```
 
-Now, you will need `.env` file.
+Now, you will need `.env` files, one in server and one in client.
 
 3. Create a new file `.env` in the `server` folder:
 
@@ -137,6 +137,20 @@ The content of `.env` file should look like this (with the `<value>` replaced wi
 ENV = <value>
 MONGO_USERNAME = <value>
 MONGO_PASSWORD = <value>
+```
+
+5. Create a new file `.env` in the `client` folder:
+
+```
+touch client/.env
+```
+
+6. Find the correct `<value>` for `REACT_APP_MAPBOX_TOKEN` in discord's [secret](https://discord.com/channels/1106050152587874364/1110797187463512116) channel.
+
+The content of `.env` file should look like this (with the `<value>` replaced with the correct constant) :
+
+```
+REACT_APP_MAPBOX_TOKEN = <value>
 ```
 
 #### Running the Project

@@ -1,15 +1,15 @@
-import PropTypes from 'prop-types'
-import { useMemo, useRef, useState, useEffect, useCallback } from 'react'
-import { useSelector } from 'react-redux'
-import { AppView } from '../../constants/enums'
-import { NewTripForm } from '../TripElement'
-import {
-  VANCOUVER_LONGITUDE,
-  VANCOUVER_LATITUDE,
-  ZOOM_GLOBE_LEVEL,
-} from '../../constants/mapDefaultInfo'
 import mapboxgl from '!mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
+import PropTypes from 'prop-types'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { AppView } from '../../constants/enums'
+import {
+  VANCOUVER_LATITUDE,
+  VANCOUVER_LONGITUDE,
+  ZOOM_GLOBE_LEVEL,
+} from '../../constants/mapDefaultInfo'
+import { NewTripForm } from '../TripElement'
 
 MapElement.propTypes = {
   className: PropTypes.string,
@@ -40,21 +40,23 @@ export function MapElement({ className }) {
     )
   }, [appView, activeTripId])
 
-  const addMarkerOnMap = (longitude, latitude) => {
-    const markerElement = document.createElement('div')
-    markerElement.innerHTML =
-      '<img src="https://cdn-icons-png.flaticon.com/512/1670/1670080.png" alt="Marker Icon" style="width: 40px; height: 40px;"/>'
-    const marker = new mapboxgl.Marker(markerElement)
-      .setLngLat([longitude, latitude])
-      .addTo(map)
-    const updatedMarkersOnMap = [...markersOnMap, marker]
-    setMarkersOnMap(updatedMarkersOnMap)
-  }
+  const addMarkerOnMap = useCallback(
+    (longitude, latitude) => {
+      const markerElement = document.createElement('div')
+      markerElement.innerHTML =
+        '<img src="https://cdn-icons-png.flaticon.com/512/1670/1670080.png" alt="Marker Icon" style="width: 40px; height: 40px;"/>'
+      const marker = new mapboxgl.Marker(markerElement)
+        .setLngLat([longitude, latitude])
+        .addTo(map)
+      setMarkersOnMap((prevMarkers) => [...prevMarkers, marker])
+    },
+    [map],
+  )
 
-  const clearMarkersOnMap = () => {
+  const clearMarkersOnMap = useCallback(() => {
     markersOnMap.forEach((marker) => marker.remove())
     setMarkersOnMap([])
-  }
+  }, [markersOnMap])
 
   const flyToLocation = useCallback(
     (longitude, latitude, zoom) => {
@@ -72,7 +74,7 @@ export function MapElement({ className }) {
     for (let markerWithProps of markersWithProps) {
       addMarkerOnMap(markerWithProps.longitude, markerWithProps.latitude)
     }
-  }, [markersWithProps])
+  }, [markersWithProps, addMarkerOnMap, clearMarkersOnMap])
 
   useEffect(() => {
     const { longitude, latitude, zoom } = defaultCoordinatesAndZoom
@@ -94,7 +96,7 @@ export function MapElement({ className }) {
   }, [])
 
   return (
-    <div ref={mapContainerRef} className='h-screen'>
+    <div ref={mapContainerRef} className={`h-screen ${className}`}>
       {mapContent}
     </div>
   )
