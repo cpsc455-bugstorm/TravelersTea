@@ -23,14 +23,13 @@ const mapSlice = createSlice({
       state.currentCoordinatesAndZoom = action.payload
     },
     /**
-     *   payload (markersWithProps): should have the following structure:
-     *     {
+     * @property {payload (markersWithProps)}: [{ - an array of props with the following structure:
      *       longitude: number, - The longitude coordinate of the marker
      *       latitude: number, - The latitude coordinate of the marker
      *       imgSrc: string, - The image source URL for the marker icon
      *       label: string, - The label or name for the marker
      *       zoom: number, - The zoom level at which the marker should be displayed
-     *     }
+     *     }]
      */
     clearAllMarkersAndAdd_Store: (state, action) => {
       const markersWithProps = action.payload
