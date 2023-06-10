@@ -5,6 +5,7 @@ import { AppView } from './constants/enums'
 import { MapElement } from './components/MapElement'
 import { useMemo } from 'react'
 import { TripViewContent } from './components/Timeline'
+import blackGradient from './styles/blackGradient'
 
 export function AppInterface() {
   const appView = useSelector((state) => state.view.appView)
@@ -36,7 +37,7 @@ export function AppInterface() {
 
     return (
       <div
-        className={`pointer-events-none fixed bottom-0 left-10 z-10 flex w-[calc(100%-2.5rem)] items-end overflow-x-hidden overflow-y-hidden bg-gradient-to-b from-transparent to-slate-100 transition-all ${contentHeight}`}
+        className={`pointer-events-none fixed bottom-0 left-10 z-10 flex w-[calc(100%-2.5rem)] items-end overflow-x-hidden overflow-y-hidden ${blackGradient} ${contentHeight}`}
       >
         {content}
       </div>
