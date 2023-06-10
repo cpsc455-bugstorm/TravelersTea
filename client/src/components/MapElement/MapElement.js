@@ -107,7 +107,7 @@ export function MapElement({ className }) {
   }, [])
 
   return (
-    <div className={`${className}`}>
+    <div className={`fixed left-0 top-0 ${className}`}>
       <div ref={mapContainerRef} className='h-screen' />
       {mapContent}
     </div>
