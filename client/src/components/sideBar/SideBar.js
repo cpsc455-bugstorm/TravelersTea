@@ -53,8 +53,8 @@ export function SideBar() {
       const buttonColor =
         trip.id === activeTripId &&
         (appView === AppView.TRIP_VIEW || appView === AppView.DAY_VIEW)
-          ? 'bg-green-300/40 font-medium hover:bg-green-400/40'
-          : 'bg-black/60 hover:bg-slate-400/40 text-white'
+          ? 'bg-green-700/50 font-medium text-white hover:bg-green-400/40'
+          : 'bg-slate-800/60 hover:bg-slate-600/60 text-white'
 
       return (
         <TripEntry
@@ -91,7 +91,7 @@ export function SideBar() {
     )
 
     return (
-      <div className='mb-2 w-full rounded-md bg-slate-100/40 p-2'>
+      <div className='mb-2 w-full rounded-md bg-slate-300/20 p-2 text-white'>
         <h3 className='mb-1 text-lg font-semibold'>Preferences</h3>
         {compactViewToggle}
         {verticalTimelinesToggle}
@@ -126,7 +126,7 @@ export function SideBar() {
                        ${isSidebarOpen ? 'left-0' : 'left-[-20vw]'}`}
       >
         <div className='relative flex h-full w-full flex-col justify-between overflow-hidden bg-slate-300'>
-          <div className="z-0 h-full w-full flex-grow bg-[url('../public/little-prince.jpg')] bg-cover bg-center bg-blend-soft-light"></div>
+          <div className="z-0 h-full w-full flex-grow bg-slate-200 bg-[url('../public/little-prince.jpg')] bg-cover bg-center bg-blend-difference"></div>
           <div className={`absolute inset-0 z-10 ${blackGradient} p-2`}>
             <div className='relative z-20 flex h-full flex-col justify-between'>
               {renderSidebarTrips}
