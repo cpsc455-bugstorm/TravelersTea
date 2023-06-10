@@ -23,7 +23,7 @@ export function DayViewContent() {
         <div className='z-[5] w-20 text-center text-5xl'>
           {stageInfo['emoji']}
         </div>
-        <div className='col-span-4 box-border rounded-md bg-slate-200/90 p-2'>
+        <div className='col-span-4 box-border rounded-md border-2 border-slate-100 bg-slate-200/90 p-2 shadow-xl'>
           <p className='text-lg font-bold'>{stageInfo['locationName']}</p>
           <p className='text-base font-normal'>{stageInfo['description']}</p>
         </div>
@@ -63,7 +63,7 @@ export function DayViewContent() {
       >
         ← Back
       </Button>
-      <div className='pointer-events-auto absolute right-0 box-border h-full w-1/3 overflow-y-hidden'>
+      <div className='pointer-events-auto absolute right-0 box-border h-full w-full overflow-y-hidden lg:w-1/3'>
         {stages && renderStages}
         {renderTimelineLine}
       </div>
