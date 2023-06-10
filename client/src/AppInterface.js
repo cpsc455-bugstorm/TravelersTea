@@ -45,7 +45,7 @@ export function AppInterface() {
 
   return (
     <div className='h-screen w-screen overflow-hidden'>
-      <MapElement className={`relative left-10 h-full w-[calc(100%-2.5rem)]`} />
+      <MapElement className={`relative h-full w-full`} />
       {renderMainContent}
       <SideBar />
     </div>

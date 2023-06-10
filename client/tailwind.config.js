@@ -6,15 +6,7 @@ module.exports = {
     { pattern: /to-(.*)-(500)\/70/ },
   ],
   theme: {
-    extend: {
-      backgroundColor: {
-        'slate-light': '#7a8c99',
-        'slate-dark': '#2e3d49',
-      },
-      backgroundImage: {
-        'gradient-slate': 'linear-gradient(to right, #cdd5e0, #f2f5f9)',
-      },
-    },
+    extend: {},
   },
   plugins: [
     function ({ addUtilities }) {

@@ -1,5 +1,6 @@
-import MoreVertIcon from '@mui/icons-material/MoreVert'
 import AddIcon from '@mui/icons-material/Add'
+import MoreVertIcon from '@mui/icons-material/MoreVert'
+
 import { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -17,6 +18,7 @@ import {
   toggleVerticalTimelines,
 } from '../../redux/reducers/preferencesSlice'
 import { Button, Toggle } from '../common'
+import blackGradient from '../../styles/blackGradient'
 
 export function SideBar() {
   const dispatch = useDispatch()
@@ -61,7 +63,7 @@ export function SideBar() {
         trip.id === activeTripId &&
         (appView === AppView.TRIP_VIEW || appView === AppView.DAY_VIEW)
           ? 'bg-green-300/40 font-medium hover:bg-green-400/40'
-          : 'bg-slate-300/40 hover:bg-slate-400/40'
+          : 'bg-black/60 hover:bg-slate-400/40 text-white'
 
       return (
         <div key={`sidebar-trip-${trip.id}`} className='flex items-center'>
@@ -108,7 +110,7 @@ export function SideBar() {
     )
 
     return (
-      <div className='mb-2 w-full rounded-md bg-slate-300/40 p-2'>
+      <div className='mb-2 w-full rounded-md bg-slate-100/40 p-2'>
         <h3 className='mb-1 text-lg font-semibold'>Preferences</h3>
         {compactViewToggle}
         {verticalTimelinesToggle}
@@ -142,9 +144,14 @@ export function SideBar() {
         className={`fixed left-0 top-0 z-50 flex h-full w-1/5 flex-row overflow-hidden transition-all
                        ${isSidebarOpen ? 'left-0' : 'left-[-20vw]'}`}
       >
-        <div className='flex h-full w-full flex-col justify-between overflow-hidden bg-slate-300 bg-gradient-slate bg-cover p-2 '>
-          {renderSidebarTrips}
-          {renderSidebarBottomPortion}
+        <div className='relative flex h-full w-full flex-col justify-between overflow-hidden bg-slate-300'>
+          <div className="z-0 h-full w-full flex-grow bg-[url('../public/little-prince.jpg')] bg-cover bg-center bg-blend-soft-light"></div>
+          <div className={`absolute inset-0 z-10 ${blackGradient} p-2`}>
+            <div className='relative z-20 flex h-full flex-col justify-between'>
+              {renderSidebarTrips}
+              {renderSidebarBottomPortion}
+            </div>
+          </div>
         </div>
       </div>
     )
@@ -153,16 +160,19 @@ export function SideBar() {
   const renderSidebarToggleButton = useMemo(() => {
     return (
       <span
-        className={`fixed top-0 z-50 flex h-full items-center rounded-none transition-all ${
+        className={`fixed top-0 z-50 flex h-full items-center transition-all ${
           isSidebarOpen ? 'left-[20vw]' : 'left-0'
         }`}
       >
-        <Button
-          onClick={() => dispatch(toggleSidebar())}
-          className='h-full w-10 rounded-none bg-slate-100 text-6xl hover:bg-slate-300'
-        >
-          {isSidebarOpen ? '‹' : '›'}
-        </Button>
+        <div className='relative h-full w-10'>
+          <div className='absolute inset-0 z-0'></div>
+          <Button
+            onClick={() => dispatch(toggleSidebar())}
+            className={`relative z-10 h-full w-full rounded-none text-6xl ${blackGradient}`}
+          >
+            {isSidebarOpen ? '‹' : '›'}
+          </Button>
+        </div>
       </span>
     )
   }, [isSidebarOpen, dispatch])

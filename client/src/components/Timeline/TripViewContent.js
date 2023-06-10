@@ -78,7 +78,7 @@ export function TripViewContent() {
   const renderShowMoreLessButton = useMemo(() => {
     return (
       <Button
-        className={`font-bolder pointer-events-auto h-8 w-full cursor-pointer rounded-none bg-gradient-to-r from-transparent to-transparent py-1 transition-all duration-300 hover:from-slate-300 hover:via-transparent hover:to-slate-300`}
+        className={`font-bolder pointer-events-auto m-2 h-8 w-[calc(100%-1rem)] cursor-pointer rounded-md bg-white/5 py-1 text-white hover:bg-white/30`}
         onClick={() => {
           dispatch(toggleContentFullscreen())
         }}
