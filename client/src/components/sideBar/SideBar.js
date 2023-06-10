@@ -1,23 +1,23 @@
 import AddIcon from '@mui/icons-material/Add'
-import MoreVertIcon from '@mui/icons-material/MoreVert'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { AppView } from '../../constants/enums'
 import { openNewTripModal } from '../../redux/reducers/modalsSlice'
+import { selectTrips } from '../../redux/reducers/userSlice'
 import {
   closeSidebar,
-  setActiveTripId,
   setAppView,
   toggleSidebar,
 } from '../../redux/reducers/viewSlice'
+import { TripEntry } from '../TripElement'
+import { Button, Toggle } from '../common'
 import { Logout } from '../user'
 import {
   toggleCompactView,
   toggleVerticalTimelines,
 } from '../../redux/reducers/preferencesSlice'
-import { Button, Toggle } from '../common'
 import blackGradient from '../../styles/blackGradient'
 
 export function SideBar() {
@@ -30,16 +30,7 @@ export function SideBar() {
     (state) => state.preferences.verticalTimelines,
   )
 
-  const [trips, setTrips] = useState([])
-
-  useEffect(() => {
-    // TODO link up to backend
-    setTrips([
-      { id: 1, tripName: 'My First Trip' },
-      { id: 2, tripName: 'Another Trip' },
-      { id: 3, tripName: 'A Third Trip' },
-    ])
-  }, [])
+  const trips = useSelector(selectTrips)
 
   const newTripButton = useMemo(() => {
     return (
@@ -66,25 +57,15 @@ export function SideBar() {
           : 'bg-black/60 hover:bg-slate-400/40 text-white'
 
       return (
-        <div key={`sidebar-trip-${trip.id}`} className='flex items-center'>
-          <Button
-            onClick={() => {
-              dispatch(setActiveTripId(trip.id))
-            }}
-            className={`w-full ${buttonColor}`}
-          >
-            {trip.tripName}
-          </Button>
-          <Button
-            onClick={() => {}}
-            className={`ml-1 flex h-full items-center ${buttonColor} rounded-md p-0`}
-          >
-            <MoreVertIcon />
-          </Button>
-        </div>
+        <TripEntry
+          id={trip.id}
+          key={`trip-entry-${trip.id}`}
+          buttonClassName={`w-full ${buttonColor}`}
+          trip={trip}
+        />
       )
     })
-  }, [trips, activeTripId, appView, dispatch])
+  }, [trips, activeTripId, appView])
 
   const preferencesModalBtn = useMemo(() => {
     // TODO refactor this to return a button that opens a modal.
@@ -168,7 +149,7 @@ export function SideBar() {
           <div className='absolute inset-0 z-0'></div>
           <Button
             onClick={() => dispatch(toggleSidebar())}
-            className={`relative z-10 h-full w-full rounded-none text-6xl ${blackGradient}`}
+            className={`relative z-10 h-full w-full rounded-none text-6xl ${blackGradient} hover:bg-slate-50/20`}
           >
             {isSidebarOpen ? '‹' : '›'}
           </Button>

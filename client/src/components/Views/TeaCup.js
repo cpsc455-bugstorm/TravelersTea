@@ -1,7 +1,14 @@
 import LocalCafeTwoTone from '@mui/icons-material/LocalCafeTwoTone'
 import PropTypes from 'prop-types'
 import { getHexCode } from '../../utils/translateTailwindColors'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
+import { useDispatch } from 'react-redux'
+import {
+  setActiveDayNumber,
+  setAppView,
+  setContentFullscreen,
+} from '../../redux/reducers/viewSlice'
+import { AppView } from '../../constants/enums'
 
 const PIN_WIDTH_PX = 128
 
@@ -18,6 +25,7 @@ export function TeaCup({
   titleText,
   locationNames,
 }) {
+  const dispatch = useDispatch()
   const hexColor = useMemo(() => getHexCode(tailwindBgColor), [tailwindBgColor])
 
   const locationNameList = useMemo(() => {
@@ -35,8 +43,17 @@ export function TeaCup({
     )
   }, [displayNumber, locationNames])
 
+  const openDayView = useCallback(() => {
+    dispatch(setActiveDayNumber(displayNumber))
+    dispatch(setAppView(AppView.DAY_VIEW))
+    dispatch(setContentFullscreen(true))
+  }, [dispatch, displayNumber])
+
   return (
-    <div className='flex h-full flex-col justify-between px-2'>
+    <div
+      className='flex h-full flex-col justify-between px-2'
+      onClick={openDayView}
+    >
       <div className='overflow-hidden rounded-md bg-slate-300/70 p-2'>
         <p className='text-lg font-bold'>{titleText}</p>
         {locationNameList}
