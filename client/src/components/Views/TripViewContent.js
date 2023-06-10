@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from 'react'
 import TripViewJson from '../../temp/tripViewData.json'
 import { useDispatch, useSelector } from 'react-redux'
 import { getColorName } from '../../utils/translateTailwindColors'
+import blackGradient from '../../styles/blackGradient'
 
 export function TripViewContent() {
   const activeTripId = useSelector((state) => state.view.activeTripId)
@@ -79,7 +80,7 @@ export function TripViewContent() {
   const renderShowMoreLessButton = useMemo(() => {
     return (
       <Button
-        className={`font-bolder pointer-events-auto h-8 w-full cursor-pointer rounded-none bg-gradient-to-r from-transparent to-transparent py-1 transition-all duration-300 hover:from-slate-300 hover:via-transparent hover:to-slate-300`}
+        className={`pointer-events-auto m-2 h-8 w-[calc(100%-1rem)] cursor-pointer rounded-md bg-white/5 py-1 font-bold text-white hover:bg-white/30`}
         onClick={() => {
           dispatch(toggleContentFullscreen())
         }}
@@ -92,7 +93,7 @@ export function TripViewContent() {
   const renderDetails = useMemo(() => {
     return (
       <div
-        className={`pointer-events-auto w-full overflow-y-auto bg-slate-100 
+        className={`pointer-events-auto w-full overflow-y-auto bg-transparent 
           ${isContentFullscreen ? 'h-1/2 p-4' : 'h-0'}`}
       >
         {cardContent}
@@ -101,7 +102,7 @@ export function TripViewContent() {
   }, [cardContent, isContentFullscreen])
 
   return (
-    <div className='flex h-full w-full flex-col justify-end bg-gradient-to-b from-transparent to-slate-100'>
+    <div className={`flex h-full w-full flex-col justify-end ${blackGradient}`}>
       {renderTeacupRow}
       {renderShowMoreLessButton}
       {renderDetails}
