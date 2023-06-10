@@ -11,11 +11,17 @@ import {
   toggleSidebar,
 } from '../../redux/reducers/viewSlice'
 import { Logout } from '../user'
+import mocktrips from './mock/trips'
 import {
   toggleCompactView,
   toggleVerticalTimelines,
 } from '../../redux/reducers/preferencesSlice'
 import { Button, Toggle } from '../common'
+import {
+  changeCoordinatesAndZoom,
+  clearAllMarkersAndAdd_Store,
+} from '../../redux/reducers/mapSlice'
+import { ZOOM_CITY_LEVEL } from '../../constants/mapDefaultInfo'
 
 export function SideBar() {
   const dispatch = useDispatch()
@@ -31,11 +37,7 @@ export function SideBar() {
 
   useEffect(() => {
     // TODO link up to backend
-    setTrips([
-      { id: 1, tripName: 'My First Trip' },
-      { id: 2, tripName: 'Another Trip' },
-      { id: 3, tripName: 'A Third Trip' },
-    ])
+    setTrips(mocktrips)
   }, [])
 
   const newTripButton = useMemo(() => {
@@ -67,6 +69,21 @@ export function SideBar() {
           key={`sidebar-trip-${trip.id}`}
           onClick={() => {
             dispatch(setActiveTripId(trip.id))
+            dispatch(
+              changeCoordinatesAndZoom({
+                longitude: trip.destinationLongitude,
+                latitude: trip.destinationLatitude,
+                zoom: ZOOM_CITY_LEVEL,
+              }),
+            )
+            dispatch(
+              clearAllMarkersAndAdd_Store([
+                {
+                  longitude: trip.destinationLongitude,
+                  latitude: trip.destinationLatitude,
+                },
+              ]),
+            )
           }}
           className={`w-full ${buttonColor}`}
         >
