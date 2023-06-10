@@ -9,7 +9,7 @@ Button.propTypes = {
 export function Button({ children, onClick, className = '' }) {
   return (
     <button
-      className={`items-center rounded-md border-0 p-2 transition-colors ${className}`}
+      className={`pointer-events-auto items-center rounded-md border-0 p-2 transition-colors ${className}`}
       onClick={onClick}
     >
       {children}

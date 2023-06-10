@@ -12,7 +12,7 @@ module.exports = {
     function ({ addUtilities }) {
       const utilities = {
         '.mac-scrollbar::-webkit-scrollbar': {
-          width: '4px',
+          width: '12px',
           height: '12px',
         },
         '.mac-scrollbar::-webkit-scrollbar-thumb': {
