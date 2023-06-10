@@ -1,27 +1,21 @@
 import AddIcon from '@mui/icons-material/Add'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-
 import { AppView } from '../../constants/enums'
 import { openNewTripModal } from '../../redux/reducers/modalsSlice'
-import {
-  closeSidebar,
-  setActiveTripId,
-  setAppView,
-  toggleSidebar,
-} from '../../redux/reducers/viewSlice'
-import { Logout } from '../user'
-import mocktrips from './mock/trips'
 import {
   toggleCompactView,
   toggleVerticalTimelines,
 } from '../../redux/reducers/preferencesSlice'
-import { Button, Toggle } from '../common'
+import { selectTrips } from '../../redux/reducers/userSlice'
 import {
-  changeCoordinatesAndZoom,
-  clearAllMarkersAndAdd_Store,
-} from '../../redux/reducers/mapSlice'
-import { ZOOM_CITY_LEVEL } from '../../constants/mapDefaultInfo'
+  closeSidebar,
+  setAppView,
+  toggleSidebar,
+} from '../../redux/reducers/viewSlice'
+import { TripEntry } from '../TripElement'
+import { Button, Toggle } from '../common'
+import { Logout } from '../user'
 
 export function SideBar() {
   const dispatch = useDispatch()
@@ -33,21 +27,16 @@ export function SideBar() {
     (state) => state.preferences.verticalTimelines,
   )
 
-  const [trips, setTrips] = useState([])
-
-  useEffect(() => {
-    // TODO link up to backend
-    setTrips(mocktrips)
-  }, [])
+  const trips = useSelector(selectTrips)
 
   const newTripButton = useMemo(() => {
     return (
       <Button
         className='box-border flex h-12 w-full flex-row border-2 border-yellow-300 bg-yellow-200/20 hover:bg-yellow-300/20'
         onClick={() => {
+          dispatch(closeSidebar())
           dispatch(setAppView(AppView.NEW_TRIP))
           dispatch(openNewTripModal())
-          dispatch(closeSidebar())
         }}
       >
         <AddIcon className='mx-2' />
@@ -65,33 +54,15 @@ export function SideBar() {
           : 'bg-slate-300/40 hover:bg-slate-400/40'
 
       return (
-        <Button
-          key={`sidebar-trip-${trip.id}`}
-          onClick={() => {
-            dispatch(setActiveTripId(trip.id))
-            dispatch(
-              changeCoordinatesAndZoom({
-                longitude: trip.destinationLongitude,
-                latitude: trip.destinationLatitude,
-                zoom: ZOOM_CITY_LEVEL,
-              }),
-            )
-            dispatch(
-              clearAllMarkersAndAdd_Store([
-                {
-                  longitude: trip.destinationLongitude,
-                  latitude: trip.destinationLatitude,
-                },
-              ]),
-            )
-          }}
-          className={`w-full ${buttonColor}`}
-        >
-          {trip.tripName}
-        </Button>
+        <TripEntry
+          id={trip.id}
+          key={`trip-entry-${trip.id}`}
+          buttonClassName={`w-full ${buttonColor}`}
+          trip={trip}
+        />
       )
     })
-  }, [trips, activeTripId, appView, dispatch])
+  }, [trips, activeTripId, appView])
 
   const preferencesModalBtn = useMemo(() => {
     // TODO refactor this to return a button that opens a modal.
