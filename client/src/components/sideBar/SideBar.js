@@ -1,27 +1,24 @@
 import AddIcon from '@mui/icons-material/Add'
-import { useEffect, useMemo, useState } from 'react'
+
+import { useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { AppView } from '../../constants/enums'
 import { openNewTripModal } from '../../redux/reducers/modalsSlice'
+import { selectTrips } from '../../redux/reducers/userSlice'
 import {
   closeSidebar,
-  setActiveTripId,
   setAppView,
   toggleSidebar,
 } from '../../redux/reducers/viewSlice'
+import { TripEntry } from '../TripElement'
+import { Button, Toggle } from '../common'
 import { Logout } from '../user'
-import mocktrips from './mock/trips'
 import {
   toggleCompactView,
   toggleVerticalTimelines,
 } from '../../redux/reducers/preferencesSlice'
-import { Button, Toggle } from '../common'
-import {
-  changeCoordinatesAndZoom,
-  clearAllMarkersAndAdd_Store,
-} from '../../redux/reducers/mapSlice'
-import { ZOOM_CITY_LEVEL } from '../../constants/mapDefaultInfo'
+import blackGradient from '../../styles/blackGradient'
 
 export function SideBar() {
   const dispatch = useDispatch()
@@ -33,17 +30,12 @@ export function SideBar() {
     (state) => state.preferences.verticalTimelines,
   )
 
-  const [trips, setTrips] = useState([])
-
-  useEffect(() => {
-    // TODO link up to backend
-    setTrips(mocktrips)
-  }, [])
+  const trips = useSelector(selectTrips)
 
   const newTripButton = useMemo(() => {
     return (
       <Button
-        className='box-border flex h-12 w-full flex-row border-2 border-yellow-300 bg-yellow-200/20 hover:bg-yellow-300/20'
+        className='box-border flex h-12 w-full flex-row border-2 border-emerald-200 bg-emerald-200/80 hover:bg-emerald-400/100'
         onClick={() => {
           dispatch(setAppView(AppView.NEW_TRIP))
           dispatch(openNewTripModal())
@@ -61,37 +53,19 @@ export function SideBar() {
       const buttonColor =
         trip.id === activeTripId &&
         (appView === AppView.TRIP_VIEW || appView === AppView.DAY_VIEW)
-          ? 'bg-green-300/40 font-medium hover:bg-green-400/40'
-          : 'bg-slate-300/40 hover:bg-slate-400/40'
+          ? 'bg-green-700/50 font-medium text-white hover:bg-green-400/40'
+          : 'bg-slate-800/60 hover:bg-slate-600/60 text-white'
 
       return (
-        <Button
-          key={`sidebar-trip-${trip.id}`}
-          onClick={() => {
-            dispatch(setActiveTripId(trip.id))
-            dispatch(
-              changeCoordinatesAndZoom({
-                longitude: trip.destinationLongitude,
-                latitude: trip.destinationLatitude,
-                zoom: ZOOM_CITY_LEVEL,
-              }),
-            )
-            dispatch(
-              clearAllMarkersAndAdd_Store([
-                {
-                  longitude: trip.destinationLongitude,
-                  latitude: trip.destinationLatitude,
-                },
-              ]),
-            )
-          }}
-          className={`w-full ${buttonColor}`}
-        >
-          {trip.tripName}
-        </Button>
+        <TripEntry
+          id={trip.id}
+          key={`trip-entry-${trip.id}`}
+          buttonClassName={`w-full ${buttonColor}`}
+          trip={trip}
+        />
       )
     })
-  }, [trips, activeTripId, appView, dispatch])
+  }, [trips, activeTripId, appView])
 
   const preferencesModalBtn = useMemo(() => {
     // TODO refactor this to return a button that opens a modal.
@@ -117,7 +91,7 @@ export function SideBar() {
     )
 
     return (
-      <div className='mb-2 w-full rounded-md bg-slate-100/40 p-2'>
+      <div className='mb-2 w-full rounded-md bg-slate-300/20 p-2 text-white'>
         <h3 className='mb-1 text-lg font-semibold'>Preferences</h3>
         {compactViewToggle}
         {verticalTimelinesToggle}
@@ -125,7 +99,7 @@ export function SideBar() {
     )
   }, [isVerticalTimelines, isCompactView, dispatch])
 
-  const renderSidebarMainPortion = useMemo(() => {
+  const renderSidebarTrips = useMemo(() => {
     return (
       <div className='overflow-x-auto'>
         {newTripButton}
@@ -151,27 +125,35 @@ export function SideBar() {
         className={`fixed left-0 top-0 z-50 flex h-full w-1/5 flex-row overflow-hidden transition-all
                        ${isSidebarOpen ? 'left-0' : 'left-[-20vw]'}`}
       >
-        <div className="flex h-full w-full flex-col justify-between overflow-hidden bg-slate-300 bg-[url('../public/little-prince.jpg')] bg-cover bg-center p-2 bg-blend-soft-light">
-          {renderSidebarMainPortion}
-          {renderSidebarBottomPortion}
+        <div className='relative flex h-full w-full flex-col justify-between overflow-hidden bg-slate-300'>
+          <div className="z-0 h-full w-full flex-grow bg-slate-200 bg-[url('../public/little-prince.jpg')] bg-cover bg-center bg-blend-difference"></div>
+          <div className={`absolute inset-0 z-10 ${blackGradient} p-2`}>
+            <div className='relative z-20 flex h-full flex-col justify-between'>
+              {renderSidebarTrips}
+              {renderSidebarBottomPortion}
+            </div>
+          </div>
         </div>
       </div>
     )
-  }, [isSidebarOpen, renderSidebarMainPortion, renderSidebarBottomPortion])
+  }, [isSidebarOpen, renderSidebarTrips, renderSidebarBottomPortion])
 
   const renderSidebarToggleButton = useMemo(() => {
     return (
       <span
-        className={`fixed top-0 z-50 flex h-full items-center rounded-none transition-all ${
+        className={`fixed top-0 z-50 flex h-full items-center transition-all ${
           isSidebarOpen ? 'left-[20vw]' : 'left-0'
         }`}
       >
-        <Button
-          onClick={() => dispatch(toggleSidebar())}
-          className='h-full w-10 rounded-none bg-slate-300 text-6xl hover:bg-slate-400'
-        >
-          {isSidebarOpen ? '‹' : '›'}
-        </Button>
+        <div className='relative h-full w-10'>
+          <div className='absolute inset-0 z-0'></div>
+          <Button
+            onClick={() => dispatch(toggleSidebar())}
+            className={`relative z-10 h-full w-full rounded-none text-6xl ${blackGradient} hover:bg-slate-50/20`}
+          >
+            {isSidebarOpen ? '‹' : '›'}
+          </Button>
+        </div>
       </span>
     )
   }, [isSidebarOpen, dispatch])
