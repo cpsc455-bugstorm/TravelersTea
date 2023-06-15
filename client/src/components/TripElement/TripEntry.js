@@ -12,12 +12,12 @@ import {
   clearAllMarkersAndAdd_Store,
 } from '../../redux/reducers/mapSlice'
 import { openEditTripModal } from '../../redux/reducers/modalsSlice'
-import { editTrip } from '../../redux/reducers/userSlice'
+import { editTripAsync } from '../../redux/reducers/trip/thunks'
 import { closeSidebar, setActiveTripId } from '../../redux/reducers/viewSlice'
 import { Button } from '../common'
 
 TripEntry.propTypes = {
-  id: PropTypes.number.isRequired,
+  id: PropTypes.string.isRequired,
   buttonClassName: PropTypes.string,
   trip: PropTypes.object,
 }
@@ -38,7 +38,7 @@ export function TripEntry({ id, buttonClassName, trip }) {
   }
 
   const handleCheckClick = () => {
-    dispatch(editTrip({ id, tripName }))
+    dispatch(editTripAsync({ id: id, tripData: { tripName: tripName } }))
     setIsRenaming(false)
   }
 
@@ -62,7 +62,7 @@ export function TripEntry({ id, buttonClassName, trip }) {
           dispatch(setActiveTripId(id))
           // TODO: remove after connected to backend, it is here to prevent error
           if (
-            !isNaN(trip.destinationLongitude) ||
+            !isNaN(trip.destinationLongitude) &&
             !isNaN(trip.destinationLatitude)
           ) {
             dispatch(

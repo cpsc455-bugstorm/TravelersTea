@@ -36,7 +36,7 @@ export function MapElement({ className }) {
         <h1 className='w-fit rounded-md bg-slate-900 bg-opacity-40 p-4 text-5xl'>
           Map (placeholder #{activeTripId})
         </h1>
-        {<EditTripForm />}
+        <EditTripForm />
       </span>
     )
   }, [appView, activeTripId])
