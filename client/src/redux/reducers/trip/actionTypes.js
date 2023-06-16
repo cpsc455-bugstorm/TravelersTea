@@ -2,5 +2,5 @@ export const actionTypes = {
   ADD_TRIP: 'trip/addTrip',
   EDIT_TRIP: 'trip/editTrip',
   GET_TRIPS: 'trip/fetchTrips',
-  GET_TRIP: 'carts/fetchTrip',
+  GET_TRIP: 'trip/fetchTrip',
 }
