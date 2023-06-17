@@ -5,7 +5,7 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
 import PinDropOutlinedIcon from '@mui/icons-material/PinDropOutlined'
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined'
 import PropTypes from 'prop-types'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppView } from '../../constants/enums'
 import { ZOOM_CITY_LEVEL } from '../../constants/mapDefaultInfo'
@@ -46,9 +46,12 @@ export function TripEntry({ id, buttonClassName, trip }) {
     setOpenDialog(false)
   }
 
-  const handleInputChange = (event) => {
-    setTripName(event.target.value)
-  }
+  const handleInputChange = useCallback(
+    (event) => {
+      setTripName(event.target.value)
+    },
+    [setTripName],
+  )
 
   const handleCheckClick = () => {
     dispatch(editTripAsync({ id: id, tripData: { tripName: tripName } }))
@@ -72,8 +75,8 @@ export function TripEntry({ id, buttonClassName, trip }) {
     }
   }, [isSelected, trip, appView])
 
-  return (
-    <div className='group relative'>
+  const tripButton = useMemo(
+    () => (
       <Button
         key={`sidebar-trip-entry-${id}`}
         onClick={() => {
@@ -119,6 +122,20 @@ export function TripEntry({ id, buttonClassName, trip }) {
           )}
         </div>
       </Button>
+    ),
+    [
+      dispatch,
+      id,
+      trip,
+      buttonClassName,
+      isRenaming,
+      tripName,
+      handleInputChange,
+    ],
+  )
+
+  const extraButtons = useMemo(
+    () => (
       <div
         id={`extra-buttons-for-${id}`}
         className={`absolute right-0 top-[9px] flex w-[68px] flex-row text-white`}
@@ -197,6 +214,24 @@ export function TripEntry({ id, buttonClassName, trip }) {
           </>
         )}
       </div>
+    ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [
+      isSelected,
+      isRenaming,
+      handleCheckClick,
+      handleCancelClick,
+      proceedToDelete,
+      openDialog,
+      closeDialog,
+      handleDeleteTrip,
+    ],
+  )
+
+  return (
+    <div className='group relative'>
+      {tripButton}
+      {extraButtons}
     </div>
   )
 }
