@@ -9,8 +9,7 @@ class TripController {
       const trips = await TripModel.find()
       return trips
     } catch (error) {
-      console.error('Error while retrieving trips:', error)
-      throw error
+      throw new Error('Could not fetch all trips', error)
     }
   }
 
@@ -23,8 +22,7 @@ class TripController {
       })
       return newTrip
     } catch (error) {
-      console.error('Error while creating trip:', error)
-      throw error
+      throw new Error('Could not create trip', error)
     }
   }
 
@@ -35,8 +33,16 @@ class TripController {
       })
       return updatedTrip
     } catch (error) {
-      console.error('Error while editing trip:', error)
-      throw error
+      throw new Error('Could not edit trip', error)
+    }
+  }
+
+  async deleteTrip(id) {
+    try {
+      const deletedTrip = await TripModel.findByIdAndDelete(id)
+      return deletedTrip
+    } catch (error) {
+      throw new Error('Could not delete trip', error)
     }
   }
 }

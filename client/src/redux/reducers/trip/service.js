@@ -12,10 +12,15 @@ export const editTrip = async (id, tripData) => {
   return await axios.patch(`http://localhost:5001/api/trip/${id}`, tripData)
 }
 
+export const deleteTrip = async (id) => {
+  return await axios.delete(`http://localhost:5001/api/trip/${id}`)
+}
+
 const tripService = {
   fetchTrips,
   createTrip,
   editTrip,
+  deleteTrip,
 }
 
 export default tripService

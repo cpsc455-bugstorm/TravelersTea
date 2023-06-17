@@ -11,6 +11,6 @@ export const handleAsyncAction = (builder, asyncAction, handlers) => {
     })
     .addCase(asyncAction.rejected, (state, action) => {
       state.status = REQUEST_STATE.REJECTED
-      state.error = action.error.message
+      state.error = action.payload.message
     })
 }
