@@ -1,7 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { handleAsyncAction } from '../../handleAsync'
 import { REQUEST_STATE } from '../../states'
-import { fetchTripsAsync, createTripAsync, editTripAsync } from './thunks'
+import {
+  createTripAsync,
+  deleteTripAsync,
+  editTripAsync,
+  fetchTripsAsync,
+} from './thunks'
 /**
  * @property {trips}: [{
  *  _id: uuid, - Unique identifier for the trip
@@ -44,6 +49,13 @@ export const tripSlice = createSlice({
             ...action.payload,
           }
         }
+      },
+    })
+    handleAsyncAction(builder, deleteTripAsync, {
+      fulfilled: (state, action) => {
+        state.trips = state.trips.filter(
+          (trip) => trip._id !== action.payload._id,
+        )
       },
     })
   },

@@ -133,8 +133,8 @@ export function SideBar() {
   const renderSidebar = useMemo(() => {
     return (
       <div
-        className={`fixed left-0 top-0 z-50 flex h-full w-1/5 flex-row overflow-hidden transition-all
-                       ${isSidebarOpen ? 'left-0' : 'left-[-20vw]'}`}
+        className={`fixed left-0 top-0 z-50 flex h-full w-[260px] flex-row overflow-hidden transition-all
+                       ${isSidebarOpen ? 'left-0' : 'left-[-260px]'}`}
       >
         <div className='relative flex h-full w-full flex-col justify-between overflow-hidden bg-slate-300'>
           <div className="z-0 h-full w-full flex-grow bg-slate-200 bg-[url('../public/little-prince.jpg')] bg-cover bg-center bg-blend-difference"></div>
@@ -153,7 +153,7 @@ export function SideBar() {
     return (
       <span
         className={`fixed top-0 z-50 flex h-full items-center transition-all ${
-          isSidebarOpen ? 'left-[20vw]' : 'left-0'
+          isSidebarOpen ? 'left-[260px]' : 'left-0'
         }`}
       >
         <div className='relative h-full w-10'>

@@ -1,35 +1,19 @@
-import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppView } from '../../constants/enums'
 import { closeNewTripModal } from '../../redux/reducers/modalsSlice'
-import {
-  createTripAsync,
-  fetchTripsAsync,
-} from '../../redux/reducers/trip/thunks'
+import { createTripAsync } from '../../redux/reducers/trip/thunks'
 import { setActiveTripId, setAppView } from '../../redux/reducers/viewSlice'
-import { REQUEST_STATE } from '../../redux/states'
 import { Modal } from '../common'
 import { TripForm } from './TripForm'
 
 export function NewTripForm() {
   const dispatch = useDispatch()
-
   const appView = useSelector((state) => state.view.appView)
+  const trips = useSelector((state) => state.trip.trips)
+
   const newTripModalIsOpen = useSelector(
     (state) => state.modals.newTripModalIsOpen,
   )
-
-  const trips = useSelector((state) => state.trip.trips)
-  const tripsStatus = useSelector((state) => state.trip.status)
-  useEffect(() => {
-    dispatch(fetchTripsAsync())
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-  useEffect(() => {
-    if (tripsStatus === REQUEST_STATE.PENDING) {
-      dispatch(fetchTripsAsync())
-    }
-  }, [dispatch, tripsStatus])
 
   const handleCloseNewTripModal = () => {
     dispatch(closeNewTripModal())
