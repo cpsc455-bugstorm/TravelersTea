@@ -19,7 +19,7 @@ import {
   editTripAsync,
 } from '../../redux/reducers/trip/thunks'
 import { closeSidebar, setActiveTripId } from '../../redux/reducers/viewSlice'
-import { Button, ConfirmationDialog } from '../common'
+import { Button, Modal } from '../common'
 
 TripEntry.propTypes = {
   id: PropTypes.string.isRequired,
@@ -35,15 +35,15 @@ export function TripEntry({ id, buttonClassName, trip }) {
     activeTripId === id && appView !== AppView.NEW_TRIP ? '' : 'hidden'
   const [isRenaming, setIsRenaming] = useState(false)
   const [tripName, setTripName] = useState(trip.tripName)
-  const [openDialog, setOpenDialog] = useState(false)
+  const [openModal, setOpenModal] = useState(false)
   const inputRef = useRef(null)
 
   const proceedToDelete = () => {
-    setOpenDialog(true)
+    setOpenModal(true)
   }
 
-  const closeDialog = () => {
-    setOpenDialog(false)
+  const closeModal = () => {
+    setOpenModal(false)
   }
 
   const handleInputChange = useCallback(
@@ -64,7 +64,7 @@ export function TripEntry({ id, buttonClassName, trip }) {
   }
 
   const handleDeleteTrip = () => {
-    closeDialog()
+    closeModal()
     dispatch(deleteTripAsync({ id: id }))
   }
 
@@ -75,6 +75,7 @@ export function TripEntry({ id, buttonClassName, trip }) {
     }
   }, [isSelected, trip, appView])
 
+  const widthForTripEntry = !isSelected ? 'w-[160px]' : 'w-[228px]'
   const tripButton = useMemo(
     () => (
       <Button
@@ -107,10 +108,12 @@ export function TripEntry({ id, buttonClassName, trip }) {
         }}
         className={buttonClassName}
       >
-        <div className='flex w-[160px] justify-start space-x-2'>
+        <div className={`flex ${widthForTripEntry} justify-start space-x-2`}>
           <PinDropOutlinedIcon className='align-baseline' />
           {!isRenaming ? (
-            <div className='w-[160px] truncate text-start'>{trip.tripName}</div>
+            <div className={`${widthForTripEntry} truncate text-start`}>
+              {trip.tripName}
+            </div>
           ) : (
             <input
               ref={inputRef}
@@ -123,6 +126,7 @@ export function TripEntry({ id, buttonClassName, trip }) {
         </div>
       </Button>
     ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [
       dispatch,
       id,
@@ -181,13 +185,30 @@ export function TripEntry({ id, buttonClassName, trip }) {
               />
             </Button>
 
-            <ConfirmationDialog
-              open={openDialog}
-              handleClose={closeDialog}
-              handleConfirm={handleDeleteTrip}
-              title='Confirm Deletion'
-              description='Are you sure you want to delete this trip?'
-            />
+            <Modal
+              open={openModal}
+              handleClose={closeModal}
+              footer={
+                <>
+                  <Button
+                    onClick={closeModal}
+                    className='bg-slate-800/60 text-white hover:bg-slate-600/60'
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    onClick={handleDeleteTrip}
+                    className='bg-red-800/90 text-white hover:bg-red-600/90'
+                  >
+                    Confirm
+                  </Button>
+                </>
+              }
+            >
+              <p>
+                Are you sure you want to delete <b>{trip.tripName}</b>?
+              </p>
+            </Modal>
           </>
         ) : (
           <>
@@ -222,8 +243,8 @@ export function TripEntry({ id, buttonClassName, trip }) {
       handleCheckClick,
       handleCancelClick,
       proceedToDelete,
-      openDialog,
-      closeDialog,
+      openModal,
+      closeModal,
       handleDeleteTrip,
     ],
   )

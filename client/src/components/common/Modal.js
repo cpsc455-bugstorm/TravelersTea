@@ -26,6 +26,7 @@ Modal.propTypes = {
   footer: PropTypes.node,
   classNameMain: PropTypes.string,
   classNameTitle: PropTypes.string,
+  titleSize: PropTypes.string,
   classNameContent: PropTypes.string,
 }
 
@@ -51,6 +52,7 @@ export function Modal({
   footer,
   classNameMain,
   classNameTitle,
+  titleSize = 'text-5xl',
   classNameContent,
 }) {
   return (
@@ -71,7 +73,7 @@ export function Modal({
           />
           <Box my='0.5rem' pt='1rem'>
             <h1
-              className={`pb-8 text-center font-mono text-5xl ${classNameTitle}`}
+              className={`pb-8 text-center font-mono ${titleSize} ${classNameTitle}`}
             >
               {title}
             </h1>
