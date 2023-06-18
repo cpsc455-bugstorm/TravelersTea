@@ -38,6 +38,9 @@ export function TripEntry({ id, buttonClassName, trip }) {
   const [openModal, setOpenModal] = useState(false)
   const inputRef = useRef(null)
 
+  const widthForTripEntry = !isSelected ? 'w-[160px]' : 'w-[228px]'
+  const widthForButtonsContainer = isRenaming ? 'w-[46px]' : 'w-[68px]'
+
   const proceedToDelete = () => {
     setOpenModal(true)
   }
@@ -75,7 +78,6 @@ export function TripEntry({ id, buttonClassName, trip }) {
     }
   }, [isSelected, trip, appView])
 
-  const widthForTripEntry = !isSelected ? 'w-[160px]' : 'w-[228px]'
   const tripButton = useMemo(
     () => (
       <Button
@@ -142,7 +144,7 @@ export function TripEntry({ id, buttonClassName, trip }) {
     () => (
       <div
         id={`extra-buttons-for-${id}`}
-        className={`absolute right-0 top-[9px] flex w-[68px] flex-row text-white`}
+        className={`absolute right-0 top-[9px] flex ${widthForButtonsContainer} flex-row text-white`}
       >
         {!isRenaming ? (
           <>
@@ -151,11 +153,11 @@ export function TripEntry({ id, buttonClassName, trip }) {
               onClick={() => {
                 setIsRenaming(true)
               }}
-              className={`${isSelected} h-[22px] w-[22px] hover:text-red-400`}
-              padding='p-0'
+              className={`${isSelected} h-[22px] w-[20px] hover:text-red-400`}
+              padding='p-0 mr-[3px]'
             >
               <EditOutlinedIcon
-                sx={{ fontSize: 22 }}
+                sx={{ fontSize: 20 }}
                 className='align-baseline'
               />
             </Button>
@@ -165,22 +167,22 @@ export function TripEntry({ id, buttonClassName, trip }) {
                 dispatch(closeSidebar())
                 dispatch(openEditTripModal())
               }}
-              className={`${isSelected} h-[22px] w-[22px] hover:text-red-400`}
-              padding='p-0'
+              className={`${isSelected} h-[22px] w-[20px] hover:text-red-400`}
+              padding='p-0 mr-[3px]'
             >
               <SettingsOutlinedIcon
-                sx={{ fontSize: 22 }}
+                sx={{ fontSize: 20 }}
                 className='align-baseline'
               />
             </Button>
             <Button
               key={`sidebar-trip-button-${id}-delete`}
               onClick={proceedToDelete}
-              className={`${isSelected} h-[22px] w-[22px] hover:text-red-400`}
-              padding='p-0'
+              className={`${isSelected} h-[22px] w-[20px] hover:text-red-400`}
+              padding='p-0 mr-[3px]'
             >
               <DeleteForeverOutlinedIcon
-                sx={{ fontSize: 22 }}
+                sx={{ fontSize: 20 }}
                 className='align-baseline'
               />
             </Button>
@@ -212,25 +214,21 @@ export function TripEntry({ id, buttonClassName, trip }) {
           </>
         ) : (
           <>
-            <span
-              key={`sidebar-trip-button-${id}-padding`}
-              className='h-[22px] w-[22px]'
-            />
             <Button
               key={`sidebar-trip-button-${id}-confirm-rename`}
               onClick={handleCheckClick}
-              className={`${isSelected} h-[22px] w-[22px] hover:text-red-400`}
-              padding='p-0'
+              className={`${isSelected} h-[22px] w-[20px] hover:text-red-400`}
+              padding='p-0 mr-[3px]'
             >
-              <CheckIcon sx={{ fontSize: 22 }} className='align-baseline' />
+              <CheckIcon sx={{ fontSize: 20 }} className='align-baseline' />
             </Button>
             <Button
               key={`sidebar-trip-button-${id}-abort-rename`}
               onClick={handleCancelClick}
-              className={`${isSelected} h-[22px] w-[22px] hover:text-red-400`}
-              padding='p-0'
+              className={`${isSelected} h-[22px] w-[20px] hover:text-red-400`}
+              padding='p-0 mr-[3px]'
             >
-              <CloseIcon sx={{ fontSize: 22 }} className='align-baseline' />
+              <CloseIcon sx={{ fontSize: 20 }} className='align-baseline' />
             </Button>
           </>
         )}
