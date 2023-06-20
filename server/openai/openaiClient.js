@@ -1,26 +1,30 @@
-const { openaiApiKey } = require('./config')
-const axios = require('axios')
+const { Configuration, OpenAIApi } = require('openai')
+let openai
 
-const apiUrl =
-  'https://api.openai.com/v1/engines/gpt-3.5-turbo-0301/chat/completions'
+const configuration = new Configuration({
+  apiKey:
+    process.env.OPEN_AI_API_KEY ||
+    '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',
+})
+console.log('key: ', process.env.OPEN_AI_API_KEY)
+openai = new OpenAIApi(configuration)
 
 async function openaiClient(conversation) {
   try {
-    const response = await axios.post(
-      apiUrl,
+    const response = await openai.createChatCompletion(
       {
-        model: 'gpt-3.5-turbo',
+        model: 'gpt-4',
+        temperature: 0.888,
+        max_tokens: 2048,
+        frequency_penalty: 0,
+        presence_penalty: 0,
+        top_p: 1,
         messages: conversation,
       },
-      {
-        headers: {
-          Authorization: `Bearer ${openaiApiKey}`,
-          'Content-Type': 'application/json',
-        },
-      },
+      { timeout: 60000 },
     )
 
-    return response.data
+    return response.data.choices[0].message.content.trim()
   } catch (error) {
     console.error('Error in OpenAI API:', error)
     throw error
