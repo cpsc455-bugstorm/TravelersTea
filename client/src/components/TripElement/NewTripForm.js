@@ -1,5 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { AppView } from '../../constants/enums'
+import { ZOOM_CITY_LEVEL } from '../../constants/mapDefaultInfo'
+import {
+  changeCoordinatesAndZoom,
+  clearAllMarkersAndAdd_Store,
+} from '../../redux/reducers/mapSlice'
 import { closeNewTripModal } from '../../redux/reducers/modalsSlice'
 import { createTripAsync } from '../../redux/reducers/trip/thunks'
 import { setActiveTripId, setAppView } from '../../redux/reducers/viewSlice'
@@ -19,18 +24,34 @@ export function NewTripForm() {
     dispatch(closeNewTripModal())
   }
 
-  const onSubmit = (data) => {
-    // this is default tripName, lat, long, TODO: get from other endpoints
+  const onSubmit = async (data) => {
     const tripDataWithTripName = {
       ...data,
       tripName: `Your Trip ${trips.length + 1}`,
       destinationLatitude: 49.23990319450836,
       destinationLongitude: -123.15644121337681,
     }
-    dispatch(createTripAsync(tripDataWithTripName))
-    dispatch(setActiveTripId(trips[trips.length - 1]._id))
+    const newTrip = await dispatch(
+      createTripAsync(tripDataWithTripName),
+    ).unwrap()
+    dispatch(setActiveTripId(newTrip._id))
     dispatch(setAppView(AppView.TRIP_VIEW))
     dispatch(closeNewTripModal())
+    dispatch(
+      changeCoordinatesAndZoom({
+        longitude: newTrip.destinationLongitude,
+        latitude: newTrip.destinationLatitude,
+        zoom: ZOOM_CITY_LEVEL,
+      }),
+    )
+    dispatch(
+      clearAllMarkersAndAdd_Store([
+        {
+          longitude: newTrip.destinationLongitude,
+          latitude: newTrip.destinationLatitude,
+        },
+      ]),
+    )
   }
 
   return (

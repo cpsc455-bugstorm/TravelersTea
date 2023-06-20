@@ -84,29 +84,21 @@ export function TripEntry({ id, buttonClassName, trip }) {
         key={`sidebar-trip-entry-${id}`}
         onClick={() => {
           dispatch(setActiveTripId(id))
-          // TODO: remove after connected to backend, it is here to prevent error
-          if (
-            !isNaN(trip.destinationLongitude) &&
-            !isNaN(trip.destinationLatitude)
-          ) {
-            dispatch(
-              changeCoordinatesAndZoom({
+          dispatch(
+            changeCoordinatesAndZoom({
+              longitude: trip.destinationLongitude,
+              latitude: trip.destinationLatitude,
+              zoom: ZOOM_CITY_LEVEL,
+            }),
+          )
+          dispatch(
+            clearAllMarkersAndAdd_Store([
+              {
                 longitude: trip.destinationLongitude,
                 latitude: trip.destinationLatitude,
-                zoom: ZOOM_CITY_LEVEL,
-              }),
-            )
-            dispatch(
-              clearAllMarkersAndAdd_Store([
-                {
-                  longitude: trip.destinationLongitude,
-                  latitude: trip.destinationLatitude,
-                },
-              ]),
-            )
-          } else {
-            console.log(`no coordinate yet`)
-          }
+              },
+            ]),
+          )
         }}
         className={buttonClassName}
       >
