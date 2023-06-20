@@ -34,11 +34,10 @@ export function SideBar() {
   const trips = useSelector((state) => state.trip.trips)
   const tripsStatus = useSelector((state) => state.trip.status)
   useEffect(() => {
-    dispatch(fetchTripsAsync())
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-  useEffect(() => {
-    if (tripsStatus === REQUEST_STATE.PENDING) {
+    if (
+      tripsStatus === REQUEST_STATE.PENDING ||
+      tripsStatus === REQUEST_STATE.IDLE
+    ) {
       dispatch(fetchTripsAsync())
     }
   }, [dispatch, tripsStatus])

@@ -25,6 +25,7 @@ export function NewTripForm() {
   }
 
   const onSubmit = async (data) => {
+    // this is default tripName, lat, long, TODO: get from other endpoints
     const tripDataWithTripName = {
       ...data,
       tripName: `Your Trip ${trips.length + 1}`,
