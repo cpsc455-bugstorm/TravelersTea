@@ -1,3 +1,4 @@
+require('dotenv').config()
 const { Configuration, OpenAIApi } = require('openai')
 let openai
 
@@ -6,12 +7,13 @@ const configuration = new Configuration({
 })
 console.log('key: ', process.env.OPEN_AI_API_KEY)
 openai = new OpenAIApi(configuration)
+let model = process.env.GPT_MODEL || 'gpt-3.5-turbo'
 
 async function openaiClient(conversation) {
   try {
     const response = await openai.createChatCompletion(
       {
-        model: 'gpt-4',
+        model: model,
         temperature: 0.888,
         max_tokens: 2048,
         frequency_penalty: 0,
