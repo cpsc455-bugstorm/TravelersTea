@@ -6,7 +6,7 @@ class TripRoute {
     this.router = express.Router()
     this.router.get('', this.getAll.bind(this))
     this.router.post('', this.create.bind(this))
-    this.router.patch('/:id', this.edit.bind(this))
+    this.router.patch('/:id', this.update.bind(this))
     this.router.delete('/:id', this.delete.bind(this))
   }
 
@@ -32,9 +32,9 @@ class TripRoute {
     }
   }
 
-  async edit(req, res) {
+  async update(req, res) {
     try {
-      const updatedTrip = await controllers.tripController.editTrip(
+      const updatedTrip = await controllers.tripController.updateTrip(
         req.params.id,
         req.body,
       )

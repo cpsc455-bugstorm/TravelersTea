@@ -15,7 +15,7 @@ export const fetchTripsAsync = createAsyncThunk(
 )
 
 export const createTripAsync = createAsyncThunk(
-  actionTypes.ADD_TRIP,
+  actionTypes.CREATE_TRIP,
   async (tripData, { rejectWithValue }) => {
     try {
       const response = await tripService.createTrip(tripData)
@@ -26,11 +26,11 @@ export const createTripAsync = createAsyncThunk(
   },
 )
 
-export const editTripAsync = createAsyncThunk(
-  actionTypes.EDIT_TRIP,
+export const updateTripAsync = createAsyncThunk(
+  actionTypes.UPDATE_TRIP,
   async ({ id, tripData }, { rejectWithValue }) => {
     try {
-      const response = await tripService.editTrip(id, tripData)
+      const response = await tripService.updateTrip(id, tripData)
       return response.data
     } catch (error) {
       return rejectWithValue({ message: error.response.data.error })

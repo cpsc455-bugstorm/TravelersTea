@@ -9,7 +9,7 @@ export const createTrip = async (tripData) => {
   return await axios.post(`${API_URL}/trip`, tripData)
 }
 
-export const editTrip = async (id, tripData) => {
+export const updateTrip = async (id, tripData) => {
   return await axios.patch(`${API_URL}/trip/${id}`, tripData)
 }
 
@@ -20,7 +20,7 @@ export const deleteTrip = async (id) => {
 const tripService = {
   fetchTrips,
   createTrip,
-  editTrip,
+  updateTrip,
   deleteTrip,
 }
 

@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { closeEditTripModal } from '../../redux/reducers/modalsSlice'
-import { editTripAsync } from '../../redux/reducers/trip/thunks'
+import { updateTripAsync } from '../../redux/reducers/trip/thunks'
 import { Modal } from '../common'
 import { TripForm } from './TripForm'
 
@@ -20,7 +20,7 @@ export function EditTripForm() {
   }
 
   const onSubmit = (data) => {
-    dispatch(editTripAsync({ id: data._id, tripData: data }))
+    dispatch(updateTripAsync({ id: data._id, tripData: data }))
     handleCloseEditTripModal()
   }
 

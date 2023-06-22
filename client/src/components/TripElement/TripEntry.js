@@ -16,7 +16,7 @@ import {
 import { openEditTripModal } from '../../redux/reducers/modalsSlice'
 import {
   deleteTripAsync,
-  editTripAsync,
+  updateTripAsync,
 } from '../../redux/reducers/trip/thunks'
 import { closeSidebar, setActiveTripId } from '../../redux/reducers/viewSlice'
 import { Button, Modal } from '../common'
@@ -57,7 +57,7 @@ export function TripEntry({ id, buttonClassName, trip }) {
   )
 
   const handleCheckClick = () => {
-    dispatch(editTripAsync({ id: id, tripData: { tripName: tripName } }))
+    dispatch(updateTripAsync({ id: id, tripData: { tripName: tripName } }))
     setIsRenaming(false)
   }
 

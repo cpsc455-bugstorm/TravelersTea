@@ -26,7 +26,7 @@ class TripController {
     }
   }
 
-  async editTrip(id, tripData) {
+  async updateTrip(id, tripData) {
     try {
       const updatedTrip = await TripModel.findByIdAndUpdate(id, tripData, {
         new: true,

@@ -4,7 +4,7 @@ import { REQUEST_STATE } from '../../states'
 import {
   createTripAsync,
   deleteTripAsync,
-  editTripAsync,
+  updateTripAsync,
   fetchTripsAsync,
 } from './thunks'
 /**
@@ -38,7 +38,7 @@ export const tripSlice = createSlice({
         state.trips.push(action.payload)
       },
     })
-    handleAsyncAction(builder, editTripAsync, {
+    handleAsyncAction(builder, updateTripAsync, {
       fulfilled: (state, action) => {
         const tripIndex = state.trips.findIndex(
           (trip) => trip._id === action.payload._id,
