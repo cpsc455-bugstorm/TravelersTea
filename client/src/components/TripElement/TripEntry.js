@@ -198,7 +198,7 @@ export function TripEntry({ id, buttonClassName, trip }) {
                   </Button>
                 </>
               }
-              title={"Confirm Delete"}
+              title={'Confirm Delete'}
             >
               <p>
                 Are you sure you want to delete <b>{trip.tripName}</b>?
