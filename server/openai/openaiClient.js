@@ -2,9 +2,7 @@ const { Configuration, OpenAIApi } = require('openai')
 let openai
 
 const configuration = new Configuration({
-  apiKey:
-    process.env.OPEN_AI_API_KEY ||
-    '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',
+  apiKey: process.env.OPEN_AI_API_KEY || 'add-alt-key-here',
 })
 console.log('key: ', process.env.OPEN_AI_API_KEY)
 openai = new OpenAIApi(configuration)
