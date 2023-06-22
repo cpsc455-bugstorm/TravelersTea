@@ -13,7 +13,7 @@ async function generateItinerary(constraints) {
           plan:[
             {
               day: Number
-              bulletpoint_summary: String
+              bullet_point_summary: String (comma seperated)
               stages:[
                 {
                   stage: Number,
