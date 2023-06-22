@@ -199,6 +199,9 @@ export function TripEntry({ id, buttonClassName, trip }) {
                 </>
               }
               title={'Confirm Delete'}
+              titleSize='text-3xl'
+              modalSize='sm'
+              classNameContent={'mx-20'}
             >
               <p>
                 Are you sure you want to delete <b>{trip.tripName}</b>?

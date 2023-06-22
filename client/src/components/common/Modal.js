@@ -25,6 +25,7 @@ Modal.propTypes = {
   children: PropTypes.node,
   footer: PropTypes.node,
   classNameMain: PropTypes.string,
+  modalSize: PropTypes.string,
   classNameTitle: PropTypes.string,
   titleSize: PropTypes.string,
   classNameContent: PropTypes.string,
@@ -51,6 +52,7 @@ export function Modal({
   children,
   footer,
   classNameMain,
+  modalSize = 'md',
   classNameTitle,
   titleSize = 'text-5xl',
   classNameContent,
@@ -60,7 +62,7 @@ export function Modal({
       <Dialog
         PaperComponent={isDraggable ? PaperComponent : undefined}
         fullWidth
-        maxWidth='md'
+        maxWidth={modalSize}
         className={`${classNameMain}`}
         open={open}
         onClose={handleClose}
@@ -73,7 +75,7 @@ export function Modal({
           />
           <Box my='0.5rem' pt='1rem'>
             <h1
-              className={`pb-8 text-center font-mono ${titleSize} ${classNameTitle}`}
+              className={`pb-2 pt-6 text-center font-mono ${titleSize} ${classNameTitle}`}
             >
               {title}
             </h1>
