@@ -4,6 +4,7 @@ module.exports = {
   safelist: [
     { pattern: /from-(.*)-(400)\/70/ },
     { pattern: /to-(.*)-(500)\/70/ },
+    { pattern: /to-(.*)-(400)\/(.*)/ },
   ],
   theme: {
     extend: {},

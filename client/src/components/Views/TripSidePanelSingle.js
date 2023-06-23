@@ -5,6 +5,7 @@ import { setAppView } from '../../redux/reducers/viewSlice'
 import { AppView } from '../../constants/enums'
 import { useDispatch, useSelector } from 'react-redux'
 import TripViewJson from '../../temp/tripViewData.json'
+import { getColorName } from '../../utils/translateTailwindColors'
 
 export function TripSidePanelSingle() {
   const activeDayNumber = useSelector((state) => state.view.activeDayNumber)
@@ -20,7 +21,9 @@ export function TripSidePanelSingle() {
     if (!dayDetails) return <></>
 
     return dayDetails['stages'].map((stage, index) => {
-      const toColor = 'to-black'
+      const toColor = `to-${getColorName(dayDetails['color'])}-400/${
+        index * 10 + 10
+      }`
       return (
         <div
           className={`bg-gradient-to-r from-transparent ${toColor} pb-6  pt-6`}
