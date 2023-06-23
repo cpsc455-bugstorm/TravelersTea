@@ -12,12 +12,11 @@ export function LoginScreen() {
   const handleLogin = (event) => {
     // TODO user authentication
     event.preventDefault()
-    dispatch(
-      login({
-        username: username,
-        password: password,
-      }),
-    )
+    const user = {
+      username: username,
+      password: password,
+    }
+    dispatch(login(user))
   }
 
   return (
