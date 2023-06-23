@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import { AppView } from '../../constants/enums'
 
 const initialState = {
-  activeDayNumber: undefined,
+  activeDayNumber: 1,
   activeTripId: undefined,
   appView: AppView.NEW_TRIP,
   isSidebarOpen: false,

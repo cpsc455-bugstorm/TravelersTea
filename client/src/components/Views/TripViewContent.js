@@ -1,18 +1,16 @@
 import { TeaCup } from './TeaCup'
-import { Button } from '../common'
-import { toggleContentFullscreen } from '../../redux/reducers/viewSlice'
 import { useEffect, useMemo, useState } from 'react'
 import TripViewJson from '../../temp/tripViewData.json'
-import { useDispatch, useSelector } from 'react-redux'
-import { getColorName } from '../../utils/translateTailwindColors'
-import blackGradient from '../../styles/blackGradient'
+import { useSelector } from 'react-redux'
+import { SeeMoreDrawer } from './SeeMoreDrawer'
+import { TripSidePanelSingle } from './TripSidePanelSingle'
 
 export function TripViewContent() {
   const activeTripId = useSelector((state) => state.view.activeTripId)
+  const isCompactView = useSelector((state) => state.preferences.compactView)
   const isContentFullscreen = useSelector(
     (state) => state.view.fullscreenContent,
   )
-  const dispatch = useDispatch()
 
   const [tripData, setTripData] = useState([])
 
@@ -38,74 +36,23 @@ export function TripViewContent() {
     })
   }, [tripData])
 
-  const cardContent = useMemo(() => {
-    return tripData.map((item, index) => {
-      const dayNumber = index + 1
-      const colorName = getColorName(item['color'])
-
-      return (
-        <div
-          key={`details-${dayNumber}`}
-          className={`from-${colorName}-400/70 to-${colorName}-500/70 my-4 box-border w-full rounded-md bg-gradient-to-br p-4 shadow-xl`}
-        >
-          <h3 className='text-lg font-bold text-white'>Day {dayNumber}</h3>
-          {item['stages'].map((stage, stageIndex) => {
-            return (
-              <div
-                key={`details-${dayNumber}-${stageIndex}`}
-                className='p-2 text-white'
-              >
-                <p className='font-semibold text-white'>
-                  {stage['stageName']}: {stage['locationName']}
-                </p>
-                <p className={' text-white'}>⤷ {stage['description']}</p>
-              </div>
-            )
-          })}
-        </div>
-      )
-    })
-  }, [tripData])
-
   const renderTeacupRow = useMemo(() => {
     return (
       <div
-        className={`pointer-events-auto flex w-full items-end overflow-y-hidden overflow-x-scroll px-4 mac-scrollbar`}
+        className={`black-gradient pointer-events-auto z-[5] flex w-full shrink-0 items-end overflow-y-hidden overflow-x-scroll px-4 pt-8 mac-scrollbar`}
       >
         {teaCups}
       </div>
     )
   }, [teaCups])
 
-  const renderShowMoreLessButton = useMemo(() => {
-    return (
-      <Button
-        className={`pointer-events-auto m-2 h-8 w-[calc(100%-1rem)] cursor-pointer rounded-md bg-white/5 py-1 font-bold text-white hover:bg-white/30`}
-        onClick={() => {
-          dispatch(toggleContentFullscreen())
-        }}
-      >
-        See {isContentFullscreen ? 'Less' : 'More'}
-      </Button>
-    )
-  }, [isContentFullscreen, dispatch])
-
-  const renderDetails = useMemo(() => {
-    return (
-      <div
-        className={`pointer-events-auto w-full overflow-y-auto bg-transparent 
-          ${isContentFullscreen ? 'h-1/2 p-4' : 'h-0'}`}
-      >
-        {cardContent}
-      </div>
-    )
-  }, [cardContent, isContentFullscreen])
-
   return (
-    <div className={`flex h-full w-full flex-col justify-end ${blackGradient}`}>
+    <div
+      className={`black-gradient flex h-full w-full flex-col items-end justify-end`}
+    >
+      {!isCompactView && !isContentFullscreen && <TripSidePanelSingle />}
       {renderTeacupRow}
-      {renderShowMoreLessButton}
-      {renderDetails}
+      <SeeMoreDrawer />
     </div>
   )
 }

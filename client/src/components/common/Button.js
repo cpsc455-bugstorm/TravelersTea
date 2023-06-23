@@ -7,7 +7,7 @@ Button.propTypes = {
 }
 
 const defaultStyles =
-  'items-center rounded-md border-0 p-2 transition-colors pointer-events-auto'
+  'items-center rounded-md border-0 p-2 transition-all pointer-events-auto'
 
 export function Button({ children, onClick, className = '' }) {
   const combinedStyles = `${defaultStyles} ${className}`
