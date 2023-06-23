@@ -151,6 +151,7 @@ The content of `.env` file should look like this (with the `<value>` replaced wi
 
 ```
 REACT_APP_MAPBOX_TOKEN = <value>
+REACT_APP_DEV_API_URL  = <value>
 ```
 
 #### Running the Project

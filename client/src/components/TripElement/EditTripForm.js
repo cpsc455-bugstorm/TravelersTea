@@ -1,27 +1,26 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { closeEditTripModal } from '../../redux/reducers/modalsSlice'
-import { selectTrips, editTrip } from '../../redux/reducers/userSlice'
+import { updateTripAsync } from '../../redux/reducers/trip/thunks'
 import { Modal } from '../common'
 import { TripForm } from './TripForm'
 
 export function EditTripForm() {
+  const dispatch = useDispatch()
+  const trips = useSelector((state) => state.trip.trips)
+
   const activeTripId = useSelector((state) => state.view.activeTripId)
-  const trips = useSelector(selectTrips)
-  const activeTrip = trips.find((trip) => trip.id === activeTripId)
+  const activeTrip = trips.find((trip) => trip._id === activeTripId)
 
   const editTripModalIsOpen = useSelector(
     (state) => state.modals.editTripModalIsOpen,
   )
-  const dispatch = useDispatch()
 
   const handleCloseEditTripModal = () => {
     dispatch(closeEditTripModal())
   }
 
   const onSubmit = (data) => {
-    // TODO: make api call to create new trip
-    console.log(data)
-    dispatch(editTrip({ ...activeTrip, ...data }))
+    dispatch(updateTripAsync({ id: data._id, tripData: data }))
     handleCloseEditTripModal()
   }
 

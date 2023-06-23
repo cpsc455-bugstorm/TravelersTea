@@ -1,24 +1,25 @@
 import AddIcon from '@mui/icons-material/Add'
 
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { AppView } from '../../constants/enums'
 import { openNewTripModal } from '../../redux/reducers/modalsSlice'
-import { selectTrips } from '../../redux/reducers/userSlice'
+import {
+  toggleCompactView,
+  toggleVerticalTimelines,
+} from '../../redux/reducers/preferencesSlice'
+import { fetchTripsAsync } from '../../redux/reducers/trip/thunks'
 import {
   closeSidebar,
   setAppView,
   toggleSidebar,
 } from '../../redux/reducers/viewSlice'
+import { REQUEST_STATE } from '../../redux/states'
+import blackGradient from '../../styles/blackGradient'
 import { TripEntry } from '../TripElement'
 import { Button, Toggle } from '../common'
 import { Logout } from '../user'
-import {
-  toggleCompactView,
-  toggleVerticalTimelines,
-} from '../../redux/reducers/preferencesSlice'
-import blackGradient from '../../styles/blackGradient'
 
 export function SideBar() {
   const dispatch = useDispatch()
@@ -30,7 +31,16 @@ export function SideBar() {
     (state) => state.preferences.verticalTimelines,
   )
 
-  const trips = useSelector(selectTrips)
+  const trips = useSelector((state) => state.trip.trips)
+  const tripsStatus = useSelector((state) => state.trip.status)
+  useEffect(() => {
+    if (
+      tripsStatus === REQUEST_STATE.PENDING ||
+      tripsStatus === REQUEST_STATE.IDLE
+    ) {
+      dispatch(fetchTripsAsync())
+    }
+  }, [dispatch, tripsStatus])
 
   const newTripButton = useMemo(() => {
     return (
@@ -51,15 +61,15 @@ export function SideBar() {
   const tripEntries = useMemo(() => {
     return trips.map((trip) => {
       const buttonColor =
-        trip.id === activeTripId &&
+        trip._id === activeTripId &&
         (appView === AppView.TRIP_VIEW || appView === AppView.DAY_VIEW)
           ? 'bg-green-700/50 font-medium text-white hover:bg-green-400/40'
           : 'bg-slate-800/60 hover:bg-slate-600/60 text-white'
 
       return (
         <TripEntry
-          id={trip.id}
-          key={`trip-entry-${trip.id}`}
+          id={trip._id}
+          key={`trip-entry-${trip._id}`}
           buttonClassName={`w-full ${buttonColor}`}
           trip={trip}
         />
@@ -122,8 +132,8 @@ export function SideBar() {
   const renderSidebar = useMemo(() => {
     return (
       <div
-        className={`fixed left-0 top-0 z-50 flex h-full w-1/5 flex-row overflow-hidden transition-all
-                       ${isSidebarOpen ? 'left-0' : 'left-[-20vw]'}`}
+        className={`fixed left-0 top-0 z-50 flex h-full w-[260px] flex-row overflow-hidden transition-all
+                       ${isSidebarOpen ? 'left-0' : 'left-[-260px]'}`}
       >
         <div className='relative flex h-full w-full flex-col justify-between overflow-hidden bg-slate-300'>
           <div className="z-0 h-full w-full flex-grow bg-slate-200 bg-[url('../public/little-prince.jpg')] bg-cover bg-center bg-blend-difference"></div>
@@ -142,7 +152,7 @@ export function SideBar() {
     return (
       <span
         className={`fixed top-0 z-50 flex h-full items-center transition-all ${
-          isSidebarOpen ? 'left-[20vw]' : 'left-0'
+          isSidebarOpen ? 'left-[260px]' : 'left-0'
         }`}
       >
         <div className='relative h-full w-10'>
