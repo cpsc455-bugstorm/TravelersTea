@@ -71,7 +71,7 @@ export function SeeMoreDrawer() {
       <div
         className={`pointer-events-auto w-full overflow-y-auto bg-transparent 
           ${
-            isContentFullscreen ? 'h-1/2 p-4 pt-0' : 'h-0'
+            isContentFullscreen ? 'max-h-[50vh] p-4 pt-0' : 'max-h-0'
           } transition-all duration-500 ease-in-out`}
       >
         {seeMoreCardContent}
