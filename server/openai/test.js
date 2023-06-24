@@ -1,6 +1,6 @@
 /*
  Simple test example of usage of generateItinerary function
- Run via `node test.js`
+ Run via `node openai/test.js` from `server/` or wherever the .env file with the openai key is
 */
 
 const generateItinerary = require('./generateItenerary')
