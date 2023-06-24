@@ -18,6 +18,7 @@ const _setAppView = (state, action) => {
 // payload: number (the id of the active trip).
 const _setActiveTripId = (state, action) => {
   state.activeTripId = action.payload
+  state.activeDayNumber = 1
   _setAppView(state, { payload: AppView.TRIP_VIEW })
 }
 

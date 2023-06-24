@@ -7,10 +7,6 @@ import { TripSidePanelSingle } from './TripSidePanelSingle'
 
 export function TripViewContent() {
   const activeTripId = useSelector((state) => state.view.activeTripId)
-  const isCompactView = useSelector((state) => state.preferences.compactView)
-  const isContentFullscreen = useSelector(
-    (state) => state.view.fullscreenContent,
-  )
 
   const [tripData, setTripData] = useState([])
 
@@ -51,7 +47,7 @@ export function TripViewContent() {
     <div
       className={`black-gradient flex h-full w-full flex-col items-end justify-end`}
     >
-      {!isCompactView && !isContentFullscreen && <TripSidePanelSingle />}
+      <TripSidePanelSingle />
       {renderTeacupRow}
       <SeeMoreDrawer />
     </div>

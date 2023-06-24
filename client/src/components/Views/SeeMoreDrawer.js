@@ -13,7 +13,8 @@ export function SeeMoreDrawer() {
 
   useEffect(() => {
     // TODO edit this entire block to fetch from backend
-    const endIndex = 1 + activeTripId * 3
+    // id is uuid, can't use activeTripId here
+    const endIndex = 1 + (Math.floor(Math.random() * 3) + 1) * 3
     const mockData = TripViewJson.slice(0, endIndex)
     setTripData(mockData)
   }, [activeTripId])
@@ -69,7 +70,9 @@ export function SeeMoreDrawer() {
       {renderShowMoreLessButton}
       <div
         className={`pointer-events-auto w-full overflow-y-auto bg-transparent 
-          ${isContentFullscreen ? 'h-1/2 p-4 pt-0' : 'h-0'}`}
+          ${
+            isContentFullscreen ? 'h-1/2 p-4 pt-0' : 'h-0'
+          } transition-all duration-500 ease-in-out`}
       >
         {seeMoreCardContent}
       </div>
