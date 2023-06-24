@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import { AppView } from '../../constants/enums'
 
 const initialState = {
-  activeDayNumber: undefined,
+  activeDayNumber: 1,
   activeTripId: undefined,
   appView: AppView.NEW_TRIP,
   isSidebarOpen: false,
@@ -15,9 +15,10 @@ const _setAppView = (state, action) => {
   state.fullscreenContent = false
 }
 
-// payload: number (the id of the active trip). ** This is 1-indexed **
+// payload: number (the id of the active trip).
 const _setActiveTripId = (state, action) => {
   state.activeTripId = action.payload
+  state.activeDayNumber = 1
   _setAppView(state, { payload: AppView.TRIP_VIEW })
 }
 
