@@ -18,10 +18,10 @@ module.exports = {
         },
         '.mac-scrollbar::-webkit-scrollbar-thumb': {
           'border-radius': '6px',
-          'background-color': 'rgba(65,73,89,0.8)',
+          'background-color': 'rgba(57,64,80)',
         },
         '.mac-scrollbar::-webkit-scrollbar-track': {
-          background: 'rgba(40,44,49,0.5)',
+          background: 'rgba(27,33,46)',
           position: 'absolute',
           'z-index': 10,
         },

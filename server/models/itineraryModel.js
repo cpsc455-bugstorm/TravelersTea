@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const itineraryStageSchema = new mongoose.Schema({
   stage: Number,
-  place: String,
+  locationName: String,
   description: String,
   address: String,
   cost: Number,

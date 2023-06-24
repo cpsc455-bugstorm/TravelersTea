@@ -41,7 +41,7 @@ export function SeeMoreDrawer() {
                 className='p-2 text-white'
               >
                 <p className='font-semibold text-white'>
-                  {stage['stageName']}: {stage['locationName']}
+                  {stage['stage']}: {stage['locationName']}
                 </p>
                 <p className={'text-white'}>⤷ {stage['description']}</p>
               </div>
@@ -69,10 +69,8 @@ export function SeeMoreDrawer() {
     <>
       {renderShowMoreLessButton}
       <div
-        className={`pointer-events-auto w-full overflow-y-auto bg-transparent 
-          ${
-            isContentFullscreen ? 'max-h-[50vh] p-4 pt-0' : 'max-h-0'
-          } transition-all duration-500 ease-in-out`}
+        className={`pointer-events-auto w-full overflow-y-auto bg-transparent transition-all duration-500 ease-in-out mac-scrollbar
+          ${isContentFullscreen ? 'max-h-[50vh] p-4 pt-0' : 'max-h-0'}`}
       >
         {seeMoreCardContent}
       </div>

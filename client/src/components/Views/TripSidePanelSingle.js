@@ -43,7 +43,7 @@ export function TripSidePanelSingle() {
       }`
       return (
         <div
-          className={`bg-gradient-to-r from-transparent ${toColor} pb-6  pt-6`}
+          className={`bg-gradient-to-r from-transparent ${toColor} px-5 py-6`}
           key={`details-${activeDayNumber}-${index}`}
         >
           <p className={'text-xl font-semibold text-slate-100'}>
@@ -59,9 +59,7 @@ export function TripSidePanelSingle() {
     <div
       className={`pointer-events-auto relative m-4 flex w-1/3 flex-col items-center justify-center overflow-hidden rounded-md bg-slate-900 text-center transition-all
         ${
-          isVisible
-            ? 'max-h-full scale-100 opacity-100'
-            : 'max-h-0 scale-95 opacity-0'
+          isVisible ? 'h-full scale-100 opacity-100' : 'h-0 scale-95 opacity-0'
         }`}
     >
       {isVisible && dayDetails && (
