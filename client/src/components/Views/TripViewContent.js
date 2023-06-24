@@ -16,7 +16,8 @@ export function TripViewContent() {
 
   useEffect(() => {
     // TODO edit this entire block to fetch from backend
-    const endIndex = 1 + activeTripId * 3
+    // id is uuid, can't use activeTripId here
+    const endIndex = 1 + (Math.floor(Math.random() * 3) + 1) * 3
     const mockData = TripViewJson.slice(0, endIndex)
     setTripData(mockData)
   }, [activeTripId])

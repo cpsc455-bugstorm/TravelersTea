@@ -15,7 +15,7 @@ const _setAppView = (state, action) => {
   state.fullscreenContent = false
 }
 
-// payload: number (the id of the active trip). ** This is 1-indexed **
+// payload: number (the id of the active trip).
 const _setActiveTripId = (state, action) => {
   state.activeTripId = action.payload
   _setAppView(state, { payload: AppView.TRIP_VIEW })
