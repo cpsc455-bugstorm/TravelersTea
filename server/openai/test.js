@@ -1,7 +1,7 @@
-/**
-*  <use case / description>
-* Run via `node test.js`
-* /
+/*
+ Simple test example of usage of generateItinerary function
+ Run via `node test.js`
+*/
 
 const generateItinerary = require('./generateItenerary')
 const Itinerary = require('../models/itineraryModel')
