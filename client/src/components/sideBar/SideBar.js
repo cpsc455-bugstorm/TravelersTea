@@ -16,7 +16,6 @@ import {
   toggleSidebar,
 } from '../../redux/reducers/viewSlice'
 import { REQUEST_STATE } from '../../redux/states'
-import blackGradient from '../../styles/blackGradient'
 import { TripEntry } from '../TripElement'
 import { Button, Toggle } from '../common'
 import { Logout } from '../user'
@@ -137,7 +136,7 @@ export function SideBar() {
       >
         <div className='relative flex h-full w-full flex-col justify-between overflow-hidden bg-slate-300'>
           <div className="z-0 h-full w-full flex-grow bg-slate-200 bg-[url('../public/little-prince.jpg')] bg-cover bg-center bg-blend-difference"></div>
-          <div className={`absolute inset-0 z-10 ${blackGradient} p-2`}>
+          <div className={`black-gradient absolute inset-0 z-10 p-2`}>
             <div className='relative z-20 flex h-full flex-col justify-between'>
               {renderSidebarTrips}
               {renderSidebarBottomPortion}
@@ -159,7 +158,7 @@ export function SideBar() {
           <div className='absolute inset-0 z-0'></div>
           <Button
             onClick={() => dispatch(toggleSidebar())}
-            className={`relative z-10 h-full w-full rounded-none text-6xl ${blackGradient} hover:bg-slate-50/20`}
+            className={`black-gradient relative z-10 h-full w-full rounded-none text-6xl hover:bg-slate-50/20`}
           >
             {isSidebarOpen ? '‹' : '›'}
           </Button>
