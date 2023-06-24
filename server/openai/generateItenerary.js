@@ -19,7 +19,6 @@ async function generateItinerary(constraints) {
                   stage: Number,
                   place: String,
                   description: String,
-                  address: String,
                   emoji: String (best emoji representation of stage)
                 }
               ]
