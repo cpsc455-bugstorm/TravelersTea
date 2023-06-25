@@ -21,11 +21,11 @@ const stageSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  stagesLongitude: Number,
-  stagesLatitude: Number,
-  destination: String,
+  stageLongitude: Number,
+  stageLatitude: Number,
+  locationName: String,
   desription: String,
-  colourOfPin: Number,
+  colourNumber: Number,
 })
 
 module.exports = mongoose.model('Stage', stageSchema)

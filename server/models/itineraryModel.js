@@ -1,22 +1,33 @@
-const mongoose = require('mongoose')
+/**
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ * RITHIN PLS USE THE TRIP AND STAGE MODEL
+ */
 
-const stageSchema = new mongoose.Schema({
-  stage: Number,
-  place: String,
-  description: String,
-  address: String,
-  cost: Number,
-})
+// const mongoose = require('mongoose')
 
-const tripSchema = new mongoose.Schema({
-  destination: String,
-  budget: Number,
-  days: Number,
-  stages: Number,
-  preferences: [String],
-  plan: [stageSchema],
-})
+// const stageSchema = new mongoose.Schema({
+//   stage: Number,
+//   place: String,
+//   description: String,
+//   address: String,
+//   cost: Number,
+// })
 
-const Itinerary = mongoose.model('trip', tripSchema)
+// const tripSchema = new mongoose.Schema({
+//   destination: String,
+//   budget: Number,
+//   days: Number,
+//   stages: Number,
+//   preferences: [String],
+//   plan: [stageSchema],
+// })
 
-module.exports = Itinerary
+// const Itinerary = mongoose.model('trip', tripSchema)
+
+// module.exports = Itinerary
