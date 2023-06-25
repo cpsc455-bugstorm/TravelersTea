@@ -15,8 +15,8 @@ import {
  *  stagesPerDay: number, - Number of stages or activities planned per day (user input)
  *  budget: number, - Total budget for the trip (user input)
  *  numberOfDays: number - Total number of days for the trip (user input)
- *  destinationLongitude: number - longitude (generated from BE)
- *  destinationLatitude: number - latitude (generated from BE)
+ *  tripLongitude: number - longitude (generated from BE)
+ *  tripLatitude: number - latitude (generated from BE)
  * }]
  */
 export const tripSlice = createSlice({
