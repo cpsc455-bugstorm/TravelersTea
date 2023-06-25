@@ -86,16 +86,16 @@ export function TripEntry({ id, buttonClassName, trip }) {
           dispatch(setActiveTripId(id))
           dispatch(
             changeCoordinatesAndZoom({
-              longitude: trip.destinationLongitude,
-              latitude: trip.destinationLatitude,
+              longitude: trip.tripLongitude,
+              latitude: trip.tripLatitude,
               zoom: ZOOM_CITY_LEVEL,
             }),
           )
           dispatch(
             clearAllMarkersAndAdd_Store([
               {
-                longitude: trip.destinationLongitude,
-                latitude: trip.destinationLatitude,
+                longitude: trip.tripLongitude,
+                latitude: trip.tripLatitude,
               },
             ]),
           )

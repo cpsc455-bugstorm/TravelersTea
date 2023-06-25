@@ -29,8 +29,8 @@ export function NewTripForm() {
     const tripDataWithTripName = {
       ...data,
       tripName: `Your Trip ${trips.length + 1}`,
-      destinationLatitude: 49.23990319450836,
-      destinationLongitude: -123.15644121337681,
+      tripLatitude: 49.23990319450836,
+      tripLongitude: -123.15644121337681,
     }
     const newTrip = await dispatch(
       createTripAsync(tripDataWithTripName),
@@ -40,16 +40,16 @@ export function NewTripForm() {
     dispatch(closeNewTripModal())
     dispatch(
       changeCoordinatesAndZoom({
-        longitude: newTrip.destinationLongitude,
-        latitude: newTrip.destinationLatitude,
+        longitude: newTrip.tripLongitude,
+        latitude: newTrip.tripLatitude,
         zoom: ZOOM_CITY_LEVEL,
       }),
     )
     dispatch(
       clearAllMarkersAndAdd_Store([
         {
-          longitude: newTrip.destinationLongitude,
-          latitude: newTrip.destinationLatitude,
+          longitude: newTrip.tripLongitude,
+          latitude: newTrip.tripLatitude,
         },
       ]),
     )

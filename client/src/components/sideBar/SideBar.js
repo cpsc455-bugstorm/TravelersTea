@@ -58,7 +58,7 @@ export function SideBar() {
   }, [dispatch])
 
   const tripEntries = useMemo(() => {
-    return trips.map((trip) => {
+    return trips.map((trip, index) => {
       const buttonColor =
         trip._id === activeTripId &&
         (appView === AppView.TRIP_VIEW || appView === AppView.DAY_VIEW)
@@ -68,7 +68,7 @@ export function SideBar() {
       return (
         <TripEntry
           id={trip._id}
-          key={`trip-entry-${trip._id}`}
+          key={`trip-entry-${index}`}
           buttonClassName={`w-full ${buttonColor}`}
           trip={trip}
         />
