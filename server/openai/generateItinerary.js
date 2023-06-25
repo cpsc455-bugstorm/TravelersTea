@@ -7,7 +7,8 @@ async function generateItinerary(constraints) {
         role: 'system',
         content: `You are an AI that generates travel itineraries. Respond with ONLY JSON that contains the plan for each stage. 
         ONLY respond with the following format, do not include any descriptions or codeblocks, I should be able to parse the output to a JavaScript Object
-        The response needs to be formatted exactly like the following structure. Add some Food and snack stages as well with an optional: true marker.:
+        The response needs to be formatted exactly like the following structure. Add some Food and snack stages as well with an optional: true marker; 
+        otherwise, do NOT return more days nor stages than requested.:
         '''
         {
           stages: [
