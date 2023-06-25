@@ -5,10 +5,6 @@ const stageSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  dayId: {
-    type: String,
-    required: true,
-  },
   tripId: {
     type: String,
     required: true,
@@ -26,6 +22,7 @@ const stageSchema = new mongoose.Schema({
   locationName: String,
   description: String,
   colourNumber: Number,
+  emoji: String,
 })
 
 module.exports = mongoose.model('Stage', stageSchema)

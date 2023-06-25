@@ -12,6 +12,7 @@ const tripSchema = new mongoose.Schema({
   numberOfDays: Number,
   tripLongitude: Number,
   tripLatitude: Number,
+  preferences: [{ type: String }],
 })
 
 module.exports = mongoose.model('Trip', tripSchema)

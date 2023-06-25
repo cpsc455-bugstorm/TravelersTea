@@ -10,18 +10,13 @@ async function generateItinerary(constraints) {
         The response needs to be formatted exactly like the following structure. Add some Food and snack stages as well with an optional: true marker.:
         '''
         {
-          plan:[
+          stages: [
             {
-              day: Number
-              bullet_point_summary: String (comma seperated. Can be the names of each place)
-              stages:[
-                {
-                  stage: Number,
-                  place: String,
-                  description: String,
-                  emoji: String (best emoji representation of stage)
-                }
-              ]
+              dayIndex: Number
+              stageIndex: Number,
+              locationName: String,
+              description: String,
+              emoji: String (best Unicode code representation of stage)
             }
           ]
         }
