@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const itineraryStageSchema = new mongoose.Schema({
+const stageSchema = new mongoose.Schema({
   stage: Number,
   place: String,
   description: String,
@@ -8,15 +8,15 @@ const itineraryStageSchema = new mongoose.Schema({
   cost: Number,
 })
 
-const itinerarySchema = new mongoose.Schema({
+const tripSchema = new mongoose.Schema({
   destination: String,
   budget: Number,
   days: Number,
   stages: Number,
   preferences: [String],
-  plan: [itineraryStageSchema],
+  plan: [stageSchema],
 })
 
-const Itinerary = mongoose.model('Itinerary', itinerarySchema)
+const Itinerary = mongoose.model('trip', tripSchema)
 
 module.exports = Itinerary
