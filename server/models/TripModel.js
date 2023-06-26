@@ -10,8 +10,8 @@ const tripSchema = new mongoose.Schema({
   stagesPerDay: Number,
   budget: Number,
   numberOfDays: Number,
-  destinationLongitude: Number,
-  destinationLatitude: Number,
+  tripLongitude: Number,
+  tripLatitude: Number,
 })
 
 module.exports = mongoose.model('Trip', tripSchema)
