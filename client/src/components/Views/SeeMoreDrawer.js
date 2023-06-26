@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
-import { getColorName } from '../../utils/translateTailwindColors'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button } from '../common'
 import { toggleContentFullscreen } from '../../redux/reducers/viewSlice'
 import TripViewJson from '../../temp/tripViewData.json'
+import { getTailwindName } from '../../util/tailwindColors'
 
 export function SeeMoreDrawer() {
   const activeTripId = useSelector((state) => state.view.activeTripId)
@@ -26,7 +26,7 @@ export function SeeMoreDrawer() {
   const seeMoreCardContent = useMemo(() => {
     return tripData.map((item, index) => {
       const dayNumber = index + 1
-      const colorName = getColorName(item['color'])
+      const colorName = getTailwindName(item[0]['colorNumber'])
 
       return (
         <div
@@ -34,7 +34,7 @@ export function SeeMoreDrawer() {
           className={`from-${colorName}-400/70 to-${colorName}-500/70 my-4 box-border w-full rounded-md bg-gradient-to-br p-4 shadow-xl`}
         >
           <h3 className='text-lg font-bold text-white'>Day {dayNumber}</h3>
-          {item['stages'].map((stage, stageIndex) => {
+          {item.map((stage, stageIndex) => {
             return (
               <div
                 key={`details-${dayNumber}-${stageIndex}`}

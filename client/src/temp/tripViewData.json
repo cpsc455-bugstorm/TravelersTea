@@ -1,208 +1,204 @@
 [
-  {
-    "color": "bg-red-400",
-    "stages": [
-      {
-        "stage": "1-Breakfast",
-        "locationName": "Medina Cafe",
-        "description": "Located in the heart of Vancouver, Medina Cafe is a beloved breakfast spot renowned for its gourmet offerings. ",
-        "emoji": "\uD83C\uDF73"
-      },
-      {
-        "stage": "1-1",
-        "locationName": "Stanley Park",
-        "description": "As one of Vancouver's iconic landmarks, Stanley Park is an urban oasis that beckons nature lovers and adventure seekers alike.",
-        "emoji": "\uD83C\uDF33"
-      },
-      {
-        "stage": "1-2",
-        "locationName": "Granville Island",
-        "description": "A vibrant hub of arts, culture, and culinary delights, featuring a bustling public market, local shops, galleries, and live performances.",
-        "emoji": "\uD83C\uDFEC"
-      }
-    ]
-  },
-  {
-    "color": "bg-amber-400",
-    "stages": [
-      {
-        "stage": "2-Breakfast",
-        "locationName": "Tim Hortons",
-        "description": "A popular Canadian coffee chain known for its delicious coffee, donuts, and breakfast offerings",
-        "emoji": "\u2615"
-      },
-      {
-        "stage": "2-1",
-        "locationName": "Gastown",
-        "description": "A historic neighborhood in Vancouver known for its cobblestone streets, Victorian architecture, and vibrant culinary scene.",
-        "emoji": "\uD83C\uDFD9️"
-      },
-      {
-        "stage": "2-2",
-        "locationName": "Capilano Suspension Bridge",
-        "description": "A thrilling and awe-inspiring suspension bridge nestled amidst towering trees, offering breathtaking views and nature walks.",
-        "emoji": "\uD83C\uDF09"
-      }
-    ]
-  },
-  {
-    "color": "bg-blue-400",
-    "stages": [
-      {
-        "stage": "3-1",
-        "locationName": "Nemesis Coffee",
-        "description": "Specialty coffee and innovative brunch in a trendy setting.",
-        "emoji": "\u2615"
-      },
-      {
-        "stage": "3-2",
-        "locationName": "English Bay",
-        "description": "A popular beachfront area to relax, swim, and enjoy stunning sunsets.",
-        "emoji": "\uD83C\uDFD6"
-      },
-      {
-        "stage": "3-3",
-        "locationName": "Vancouver Aquarium",
-        "description": "Discover fascinating marine life and engage in educational experiences.",
-        "emoji": "\uD83D\uDC20"
-      }
-    ]
-  },
-  {
-    "color": "bg-gray-400",
-    "stages": [
-      {
-        "stage": "4-1",
-        "locationName": "Jam Cafe",
-        "description": "Indulge in hearty breakfast dishes and mouthwatering brunch options in a cozy and inviting atmosphere.",
-        "emoji": "\uD83C\uDF72"
-      },
-      {
-        "stage": "4-2",
-        "locationName": "Queen Elizabeth Park",
-        "description": "Immerse yourself in the beauty of lush gardens, breathtaking views, and tranquil walking trails.",
-        "emoji": "\uD83C\uDF3F"
-      },
-      {
-        "stage": "4-3",
-        "locationName": "Ask for Luigi",
-        "description": "Savor authentic Italian cuisine in a warm and welcoming restaurant known for its delectable pasta dishes.",
-        "emoji": "\uD83C\uDF55"
-      }
-    ]
-  },
-  {
-    "color": "bg-lime-400",
-    "stages": [
-      {
-        "stage": "5-1",
-        "locationName": "Lynn Canyon Park",
-        "description": "Embark on an adventure through a lush forest, cross the suspension bridge, and marvel at stunning waterfalls.",
-        "emoji": "\uD83D\uDC99"
-      },
-      {
-        "stage": "5-2",
-        "locationName": "Nelson the Seagull",
-        "description": "A charming artisan bakery offering delicious bread, pastries, and a cozy atmosphere for a delightful breakfast.",
-        "emoji": "\uD83E\uDDC0"
-      },
-      {
-        "stage": "5-3",
-        "locationName": "The Museum of Anthropology",
-        "description": "Explore the rich history and culture of indigenous peoples through captivating exhibits and artifacts.",
-        "emoji": "\uD83D\uDCC2"
-      }
-    ]
-  },
-  {
-    "color": "bg-pink-400",
-    "stages": [
-      {
-        "stage": "6-1",
-        "locationName": "OEB Breakfast Co.",
-        "description": "Experience inventive and mouthwatering breakfast creations crafted with quality ingredients and creative flair.",
-        "emoji": "\uD83C\uDF73"
-      },
-      {
-        "stage": "6-2",
-        "locationName": "Dr. Sun Yat-Sen Classical Chinese Garden",
-        "description": "Step into a serene oasis showcasing the elegance of a traditional Chinese garden, complete with peaceful ponds and beautiful architecture.",
-        "emoji": "\uD83C\uDF3D"
-      },
-      {
-        "stage": "6-3",
-        "locationName": "Purebread",
-        "description": "Indulge in a heavenly assortment of bread and pastries baked to perfection, making it a paradise for bread and pastry lovers.",
-        "emoji": "\uD83C\uDF70"
-      }
-    ]
-  },
-  {
-    "color": "bg-teal-400",
-    "stages": [
-      {
-        "stage": "Breakfast",
-        "locationName": "Purebread",
-        "description": "Heaven for bread and pastry lovers.",
-        "emoji": "\uD83E\uDD50"
-      },
-      {
-        "stage": "1-1",
-        "locationName": "Vancouver Aquarium",
-        "description": "Discover fascinating marine life.",
-        "emoji": "\uD83D\uDC20"
-      }
-    ]
-  },
-  {
-    "color": "bg-violet-400",
-    "stages": [
-      {
-        "stage": "Breakfast",
-        "locationName": "Ask for Luigi",
-        "description": "Delicious Italian cuisine in a cozy setting.",
-        "emoji": "\uD83C\uDF5D"
-      },
-      {
-        "stage": "1-1",
-        "locationName": "Dr. Sun Yat-Sen Classical Chinese Garden",
-        "description": "A serene oasis in the heart of the city.",
-        "emoji": "\uD83C\uDF8D"
-      }
-    ]
-  },
-  {
-    "color": "bg-yellow-700",
-    "stages": [
-      {
-        "stage": "Breakfast",
-        "locationName": "OEB Breakfast Co.",
-        "description": "Inventive breakfast creations.",
-        "emoji": "\uD83C\uDF73"
-      },
-      {
-        "stage": "1-1",
-        "locationName": "Lynn Canyon Park",
-        "description": "Experience the suspension bridge and waterfalls.",
-        "emoji": "\uD83C\uDF32"
-      }
-    ]
-  },
-  {
-    "color": "bg-green-400",
-    "stages": [
-      {
-        "stage": "Breakfast",
-        "locationName": "Nelson the Seagull",
-        "description": "Artisan bakery with delicious bread and pastries.",
-        "emoji": "\uD83E\uDD50"
-      },
-      {
-        "stage": "1-1",
-        "locationName": "The Museum of Anthropology",
-        "description": "Explore indigenous art and artifacts.",
-        "emoji": "\uD83C\uDFDB️"
-      }
-    ]
-  }
+  [
+    {
+      "colorNumber": 0,
+      "stage": "1-Breakfast",
+      "locationName": "Medina Cafe",
+      "description": "Located in the heart of Vancouver, Medina Cafe is a beloved breakfast spot renowned for its gourmet offerings. ",
+      "emoji": "\uD83C\uDF73"
+    },
+    {
+      "colorNumber": 0,
+      "stage": "1-1",
+      "locationName": "Stanley Park",
+      "description": "As one of Vancouver's iconic landmarks, Stanley Park is an urban oasis that beckons nature lovers and adventure seekers alike.",
+      "emoji": "\uD83C\uDF33"
+    },
+    {
+      "colorNumber": 0,
+      "stage": "1-2",
+      "locationName": "Granville Island",
+      "description": "A vibrant hub of arts, culture, and culinary delights, featuring a bustling public market, local shops, galleries, and live performances.",
+      "emoji": "\uD83C\uDFEC"
+    }
+  ],
+  [
+    {
+      "colorNumber": 2,
+      "stage": "2-Breakfast",
+      "locationName": "Tim Hortons",
+      "description": "A popular Canadian coffee chain known for its delicious coffee, donuts, and breakfast offerings",
+      "emoji": "\u2615"
+    },
+    {
+      "colorNumber": 2,
+      "stage": "2-1",
+      "locationName": "Gastown",
+      "description": "A historic neighborhood in Vancouver known for its cobblestone streets, Victorian architecture, and vibrant culinary scene.",
+      "emoji": "\uD83C\uDFD9️"
+    },
+    {
+      "colorNumber": 2,
+      "stage": "2-2",
+      "locationName": "Capilano Suspension Bridge",
+      "description": "A thrilling and awe-inspiring suspension bridge nestled amidst towering trees, offering breathtaking views and nature walks.",
+      "emoji": "\uD83C\uDF09"
+    }
+  ],
+  [
+    {
+      "colorNumber": 8,
+      "stage": "3-1",
+      "locationName": "Nemesis Coffee",
+      "description": "Specialty coffee and innovative brunch in a trendy setting.",
+      "emoji": "\u2615"
+    },
+    {
+      "colorNumber": 8,
+      "stage": "3-2",
+      "locationName": "English Bay",
+      "description": "A popular beachfront area to relax, swim, and enjoy stunning sunsets.",
+      "emoji": "\uD83C\uDFD6"
+    },
+    {
+      "colorNumber": 8,
+      "stage": "3-3",
+      "locationName": "Vancouver Aquarium",
+      "description": "Discover fascinating marine life and engage in educational experiences.",
+      "emoji": "\uD83D\uDC20"
+    }
+  ],
+  [
+    {
+      "colorNumber": 16,
+      "stage": "4-1",
+      "locationName": "Jam Cafe",
+      "description": "Indulge in hearty breakfast dishes and mouthwatering brunch options in a cozy and inviting atmosphere.",
+      "emoji": "\uD83C\uDF72"
+    },
+    {
+      "colorNumber": 16,
+      "stage": "4-2",
+      "locationName": "Queen Elizabeth Park",
+      "description": "Immerse yourself in the beauty of lush gardens, breathtaking views, and tranquil walking trails.",
+      "emoji": "\uD83C\uDF3F"
+    },
+    {
+      "colorNumber": 16,
+      "stage": "4-3",
+      "locationName": "Ask for Luigi",
+      "description": "Savor authentic Italian cuisine in a warm and welcoming restaurant known for its delectable pasta dishes.",
+      "emoji": "\uD83C\uDF55"
+    }
+  ],
+  [
+    {
+      "colorNumber": 4,
+      "stage": "5-1",
+      "locationName": "Lynn Canyon Park",
+      "description": "Embark on an adventure through a lush forest, cross the suspension bridge, and marvel at stunning waterfalls.",
+      "emoji": "\uD83D\uDC99"
+    },
+    {
+      "colorNumber": 4,
+      "stage": "5-2",
+      "locationName": "Nelson the Seagull",
+      "description": "A charming artisan bakery offering delicious bread, pastries, and a cozy atmosphere for a delightful breakfast.",
+      "emoji": "\uD83E\uDDC0"
+    },
+    {
+      "colorNumber": 4,
+      "stage": "5-3",
+      "locationName": "The Museum of Anthropology",
+      "description": "Explore the rich history and culture of indigenous peoples through captivating exhibits and artifacts.",
+      "emoji": "\uD83D\uDCC2"
+    }
+  ],
+  [
+    {
+      "colorNumber": 14,
+      "stage": "6-1",
+      "locationName": "OEB Breakfast Co.",
+      "description": "Experience inventive and mouthwatering breakfast creations crafted with quality ingredients and creative flair.",
+      "emoji": "\uD83C\uDF73"
+    },
+    {
+      "colorNumber": 14,
+      "stage": "6-2",
+      "locationName": "Dr. Sun Yat-Sen Classical Chinese Garden",
+      "description": "Step into a serene oasis showcasing the elegance of a traditional Chinese garden, complete with peaceful ponds and beautiful architecture.",
+      "emoji": "\uD83C\uDF3D"
+    },
+    {
+      "colorNumber": 14,
+      "stage": "6-3",
+      "locationName": "Purebread",
+      "description": "Indulge in a heavenly assortment of bread and pastries baked to perfection, making it a paradise for bread and pastry lovers.",
+      "emoji": "\uD83C\uDF70"
+    }
+  ],
+  [
+    {
+      "colorNumber": 7,
+      "stage": "Breakfast",
+      "locationName": "Purebread",
+      "description": "Heaven for bread and pastry lovers.",
+      "emoji": "\uD83E\uDD50"
+    },
+    {
+      "colorNumber": 7,
+      "stage": "1-1",
+      "locationName": "Vancouver Aquarium",
+      "description": "Discover fascinating marine life.",
+      "emoji": "\uD83D\uDC20"
+    }
+  ],
+  [
+    {
+      "colorNumber": 10,
+      "stage": "Breakfast",
+      "locationName": "Ask for Luigi",
+      "description": "Delicious Italian cuisine in a cozy setting.",
+      "emoji": "\uD83C\uDF5D"
+    },
+    {
+      "colorNumber": 10,
+      "stage": "1-1",
+      "locationName": "Dr. Sun Yat-Sen Classical Chinese Garden",
+      "description": "A serene oasis in the heart of the city.",
+      "emoji": "\uD83C\uDF8D"
+    }
+  ],
+  [
+    {
+      "colorNumber": 3,
+      "stage": "Breakfast",
+      "locationName": "OEB Breakfast Co.",
+      "description": "Inventive breakfast creations.",
+      "emoji": "\uD83C\uDF73"
+    },
+    {
+      "colorNumber": 3,
+      "stage": "1-1",
+      "locationName": "Lynn Canyon Park",
+      "description": "Experience the suspension bridge and waterfalls.",
+      "emoji": "\uD83C\uDF32"
+    }
+  ],
+  [
+    {
+      "colorNumber": 6,
+      "stage": "Breakfast",
+      "locationName": "Nelson the Seagull",
+      "description": "Artisan bakery with delicious bread and pastries.",
+      "emoji": "\uD83E\uDD50"
+    },
+    {
+      "colorNumber": 6,
+      "stage": "1-1",
+      "locationName": "The Museum of Anthropology",
+      "description": "Explore indigenous art and artifacts.",
+      "emoji": "\uD83C\uDFDB️"
+    }
+  ]
 ]

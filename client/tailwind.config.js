@@ -5,6 +5,7 @@ module.exports = {
     { pattern: /from-(.*)-(400)\/70/ },
     { pattern: /to-(.*)-(500)\/70/ },
     { pattern: /to-(.*)-(400)\/(.*)/ },
+    { pattern: /bg-(.*)-(400)/ },
   ],
   theme: {
     extend: {},

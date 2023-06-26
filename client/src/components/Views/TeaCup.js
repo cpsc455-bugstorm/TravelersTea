@@ -1,6 +1,6 @@
 import LocalCafeTwoTone from '@mui/icons-material/LocalCafeTwoTone'
 import PropTypes from 'prop-types'
-import { getHexCode } from '../../utils/translateTailwindColors'
+import { getHexCode } from '../../util/tailwindColors'
 import { useCallback, useMemo, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { setActiveDayNumber } from '../../redux/reducers/viewSlice'
@@ -9,7 +9,7 @@ import { Popover } from '@mui/material'
 const PIN_WIDTH_PX = 128
 
 TeaCup.propTypes = {
-  tailwindBgColor: PropTypes.string.isRequired,
+  colorNumber: PropTypes.number.isRequired,
   displayNumber: PropTypes.number.isRequired,
   titleText: PropTypes.string,
   locationNames: PropTypes.arrayOf(PropTypes.string),
@@ -17,7 +17,7 @@ TeaCup.propTypes = {
 }
 
 export function TeaCup({
-  tailwindBgColor,
+  colorNumber,
   displayNumber,
   titleText,
   locationNames,
@@ -25,7 +25,7 @@ export function TeaCup({
 }) {
   const dispatch = useDispatch()
   const [anchorEl, setAnchorEl] = useState(null)
-  const hexColor = useMemo(() => getHexCode(tailwindBgColor), [tailwindBgColor])
+  const hexColor = useMemo(() => getHexCode(colorNumber), [colorNumber])
   const shouldHavePopover = titleText || locationNames
 
   const locationNameList = useMemo(() => {

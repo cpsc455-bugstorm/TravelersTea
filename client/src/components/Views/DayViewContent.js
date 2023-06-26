@@ -14,7 +14,7 @@ export function DayViewContent() {
   useEffect(() => {
     // TODO edit this entire block to fetch from backend
     const mockData = TripViewJson[activeDayNumber - 1]
-    setStages(mockData['stages'])
+    setStages(mockData)
   }, [activeDayNumber])
 
   const generateStage = useCallback((stageInfo, index) => {

@@ -5,7 +5,7 @@ import { setAppView } from '../../redux/reducers/viewSlice'
 import { AppView } from '../../constants/enums'
 import { useDispatch, useSelector } from 'react-redux'
 import TripViewJson from '../../temp/tripViewData.json'
-import { getColorName } from '../../utils/translateTailwindColors'
+import { getBg400, getTailwindName } from '../../util/tailwindColors'
 
 export function TripSidePanelSingle() {
   const activeDayNumber = useSelector((state) => state.view.activeDayNumber)
@@ -37,10 +37,10 @@ export function TripSidePanelSingle() {
   const renderStages = useMemo(() => {
     if (!dayDetails) return <></>
 
-    return dayDetails['stages'].map((stage, index) => {
-      const toColor = `to-${getColorName(dayDetails['color'])}-400/${
-        index * 10 + 10
-      }`
+    return dayDetails.map((stage, index) => {
+      const toColor = `to-${getTailwindName(
+        dayDetails[0]['colorNumber'],
+      )}-400/${index * 10 + 10}`
       return (
         <div
           className={`bg-gradient-to-r from-transparent ${toColor} px-5 py-6`}
@@ -66,7 +66,7 @@ export function TripSidePanelSingle() {
         <>
           <TeaCup
             className='my-4 flex w-full shrink-0 justify-center'
-            tailwindBgColor={dayDetails['color']}
+            colorNumber={dayDetails[0]['colorNumber']}
             displayNumber={activeDayNumber}
           />
           <div className='w-full overflow-y-auto overflow-x-hidden px-8 mac-scrollbar'>
@@ -74,7 +74,8 @@ export function TripSidePanelSingle() {
           </div>
           <div className='h-[5.5rem] w-full shrink-0' />
           <Button
-            className={`${dayDetails['color']} absolute bottom-4 right-4 h-14 w-24 text-4xl font-semibold hover:scale-[101%]`}
+            className={`${getBg400(dayDetails[0]['colorNumber'])}
+             absolute bottom-4 right-4 h-14 w-24 text-4xl font-semibold hover:scale-[101%]`}
             onClick={() => dispatch(setAppView(AppView.DAY_VIEW))}
           >
             Go
