@@ -8,18 +8,29 @@ class UserRoute {
     // when I hit /api/example in a get request, I am going
     // to call the getAll function
     this.router.get('', this.getAll.bind(this))
+    this.router.post('/register', this.register.bind(this))
   }
 
   initRoutes(apiRouter) {
-    apiRouter.use('/user', this.router)
+    apiRouter.use('/users', this.router)
   }
 
-  async getAll(req, res) {
+  async getAll(req, res, next) {
     try {
       const response = await controllers.userController.getAll()
       res.json(response)
     } catch (err) {
-      console.error(err)
+      next(err)
+    }
+  }
+
+  async register(req, res, next) {
+    try {
+      const userData = req.body
+      const response = await controllers.userController.register(userData)
+      res.json(response)
+    } catch (err) {
+      next(err)
     }
   }
 }

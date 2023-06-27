@@ -4,6 +4,7 @@ const cors = require('cors')
 
 const UserRoute = require('./routes/UserRoute')
 const TripRoute = require('./routes/TripRoute')
+const loggingMiddleware = require('./middlewares/Logging')
 
 const config = require('./config/config')
 const app = express()
@@ -16,6 +17,8 @@ app.use(
 )
 
 const apiRouter = express.Router()
+app.use(loggingMiddleware.logRouteMiddleware)
+
 app.use('/api', apiRouter)
 
 const userRoute = new UserRoute()
@@ -24,9 +27,7 @@ userRoute.initRoutes(apiRouter)
 const tripRoute = new TripRoute()
 tripRoute.initRoutes(apiRouter)
 
-app.get('/', (req, res) => {
-  res.send('Hello, world!')
-})
+app.use(loggingMiddleware.logErrorMiddleware)
 
 const connectDB = async () => {
   try {
