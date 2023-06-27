@@ -89,9 +89,6 @@ class UserController {
   }
 
   createAccessToken(userData) {
-    console.log(userData)
-
-    console.log('secret: ', config.server.jwtSecret)
     try {
       const accessToken = jwt.sign(
         {
@@ -103,7 +100,7 @@ class UserController {
       )
       return accessToken
     } catch (error) {
-      console.log('Error with creating token')
+      console.error('Error with creating token')
       throw new Error('Could not create token: ', error)
     }
   }
