@@ -24,7 +24,7 @@ export function DayViewContent() {
           {stageInfo['emoji']}
         </div>
         <div className='col-span-4 box-border rounded-md border-2 border-slate-100 bg-slate-200/90 p-2 shadow-xl'>
-          <p className='text-lg font-bold'>{stageInfo['locationName']}</p>
+          <p className='text-lg font-bold'>{stageInfo['stageLocation']}</p>
           <p className='text-base font-normal'>{stageInfo['description']}</p>
         </div>
       </div>

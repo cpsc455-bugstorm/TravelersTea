@@ -6,7 +6,7 @@ const tripSchema = new mongoose.Schema({
     required: true,
   },
   tripName: String,
-  destination: String,
+  tripLocation: String,
   stagesPerDay: Number,
   budget: Number,
   numberOfDays: Number,

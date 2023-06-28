@@ -4,19 +4,19 @@
     "stages": [
       {
         "stageName": "Breakfast",
-        "locationName": "Medina Cafe",
+        "stageLocation": "Medina Cafe",
         "description": "Located in the heart of Vancouver, Medina Cafe is a beloved breakfast spot renowned for its gourmet offerings. Indulge in a delightful array of delectable dishes, from their famous Belgian waffles topped with seasonal fruits to their mouthwatering Mediterranean-inspired brunch options. With its cozy ambiance and impeccable attention to detail, Medina Cafe provides a truly unforgettable dining experience for food enthusiasts seeking a taste of culinary excellence.",
         "emoji": "\uD83C\uDF73"
       },
       {
         "stageName": "1-1",
-        "locationName": "Stanley Park",
+        "stageLocation": "Stanley Park",
         "description": "As one of Vancouver's iconic landmarks, Stanley Park is an urban oasis that beckons nature lovers and adventure seekers alike. Spanning over 1,000 acres, this expansive park offers a myriad of attractions and breathtaking vistas. Wander through dense forests, stroll along scenic seawalls, and discover hidden lakes and meadows. With its abundant wildlife, beautifully manicured gardens, and captivating views of the surrounding mountains and ocean, Stanley Park is a sanctuary where visitors can immerse themselves in the beauty of nature and find solace in its serene surroundings.",
         "emoji": "\uD83C\uDF33"
       },
       {
         "stageName": "1-1",
-        "locationName": "Granville Island",
+        "stageLocation": "Granville Island",
         "description": "Explore the public market and local shops.",
         "emoji": "\uD83C\uDFEC"
       }
@@ -27,13 +27,13 @@
     "stages": [
       {
         "stageName": "Breakfast",
-        "locationName": "Tim Hortons",
+        "stageLocation": "Tim Hortons",
         "description": "Coffee chain.",
         "emoji": "\u2615"
       },
       {
         "stageName": "1-1",
-        "locationName": "Gastown",
+        "stageLocation": "Gastown",
         "description": "Don't wander past Abbot street...",
         "emoji": "\uD83C\uDFD9️"
       }
@@ -44,13 +44,13 @@
     "stages": [
       {
         "stageName": "Breakfast",
-        "locationName": "Cafe Medina",
+        "stageLocation": "Cafe Medina",
         "description": "Famous for its waffles and lavender lattes.",
         "emoji": "\uD83E\uDD5E"
       },
       {
         "stageName": "1-1",
-        "locationName": "Capilano Suspension Bridge",
+        "stageLocation": "Capilano Suspension Bridge",
         "description": "A thrilling walk amidst towering trees.",
         "emoji": "\uD83C\uDF09"
       }
@@ -61,13 +61,13 @@
     "stages": [
       {
         "stageName": "Breakfast",
-        "locationName": "Nelson the Seagull",
+        "stageLocation": "Nelson the Seagull",
         "description": "Artisan bakery with delicious bread and pastries.",
         "emoji": "\uD83E\uDD50"
       },
       {
         "stageName": "1-1",
-        "locationName": "Granville Island",
+        "stageLocation": "Granville Island",
         "description": "Explore the public market and local shops.",
         "emoji": "\uD83C\uDFEC"
       }
@@ -78,13 +78,13 @@
     "stages": [
       {
         "stageName": "Breakfast",
-        "locationName": "Jam Cafe",
+        "stageLocation": "Jam Cafe",
         "description": "Indulge in hearty breakfast dishes.",
         "emoji": "\uD83C\uDF73"
       },
       {
         "stageName": "1-1",
-        "locationName": "Queen Elizabeth Park",
+        "stageLocation": "Queen Elizabeth Park",
         "description": "Gorgeous gardens and panoramic views.",
         "emoji": "\uD83C\uDF37"
       }
@@ -95,13 +95,13 @@
     "stages": [
       {
         "stageName": "Breakfast",
-        "locationName": "Nemesis Coffee",
+        "stageLocation": "Nemesis Coffee",
         "description": "Specialty coffee and innovative brunch.",
         "emoji": "\u2615"
       },
       {
         "stageName": "1-1",
-        "locationName": "English Bay",
+        "stageLocation": "English Bay",
         "description": "Relax on the sandy beach and watch the sunset.",
         "emoji": "\uD83C\uDF05"
       }
@@ -112,13 +112,13 @@
     "stages": [
       {
         "stageName": "Breakfast",
-        "locationName": "Purebread",
+        "stageLocation": "Purebread",
         "description": "Heaven for bread and pastry lovers.",
         "emoji": "\uD83E\uDD50"
       },
       {
         "stageName": "1-1",
-        "locationName": "Vancouver Aquarium",
+        "stageLocation": "Vancouver Aquarium",
         "description": "Discover fascinating marine life.",
         "emoji": "\uD83D\uDC20"
       }
@@ -129,13 +129,13 @@
     "stages": [
       {
         "stageName": "Breakfast",
-        "locationName": "Ask for Luigi",
+        "stageLocation": "Ask for Luigi",
         "description": "Delicious Italian cuisine in a cozy setting.",
         "emoji": "\uD83C\uDF5D"
       },
       {
         "stageName": "1-1",
-        "locationName": "Dr. Sun Yat-Sen Classical Chinese Garden",
+        "stageLocation": "Dr. Sun Yat-Sen Classical Chinese Garden",
         "description": "A serene oasis in the heart of the city.",
         "emoji": "\uD83C\uDF8D"
       }
@@ -146,13 +146,13 @@
     "stages": [
       {
         "stageName": "Breakfast",
-        "locationName": "OEB Breakfast Co.",
+        "stageLocation": "OEB Breakfast Co.",
         "description": "Inventive breakfast creations.",
         "emoji": "\uD83C\uDF73"
       },
       {
         "stageName": "1-1",
-        "locationName": "Lynn Canyon Park",
+        "stageLocation": "Lynn Canyon Park",
         "description": "Experience the suspension bridge and waterfalls.",
         "emoji": "\uD83C\uDF32"
       }
@@ -163,13 +163,13 @@
     "stages": [
       {
         "stageName": "Breakfast",
-        "locationName": "Nelson the Seagull",
+        "stageLocation": "Nelson the Seagull",
         "description": "Artisan bakery with delicious bread and pastries.",
         "emoji": "\uD83E\uDD50"
       },
       {
         "stageName": "1-1",
-        "locationName": "The Museum of Anthropology",
+        "stageLocation": "The Museum of Anthropology",
         "description": "Explore indigenous art and artifacts.",
         "emoji": "\uD83C\uDFDB️"
       }

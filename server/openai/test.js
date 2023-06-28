@@ -7,7 +7,7 @@ const generateItinerary = require('./generateItinerary')
 const TripModel = require('../models/TripModel')
 
 const tripConstraints = new TripModel({
-  destination: 'Paris',
+  tripLocation: 'Paris',
   budget: 2000,
   numberOfDays: 5,
   stagesPerDay: 3,

@@ -27,7 +27,7 @@ export function TripViewContent() {
           tailwindBgColor={item.color}
           displayNumber={displayNumber}
           titleText={'Day ' + displayNumber}
-          locationNames={item['stages'].map((stage) => stage['locationName'])}
+          locationNames={item['stages'].map((stage) => stage['stageLocation'])}
         />
       )
     })
