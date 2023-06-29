@@ -1,12 +1,13 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
-
+const logger = require('morgan')
 const UserRoute = require('./routes/UserRoute')
 const TripRoute = require('./routes/TripRoute')
 
 const config = require('./config/config')
 const app = express()
+app.use(logger('dev'))
 app.use(express.json())
 app.use(
   cors({
