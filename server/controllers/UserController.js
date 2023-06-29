@@ -78,11 +78,10 @@ class UserController {
     })
 
     const accessToken = this.createAccessToken(newlyCreatedUser)
-
     const userDTO = {
-      id: userData._id,
-      username: userData.username,
-      email: userData.email,
+      id: newlyCreatedUser._id,
+      username: newlyCreatedUser.username,
+      email: newlyCreatedUser.email,
       accessToken,
     }
     return userDTO
@@ -92,7 +91,7 @@ class UserController {
     try {
       const accessToken = jwt.sign(
         {
-          // id: userData._id,
+          id: userData._id,
           username: userData.username,
           email: userData.email,
         },

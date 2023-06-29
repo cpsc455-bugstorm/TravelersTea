@@ -30,16 +30,11 @@ const logRouteMiddleware = (req, res, next) => {
   next()
 }
 
-const logErrorMiddleware = (err, req, res) => {
+const logErrorMiddleware = (err, req, res, next) => {
   console.error(err)
-  if (config.server.env == 'DEV') {
-    Logging.error(`ERROR at ${req.method} request for ${req.path}`)
-    Logging.error(err.toString())
-  }
-  if (err.statusCode && err.statusCode >= 400 && err.statusCode < 500) {
-    res.status(err.statusCode).json({ error: err.toString() })
-  }
-  res.status(500).json({ error: err.toString() })
+  Logging.error(`ERROR at ${req.method} request for ${req.path}`)
+  Logging.error(err.toString())
+  next(err)
 }
 
 const loggingMiddleware = {
