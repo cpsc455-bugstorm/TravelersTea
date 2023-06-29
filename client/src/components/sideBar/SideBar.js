@@ -134,7 +134,7 @@ export function SideBar() {
         className={`fixed left-0 top-0 z-50 flex h-full w-[260px] flex-row overflow-hidden transition-all
                        ${isSidebarOpen ? 'left-0' : 'left-[-260px]'}`}
       >
-        <div className='relative flex h-full w-full flex-col justify-between overflow-hidden bg-black bg-slate-300'>
+        <div className='relative flex h-full w-full flex-col justify-between overflow-hidden bg-black bg-black'>
           <div className="z-0 h-full w-full flex-grow bg-slate-200 bg-[url('../public/little-prince.jpg')] bg-cover bg-center opacity-50 bg-blend-difference"></div>
           <div className={`black-gradient absolute inset-0 z-10 p-2`}>
             <div className='relative z-20 flex h-full flex-col justify-between'>
