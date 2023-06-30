@@ -19,7 +19,7 @@ class TripController {
         // eslint-disable-next-line node/no-unsupported-features/es-syntax
         ...tripData,
         _id: uuid.v4(),
-      }).toObject()
+      })
       return newTrip
     } catch (error) {
       throw new Error('Could not create trip', error)
