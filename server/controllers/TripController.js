@@ -20,7 +20,7 @@ class TripController {
         ...tripData,
         _id: uuid.v4(),
       })
-      return newTrip
+      return newTrip.toObject()
     } catch (error) {
       throw new Error('Could not create trip', error)
     }
