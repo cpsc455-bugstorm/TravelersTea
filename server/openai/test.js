@@ -3,7 +3,7 @@
  Run via `node openai/test.js` from `server/` or wherever the .env file with the openai key is
 */
 
-const generateItinerary = require('./generateItenerary')
+const generateItinerary = require('./generateTrip')
 const Itinerary = require('../models/itineraryModel')
 
 const exampleItinerary = new Itinerary({
