@@ -57,7 +57,7 @@ export function TripSidePanelSingle() {
 
   return (
     <div
-      className={`pointer-events-auto relative m-4 flex w-1/3 flex-col items-center justify-center overflow-hidden rounded-md bg-slate-900 text-center transition-all
+      className={`pointer-events-auto relative m-4 flex w-1/3 flex-col items-center justify-center overflow-hidden rounded-md bg-slate-900 text-center drop-shadow-[10px_-10px_15px_rgba(150,150,150,0.25)] transition-all
         ${
           isVisible
             ? 'max-h-full scale-100 opacity-100'
