@@ -23,7 +23,7 @@ const getRandomFunFact = () => {
 
 export function Loader() {
   return (
-    <div className='opacity-99 fadesIn fixed left-[50%] top-[50%] z-[99] flex h-[200px] w-[500px] -translate-x-1/2 -translate-y-1/2 transform flex-col items-center justify-center bg-black'>
+    <div className='opacity-99 fadesIn fixed left-[50%] top-[50%] z-[99] flex h-[200px] w-[500px] -translate-x-1/2 -translate-y-[60%] transform flex-col items-center justify-center rounded-md bg-black'>
       <div className='mx-5 my-2 flex flex-row items-center'>
         <img
           src='/brewing.gif'
@@ -37,7 +37,7 @@ export function Loader() {
           <span className='dot-3'>.</span>
         </p>
       </div>
-      <p className='text-xs text-amber-500 text-white'>
+      <p className='text-xs text-amber-500'>
         <b>DID YOU KNOW</b>
       </p>
       <div className='mx-16 inline-block h-16 text-center text-xs text-white'>

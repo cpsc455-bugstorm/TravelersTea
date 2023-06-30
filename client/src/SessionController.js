@@ -13,24 +13,33 @@ export function SessionController({ children }) {
   const dispatch = useDispatch()
   const tripsStatus = useSelector((state) => state.trip.status)
   const [isLoading, setIsLoading] = useState(false)
+  const [isMinimumLoadingTimeMet, setIsMinimumLoadingTimeMet] = useState(false)
 
   useEffect(() => {
     if (
       tripsStatus === REQUEST_STATE.WRITING ||
       tripsStatus === REQUEST_STATE.IDLE
     ) {
-      if (tripsStatus !== REQUEST_STATE.IDLE) setIsLoading(true)
+      if (tripsStatus !== REQUEST_STATE.IDLE) {
+        setIsLoading(true)
+        setIsMinimumLoadingTimeMet(false)
+        setTimeout(() => {
+          setIsMinimumLoadingTimeMet(true)
+        }, 3000)
+      }
       dispatch(fetchTripsAsync())
     }
   }, [dispatch, tripsStatus])
 
   useEffect(() => {
-    if (isLoading) {
-      setTimeout(() => {
-        setIsLoading(false)
-      }, 2500)
+    if (
+      (tripsStatus === REQUEST_STATE.FULFILLED ||
+        tripsStatus === REQUEST_STATE.REJECTED) &&
+      isMinimumLoadingTimeMet
+    ) {
+      setIsLoading(false)
     }
-  }, [isLoading])
+  }, [tripsStatus, isMinimumLoadingTimeMet])
 
   return (
     <>
