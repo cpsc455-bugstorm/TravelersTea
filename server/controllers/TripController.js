@@ -57,7 +57,7 @@ class TripController {
         numberOfDays: constraints.numberOfDays,
         // tripLongitude: googleApiStuff(),
         // tripLatitude: googleApiStuff(),
-        preferences: constraints, // ?
+        preferences: constraints.preferences, // ?
       }
 
       const newTrip = await TripModel.create({
