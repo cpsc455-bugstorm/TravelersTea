@@ -4,8 +4,8 @@ import { REQUEST_STATE } from '../../states'
 import {
   createTripAsync,
   deleteTripAsync,
-  updateTripAsync,
   fetchTripsAsync,
+  updateTripAsync,
 } from './thunks'
 /**
  * @property {trips}: [{
@@ -29,16 +29,27 @@ export const tripSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     handleAsyncAction(builder, fetchTripsAsync, {
+      pending: (state) => {
+        state.status = REQUEST_STATE.READING
+      },
       fulfilled: (state, action) => {
         state.trips = action.payload
+        state.status = REQUEST_STATE.FULFILLED
       },
     })
     handleAsyncAction(builder, createTripAsync, {
+      pending: (state) => {
+        state.status = REQUEST_STATE.WRITING
+      },
       fulfilled: (state, action) => {
         state.trips.push(action.payload)
+        state.status = REQUEST_STATE.FULFILLED
       },
     })
     handleAsyncAction(builder, updateTripAsync, {
+      pending: (state) => {
+        state.status = REQUEST_STATE.WRITING
+      },
       fulfilled: (state, action) => {
         const tripIndex = state.trips.findIndex(
           (trip) => trip._id === action.payload._id,
@@ -49,13 +60,18 @@ export const tripSlice = createSlice({
             ...action.payload,
           }
         }
+        state.status = REQUEST_STATE.FULFILLED
       },
     })
     handleAsyncAction(builder, deleteTripAsync, {
+      pending: (state) => {
+        state.status = REQUEST_STATE.WRITING
+      },
       fulfilled: (state, action) => {
         state.trips = state.trips.filter(
           (trip) => trip._id !== action.payload._id,
         )
+        state.status = REQUEST_STATE.FULFILLED
       },
     })
   },

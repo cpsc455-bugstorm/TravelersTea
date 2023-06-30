@@ -8,7 +8,6 @@ const funFacts = [
   'An estimated 3 billion cups of tea are consumed every day worldwide.',
   'Tea was discovered by the Chinese emperor Shen Nong around 2737 BC when a tea leaf fell into his boiling water.',
   'In 1773, American colonists dumped 342 chests of tea into the Boston Harbor to protest the Tea Act. This event is now known as the Boston Tea Party.',
-  'Tea bags were invented in the early 20th century by accident, when tea samples were sent in silk bags and recipients mistakenly steeped the whole bag.',
   'Contrary to popular belief, it’s not just green tea that’s good for you. Black, white, and red tea also have health-giving flavonoids and polyphenols.',
   'The very best tea comes from high elevations and is hand-picked.',
   'In 1908, tea bags were developed by accident in New York as restuarants began brewing merchant’s tea directly in the silk bags to save time',
@@ -24,7 +23,7 @@ const getRandomFunFact = () => {
 
 export function Loader() {
   return (
-    <div className='opacity-99 fixed left-[50%] top-[50%] z-[99] flex h-[200px] w-[500px] -translate-x-1/2 -translate-y-1/2 transform flex-col items-center justify-center bg-black'>
+    <div className='opacity-99 fadesIn fixed left-[50%] top-[50%] z-[99] flex h-[200px] w-[500px] -translate-x-1/2 -translate-y-1/2 transform flex-col items-center justify-center bg-black'>
       <div className='mx-5 my-2 flex flex-row items-center'>
         <img
           src='/brewing.gif'
