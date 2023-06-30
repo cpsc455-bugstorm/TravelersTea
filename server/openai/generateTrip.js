@@ -1,6 +1,43 @@
 const openaiClient = require('./openaiClient')
 
-async function generateItinerary(constraints) {
+/**
+ *
+ * @param {*} constraints
+ * @returns a trip object in the format of
+ * {
+ *  tripName: String
+ *  preferences: String
+ *  days:[
+ *    [
+ *      {
+ *        // day 1 stage 1
+ *        stageLocation: String,
+ *        stageDescription:  String,
+ *        colourNumber: // a random number between 1-17,
+ *        emoji:  String,
+ *      }, {
+ *        // day 1 stage 2
+ *      }, {
+ *        // day 1 stage 3
+ *      }
+ *    ],
+ *    [
+ *      {
+ *        // day 2 stage 1
+ *        ...
+ *      },
+ *      {
+ *        // day 2 stage 2
+ *        ...
+ *      }
+ *    ]
+ *  ]
+ *}
+ *
+ *
+ */
+
+async function generateTrip(constraints) {
   try {
     const conversation = [
       {
@@ -52,4 +89,4 @@ async function generateItinerary(constraints) {
   }
 }
 
-module.exports = generateItinerary
+module.exports = generateTrip
