@@ -1,21 +1,20 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { TeaCup } from './TeaCup'
 import { Button } from '../common'
-import { setAppView } from '../../redux/reducers/viewSlice'
+import { setAppView, setShowSidePanel } from '../../redux/reducers/viewSlice'
 import { AppView } from '../../constants/enums'
 import { useDispatch, useSelector } from 'react-redux'
 import TripViewJson from '../../temp/tripViewData.json'
 import { getBg400, getTailwindName } from '../../util/tailwindColors'
+import CloseIcon from '@mui/icons-material/Close'
 
 export function TripSidePanelSingle() {
   const activeDayNumber = useSelector((state) => state.view.activeDayNumber)
   const isCompactView = useSelector((state) => state.preferences.compactView)
-  const isContentFullscreen = useSelector(
-    (state) => state.view.fullscreenContent,
-  )
+  const showDrawer = useSelector((state) => state.view.showDrawer)
+  const showSidePanel = useSelector((state) => state.view.showSidePanel)
   const dispatch = useDispatch()
   const [dayDetails, setDayDetails] = useState()
-  const [isVisible, setIsVisible] = useState(false)
   const visibilityTimer = useRef(null)
 
   useEffect(() => {
@@ -24,15 +23,15 @@ export function TripSidePanelSingle() {
   }, [activeDayNumber])
 
   useEffect(() => {
-    if (!isCompactView && !isContentFullscreen) {
+    if (!isCompactView && !showDrawer) {
       visibilityTimer.current = setTimeout(() => {
-        setIsVisible(true)
+        dispatch(setShowSidePanel(true))
       }, 350)
     } else {
       clearTimeout(visibilityTimer.current)
-      setIsVisible(false)
+      dispatch(setShowSidePanel(false))
     }
-  }, [isCompactView, isContentFullscreen])
+  }, [dispatch, isCompactView, showDrawer])
 
   const renderStages = useMemo(() => {
     if (!dayDetails) return <></>
@@ -58,13 +57,24 @@ export function TripSidePanelSingle() {
     <div
       className={`pointer-events-auto relative m-4 flex w-1/3 flex-col items-center justify-center overflow-hidden rounded-md bg-slate-900 text-center drop-shadow-[10px_-10px_15px_rgba(150,150,150,0.25)] transition-all
         ${
-          isVisible ? 'h-full scale-100 opacity-100' : 'h-0 scale-95 opacity-0'
+          showSidePanel
+            ? 'h-full scale-100 opacity-100'
+            : 'h-0 scale-95 opacity-0'
         }`}
     >
-      {isVisible && dayDetails && (
+      {showSidePanel && dayDetails && (
         <>
+          <button
+            onClick={() => dispatch(setShowSidePanel(false))}
+            className={
+              'absolute right-3 top-3 h-12 w-12 rounded-md text-slate-400 hover:bg-slate-200/10'
+            }
+          >
+            <CloseIcon />
+          </button>
+          <div className='h-12 w-full shrink-0' />
           <TeaCup
-            className='my-4 flex w-full shrink-0 justify-center'
+            className='mb-4 flex w-full shrink-0 justify-center'
             colorNumber={dayDetails[0]['colorNumber']}
             displayNumber={activeDayNumber}
           />

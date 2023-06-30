@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button } from '../common'
-import { toggleContentFullscreen } from '../../redux/reducers/viewSlice'
+import { toggleShowDrawer } from '../../redux/reducers/viewSlice'
 import TripViewJson from '../../temp/tripViewData.json'
 import { getTailwindName } from '../../util/tailwindColors'
 
@@ -19,9 +19,7 @@ export function SeeMoreDrawer() {
     setTripData(mockData)
   }, [activeTripId])
 
-  const isContentFullscreen = useSelector(
-    (state) => state.view.fullscreenContent,
-  )
+  const showDrawer = useSelector((state) => state.view.showDrawer)
 
   const seeMoreCardContent = useMemo(() => {
     return tripData.map((dayDetails, index) => {
@@ -58,20 +56,20 @@ export function SeeMoreDrawer() {
       <Button
         className={`pointer-events-auto m-2 h-8 w-[calc(100%-1rem)] cursor-pointer rounded-md bg-white/5 py-1 font-bold text-white hover:bg-slate-500/20`}
         onClick={() => {
-          dispatch(toggleContentFullscreen())
+          dispatch(toggleShowDrawer())
         }}
       >
-        See {isContentFullscreen ? 'Less' : 'More'}
+        See {showDrawer ? 'Less' : 'More'}
       </Button>
     )
-  }, [isContentFullscreen, dispatch])
+  }, [showDrawer, dispatch])
 
   return (
     <>
       {renderShowMoreLessButton}
       <div
         className={`pointer-events-auto w-full overflow-y-auto bg-transparent transition-all duration-500 ease-in-out mac-scrollbar
-          ${isContentFullscreen ? 'max-h-[50vh] p-4 pt-0' : 'max-h-0'}`}
+          ${showDrawer ? 'max-h-[50vh] p-4 pt-0' : 'max-h-0'}`}
       >
         {seeMoreCardContent}
       </div>

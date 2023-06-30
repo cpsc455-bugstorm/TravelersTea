@@ -3,7 +3,10 @@ import PropTypes from 'prop-types'
 import { getHexCode } from '../../util/tailwindColors'
 import { useCallback, useMemo, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { setActiveDayNumber } from '../../redux/reducers/viewSlice'
+import {
+  setActiveDayNumber,
+  setShowSidePanel,
+} from '../../redux/reducers/viewSlice'
 import { Popover } from '@mui/material'
 
 const PIN_WIDTH_PX = 128
@@ -46,6 +49,7 @@ export function TeaCup({
 
   const handleTeacupClicked = useCallback(() => {
     dispatch(setActiveDayNumber(displayNumber))
+    dispatch(setShowSidePanel(true))
   }, [dispatch, displayNumber])
 
   const handlePopoverOpen = (event) => {
