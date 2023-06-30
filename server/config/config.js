@@ -19,6 +19,5 @@ const config = {
     JWT_SECRET,
   },
 }
-console.log('DB_CHOICE:', DB_CHOICE)
 
 module.exports = config
