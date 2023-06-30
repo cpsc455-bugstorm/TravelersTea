@@ -30,7 +30,7 @@ class TripController {
     try {
       const updatedTrip = await TripModel.findByIdAndUpdate(id, tripData, {
         new: true,
-      }).toObject()
+      }).lean()
       return updatedTrip
     } catch (error) {
       throw new Error('Could not edit trip', error)
@@ -39,7 +39,7 @@ class TripController {
 
   async deleteTrip(id) {
     try {
-      const deletedTrip = await TripModel.findByIdAndDelete(id).toObject()
+      const deletedTrip = await TripModel.findByIdAndDelete(id).lean()
       return deletedTrip
     } catch (error) {
       throw new Error('Could not delete trip', error)
