@@ -6,7 +6,7 @@ const openaiClient = require('./openaiClient')
  * @returns a trip object in the format of
  * {
  *  tripName: String
- *  preferences: String
+ *  preferences: [String]
  *  days:[
  *    [
  *      {
