@@ -38,9 +38,8 @@ export function TripSidePanelSingle() {
     if (!dayDetails) return <></>
 
     return dayDetails.map((stage, index) => {
-      const toColor = `to-${getTailwindName(
-        dayDetails[0]['colorNumber'],
-      )}-400/${index * 10 + 10}`
+      const dayColor = dayDetails[0]['colorNumber']
+      const toColor = `to-${getTailwindName(dayColor)}-400/${index * 10 + 10}`
       return (
         <div
           className={`bg-gradient-to-r from-transparent ${toColor} px-5 py-6`}

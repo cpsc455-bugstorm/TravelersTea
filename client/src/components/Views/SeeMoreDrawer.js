@@ -24,9 +24,10 @@ export function SeeMoreDrawer() {
   )
 
   const seeMoreCardContent = useMemo(() => {
-    return tripData.map((item, index) => {
+    return tripData.map((dayDetails, index) => {
       const dayNumber = index + 1
-      const colorName = getTailwindName(item[0]['colorNumber'])
+      const dayColor = dayDetails[0]['colorNumber']
+      const colorName = getTailwindName(dayColor)
 
       return (
         <div
@@ -34,7 +35,7 @@ export function SeeMoreDrawer() {
           className={`from-${colorName}-400/70 to-${colorName}-500/70 my-4 box-border w-full rounded-md bg-gradient-to-br p-4 shadow-xl`}
         >
           <h3 className='text-lg font-bold text-white'>Day {dayNumber}</h3>
-          {item.map((stage, stageIndex) => {
+          {dayDetails.map((stage, stageIndex) => {
             return (
               <div
                 key={`details-${dayNumber}-${stageIndex}`}
