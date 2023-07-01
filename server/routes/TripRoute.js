@@ -11,7 +11,7 @@ class TripRoute {
   }
 
   initRoutes(apiRouter) {
-    apiRouter.use('/trip', this.router)
+    apiRouter.use('/trips', this.router)
   }
 
   async getAll(req, res) {
