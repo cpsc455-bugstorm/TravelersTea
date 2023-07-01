@@ -45,7 +45,7 @@ export function TripSidePanelSingle() {
           key={`details-${activeDayNumber}-${index}`}
         >
           <p className={'text-xl font-semibold text-slate-100'}>
-            {stage['locationName']}
+            {stage['stageLocation']}
           </p>
           <p className={'text-lg text-slate-100'}>{stage['description']}</p>
         </div>
