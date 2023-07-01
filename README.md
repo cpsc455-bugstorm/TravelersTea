@@ -14,7 +14,12 @@
 
 ## Project Description
 
-This project is for users who would like to create plans in some location X, and the app will serve as a personal assistant. Our app will suggest an itinerary based on the user's preferences to make planning a trip less daunting and less time consuming. We will store information related to travel plans. A plan will consist of destinations (e.g. a movie theater, a cute park), and information regarding that destination (e.g. description, name, price, location etc). Given this data, users will be able to have meaningful thought out trips. Additional functionalities include a social aspect (e.g. sharing plans, rating plans).
+This project is for users who would like to create plans in some location X, and the app will serve as a personal
+assistant. Our app will suggest an itinerary based on the user's preferences to make planning a trip less daunting and
+less time-consuming. We will store information related to travel plans. A plan will consist of stageLocation (e.g. a
+movie theater, a cute park), and information regarding that stageLocation (e.g. description, name, price, location etc).
+Given this data, users will be able to have meaningful thought out trips. Additional functionalities include a social
+aspect (e.g. sharing plans, rating plans).
 
 ## Team Members
 
@@ -28,7 +33,8 @@ This project is for users who would like to create plans in some location X, and
 
 #### Minimal Requirements
 
-- Users should be able to input a set of preferences (Destination, Number of Days, Budget, Places per day), to generate personalized travel plans.
+- Users should be able to input a set of preferences (Destination, Number of Days, Budget, Places per day), to generate
+  personalized travel plans.
 - Users can see destination markers on a map.
 - Users can see a description of each destination.
 - Users can create, read, update, and delete plan metadata.
@@ -44,7 +50,8 @@ This project is for users who would like to create plans in some location X, and
 
 #### Stretch Requirements
 
-- Colloquial prompts (e.g. instead of “{ destination: ‘Vancouver’, budget: 300 }”, just input “I want to tour Vancouver and spend $300 max.”)
+- Colloquial prompts (e.g. instead of “{ destination: ‘Vancouver’, budget: 300 }”, just input “I want to tour Vancouver
+  and spend $300 max.”)
 - Users can generate different plans based on the weather.
 - Multi-language support.
 - Entire application should be mobile-friendly
@@ -100,7 +107,9 @@ With sidebar open: Specific details about a day in the plan
 
 ## Instructions
 
-This is a MERN stack project using JavaScript, with auto-linting and formatting set up using ESLint and Prettier. We use [Yarn Workspaces](https://classic.yarnpkg.com/lang/en/docs/workspaces/) to simplify installation and running scripts.
+This is a MERN stack project using JavaScript, with auto-linting and formatting set up using ESLint and Prettier. We
+use [Yarn Workspaces](https://classic.yarnpkg.com/lang/en/docs/workspaces/) to simplify installation and running
+scripts.
 
 #### Prerequisites
 
@@ -129,7 +138,8 @@ Now, you will need `.env` files, one in server and one in client.
 touch server/.env
 ```
 
-4. Find the correct `<value>` for `ENV`, `MONGO_USERNAME`, and `MONGO_PASSWORD` in discord's [secret](https://discord.com/channels/1106050152587874364/1110797187463512116) channel.
+4. Find the correct `<value>` for `ENV`, `MONGO_USERNAME`, and `MONGO_PASSWORD` in
+   discord's [secret](https://discord.com/channels/1106050152587874364/1110797187463512116) channel.
 
 The content of `.env` file should look like this (with the `<value>` replaced with the correct constant) :
 
@@ -145,7 +155,8 @@ MONGO_PASSWORD = <value>
 touch client/.env
 ```
 
-6. Find the correct `<value>` for `REACT_APP_MAPBOX_TOKEN` in discord's [secret](https://discord.com/channels/1106050152587874364/1110797187463512116) channel.
+6. Find the correct `<value>` for `REACT_APP_MAPBOX_TOKEN` in
+   discord's [secret](https://discord.com/channels/1106050152587874364/1110797187463512116) channel.
 
 The content of `.env` file should look like this (with the `<value>` replaced with the correct constant) :
 
@@ -192,7 +203,9 @@ yarn format
 yarn format:check
 ```
 
-We use [Husky](https://typicode.github.io/husky/) to run pre-commit hooks with [lint-staged](https://github.com/okonet/lint-staged) to run linters on git staged files. This ensures that our code is formatted correctly when we commit our codes and when we open a pull-request on `main` branch.
+We use [Husky](https://typicode.github.io/husky/) to run pre-commit hooks
+with [lint-staged](https://github.com/okonet/lint-staged) to run linters on git staged files. This ensures that our code
+is formatted correctly when we commit our codes and when we open a pull-request on `main` branch.
 
 #### Troubleshooting tips:
 
