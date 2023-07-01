@@ -44,7 +44,7 @@ export function SideBar() {
   const newTripButton = useMemo(() => {
     return (
       <Button
-        className='box-border flex h-12 w-full flex-row border-2 border-cyan-200 bg-cyan-200/80 hover:bg-emerald-400/100'
+        className='box-border flex h-12 w-full flex-row border-2 border-cyan-200 bg-cyan-200/80 hover:bg-cyan-300/90'
         onClick={() => {
           dispatch(setAppView(AppView.NEW_TRIP))
           dispatch(openNewTripModal())
