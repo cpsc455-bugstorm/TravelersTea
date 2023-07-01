@@ -7,7 +7,7 @@ const generateItinerary = require('./generateItenerary')
 const Itinerary = require('../models/itineraryModel')
 
 const exampleItinerary = new Itinerary({
-  destination: 'Paris',
+  tripLocation: 'Paris',
   budget: 2000,
   days: 5,
   stages: 3,
@@ -17,7 +17,7 @@ const exampleItinerary = new Itinerary({
 ;(async function testGenerateItinerary() {
   try {
     const itineraryConstraints = `
-      Destination: ${exampleItinerary.destination}
+      Destination: ${exampleItinerary.tripLocation}
       Budget: $${exampleItinerary.budget}
       Days: ${exampleItinerary.days}
       Stages per day: ${exampleItinerary.stages}
