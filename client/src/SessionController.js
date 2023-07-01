@@ -16,20 +16,20 @@ export function SessionController({ children }) {
   const [isMinimumLoadingTimeMet, setIsMinimumLoadingTimeMet] = useState(false)
 
   useEffect(() => {
-    if (
-      tripsStatus === REQUEST_STATE.WRITING ||
-      tripsStatus === REQUEST_STATE.IDLE
-    ) {
-      if (tripsStatus !== REQUEST_STATE.IDLE) {
-        setIsLoading(true)
-        setIsMinimumLoadingTimeMet(false)
-        setTimeout(() => {
-          setIsMinimumLoadingTimeMet(true)
-        }, 3000)
-      }
+    if (tripsStatus === REQUEST_STATE.IDLE) {
       dispatch(fetchTripsAsync())
     }
   }, [dispatch, tripsStatus])
+
+  useEffect(() => {
+    if (tripsStatus === REQUEST_STATE.WRITING) {
+      setIsLoading(true)
+      setIsMinimumLoadingTimeMet(false)
+      setTimeout(() => {
+        setIsMinimumLoadingTimeMet(true)
+      }, 3000)
+    }
+  }, [tripsStatus])
 
   useEffect(() => {
     if (
