@@ -9,9 +9,8 @@ const TripModel = require('../models/TripModel')
 const exampleItinerary = new TripModel({
   destination: 'Paris',
   budget: 2000,
-  days: 5,
-  stages: 3,
-  preferences: ['shopping', 'museums', 'historical landmarks'],
+  numberOfDays: 5,
+  stagesPerDay: 3,
 })
 
 ;(async function testGenerateItinerary() {
@@ -19,9 +18,8 @@ const exampleItinerary = new TripModel({
     const itineraryConstraints = `
       Destination: ${exampleItinerary.destination}
       Budget: $${exampleItinerary.budget}
-      Days: ${exampleItinerary.days}
-      Stages per day: ${exampleItinerary.stages}
-      Preferences: ${exampleItinerary.preferences.join(', ')}
+      Days: ${exampleItinerary.numberOfDays}
+      Stages per day: ${exampleItinerary.stagesPerDay}
     `
 
     const itinerary = await generateItinerary(itineraryConstraints)

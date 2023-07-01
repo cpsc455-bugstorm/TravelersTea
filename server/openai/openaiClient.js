@@ -21,7 +21,7 @@ async function openaiClient(conversation) {
         top_p: 1,
         messages: conversation,
       },
-      { timeout: 60000 },
+      { timeout: 120000 },
     )
 
     return response.data.choices[0].message.content.trim()
