@@ -3,7 +3,7 @@
  Run via `node openai/test.js` from `server/` or wherever the .env file with the openai key is
 */
 
-const generateItinerary = require('./generateItenerary')
+const generateItinerary = require('./generateTrip')
 const TripModel = require('../models/TripModel')
 
 const exampleItinerary = new TripModel({
@@ -15,17 +15,10 @@ const exampleItinerary = new TripModel({
 
 ;(async function testGenerateItinerary() {
   try {
-    const itineraryConstraints = `
-      Destination: ${exampleItinerary.destination}
-      Budget: $${exampleItinerary.budget}
-      Days: ${exampleItinerary.numberOfDays}
-      Stages per day: ${exampleItinerary.stagesPerDay}
-    `
-
-    const itinerary = await generateItinerary(itineraryConstraints)
+    const itinerary = await generateItinerary(exampleItinerary)
 
     console.log(`Generated itinerary for given constraints:`)
-    console.log(itineraryConstraints)
+    console.log(exampleItinerary)
     console.log(itinerary)
   } catch (error) {
     console.error('Error while testing generateItinerary function:', error)

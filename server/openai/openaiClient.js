@@ -5,9 +5,10 @@ let openai
 const configuration = new Configuration({
   apiKey: process.env.OPEN_AI_API_KEY || 'add-alt-key-here',
 })
-console.log('key: ', process.env.OPEN_AI_API_KEY)
 openai = new OpenAIApi(configuration)
 let model = process.env.GPT_MODEL || 'gpt-3.5-turbo'
+// if this says gpt-4 and you have set it in your env that means it has read the env file successfully
+console.log(`model: ${model}`)
 
 async function openaiClient(conversation) {
   try {
