@@ -4,9 +4,9 @@
 */
 
 const generateItinerary = require('./generateItenerary')
-const Itinerary = require('../models/itineraryModel')
+const TripModel = require('../models/TripModel')
 
-const exampleItinerary = new Itinerary({
+const exampleItinerary = new TripModel({
   destination: 'Paris',
   budget: 2000,
   days: 5,
