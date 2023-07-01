@@ -5,9 +5,10 @@ let openai
 const configuration = new Configuration({
   apiKey: process.env.OPEN_AI_API_KEY || 'add-alt-key-here',
 })
-console.log('key: ', process.env.OPEN_AI_API_KEY)
+// console.log('key: ', process.env.OPEN_AI_API_KEY)
 openai = new OpenAIApi(configuration)
 let model = process.env.GPT_MODEL || 'gpt-3.5-turbo'
+console.log('model: ' + model)
 
 async function openaiClient(conversation) {
   try {
@@ -21,7 +22,7 @@ async function openaiClient(conversation) {
         top_p: 1,
         messages: conversation,
       },
-      { timeout: 60000 },
+      { timeout: 120000 },
     )
 
     return response.data.choices[0].message.content.trim()
