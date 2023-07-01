@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
-import { getColorName } from '../../utils/translateTailwindColors'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button } from '../common'
-import { toggleContentFullscreen } from '../../redux/reducers/viewSlice'
+import { toggleShowDrawer } from '../../redux/reducers/viewSlice'
 import TripViewJson from '../../temp/tripViewData.json'
+import { getTailwindName } from '../../util/tailwindColors'
 
 export function SeeMoreDrawer() {
   const activeTripId = useSelector((state) => state.view.activeTripId)
@@ -19,14 +19,13 @@ export function SeeMoreDrawer() {
     setTripData(mockData)
   }, [activeTripId])
 
-  const isContentFullscreen = useSelector(
-    (state) => state.view.fullscreenContent,
-  )
+  const showDrawer = useSelector((state) => state.view.showDrawer)
 
   const seeMoreCardContent = useMemo(() => {
-    return tripData.map((item, index) => {
+    return tripData.map((dayDetails, index) => {
       const dayNumber = index + 1
-      const colorName = getColorName(item['color'])
+      const dayColor = dayDetails[0]['colorNumber']
+      const colorName = getTailwindName(dayColor)
 
       return (
         <div
@@ -34,7 +33,7 @@ export function SeeMoreDrawer() {
           className={`from-${colorName}-400/70 to-${colorName}-500/70 my-4 box-border w-full rounded-md bg-gradient-to-br p-4 shadow-xl`}
         >
           <h3 className='text-lg font-bold text-white'>Day {dayNumber}</h3>
-          {item['stages'].map((stage, stageIndex) => {
+          {dayDetails.map((stage, stageIndex) => {
             return (
               <div
                 key={`details-${dayNumber}-${stageIndex}`}
@@ -57,22 +56,20 @@ export function SeeMoreDrawer() {
       <Button
         className={`pointer-events-auto m-2 h-8 w-[calc(100%-1rem)] cursor-pointer rounded-md bg-white/5 py-1 font-bold text-white hover:bg-slate-500/20`}
         onClick={() => {
-          dispatch(toggleContentFullscreen())
+          dispatch(toggleShowDrawer())
         }}
       >
-        See {isContentFullscreen ? 'Less' : 'More'}
+        See {showDrawer ? 'Less' : 'More'}
       </Button>
     )
-  }, [isContentFullscreen, dispatch])
+  }, [showDrawer, dispatch])
 
   return (
     <>
       {renderShowMoreLessButton}
       <div
-        className={`pointer-events-auto w-full overflow-y-auto bg-transparent 
-          ${
-            isContentFullscreen ? 'max-h-[50vh] p-4 pt-0' : 'max-h-0'
-          } transition-all duration-500 ease-in-out`}
+        className={`pointer-events-auto w-full overflow-y-auto bg-transparent transition-all duration-500 ease-in-out mac-scrollbar
+          ${showDrawer ? 'max-h-[50vh] p-4 pt-0' : 'max-h-0'}`}
       >
         {seeMoreCardContent}
       </div>

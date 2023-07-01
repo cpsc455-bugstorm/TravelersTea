@@ -14,7 +14,7 @@ export function DayViewContent() {
   useEffect(() => {
     // TODO edit this entire block to fetch from backend
     const mockData = TripViewJson[activeDayNumber - 1]
-    setStages(mockData['stages'])
+    setStages(mockData)
   }, [activeDayNumber])
 
   const generateStage = useCallback((stageInfo, index) => {
@@ -58,12 +58,12 @@ export function DayViewContent() {
   return (
     <>
       <Button
-        className='absolute left-4 top-4 border-2 border-slate-400 bg-slate-200 px-4 hover:bg-slate-300'
+        className='absolute left-4 top-4 border-2 border-slate-950 bg-slate-800 px-4 text-slate-100 shadow-xl hover:bg-slate-700'
         onClick={openTripView}
       >
         ← Back
       </Button>
-      <div className='pointer-events-auto absolute right-0 box-border h-full w-full overflow-y-hidden lg:w-1/3'>
+      <div className='pointer-events-auto absolute right-0 box-border h-full w-5/6 overflow-y-hidden lg:w-1/3'>
         {stages && renderStages}
         {renderTimelineLine}
       </div>
