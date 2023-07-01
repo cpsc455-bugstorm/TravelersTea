@@ -6,7 +6,7 @@ class TripController {
 
   async getAll() {
     try {
-      const trips = await TripModel.find()
+      const trips = await TripModel.find().lean()
       return trips
     } catch (error) {
       throw new Error('Could not fetch all trips', error)
@@ -20,7 +20,7 @@ class TripController {
         ...tripData,
         _id: uuid.v4(),
       })
-      return newTrip
+      return newTrip.toObject()
     } catch (error) {
       throw new Error('Could not create trip', error)
     }
@@ -30,7 +30,7 @@ class TripController {
     try {
       const updatedTrip = await TripModel.findByIdAndUpdate(id, tripData, {
         new: true,
-      })
+      }).lean()
       return updatedTrip
     } catch (error) {
       throw new Error('Could not edit trip', error)
@@ -39,7 +39,7 @@ class TripController {
 
   async deleteTrip(id) {
     try {
-      const deletedTrip = await TripModel.findByIdAndDelete(id)
+      const deletedTrip = await TripModel.findByIdAndDelete(id).lean()
       return deletedTrip
     } catch (error) {
       throw new Error('Could not delete trip', error)
