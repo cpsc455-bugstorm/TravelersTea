@@ -36,7 +36,7 @@ export function TripViewContent() {
   const renderTeacupRow = useMemo(() => {
     return (
       <div
-        className={`black-gradient pointer-events-auto z-[5] flex w-full shrink-0 items-end overflow-y-hidden overflow-x-scroll px-4 pt-8 mac-scrollbar`}
+        className={`pointer-events-auto z-[5] flex w-full shrink-0 items-end overflow-y-hidden overflow-x-scroll px-4 pt-8 mac-scrollbar`}
       >
         {teaCups}
       </div>
