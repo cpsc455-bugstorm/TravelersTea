@@ -15,7 +15,7 @@ TeaCup.propTypes = {
   colorNumber: PropTypes.number.isRequired,
   displayNumber: PropTypes.number.isRequired,
   titleText: PropTypes.string,
-  locationNames: PropTypes.arrayOf(PropTypes.string),
+  stageLocations: PropTypes.arrayOf(PropTypes.string),
   className: PropTypes.string,
 }
 
@@ -23,19 +23,19 @@ export function TeaCup({
   colorNumber,
   displayNumber,
   titleText,
-  locationNames,
+  stageLocations,
   className,
 }) {
   const dispatch = useDispatch()
   const [anchorEl, setAnchorEl] = useState(null)
   const hexColor = useMemo(() => getHexCode(colorNumber), [colorNumber])
-  const shouldHavePopover = titleText || locationNames
+  const shouldHavePopover = titleText || stageLocations
 
-  const locationNameList = useMemo(() => {
-    if (!locationNames) return <></>
+  const stageLocationList = useMemo(() => {
+    if (!stageLocations) return <></>
     return (
       <ul className='box-border list-disc overflow-y-auto pl-6'>
-        {locationNames.map((name, key) => (
+        {stageLocations.map((name, key) => (
           <li
             className='w-48 text-base font-normal'
             key={`day-${displayNumber}-bullet-${key}`}
@@ -45,7 +45,7 @@ export function TeaCup({
         ))}
       </ul>
     )
-  }, [displayNumber, locationNames])
+  }, [displayNumber, stageLocations])
 
   const handleTeacupClicked = useCallback(() => {
     dispatch(setActiveDayNumber(displayNumber))
@@ -104,7 +104,7 @@ export function TeaCup({
         >
           <div className='overflow-hidden rounded-md bg-slate-300/90 p-2'>
             <p className='text-lg font-bold'>{titleText}</p>
-            {locationNameList}
+            {stageLocationList}
           </div>
         </Popover>
       )}

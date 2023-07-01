@@ -7,11 +7,12 @@ import {
   fetchTripsAsync,
   updateTripAsync,
 } from './thunks'
+
 /**
  * @property {trips}: [{
  *  _id: uuid, - Unique identifier for the trip
  *  tripName: string, - Name of the trip, auto-generated
- *  destination: string, - Destination of the trip (user input)
+ *  tripLocation: string, - Destination of the trip (user input)
  *  stagesPerDay: number, - Number of stages or activities planned per day (user input)
  *  budget: number, - Total budget for the trip (user input)
  *  numberOfDays: number - Total number of days for the trip (user input)
