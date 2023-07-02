@@ -10,7 +10,6 @@ import CloseIcon from '@mui/icons-material/Close'
 
 export function TripSidePanelSingle() {
   const activeDayNumber = useSelector((state) => state.view.activeDayNumber)
-  const isCompactView = useSelector((state) => state.preferences.compactView)
   const showDrawer = useSelector((state) => state.view.showDrawer)
   const showSidePanel = useSelector((state) => state.view.showSidePanel)
   const dispatch = useDispatch()
@@ -23,7 +22,7 @@ export function TripSidePanelSingle() {
   }, [activeDayNumber])
 
   useEffect(() => {
-    if (!isCompactView && !showDrawer) {
+    if (!showDrawer) {
       visibilityTimer.current = setTimeout(() => {
         dispatch(setShowSidePanel(true))
       }, 350)
@@ -31,7 +30,7 @@ export function TripSidePanelSingle() {
       clearTimeout(visibilityTimer.current)
       dispatch(setShowSidePanel(false))
     }
-  }, [dispatch, isCompactView, showDrawer])
+  }, [dispatch, showDrawer])
 
   const renderStages = useMemo(() => {
     if (!dayDetails) return <></>
@@ -55,7 +54,7 @@ export function TripSidePanelSingle() {
 
   return (
     <div
-      className={`pointer-events-auto relative m-4 flex w-1/3 flex-col items-center justify-center overflow-hidden rounded-md bg-slate-900 text-center drop-shadow-[10px_-10px_15px_rgba(150,150,150,0.25)] transition-all
+      className={`pointer-events-auto relative m-4 flex w-1/3 flex-col items-center justify-center overflow-hidden rounded-md bg-slate-900 text-center drop-shadow-[10px_-10px_15px_rgba(150,150,150,0.25)] transition-all before:paper-background
         ${
           showSidePanel
             ? 'h-full scale-100 opacity-100'

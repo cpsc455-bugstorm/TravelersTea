@@ -1,5 +1,6 @@
 export { TeaCup } from './TeaCup'
-export { TripViewContent } from './TripViewContent'
+export { NonCompactTripView } from './NonCompactTripView'
 export { DayViewContent } from './DayViewContent'
 export { SeeMoreDrawer } from './SeeMoreDrawer'
 export { TripSidePanelSingle } from './TripSidePanelSingle'
+export { CompactTripView } from './CompactTripView'

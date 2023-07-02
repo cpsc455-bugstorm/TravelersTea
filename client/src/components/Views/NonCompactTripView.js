@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 import { SeeMoreDrawer } from './SeeMoreDrawer'
 import { TripSidePanelSingle } from './TripSidePanelSingle'
 
-export function TripViewContent() {
+export function NonCompactTripView() {
   const activeTripId = useSelector((state) => state.view.activeTripId)
 
   const [tripData, setTripData] = useState([])
