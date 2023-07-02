@@ -44,10 +44,17 @@ export function MapElement({ className }) {
   const addMarkerOnMap = useCallback(
     (longitude, latitude, emoji, label) => {
       const markerElement = document.createElement('div')
-      markerElement.innerHTML = `<p id=${label} style='width: 40px; height: 40px; font-size: 40px;'> ${emoji} <p>`
-      const marker = new mapboxgl.Marker(markerElement)
+      markerElement.innerHTML = `<p style='width: 40px; height: 40px; font-size: 40px; opacity: 1; '> ${emoji} <p>`
+      const marker = new mapboxgl.Marker({
+        element: markerElement,
+        occludedOpacity: 1,
+      })
         .setLngLat([longitude, latitude])
+        .setPopup(
+          new mapboxgl.Popup({ closeOnMove: true }).setHTML(`<p>${label}</p>`),
+        )
         .addTo(map)
+
       setMarkersOnMap((prevMarkers) => [...prevMarkers, marker])
     },
     [map],
