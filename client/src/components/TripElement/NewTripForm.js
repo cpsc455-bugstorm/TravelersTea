@@ -50,6 +50,8 @@ export function NewTripForm() {
         {
           longitude: newTrip.tripLongitude,
           latitude: newTrip.tripLatitude,
+          emoji: '📍',
+          label: 'Marker Icon',
         },
       ]),
     )
