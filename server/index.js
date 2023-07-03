@@ -6,6 +6,7 @@ const UserRoute = require('./routes/UserRoute')
 const TripRoute = require('./routes/TripRoute')
 
 const config = require('./config/config')
+const StageRoute = require('./routes/StageRoute')
 const app = express()
 app.use(express.json())
 app.use(
@@ -23,6 +24,9 @@ userRoute.initRoutes(apiRouter)
 
 const tripRoute = new TripRoute()
 tripRoute.initRoutes(apiRouter)
+
+const stageRoute = new StageRoute()
+stageRoute.initRoutes(apiRouter)
 
 app.get('/', (req, res) => {
   res.send('Hello, world!')
