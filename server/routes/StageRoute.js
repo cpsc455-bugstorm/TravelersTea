@@ -4,7 +4,10 @@ const controllers = require('../controllers/Controllers')
 class StageRoute {
   constructor() {
     this.router = express.Router()
+    this.router.post('', this.create.bind(this))
     this.router.get('', this.getByTripId.bind(this))
+    this.router.patch('/:id', this.update.bind(this))
+    this.router.patch('/:id', this.delete.bind(this))
   }
 
   initRoutes(apiRouter) {
