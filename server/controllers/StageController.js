@@ -13,7 +13,7 @@ class StageController {
       })
       return newStage.toObject()
     } catch (error) {
-      throw new Error('Could not create stage', error)
+      throw new Error(`Could not create stage: ${error}`)
     }
   }
 
@@ -22,7 +22,7 @@ class StageController {
       const stagesPerTripId = await StageModel.find({ tripId: tripId }).lean()
       return stagesPerTripId
     } catch (error) {
-      throw new Error('Could not fetch all stages for trip', error)
+      throw new Error(`Could not fetch all stages for trip: ${error}`)
     }
   }
 
@@ -33,7 +33,7 @@ class StageController {
       }).lean()
       return updatedStage
     } catch (error) {
-      throw new Error('Could not update stage', error)
+      throw new Error(`Could not update stage: ${error}`)
     }
   }
 
@@ -42,7 +42,7 @@ class StageController {
       const deletedStage = await StageModel.findByIdAndDelete(id).lean()
       return deletedStage
     } catch (error) {
-      throw new Error('Could not delete stage', error)
+      throw new Error(`Could not delete stage: ${error}`)
     }
   }
 
@@ -55,7 +55,7 @@ class StageController {
       const result = await StageModel.deleteMany({ tripId: tripId })
       return result
     } catch (error) {
-      throw new Error('Could not delete all stages for given tripId', error)
+      throw new Error(`Could not delete all stages for given tripId: ${error}`)
     }
   }
 }
