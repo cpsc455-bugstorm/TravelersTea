@@ -1,5 +1,4 @@
 const chalk = require('chalk')
-const config = require('../config/config')
 class Logging {
   static info(args) {
     console.log(
@@ -23,23 +22,32 @@ class Logging {
   }
 }
 
-const logRouteMiddleware = (req, res, next) => {
-  if (config.server.env == 'DEV') {
-    Logging.info(`Received ${req.method} request for ${req.path}`)
+const generalLoggingMiddleware = (tokens, req, res) => {
+  const method = tokens.method(req, res)
+  const url = tokens.url(req, res)
+  const status = tokens.status(req, res)
+  const responseTime = tokens['response-time'](req, res)
+  if (res.err) {
+    Logging.error(
+      `Received ${method} at ${url}  Status: ${status}  Response Time: ${responseTime} ms`,
+    )
+    Logging.error(res.err.toString())
+    console.error(res.err)
+    return
   }
-  next()
+  Logging.info(
+    `Received ${method} at ${url}  Status: ${status}  Response Time: ${responseTime} ms`,
+  )
 }
 
-const logErrorMiddleware = (err, req, res, next) => {
-  console.error(err)
-  Logging.error(`ERROR at ${req.method} request for ${req.path}`)
-  Logging.error(err.toString())
+const errorLoggingMiddleware = (err, req, res, next) => {
+  res.err = err
   next(err)
 }
 
 const loggingMiddleware = {
-  logRouteMiddleware,
-  logErrorMiddleware,
+  generalLoggingMiddleware,
+  errorLoggingMiddleware,
 }
 
 module.exports = loggingMiddleware

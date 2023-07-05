@@ -9,6 +9,7 @@ class UserRoute {
     // to call the getAll function
     this.router.get('', this.getAll.bind(this))
     this.router.post('/register', this.register.bind(this))
+    this.router.post('/login', this.login.bind(this))
   }
 
   initRoutes(apiRouter) {
@@ -28,6 +29,15 @@ class UserRoute {
     try {
       const userData = req.body
       const response = await controllers.userController.register(userData)
+      res.json(response)
+    } catch (err) {
+      next(err)
+    }
+  }
+  async login(req, res, next) {
+    try {
+      const userData = req.body
+      const response = await controllers.userController.login(userData)
       res.json(response)
     } catch (err) {
       next(err)

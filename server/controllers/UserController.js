@@ -18,8 +18,8 @@ class UserController {
 
   async getByEmail(userEmail) {
     try {
-      const users = await UserModel.findOne({ email: userEmail }).lean()
-      return users
+      const user = await UserModel.findOne({ email: userEmail }).lean()
+      return user
     } catch (error) {
       console.error('Error while retrieving users:', error)
       throw error
@@ -102,6 +102,35 @@ class UserController {
       console.error('Error with creating token')
       throw new Error('Could not create token: ', error)
     }
+  }
+
+  async login(userData) {
+    const userWithEmail = await this.getByEmail(userData.email)
+    if (userWithEmail == null) {
+      const error = new Error('No user with this email')
+      error.statusCode = 404
+      throw error
+    }
+
+    const passwordMatches = bcrypt.compareSync(
+      userData.password,
+      userWithEmail.password,
+    )
+
+    if (!passwordMatches) {
+      const error = new Error('Invalid password')
+      error.statusCode = 400
+      throw error
+    }
+
+    const accessToken = this.createAccessToken(userWithEmail)
+    const userDTO = {
+      id: userWithEmail._id,
+      username: userWithEmail.username,
+      email: userWithEmail.email,
+      accessToken,
+    }
+    return userDTO
   }
 }
 
