@@ -16,7 +16,7 @@ const config = {
   server: {
     port: SERVER_PORT,
     env: ENV,
-    JWT_SECRET,
+    jwtSecret: JWT_SECRET,
   },
 }
 
