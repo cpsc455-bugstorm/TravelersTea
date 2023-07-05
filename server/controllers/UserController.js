@@ -91,9 +91,7 @@ class UserController {
     try {
       const accessToken = jwt.sign(
         {
-          id: userData._id,
           username: userData.username,
-          email: userData.email,
         },
         config.server.jwtSecret,
       )
