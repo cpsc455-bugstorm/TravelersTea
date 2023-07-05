@@ -1,13 +1,15 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
-const logger = require('morgan')
+const morgan = require('morgan')
+
 const UserRoute = require('./routes/UserRoute')
 const TripRoute = require('./routes/TripRoute')
-
+const loggingMiddleware = require('./middlewares/Logging')
+const errorHandleMiddleware = require('./middlewares/ErrorHandling')
 const config = require('./config/config')
+
 const app = express()
-app.use(logger('dev'))
 app.use(express.json())
 app.use(
   cors({
@@ -17,6 +19,11 @@ app.use(
 )
 
 const apiRouter = express.Router()
+
+if (config.server.env === 'DEV') {
+  app.use(morgan(loggingMiddleware.generalLoggingMiddleware))
+}
+
 app.use('/api', apiRouter)
 
 const userRoute = new UserRoute()
@@ -25,9 +32,11 @@ userRoute.initRoutes(apiRouter)
 const tripRoute = new TripRoute()
 tripRoute.initRoutes(apiRouter)
 
-app.get('/', (req, res) => {
-  res.send('Hello, world!')
-})
+if (config.server.env === 'DEV') {
+  app.use(loggingMiddleware.errorLoggingMiddleware)
+}
+
+app.use(errorHandleMiddleware)
 
 const connectDB = async () => {
   try {
