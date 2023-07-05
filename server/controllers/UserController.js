@@ -100,7 +100,7 @@ class UserController {
       return accessToken
     } catch (error) {
       console.error('Error with creating token')
-      throw new Error('Could not create token: ', error)
+      throw new Error(`Could not create token: ${error}`)
     }
   }
 
