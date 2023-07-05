@@ -43,10 +43,10 @@ export function TripForm({ onSubmit, initialValues }) {
       className='flex flex-col space-y-4 text-center'
     >
       <TextField
-        {...register('destination', { required: true })}
+        {...register('tripLocation', { required: true })}
         label='Destination'
         placeholder='Tell me where you want to go...'
-        error={!!errors.destination}
+        error={!!errors.tripLocation}
       />
       <TextField
         {...register('stagesPerDay', { required: true, min: 0 })}

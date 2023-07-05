@@ -23,7 +23,7 @@ const stageSchema = new mongoose.Schema({
   },
   stageLongitude: Number,
   stageLatitude: Number,
-  locationName: String,
+  stageLocation: String,
   description: String,
   colourNumber: Number,
 })
