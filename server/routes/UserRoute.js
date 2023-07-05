@@ -15,7 +15,6 @@ class UserRoute {
   initRoutes(apiRouter) {
     apiRouter.use('/users', this.router)
   }
-
   async getAll(req, res, next) {
     try {
       const response = await controllers.userController.getAll()
@@ -24,7 +23,6 @@ class UserRoute {
       next(err)
     }
   }
-
   async register(req, res, next) {
     try {
       const userData = req.body
