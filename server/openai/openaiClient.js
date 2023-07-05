@@ -1,11 +1,9 @@
 require('dotenv').config()
-const { Configuration, OpenAIApi } = require('openai')
+const { OpenAIApi } = require('openai')
+const { openaiConfig } = require('./config')
 let openai
 
-const configuration = new Configuration({
-  apiKey: process.env.OPEN_AI_API_KEY || 'add-alt-key-here',
-})
-openai = new OpenAIApi(configuration)
+openai = new OpenAIApi(openaiConfig)
 let model = process.env.GPT_MODEL || 'gpt-3.5-turbo'
 // if this says gpt-4 and you have set it in your env that means it has read the env file successfully
 console.log(`model: ${model}`)
