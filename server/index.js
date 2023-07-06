@@ -5,6 +5,7 @@ const morgan = require('morgan')
 
 const UserRoute = require('./routes/UserRoute')
 const TripRoute = require('./routes/TripRoute')
+const StageRoute = require('./routes/StageRoute')
 const loggingMiddleware = require('./middlewares/Logging')
 const errorHandleMiddleware = require('./middlewares/ErrorHandling')
 const config = require('./config/config')
@@ -32,11 +33,18 @@ userRoute.initRoutes(apiRouter)
 const tripRoute = new TripRoute()
 tripRoute.initRoutes(apiRouter)
 
+const stageRoute = new StageRoute()
+stageRoute.initRoutes(apiRouter)
+
 if (config.server.env === 'DEV') {
   app.use(loggingMiddleware.errorLoggingMiddleware)
 }
 
 app.use(errorHandleMiddleware)
+
+app.get('/', (req, res) => {
+  res.send('Hello, world!')
+})
 
 const connectDB = async () => {
   try {
