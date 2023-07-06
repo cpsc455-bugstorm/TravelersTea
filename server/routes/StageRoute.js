@@ -6,7 +6,7 @@ class StageRoute {
     this.router = express.Router()
     this.router.post('', this.create.bind(this))
     this.router.get('', this.getByTripId.bind(this))
-    this.router.get('/:id', this.getStage.bind(this))
+    this.router.get('/:id', this.getById.bind(this))
     this.router.patch('/:id', this.update.bind(this))
     this.router.delete('/:id', this.delete.bind(this))
   }
@@ -24,7 +24,7 @@ class StageRoute {
     }
   }
 
-  async getStage(req, res) {
+  async getById(req, res) {
     const stageId = req.params.id
     if (!stageId) res.status(400).json({ error: 'Missing stageId parameter' })
 
