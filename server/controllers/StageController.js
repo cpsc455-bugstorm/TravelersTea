@@ -17,6 +17,15 @@ class StageController {
     }
   }
 
+  async getStage(id) {
+    try {
+      const stage = await StageModel.findById(id)
+      return stage
+    } catch (error) {
+      throw new Error(`Could not fetch stage: ${error}`)
+    }
+  }
+
   async getStagesByTripId(tripId) {
     try {
       const stagesPerTripId = await StageModel.find({ tripId: tripId }).lean()

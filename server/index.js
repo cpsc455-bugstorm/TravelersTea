@@ -1,12 +1,15 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
+const morgan = require('morgan')
 
 const UserRoute = require('./routes/UserRoute')
 const TripRoute = require('./routes/TripRoute')
-
-const config = require('./config/config')
 const StageRoute = require('./routes/StageRoute')
+const loggingMiddleware = require('./middlewares/Logging')
+const errorHandleMiddleware = require('./middlewares/ErrorHandling')
+const config = require('./config/config')
+
 const app = express()
 app.use(express.json())
 app.use(
@@ -17,6 +20,11 @@ app.use(
 )
 
 const apiRouter = express.Router()
+
+if (config.server.env === 'DEV') {
+  app.use(morgan(loggingMiddleware.generalLoggingMiddleware))
+}
+
 app.use('/api', apiRouter)
 
 const userRoute = new UserRoute()
@@ -27,6 +35,12 @@ tripRoute.initRoutes(apiRouter)
 
 const stageRoute = new StageRoute()
 stageRoute.initRoutes(apiRouter)
+
+if (config.server.env === 'DEV') {
+  app.use(loggingMiddleware.errorLoggingMiddleware)
+}
+
+app.use(errorHandleMiddleware)
 
 app.get('/', (req, res) => {
   res.send('Hello, world!')
