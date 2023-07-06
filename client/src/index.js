@@ -11,11 +11,11 @@ const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <SessionController>
-        <Router>
+      <Router>
+        <SessionController>
           <App />
-        </Router>
-      </SessionController>
+        </SessionController>
+      </Router>
     </Provider>
   </React.StrictMode>,
 )
