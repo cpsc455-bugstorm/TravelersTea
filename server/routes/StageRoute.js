@@ -6,6 +6,7 @@ class StageRoute {
     this.router = express.Router()
     this.router.post('', this.create.bind(this))
     this.router.get('', this.getByTripId.bind(this))
+    this.router.get('/:id', this.getStage.bind(this))
     this.router.patch('/:id', this.update.bind(this))
     this.router.delete('/:id', this.delete.bind(this))
   }
@@ -18,6 +19,18 @@ class StageRoute {
     try {
       const newStage = await controllers.stageController.createStage(req.body)
       res.status(201).json(newStage)
+    } catch (err) {
+      res.status(500).json({ error: err.toString() })
+    }
+  }
+
+  async getStage(req, res) {
+    const stageId = req.params.id
+    if (!stageId) res.status(400).json({ error: 'Missing stageId parameter' })
+
+    try {
+      const response = await controllers.stageController.getStage(stageId)
+      res.status(200).json(response)
     } catch (err) {
       res.status(500).json({ error: err.toString() })
     }
