@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 import {
   loginUserAsync,
@@ -8,32 +8,36 @@ import { Button } from '../common'
 
 export function AuthScreen() {
   const dispatch = useDispatch()
-  const [email, setEmail] = useState('')
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [isLoginView, setIsLoginView] = useState(true)
 
-  const handleAuth = (event) => {
-    event.preventDefault()
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    watch,
+  } = useForm()
+
+  const isLoginView = watch('isLoginView', true)
+
+  const onSubmitForm = (data) => {
     if (isLoginView) {
       dispatch(
         loginUserAsync({
-          email: email,
-          password: password,
+          email: data.email,
+          password: data.password,
         }),
       )
     } else {
       dispatch(
         registerUserAsync({
-          email: email,
-          username: username,
-          password: password,
+          email: data.email,
+          username: data.username,
+          password: data.password,
         }),
       )
     }
+    reset()
   }
-
-  const toggleView = () => setIsLoginView(!isLoginView)
 
   return (
     <div className='login-container relative h-screen'>
@@ -52,7 +56,7 @@ export function AuthScreen() {
             {isLoginView ? 'Sign In' : 'Sign Up'}{' '}
           </h1>
           <form
-            onSubmit={handleAuth}
+            onSubmit={handleSubmit(onSubmitForm)}
             className='flex w-full flex-col items-center'
           >
             {!isLoginView && (
@@ -62,9 +66,13 @@ export function AuthScreen() {
                   id='username'
                   className='w-full border-b border-gray-400 bg-transparent px-2 py-2 placeholder-gray-700 hover:placeholder-opacity-80'
                   placeholder='Username'
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  {...register('username', { required: !isLoginView })}
                 />
+                {errors.username && (
+                  <span className='text-sm text-red-600'>
+                    Username is required
+                  </span>
+                )}
               </div>
             )}
             <div className='mb-4 w-full'>
@@ -73,9 +81,11 @@ export function AuthScreen() {
                 id='email'
                 className='w-full border-b border-gray-400 bg-transparent px-2 py-2 placeholder-gray-700 hover:placeholder-opacity-80'
                 placeholder='Email'
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                {...register('email', { required: true })}
               />
+              {errors.email && (
+                <span className='text-sm text-red-600'>Email is required</span>
+              )}
             </div>
 
             <div className='mb-4 w-full'>
@@ -84,25 +94,31 @@ export function AuthScreen() {
                 id='password'
                 className='w-full border-b border-gray-400 bg-transparent px-2 py-2 placeholder-gray-700 hover:placeholder-opacity-80'
                 placeholder='Password'
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                {...register('password', { required: true })}
               />
+              {errors.password && (
+                <span className='text-sm text-red-600'>
+                  Password is required
+                </span>
+              )}
             </div>
             <Button
+              onClick={() => {}}
               type='submit'
               className='mt-4 w-full bg-blue-600 bg-opacity-80 px-4 py-2 text-white hover:bg-blue-400'
-              onClick={() => {}}
             >
               {isLoginView ? 'Login' : 'Register'}
             </Button>
             <hr className='my-4 h-px w-full border-0 bg-slate-800 text-slate-800' />
+            <Button
+              onClick={() => {
+                reset({ isLoginView: !isLoginView })
+              }}
+              className='w-full bg-slate-600 bg-opacity-80 px-4 py-2 text-white hover:bg-slate-400'
+            >
+              {isLoginView ? 'Register Account' : 'Back to Login'}
+            </Button>
           </form>
-          <Button
-            onClick={toggleView}
-            className='w-full bg-slate-600 bg-opacity-80 px-4 py-2 text-white hover:bg-slate-400'
-          >
-            {isLoginView ? 'Register Account' : 'Back to Login'}
-          </Button>
         </div>
       </div>
     </div>

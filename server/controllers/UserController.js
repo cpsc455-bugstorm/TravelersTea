@@ -4,7 +4,9 @@ const config = require('../config/config')
 const jwt = require('jsonwebtoken')
 
 class UserController {
-  constructor() {}
+  constructor(tripController) {
+    this.tripController = tripController
+  }
 
   async getAll() {
     try {
@@ -54,6 +56,8 @@ class UserController {
 
   async delete(userId) {
     try {
+      await this.tripController.deleteTripsByUserId(userId)
+
       const deletedUser = await UserModel.findByIdAndRemove(userId)
       return deletedUser.toObject()
     } catch (error) {

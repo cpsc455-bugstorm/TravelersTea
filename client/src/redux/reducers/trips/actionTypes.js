@@ -1,7 +1,7 @@
 export const actionTypes = {
-  CREATE_TRIP: 'trip/createTrip',
-  UPDATE_TRIP: 'trip/updateTrip',
-  GET_TRIPS: 'trip/fetchTrips',
-  GET_TRIP: 'trip/fetchTrip',
-  DELETE_TRIP: 'trip/deleteTrip',
+  CREATE_TRIP: 'trips/createTrip',
+  UPDATE_TRIP: 'trips/updateTrip',
+  GET_TRIPS: 'trips/fetchTrips',
+  GET_TRIP: 'trips/fetchTrip',
+  DELETE_TRIP: 'trips/deleteTrip',
 }

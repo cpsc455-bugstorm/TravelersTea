@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import { Loader } from './components/common'
 import { AppView } from './constants/enums'
 import { fetchTripsAsync } from './redux/reducers/trips/thunks'
 import { setAppView } from './redux/reducers/viewSlice'
-import { useNavigate } from 'react-router-dom'
 import { REQUEST_STATE } from './redux/states'
 
 SessionController.propTypes = {
@@ -16,6 +16,7 @@ export function SessionController({ children }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const tripsStatus = useSelector((state) => state.trips.status)
+  const user = useSelector((state) => state.users.user)
   const usersStatus = useSelector((state) => state.users.status)
   const [isLoading, setIsLoading] = useState(false)
   const [isMinimumLoadingTimeMet, setIsMinimumLoadingTimeMet] = useState(false)
@@ -34,8 +35,9 @@ export function SessionController({ children }) {
       tripsStatus === REQUEST_STATE.IDLE &&
       usersStatus === REQUEST_STATE.LOGGEDIN
     ) {
-      dispatch(fetchTripsAsync())
+      dispatch(fetchTripsAsync(user.id))
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, tripsStatus, usersStatus])
 
   useEffect(() => {
