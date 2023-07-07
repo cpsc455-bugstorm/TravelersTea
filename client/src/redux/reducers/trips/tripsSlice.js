@@ -20,8 +20,8 @@ import {
  *  tripLatitude: number - latitude (generated from BE)
  * }]
  */
-export const tripSlice = createSlice({
-  name: 'trip',
+export const tripsSlice = createSlice({
+  name: 'trips',
   initialState: {
     trips: [],
     status: REQUEST_STATE.IDLE,
@@ -78,4 +78,4 @@ export const tripSlice = createSlice({
   },
 })
 
-export default tripSlice.reducer
+export default tripsSlice.reducer

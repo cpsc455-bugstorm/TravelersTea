@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Loader } from './components/common'
 import { AppView } from './constants/enums'
-import { fetchTripsAsync } from './redux/reducers/trip/thunks'
+import { fetchTripsAsync } from './redux/reducers/trips/thunks'
 import { setAppView } from './redux/reducers/viewSlice'
 import { useNavigate } from 'react-router-dom'
 import { REQUEST_STATE } from './redux/states'
@@ -15,7 +15,7 @@ SessionController.propTypes = {
 export function SessionController({ children }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const tripsStatus = useSelector((state) => state.trip.status)
+  const tripsStatus = useSelector((state) => state.trips.status)
   const usersStatus = useSelector((state) => state.users.status)
   const [isLoading, setIsLoading] = useState(false)
   const [isMinimumLoadingTimeMet, setIsMinimumLoadingTimeMet] = useState(false)
@@ -25,7 +25,7 @@ export function SessionController({ children }) {
       setTimeout(() => {
         navigate('/home')
         dispatch(setAppView(AppView.NEW_TRIP))
-      }, 2000)
+      }, 3000)
     }
   }, [dispatch, navigate, usersStatus])
 

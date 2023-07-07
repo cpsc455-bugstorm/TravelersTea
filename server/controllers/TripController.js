@@ -1,9 +1,10 @@
 const TripModel = require('../models/TripModel')
 const uuid = require('uuid')
-const controllers = require('./Controllers')
 
 class TripController {
-  constructor() {}
+  constructor(stageController) {
+    this.stageController = stageController
+  }
 
   async getAll() {
     try {
@@ -40,7 +41,7 @@ class TripController {
 
   async deleteTrip(id) {
     try {
-      await controllers.stageController.deleteStagesByTripId(id)
+      await this.stageController.deleteStagesByTripId(id)
       const deletedTrip = await TripModel.findByIdAndDelete(id).lean()
       return deletedTrip
     } catch (error) {

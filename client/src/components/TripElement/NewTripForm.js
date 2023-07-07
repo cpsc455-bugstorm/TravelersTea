@@ -6,7 +6,7 @@ import {
   clearAllMarkersAndAdd_Store,
 } from '../../redux/reducers/mapSlice'
 import { closeNewTripModal } from '../../redux/reducers/modalsSlice'
-import { createTripAsync } from '../../redux/reducers/trip/thunks'
+import { createTripAsync } from '../../redux/reducers/trips/thunks'
 import { setActiveTripId, setAppView } from '../../redux/reducers/viewSlice'
 import { Modal } from '../common'
 import { TripForm } from './TripForm'
@@ -14,7 +14,7 @@ import { TripForm } from './TripForm'
 export function NewTripForm() {
   const dispatch = useDispatch()
   const appView = useSelector((state) => state.view.appView)
-  const trips = useSelector((state) => state.trip.trips)
+  const trips = useSelector((state) => state.trips.trips)
 
   const newTripModalIsOpen = useSelector(
     (state) => state.modals.newTripModalIsOpen,
