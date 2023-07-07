@@ -16,7 +16,7 @@ export const usersSlice = createSlice({
     error: null,
   },
   reducers: {
-    updateStatus: (state) => {
+    updateAsLoggedOut: (state) => {
       state.status = REQUEST_STATE.LOGGEDOUT
     },
     logoutUser: (state) => {
@@ -47,6 +47,6 @@ export const usersSlice = createSlice({
   },
 })
 
-export const { logoutUser, updateStatus } = usersSlice.actions
+export const { logoutUser, updateAsLoggedOut } = usersSlice.actions
 
 export default usersSlice.reducer

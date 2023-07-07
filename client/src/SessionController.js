@@ -5,11 +5,11 @@ import { useNavigate } from 'react-router-dom'
 import { Loader } from './components/common'
 import { AppView } from './constants/enums'
 import { resetMap } from './redux/reducers/mapSlice'
-import { resetModalPreferences } from './redux/reducers/modalsSlice'
+import { resetModalsDisplayed } from './redux/reducers/modalsSlice'
 import { resetPreferences } from './redux/reducers/preferencesSlice'
 import { fetchTripsAsync } from './redux/reducers/trips/thunks'
 import { resetTrips } from './redux/reducers/trips/tripsSlice'
-import { updateStatus } from './redux/reducers/users/usersSlice'
+import { updateAsLoggedOut } from './redux/reducers/users/usersSlice'
 import { resetView, setAppView } from './redux/reducers/viewSlice'
 import { REQUEST_STATE } from './redux/states'
 
@@ -32,17 +32,16 @@ export function SessionController({ children }) {
       dispatch(resetPreferences())
       dispatch(resetView())
       dispatch(resetMap())
-      dispatch(resetModalPreferences())
-      dispatch(updateStatus())
+      dispatch(resetModalsDisplayed())
+      dispatch(updateAsLoggedOut())
     }
   }, [dispatch, usersStatus])
 
   useEffect(() => {
     if (usersStatus === REQUEST_STATE.LOGGEDIN) {
-      setTimeout(() => {
-        navigate('/home')
-        dispatch(setAppView(AppView.NEW_TRIP))
-      }, 3000)
+      navigate('/home')
+      dispatch(setAppView(AppView.NEW_TRIP))
+      setIsMinimumLoadingTimeMet(true)
     }
   }, [dispatch, navigate, usersStatus])
 
@@ -83,8 +82,9 @@ export function SessionController({ children }) {
   useEffect(() => {
     if (usersStatus !== REQUEST_STATE.READING && isMinimumLoadingTimeMet) {
       setIsLoading(false)
+      if (usersStatus === REQUEST_STATE.REJECTED) dispatch(updateAsLoggedOut())
     }
-  }, [usersStatus, isMinimumLoadingTimeMet])
+  }, [usersStatus, isMinimumLoadingTimeMet, dispatch])
 
   return (
     <>
