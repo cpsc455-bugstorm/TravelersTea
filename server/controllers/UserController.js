@@ -85,7 +85,6 @@ class UserController {
     const userDTO = {
       id: newlyCreatedUser._id,
       username: newlyCreatedUser.username,
-      email: newlyCreatedUser.email,
       accessToken,
     }
     return userDTO
@@ -129,7 +128,6 @@ class UserController {
     const userDTO = {
       id: userWithEmail._id,
       username: userWithEmail.username,
-      email: userWithEmail.email,
       accessToken,
     }
     return userDTO

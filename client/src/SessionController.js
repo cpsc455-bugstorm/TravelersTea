@@ -4,8 +4,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { Loader } from './components/common'
 import { AppView } from './constants/enums'
+import { resetMap } from './redux/reducers/mapSlice'
+import { resetModalPreferences } from './redux/reducers/modalsSlice'
+import { resetPreferences } from './redux/reducers/preferencesSlice'
 import { fetchTripsAsync } from './redux/reducers/trips/thunks'
-import { setAppView } from './redux/reducers/viewSlice'
+import { resetTrips } from './redux/reducers/trips/tripsSlice'
+import { updateStatus } from './redux/reducers/users/usersSlice'
+import { resetView, setAppView } from './redux/reducers/viewSlice'
 import { REQUEST_STATE } from './redux/states'
 
 SessionController.propTypes = {
@@ -20,6 +25,17 @@ export function SessionController({ children }) {
   const usersStatus = useSelector((state) => state.users.status)
   const [isLoading, setIsLoading] = useState(false)
   const [isMinimumLoadingTimeMet, setIsMinimumLoadingTimeMet] = useState(false)
+
+  useEffect(() => {
+    if (usersStatus === REQUEST_STATE.LOGGINGOUT) {
+      dispatch(resetTrips())
+      dispatch(resetPreferences())
+      dispatch(resetView())
+      dispatch(resetMap())
+      dispatch(resetModalPreferences())
+      dispatch(updateStatus())
+    }
+  }, [dispatch, usersStatus])
 
   useEffect(() => {
     if (usersStatus === REQUEST_STATE.LOGGEDIN) {

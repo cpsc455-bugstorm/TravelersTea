@@ -19,6 +19,10 @@ const modalsSlice = createSlice({
     closeEditTripModal: (state) => {
       state.editTripModalIsOpen = false
     },
+    resetModalPreferences: (state) => {
+      state.editTripModalIsOpen = false
+      state.newTripModalIsOpen = true
+    },
   },
 })
 
@@ -27,6 +31,7 @@ export const {
   closeNewTripModal,
   openEditTripModal,
   closeEditTripModal,
+  resetModalPreferences,
 } = modalsSlice.actions
 
 export default modalsSlice.reducer

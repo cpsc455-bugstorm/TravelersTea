@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 import {
@@ -14,10 +15,9 @@ export function AuthScreen() {
     handleSubmit,
     formState: { errors },
     reset,
-    watch,
   } = useForm()
 
-  const isLoginView = watch('isLoginView', true)
+  const [isLoginView, setIsLoginView] = useState(true)
 
   const onSubmitForm = (data) => {
     if (isLoginView) {
@@ -111,8 +111,9 @@ export function AuthScreen() {
             </Button>
             <hr className='my-4 h-px w-full border-0 bg-slate-800 text-slate-800' />
             <Button
-              onClick={() => {
-                reset({ isLoginView: !isLoginView })
+              onClick={(event) => {
+                event.preventDefault()
+                setIsLoginView(!isLoginView)
               }}
               className='w-full bg-slate-600 bg-opacity-80 px-4 py-2 text-white hover:bg-slate-400'
             >

@@ -61,6 +61,7 @@ const viewSlice = createSlice({
   name: 'view',
   initialState: initialState,
   reducers: {
+    resetView: () => initialState,
     setAppView: _setAppView,
     setActiveTripId: _setActiveTripId,
     toggleSidebar: _toggleSidebar,
@@ -75,6 +76,7 @@ const viewSlice = createSlice({
 })
 
 export const {
+  resetView,
   setAppView,
   setActiveTripId,
   setActiveDayNumber,
