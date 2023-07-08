@@ -16,7 +16,7 @@ class TripRoute {
 
   async getAll(req, res) {
     try {
-      const response = await controllers.tripController.getAll()
+      const response = await controllers.tripController.getAll(req.query.userId)
       res.status(200).json(response)
     } catch (err) {
       res.status(500).json({ error: err.toString() })
@@ -25,7 +25,10 @@ class TripRoute {
 
   async create(req, res) {
     try {
-      const newTrip = await controllers.tripController.createTrip(req.body)
+      const newTrip = await controllers.tripController.createTrip(
+        req.body.userId,
+        req.body,
+      )
       res.status(201).json(newTrip)
     } catch (err) {
       res.status(500).json({ error: err.toString() })

@@ -32,10 +32,16 @@ const mapSlice = createSlice({
       const markersWithProps = action.payload
       state.markers = markersWithProps
     },
+    resetMap: (state) => {
+      state.markers = []
+    },
   },
 })
 
-export const { changeCoordinatesAndZoom, clearAllMarkersAndAdd_Store } =
-  mapSlice.actions
+export const {
+  changeCoordinatesAndZoom,
+  clearAllMarkersAndAdd_Store,
+  resetMap,
+} = mapSlice.actions
 
 export default mapSlice.reducer

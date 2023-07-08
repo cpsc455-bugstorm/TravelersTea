@@ -1,18 +1,14 @@
 import { useSelector } from 'react-redux'
-import { Route, Routes, Navigate } from 'react-router-dom'
-import { LoginScreen } from './components/user'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import { AppInterface } from './AppInterface'
-import { selectUser } from './redux/reducers/userSlice'
+import { AuthScreen } from './components/user/AuthScreen'
 
 function App() {
-  const user = useSelector(selectUser)
+  const user = useSelector((state) => state.users.user)
 
   return (
     <Routes>
-      <Route
-        path='/'
-        element={user ? <Navigate to='/home' /> : <LoginScreen />}
-      />
+      <Route path='/' element={<AuthScreen />} />
       <Route
         path='/home'
         element={user ? <AppInterface /> : <Navigate to='/' />}
