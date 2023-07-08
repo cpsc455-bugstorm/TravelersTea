@@ -1,3 +1,4 @@
+const { Configuration } = require('openai')
 require('dotenv').config()
 
 const MONGO_USERNAME = process.env.MONGO_USERNAME || ''
@@ -18,6 +19,10 @@ const config = {
     env: ENV,
     jwtSecret: JWT_SECRET,
   },
+  openaiApiKey: process.env.OPENAI_API_KEY,
+  openaiConfig: new Configuration({
+    apiKey: process.env.OPEN_AI_API_KEY || 'add-alt-key-here',
+  }),
 }
 
 module.exports = config

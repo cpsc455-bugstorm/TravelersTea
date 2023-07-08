@@ -1,35 +1,26 @@
 /*
- Simple test example of usage of generateItinerary function
+ Simple test example of usage of generateTrip function
  Run via `node openai/test.js` from `server/` or wherever the .env file with the openai key is
 */
 
-const generateItinerary = require('./generateItenerary')
-const Itinerary = require('../models/itineraryModel')
+const generateTrip = require('./generateTrip')
+const TripModel = require('../models/TripModel')
 
-const exampleItinerary = new Itinerary({
-  tripLocation: 'Paris',
+const exampleTrip = new TripModel({
+  destination: 'Paris',
   budget: 2000,
-  days: 5,
-  stages: 3,
-  preferences: ['shopping', 'museums', 'historical landmarks'],
+  numberOfDays: 5,
+  stagesPerDay: 3,
 })
 
-;(async function testGenerateItinerary() {
+;(async function testGenerateTrip() {
   try {
-    const itineraryConstraints = `
-      Destination: ${exampleItinerary.tripLocation}
-      Budget: $${exampleItinerary.budget}
-      Days: ${exampleItinerary.days}
-      Stages per day: ${exampleItinerary.stages}
-      Preferences: ${exampleItinerary.preferences.join(', ')}
-    `
+    const trip = await generateTrip(exampleTrip)
 
-    const itinerary = await generateItinerary(itineraryConstraints)
-
-    console.log(`Generated itinerary for given constraints:`)
-    console.log(itineraryConstraints)
-    console.log(itinerary)
+    console.log(`Generated trip for given constraints:`)
+    console.log(exampleTrip)
+    console.log(trip)
   } catch (error) {
-    console.error('Error while testing generateItinerary function:', error)
+    console.error('Error while testing generateTrip function:', error)
   }
 })()
