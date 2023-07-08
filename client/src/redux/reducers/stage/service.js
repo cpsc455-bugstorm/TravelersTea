@@ -6,7 +6,7 @@ export const fetchStage = async (id) => {
 }
 
 export const fetchStagesByTripId = async (tripId) => {
-  return await axios.get(`${API_URL}/stages`, { tripId: tripId })
+  return await axios.get(`${API_URL}/stages`, { params: { tripId } })
 }
 
 export const createStage = async (stageData) => {
