@@ -1,12 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { closeEditTripModal } from '../../redux/reducers/modalsSlice'
-import { updateTripAsync } from '../../redux/reducers/trip/thunks'
+import { updateTripAsync } from '../../redux/reducers/trips/thunks'
 import { Modal } from '../common'
 import { TripForm } from './TripForm'
 
 export function EditTripForm() {
   const dispatch = useDispatch()
-  const trips = useSelector((state) => state.trip.trips)
+  const trips = useSelector((state) => state.trips.trips)
 
   const activeTripId = useSelector((state) => state.view.activeTripId)
   const activeTrip = trips.find((trip) => trip._id === activeTripId)

@@ -17,7 +17,7 @@ import { openEditTripModal } from '../../redux/reducers/modalsSlice'
 import {
   deleteTripAsync,
   updateTripAsync,
-} from '../../redux/reducers/trip/thunks'
+} from '../../redux/reducers/trips/thunks'
 import { closeSidebar, setActiveTripId } from '../../redux/reducers/viewSlice'
 import { Button, Modal } from '../common'
 

@@ -1,8 +1,8 @@
 import axios from 'axios'
 import { API_URL } from '../../../constants/API_URL'
 
-export const fetchTrips = async () => {
-  return await axios.get(`${API_URL}/trips`)
+export const fetchTrips = async (userId) => {
+  return await axios.get(`${API_URL}/trips`, { params: { userId } })
 }
 
 export const createTrip = async (tripData) => {

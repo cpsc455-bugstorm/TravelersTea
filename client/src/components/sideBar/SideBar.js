@@ -23,7 +23,7 @@ export function SideBar() {
   const appView = useSelector((state) => state.view.appView)
   const activeTripId = useSelector((state) => state.view.activeTripId)
   const isSidebarOpen = useSelector((state) => state.view.isSidebarOpen)
-  const trips = useSelector((state) => state.trip.trips)
+  const trips = useSelector((state) => state.trips.trips)
   const isCompactView = useSelector((state) => state.preferences.compactView)
   const isVerticalTimelines = useSelector(
     (state) => state.preferences.verticalTimelines,
