@@ -3,10 +3,10 @@ import { actionTypes } from './actionTypes'
 import tripService from './service'
 
 export const fetchTripsAsync = createAsyncThunk(
-  actionTypes.GET_TRIP,
-  async (_, { rejectWithValue }) => {
+  actionTypes.GET_TRIPS,
+  async (userId, { rejectWithValue }) => {
     try {
-      const response = await tripService.fetchTrips()
+      const response = await tripService.fetchTrips(userId)
       return response.data
     } catch (error) {
       return rejectWithValue({ message: error.response.data.error })
