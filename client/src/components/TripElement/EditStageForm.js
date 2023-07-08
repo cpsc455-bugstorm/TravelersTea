@@ -4,7 +4,7 @@ import { Modal } from '../common'
 
 export function EditStageForm() {
   const dispatch = useDispatch()
-  const trips = useSelector((state) => state.trip.trips)
+  const trips = useSelector((state) => state.trips.trips)
 
   const activeTripId = useSelector((state) => state.view.activeTripId)
   const activeTrip = trips.find((trip) => trip._id === activeTripId)
