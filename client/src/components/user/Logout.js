@@ -1,13 +1,13 @@
-import { Button } from '../common'
 import { useDispatch, useSelector } from 'react-redux'
-import { logout, selectUser } from '../../redux/reducers/userSlice'
+import { logoutUser } from '../../redux/reducers/users/usersSlice'
+import { Button } from '../common'
 
 export function Logout() {
-  const user = useSelector(selectUser)
+  const user = useSelector((state) => state.users.user)
   const dispatch = useDispatch()
   const handleLogout = (e) => {
     e.preventDefault()
-    dispatch(logout())
+    dispatch(logoutUser())
   }
 
   return (

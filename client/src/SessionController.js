@@ -1,8 +1,16 @@
 import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import { Loader } from './components/common'
-import { fetchTripsAsync } from './redux/reducers/trip/thunks'
+import { AppView } from './constants/enums'
+import { resetMap } from './redux/reducers/mapSlice'
+import { resetModalsDisplayed } from './redux/reducers/modalsSlice'
+import { resetPreferences } from './redux/reducers/preferencesSlice'
+import { fetchTripsAsync } from './redux/reducers/trips/thunks'
+import { resetTrips } from './redux/reducers/trips/tripsSlice'
+import { updateAsLoggedOut } from './redux/reducers/users/usersSlice'
+import { resetView, setAppView } from './redux/reducers/viewSlice'
 import { REQUEST_STATE } from './redux/states'
 
 SessionController.propTypes = {
@@ -11,25 +19,55 @@ SessionController.propTypes = {
 
 export function SessionController({ children }) {
   const dispatch = useDispatch()
-  const tripsStatus = useSelector((state) => state.trip.status)
+  const navigate = useNavigate()
+  const tripsStatus = useSelector((state) => state.trips.status)
+  const user = useSelector((state) => state.users.user)
+  const usersStatus = useSelector((state) => state.users.status)
   const [isLoading, setIsLoading] = useState(false)
   const [isMinimumLoadingTimeMet, setIsMinimumLoadingTimeMet] = useState(false)
 
   useEffect(() => {
-    if (tripsStatus === REQUEST_STATE.IDLE) {
-      dispatch(fetchTripsAsync())
+    if (usersStatus === REQUEST_STATE.LOGGINGOUT) {
+      dispatch(resetTrips())
+      dispatch(resetPreferences())
+      dispatch(resetView())
+      dispatch(resetMap())
+      dispatch(resetModalsDisplayed())
+      dispatch(updateAsLoggedOut())
     }
-  }, [dispatch, tripsStatus])
+  }, [dispatch, usersStatus])
 
   useEffect(() => {
-    if (tripsStatus === REQUEST_STATE.WRITING) {
+    if (usersStatus === REQUEST_STATE.LOGGEDIN) {
+      navigate('/home')
+      dispatch(setAppView(AppView.NEW_TRIP))
+      setIsMinimumLoadingTimeMet(true)
+    }
+  }, [dispatch, navigate, usersStatus])
+
+  useEffect(() => {
+    if (
+      tripsStatus === REQUEST_STATE.IDLE &&
+      usersStatus === REQUEST_STATE.LOGGEDIN
+    ) {
+      dispatch(fetchTripsAsync(user.id))
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, tripsStatus, usersStatus])
+
+  useEffect(() => {
+    if (
+      (tripsStatus === REQUEST_STATE.WRITING &&
+        usersStatus === REQUEST_STATE.LOGGEDIN) ||
+      usersStatus === REQUEST_STATE.READING
+    ) {
       setIsLoading(true)
       setIsMinimumLoadingTimeMet(false)
       setTimeout(() => {
         setIsMinimumLoadingTimeMet(true)
       }, 3000)
     }
-  }, [tripsStatus])
+  }, [tripsStatus, usersStatus])
 
   useEffect(() => {
     if (
@@ -40,6 +78,13 @@ export function SessionController({ children }) {
       setIsLoading(false)
     }
   }, [tripsStatus, isMinimumLoadingTimeMet])
+
+  useEffect(() => {
+    if (usersStatus !== REQUEST_STATE.READING && isMinimumLoadingTimeMet) {
+      setIsLoading(false)
+      if (usersStatus === REQUEST_STATE.REJECTED) dispatch(updateAsLoggedOut())
+    }
+  }, [usersStatus, isMinimumLoadingTimeMet, dispatch])
 
   return (
     <>

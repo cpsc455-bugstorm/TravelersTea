@@ -20,14 +20,17 @@ import {
  *  tripLatitude: number - latitude (generated from BE)
  * }]
  */
-export const tripSlice = createSlice({
-  name: 'trip',
-  initialState: {
-    trips: [],
-    status: REQUEST_STATE.IDLE,
-    error: null,
+const initialStateTrips = {
+  trips: [],
+  status: REQUEST_STATE.IDLE,
+  error: null,
+}
+export const tripsSlice = createSlice({
+  name: 'trips',
+  initialState: initialStateTrips,
+  reducers: {
+    resetTrips: () => initialStateTrips,
   },
-  reducers: {},
   extraReducers: (builder) => {
     handleAsyncAction(builder, fetchTripsAsync, {
       pending: (state) => {
@@ -78,4 +81,6 @@ export const tripSlice = createSlice({
   },
 })
 
-export default tripSlice.reducer
+export const { resetTrips } = tripsSlice.actions
+
+export default tripsSlice.reducer
