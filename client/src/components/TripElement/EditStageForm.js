@@ -9,7 +9,7 @@ export function EditStageForm() {
   const activeTripId = useSelector((state) => state.view.activeTripId)
   const activeTrip = trips.find((trip) => trip._id === activeTripId)
   // TODO: remove logging
-  console.log(JSON.stringify(activeTrip))
+  console.log(JSON.stringify(activeTrip, null, 2))
 
   const editStageModalIsOpen = useSelector(
     (state) => state.modals.editStageModalIsOpen,
