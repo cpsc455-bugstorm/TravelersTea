@@ -14,6 +14,7 @@ const initialMapState = {
   },
   markers: [],
 }
+
 const mapSlice = createSlice({
   name: 'map',
   initialState: initialMapState,

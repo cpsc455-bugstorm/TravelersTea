@@ -20,34 +20,36 @@ const getRandomFunFact = () => {
   const randomIndex = Math.floor(Math.random() * funFacts.length)
   return funFacts[randomIndex]
 }
-
+//
 export function Loader() {
   return (
-    <div className='opacity-99 fadesIn fixed left-[50%] top-[50%] z-[99] flex h-[200px] w-[500px] -translate-x-1/2 -translate-y-[60%] transform flex-col items-center justify-center rounded-md bg-black'>
-      <div className='mx-5 my-2 flex flex-row items-center'>
-        <img
-          src='/brewing.gif'
-          alt='Loading...'
-          className='mb-4 h-12 w-12 bg-black'
-        />
-        <p className='ml-4 text-white'>
-          Brewing
-          <span className='dot-1'>.</span>
-          <span className='dot-2'>.</span>
-          <span className='dot-3'>.</span>
+    <div className={`fixed left-0 top-0 z-[98] h-full w-full bg-slate-800/30`}>
+      <div className='opacity-99 fadesIn fixed left-[50%] top-[50%] z-[99] flex h-[200px] w-[500px] -translate-x-1/2 -translate-y-[60%] transform flex-col items-center justify-center rounded-md bg-black'>
+        <div className='mx-5 my-2 flex flex-row items-center'>
+          <img
+            src='/brewing.gif'
+            alt='Loading...'
+            className='mb-4 h-12 w-12 bg-black'
+          />
+          <p className='ml-4 text-white'>
+            Brewing
+            <span className='dot-1'>.</span>
+            <span className='dot-2'>.</span>
+            <span className='dot-3'>.</span>
+          </p>
+        </div>
+        <p className='text-xs text-amber-500'>
+          <b>DID YOU KNOW</b>
         </p>
-      </div>
-      <p className='text-xs text-amber-500'>
-        <b>DID YOU KNOW</b>
-      </p>
-      <div className='mx-16 inline-block h-16 text-center text-xs text-white'>
-        <TypeAnimation
-          sequence={[getRandomFunFact()]}
-          speed={90}
-          repeat={1}
-          wrapper='span'
-          cursor={false}
-        />
+        <div className='mx-16 inline-block h-16 text-center text-xs text-white'>
+          <TypeAnimation
+            sequence={[getRandomFunFact()]}
+            speed={90}
+            repeat={1}
+            wrapper='span'
+            cursor={false}
+          />
+        </div>
       </div>
     </div>
   )

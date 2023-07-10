@@ -14,6 +14,7 @@ export const usersSlice = createSlice({
     user: null,
     status: REQUEST_STATE.LOGGEDOUT,
     error: null,
+    isNewAccount: false,
   },
   reducers: {
     updateAsLoggedOut: (state) => {
@@ -23,6 +24,7 @@ export const usersSlice = createSlice({
       state.status = REQUEST_STATE.LOGGINGOUT
       state.user = null
       state.error = null
+      state.isNewAccount = false
     },
   },
   extraReducers: (builder) => {
@@ -32,6 +34,7 @@ export const usersSlice = createSlice({
       },
       fulfilled: (state, action) => {
         state.status = REQUEST_STATE.LOGGEDIN
+        state.isNewAccount = true
         state.user = action.payload
       },
     })
