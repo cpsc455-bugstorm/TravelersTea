@@ -20,7 +20,7 @@ const getRandomFunFact = () => {
   const randomIndex = Math.floor(Math.random() * funFacts.length)
   return funFacts[randomIndex]
 }
-//
+
 export function Loader() {
   return (
     <div className={`fixed left-0 top-0 z-[98] h-full w-full bg-slate-800/30`}>
