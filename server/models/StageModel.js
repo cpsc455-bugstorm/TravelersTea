@@ -1,8 +1,9 @@
 const mongoose = require('mongoose')
+const { ObjectId } = require('mongodb')
 
 const stageSchema = new mongoose.Schema({
   _id: {
-    type: String,
+    type: ObjectId,
     required: true,
   },
   tripId: {
@@ -20,7 +21,6 @@ const stageSchema = new mongoose.Schema({
   stageLatitude: Number,
   stageLongitude: Number,
   stageLocation: String,
-  locationName: String,
   description: String,
   colorNumber: Number,
   emoji: String,
