@@ -3,6 +3,23 @@ import { handleAsyncAction } from '../../handleAsync'
 import { REQUEST_STATE } from '../../states'
 import { loginUserAsync, registerUserAsync } from './thunks'
 
+const DEV_DISABLE_LOGIN = process.env.REACT_APP_DEV_DISABLE_LOGIN === 'true'
+
+const initialLoginState = DEV_DISABLE_LOGIN
+  ? {
+      user: {
+        id: '64a7310aee0a85231209105d',
+        username: 'mypassis123',
+        accessToken:
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im15cGFzc2lzMTIzIiwiaWF0IjoxNjg5MTM3NDgxfQ.1H23KSGA-K-5h1zQaPFc-HHcCgwY8ONqJMT87y3qrF4',
+      },
+      status: REQUEST_STATE.LOGGEDIN,
+    }
+  : {
+      user: null,
+      status: REQUEST_STATE.LOGGEDOUT,
+    }
+
 /**
  * @property {users}: [{
  *
@@ -11,8 +28,8 @@ import { loginUserAsync, registerUserAsync } from './thunks'
 export const usersSlice = createSlice({
   name: 'users',
   initialState: {
-    user: null,
-    status: REQUEST_STATE.LOGGEDOUT,
+    user: initialLoginState.user,
+    status: initialLoginState.status,
     error: null,
     isNewAccount: false,
   },
