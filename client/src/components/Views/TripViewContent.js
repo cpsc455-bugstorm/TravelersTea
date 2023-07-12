@@ -24,10 +24,10 @@ export function TripViewContent() {
       return (
         <TeaCup
           key={`overview-pin-${index}`}
-          tailwindBgColor={item.color}
+          colorNumber={item[0]['colorNumber']}
           displayNumber={displayNumber}
           titleText={'Day ' + displayNumber}
-          locationNames={item['stages'].map((stage) => stage['locationName'])}
+          stageLocations={item.map((stage) => stage['stageLocation'])}
         />
       )
     })

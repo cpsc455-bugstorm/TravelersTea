@@ -3,17 +3,21 @@ const uuid = require('uuid')
 const generateTrip = require('../openai/generateTrip')
 
 class TripController {
-  constructor() {}
-
-  async getAll() {
-    try {
-      const trips = await TripModel.find()
-      return trips
-    } catch (error) {
-      throw new Error('Could not fetch all trips', error)
-    }
+  constructor(stageController) {
+    this.stageController = stageController
   }
 
+  async getAll(userId) {
+    try {
+      if (!userId) {
+        throw new Error('User ID is required to fetch trips.')
+      }
+      const trips = await TripModel.find({ userId }).lean()
+      return trips
+    } catch (error) {
+      throw new Error(`Could not fetch all trips: ${error}`)
+    }
+  }
   parseStagesFromMultipleDays(days, tripId) {
     const _tripId = tripId
     const stagesToAdd = []
@@ -45,34 +49,33 @@ class TripController {
     }
     return stagesToAddFromDay
   }
-
-  async createTrip(constraints) {
+  async createTrip(userId, tripData) {
     try {
-      const generatedTripWithStages = generateTrip(constraints)
+      const generatedTripWithStages = generateTrip(tripData)
       const tripToCreate = {
         tripName: generatedTripWithStages.tripName,
-        tripLocation: constraints.destination,
-        stagesPerDay: constraints.stagesPerDay,
-        budget: constraints.budget,
-        numberOfDays: constraints.numberOfDays,
+        tripLocation: tripData.destination,
+        stagesPerDay: tripData.stagesPerDay,
+        budget: tripData.budget,
+        numberOfDays: tripData.numberOfDays,
         // tripLongitude: googleApiStuff(),
         // tripLatitude: googleApiStuff(),
-        preferences: constraints.preferences, // ?
+        preferences: tripData.preferences, // ?
       }
 
       const newTrip = await TripModel.create({
         // eslint-disable-next-line node/no-unsupported-features/es-syntax
         ...tripToCreate,
         _id: uuid.v4(),
+        userId,
       })
-
       const { days } = generatedTripWithStages
       const stagesToAdd = this.parseStagesFromMultipleDays(days, newTrip.id)
       console.log(stagesToAdd, 'This is to prevent linting errors')
       // await controller.StagesController.addMany(stagesToAdd)
-      return newTrip
+      return newTrip.toObject()
     } catch (error) {
-      throw new Error('Could not create trip', error)
+      throw new Error(`Could not create trip: ${error}`)
     }
   }
 
@@ -80,19 +83,34 @@ class TripController {
     try {
       const updatedTrip = await TripModel.findByIdAndUpdate(id, tripData, {
         new: true,
-      })
+      }).lean()
       return updatedTrip
     } catch (error) {
-      throw new Error('Could not edit trip', error)
+      throw new Error(`Could not edit trip: ${error}`)
     }
   }
 
   async deleteTrip(id) {
     try {
-      const deletedTrip = await TripModel.findByIdAndDelete(id)
+      await this.stageController.deleteStagesByTripId(id)
+      const deletedTrip = await TripModel.findByIdAndDelete(id).lean()
       return deletedTrip
     } catch (error) {
-      throw new Error('Could not delete trip', error)
+      throw new Error(`Could not delete trip: ${error}`)
+    }
+  }
+
+  async deleteTripsByUserId(userId) {
+    try {
+      const userTrips = await TripModel.find({ userId: userId }).lean()
+
+      for (const trip of userTrips) {
+        await this.stageController.deleteStagesByTripId(trip._id)
+      }
+
+      await TripModel.deleteMany({ userId: userId }).lean()
+    } catch (error) {
+      throw new Error(`Could not delete trip: ${error}`)
     }
   }
 }

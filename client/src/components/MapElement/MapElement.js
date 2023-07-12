@@ -42,18 +42,24 @@ export function MapElement({ className }) {
   }, [appView, activeTripId])
 
   const addMarkerOnMap = useCallback(
-    (
-      longitude,
-      latitude,
-      imgSrc = 'https://pngimg.com/d/google_maps_pin_PNG56.png',
-      altText = 'Marker Icon',
-    ) => {
-      const markerElement = document.createElement('div')
-      markerElement.innerHTML = `<img src='${imgSrc}' alt='${altText}' style='width: 40px; height: 40px;'/>`
-      const marker = new mapboxgl.Marker(markerElement)
-        .setLngLat([longitude, latitude])
-        .addTo(map)
-      setMarkersOnMap((prevMarkers) => [...prevMarkers, marker])
+    (longitude, latitude, emoji, label) => {
+      if (map) {
+        const markerElement = document.createElement('div')
+        markerElement.innerHTML = `<p style='width: 40px; height: 40px; font-size: 40px; opacity: 1; '> ${emoji} <p>`
+        const marker = new mapboxgl.Marker({
+          element: markerElement,
+          occludedOpacity: 1,
+        })
+          .setLngLat([longitude, latitude])
+          .setPopup(
+            new mapboxgl.Popup({ closeOnMove: true }).setHTML(
+              `<p>${label}</p>`,
+            ),
+          )
+          .addTo(map)
+
+        setMarkersOnMap((prevMarkers) => [...prevMarkers, marker])
+      }
     },
     [map],
   )
@@ -69,7 +75,7 @@ export function MapElement({ className }) {
       addMarkerOnMap(
         markerWithProps.longitude,
         markerWithProps.latitude,
-        markerWithProps.imgSrc,
+        markerWithProps.emoji,
         markerWithProps.label,
       )
     }

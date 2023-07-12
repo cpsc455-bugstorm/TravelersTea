@@ -1,6 +1,6 @@
 import AddIcon from '@mui/icons-material/Add'
 
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { AppView } from '../../constants/enums'
@@ -9,13 +9,11 @@ import {
   toggleCompactView,
   toggleVerticalTimelines,
 } from '../../redux/reducers/preferencesSlice'
-import { fetchTripsAsync } from '../../redux/reducers/trip/thunks'
 import {
   closeSidebar,
   setAppView,
   toggleSidebar,
 } from '../../redux/reducers/viewSlice'
-import { REQUEST_STATE } from '../../redux/states'
 import { TripEntry } from '../TripElement'
 import { Button, Toggle } from '../common'
 import { Logout } from '../user'
@@ -25,26 +23,16 @@ export function SideBar() {
   const appView = useSelector((state) => state.view.appView)
   const activeTripId = useSelector((state) => state.view.activeTripId)
   const isSidebarOpen = useSelector((state) => state.view.isSidebarOpen)
+  const trips = useSelector((state) => state.trips.trips)
   const isCompactView = useSelector((state) => state.preferences.compactView)
   const isVerticalTimelines = useSelector(
     (state) => state.preferences.verticalTimelines,
   )
 
-  const trips = useSelector((state) => state.trip.trips)
-  const tripsStatus = useSelector((state) => state.trip.status)
-  useEffect(() => {
-    if (
-      tripsStatus === REQUEST_STATE.PENDING ||
-      tripsStatus === REQUEST_STATE.IDLE
-    ) {
-      dispatch(fetchTripsAsync())
-    }
-  }, [dispatch, tripsStatus])
-
   const newTripButton = useMemo(() => {
     return (
       <Button
-        className='box-border flex h-12 w-full flex-row border-2 border-cyan-200 bg-cyan-200/80 hover:bg-emerald-400/100'
+        className='box-border flex h-12 w-full flex-row border-2 border-cyan-200 bg-cyan-200/80 hover:bg-cyan-300/90'
         onClick={() => {
           dispatch(setAppView(AppView.NEW_TRIP))
           dispatch(openNewTripModal())
