@@ -23,9 +23,14 @@ async function getAPIResponse(destination, stageLocationName) {
   }
 }
 
-async function getStageCoordinates(results) {
+async function getStageLatitude(results) {
   const { location } = results.geometry
-  return location
+  return location.lat
+}
+
+async function getStageLongitude(results) {
+  const { location } = results.geometry
+  return location.lng
 }
 
 async function getStageRating(results) {
@@ -35,6 +40,7 @@ async function getStageRating(results) {
 
 module.exports = {
   getAPIResponse,
-  getStageCoordinates,
+  getStageLatitude,
+  getStageLongitude,
   getStageRating,
 }

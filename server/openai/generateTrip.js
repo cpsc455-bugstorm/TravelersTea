@@ -1,7 +1,8 @@
 const openaiClient = require('./openaiClient')
 const {
   getAPIResponse,
-  getStageCoordinates,
+  getStageLatitude,
+  getStageLongitude,
   getStageRating,
 } = require('../google_api/googleCoordinates')
 /**
@@ -102,11 +103,13 @@ async function generateTrip(constraints) {
       // const stages = generatedItinerary.days[0].stages // Assuming only the first day is relevant
 
       const placeDetails = await getAPIResponse('Vancouver', 'Tim Hortons')
-      const coords = await getStageCoordinates(placeDetails)
+      const lat = await getStageLatitude(placeDetails)
+      const long = await getStageLongitude(placeDetails)
       const rating = await getStageRating(placeDetails)
       console.log(' ------------ PLACE DETAILS -----------')
-      console.log(coords) // Do something with the place details
-      console.log(rating) // Do something with the place details
+      console.log('lat:', lat)
+      console.log('long:', long)
+      console.log(rating)
 
       return response
     }
