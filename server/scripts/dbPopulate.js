@@ -41,8 +41,8 @@ async function manageData() {
     stagesPerDay: 1,
     budget: 1000,
     numberOfDays: 1,
-    tripLongitude: 49.0,
-    tripLatitude: -123.0,
+    tripLongitude: -123.0,
+    tripLatitude: 49,
   })
   const savedTrip = await trip.save()
 
