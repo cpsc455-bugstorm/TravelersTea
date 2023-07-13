@@ -24,18 +24,33 @@ async function getAPIResponse(destination, stageLocationName) {
 }
 
 async function getStageLatitude(results) {
-  const { location } = results.geometry
-  return location.lat
+  try {
+    const { location } = results.geometry
+    return location.lat
+  } catch (error) {
+    console.error('Error occurred in getStageLatitude:', error)
+    throw error
+  }
 }
 
 async function getStageLongitude(results) {
-  const { location } = results.geometry
-  return location.lng
+  try {
+    const { location } = results.geometry
+    return location.lng
+  } catch (error) {
+    console.error('Error occurred in getStageLongitude:', error)
+    throw error
+  }
 }
 
 async function getStageRating(results) {
-  const { rating } = results
-  return rating
+  try {
+    const { rating } = results
+    return rating
+  } catch (error) {
+    console.error('Error occurred in getStageRating:', error)
+    throw error
+  }
 }
 
 module.exports = {
