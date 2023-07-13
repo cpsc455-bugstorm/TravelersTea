@@ -1,5 +1,4 @@
 const openaiClient = require('./openaiClient')
-const getStageCoordinates = require('../googleapi/googleCoordinates')
 
 /**
  * A function to generate a travel trip itinerary with several constraints such as
@@ -95,11 +94,6 @@ async function generateTrip(constraints) {
 
     const response = await openaiClient(conversation)
     if (response) {
-      const placeDetails = await getStageCoordinates('Tim Hortons', 'Vancouver')
-
-      console.log('placeDetails-------------------')
-      console.log(placeDetails) // Do something with the place details
-
       return response
     }
     return 'Unable to generate a travel itinerary. Please try again later.'
