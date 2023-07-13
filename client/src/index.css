@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .black-gradient {
+    @apply bg-gradient-to-b from-black/0 via-black/20 to-black/100;
+  }
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -18,4 +24,42 @@ code {
 
 .bg-little-prince {
   background-image: url('../public/little-prince.jpg');
+}
+
+.dot-1,
+.dot-2,
+.dot-3 {
+  animation: dot 1s infinite;
+}
+
+.dot-2 {
+  animation-delay: 0.2s;
+}
+
+.dot-3 {
+  animation-delay: 0.4s;
+}
+
+@keyframes dot {
+  0%,
+  60%,
+  100% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+}
+
+.fadesIn {
+  animation: fadeIn 0.5s 1;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }

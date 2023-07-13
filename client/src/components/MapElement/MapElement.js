@@ -42,18 +42,24 @@ export function MapElement({ className }) {
   }, [appView, activeTripId])
 
   const addMarkerOnMap = useCallback(
-    (
-      longitude,
-      latitude,
-      imgSrc = 'https://pngimg.com/d/google_maps_pin_PNG56.png',
-      altText = 'Marker Icon',
-    ) => {
-      const markerElement = document.createElement('div')
-      markerElement.innerHTML = `<img src="${imgSrc}" alt="${altText}" style="width: 40px; height: 40px;"/>`
-      const marker = new mapboxgl.Marker(markerElement)
-        .setLngLat([longitude, latitude])
-        .addTo(map)
-      setMarkersOnMap((prevMarkers) => [...prevMarkers, marker])
+    (longitude, latitude, emoji, label) => {
+      if (map) {
+        const markerElement = document.createElement('div')
+        markerElement.innerHTML = `<p style='width: 40px; height: 40px; font-size: 40px; opacity: 1; '> ${emoji} <p>`
+        const marker = new mapboxgl.Marker({
+          element: markerElement,
+          occludedOpacity: 1,
+        })
+          .setLngLat([longitude, latitude])
+          .setPopup(
+            new mapboxgl.Popup({ closeOnMove: true }).setHTML(
+              `<p>${label}</p>`,
+            ),
+          )
+          .addTo(map)
+
+        setMarkersOnMap((prevMarkers) => [...prevMarkers, marker])
+      }
     },
     [map],
   )
@@ -69,7 +75,7 @@ export function MapElement({ className }) {
       addMarkerOnMap(
         markerWithProps.longitude,
         markerWithProps.latitude,
-        markerWithProps.imgSrc,
+        markerWithProps.emoji,
         markerWithProps.label,
       )
     }
@@ -98,9 +104,30 @@ export function MapElement({ className }) {
   useEffect(() => {
     const map = new mapboxgl.Map({
       container: mapContainerRef.current,
-      style: 'mapbox://styles/mapbox/streets-v12',
+      style: 'mapbox://styles/mapbox/navigation-night-v1',
       center: [VANCOUVER_LONGITUDE, VANCOUVER_LATITUDE],
       zoom: ZOOM_GLOBE_LEVEL,
+      projection: 'globe',
+    })
+
+    map.on('style.load', () => {
+      // Custom atmosphere styling
+      map.setFog({
+        color: 'rgba(255,220,195,0.87)', // Pink fog / lower atmosphere
+        'high-color': 'rgb(36, 92, 223)', // Blue sky / upper atmosphere
+        'space-color': '#141d41',
+        'horizon-blend': 0.15, // Exaggerate atmosphere (default is .1)
+      })
+
+      map.addSource('mapbox-dem', {
+        type: 'raster-dem',
+        url: 'mapbox://mapbox.terrain-rgb',
+      })
+
+      map.setTerrain({
+        source: 'mapbox-dem',
+        exaggeration: 1.5,
+      })
     })
 
     setMap(map)

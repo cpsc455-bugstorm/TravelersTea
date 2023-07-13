@@ -17,7 +17,7 @@ import { openEditTripModal } from '../../redux/reducers/modalsSlice'
 import {
   deleteTripAsync,
   updateTripAsync,
-} from '../../redux/reducers/trip/thunks'
+} from '../../redux/reducers/trips/thunks'
 import { closeSidebar, setActiveTripId } from '../../redux/reducers/viewSlice'
 import { Button, Modal } from '../common'
 
@@ -58,6 +58,7 @@ export function TripEntry({ id, buttonClassName, trip }) {
 
   const handleCheckClick = () => {
     dispatch(updateTripAsync({ id: id, tripData: { tripName: tripName } }))
+    dispatch(closeSidebar())
     setIsRenaming(false)
   }
 
@@ -86,16 +87,18 @@ export function TripEntry({ id, buttonClassName, trip }) {
           dispatch(setActiveTripId(id))
           dispatch(
             changeCoordinatesAndZoom({
-              longitude: trip.destinationLongitude,
-              latitude: trip.destinationLatitude,
+              longitude: trip.tripLongitude,
+              latitude: trip.tripLatitude,
               zoom: ZOOM_CITY_LEVEL,
             }),
           )
           dispatch(
             clearAllMarkersAndAdd_Store([
               {
-                longitude: trip.destinationLongitude,
-                latitude: trip.destinationLatitude,
+                longitude: trip.tripLongitude,
+                latitude: trip.tripLatitude,
+                emoji: '📍',
+                label: 'Marker Icon',
               },
             ]),
           )

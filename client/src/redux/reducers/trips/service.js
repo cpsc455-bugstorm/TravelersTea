@@ -1,20 +1,20 @@
 import axios from 'axios'
 import { API_URL } from '../../../constants/API_URL'
 
-export const fetchTrips = async () => {
-  return await axios.get(`${API_URL}/trip`)
+export const fetchTrips = async (userId) => {
+  return await axios.get(`${API_URL}/trips`, { params: { userId } })
 }
 
 export const createTrip = async (tripData) => {
-  return await axios.post(`${API_URL}/trip`, tripData)
+  return await axios.post(`${API_URL}/trips`, tripData)
 }
 
 export const updateTrip = async (id, tripData) => {
-  return await axios.patch(`${API_URL}/trip/${id}`, tripData)
+  return await axios.patch(`${API_URL}/trips/${id}`, tripData)
 }
 
 export const deleteTrip = async (id) => {
-  return await axios.delete(`${API_URL}/trip/${id}`)
+  return await axios.delete(`${API_URL}/trips/${id}`)
 }
 
 const tripService = {

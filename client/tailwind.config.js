@@ -4,6 +4,8 @@ module.exports = {
   safelist: [
     { pattern: /from-(.*)-(400)\/70/ },
     { pattern: /to-(.*)-(500)\/70/ },
+    { pattern: /to-(.*)-(400)\/(.*)/ },
+    { pattern: /bg-(.*)-(400)/ },
   ],
   theme: {
     extend: {},
@@ -17,10 +19,10 @@ module.exports = {
         },
         '.mac-scrollbar::-webkit-scrollbar-thumb': {
           'border-radius': '6px',
-          'background-color': 'rgba(51,65,85,0.5)',
+          'background-color': 'rgba(57,64,80)',
         },
         '.mac-scrollbar::-webkit-scrollbar-track': {
-          background: 'rgba(51,65,85,0.1)',
+          background: 'rgba(27,33,46)',
           position: 'absolute',
           'z-index': 10,
         },

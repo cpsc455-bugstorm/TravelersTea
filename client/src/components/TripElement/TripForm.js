@@ -1,10 +1,6 @@
 import { TextField } from '@mui/material'
 import PropTypes from 'prop-types'
-import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import { useDispatch, useSelector } from 'react-redux'
-import { fetchTripsAsync } from '../../redux/reducers/trip/thunks'
-import { REQUEST_STATE } from '../../redux/states'
 import { Button } from '../common'
 
 TripForm.propTypes = {
@@ -13,9 +9,6 @@ TripForm.propTypes = {
 }
 
 export function TripForm({ onSubmit, initialValues }) {
-  const dispatch = useDispatch()
-  const tripsStatus = useSelector((state) => state.trip.status)
-
   const {
     register,
     handleSubmit,
@@ -28,25 +21,16 @@ export function TripForm({ onSubmit, initialValues }) {
     reset()
   }
 
-  useEffect(() => {
-    if (
-      tripsStatus === REQUEST_STATE.PENDING ||
-      tripsStatus === REQUEST_STATE.IDLE
-    ) {
-      dispatch(fetchTripsAsync())
-    }
-  }, [dispatch, tripsStatus])
-
   return (
     <form
       onSubmit={handleSubmit(onSubmitForm)}
       className='flex flex-col space-y-4 text-center'
     >
       <TextField
-        {...register('destination', { required: true })}
+        {...register('tripLocation', { required: true })}
         label='Destination'
         placeholder='Tell me where you want to go...'
-        error={!!errors.destination}
+        error={!!errors.tripLocation}
       />
       <TextField
         {...register('stagesPerDay', { required: true, min: 0 })}

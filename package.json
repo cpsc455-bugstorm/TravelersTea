@@ -15,6 +15,7 @@
     "test:client": "yarn workspace client test",
     "test:server": "yarn workspace server test",
     "test": "yarn workspace client test && yarn workspace server test",
+    "reset:db": "yarn workspace server reset:db",
     "lint": "eslint .",
     "lint:fix": "eslint . --cache --fix",
     "format": "prettier --write .",

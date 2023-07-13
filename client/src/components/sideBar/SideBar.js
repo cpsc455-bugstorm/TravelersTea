@@ -1,6 +1,6 @@
 import AddIcon from '@mui/icons-material/Add'
 
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { AppView } from '../../constants/enums'
@@ -9,14 +9,11 @@ import {
   toggleCompactView,
   toggleVerticalTimelines,
 } from '../../redux/reducers/preferencesSlice'
-import { fetchTripsAsync } from '../../redux/reducers/trip/thunks'
 import {
   closeSidebar,
   setAppView,
   toggleSidebar,
 } from '../../redux/reducers/viewSlice'
-import { REQUEST_STATE } from '../../redux/states'
-import blackGradient from '../../styles/blackGradient'
 import { TripEntry } from '../TripElement'
 import { Button, Toggle } from '../common'
 import { Logout } from '../user'
@@ -26,26 +23,16 @@ export function SideBar() {
   const appView = useSelector((state) => state.view.appView)
   const activeTripId = useSelector((state) => state.view.activeTripId)
   const isSidebarOpen = useSelector((state) => state.view.isSidebarOpen)
+  const trips = useSelector((state) => state.trips.trips)
   const isCompactView = useSelector((state) => state.preferences.compactView)
   const isVerticalTimelines = useSelector(
     (state) => state.preferences.verticalTimelines,
   )
 
-  const trips = useSelector((state) => state.trip.trips)
-  const tripsStatus = useSelector((state) => state.trip.status)
-  useEffect(() => {
-    if (
-      tripsStatus === REQUEST_STATE.PENDING ||
-      tripsStatus === REQUEST_STATE.IDLE
-    ) {
-      dispatch(fetchTripsAsync())
-    }
-  }, [dispatch, tripsStatus])
-
   const newTripButton = useMemo(() => {
     return (
       <Button
-        className='box-border flex h-12 w-full flex-row border-2 border-emerald-200 bg-emerald-200/80 hover:bg-emerald-400/100'
+        className='box-border flex h-12 w-full flex-row border-2 border-cyan-200 bg-cyan-200/80 hover:bg-cyan-300/90'
         onClick={() => {
           dispatch(setAppView(AppView.NEW_TRIP))
           dispatch(openNewTripModal())
@@ -59,17 +46,17 @@ export function SideBar() {
   }, [dispatch])
 
   const tripEntries = useMemo(() => {
-    return trips.map((trip) => {
+    return trips.map((trip, index) => {
       const buttonColor =
         trip._id === activeTripId &&
         (appView === AppView.TRIP_VIEW || appView === AppView.DAY_VIEW)
-          ? 'bg-green-700/50 font-medium text-white hover:bg-green-400/40'
-          : 'bg-slate-800/60 hover:bg-slate-600/60 text-white'
+          ? 'bg-cyan-700/70 font-medium text-white hover:bg-cyan-400/40'
+          : 'bg-slate-500/30 hover:bg-slate-600/60 text-white'
 
       return (
         <TripEntry
           id={trip._id}
-          key={`trip-entry-${trip._id}`}
+          key={`trip-entry-${index}`}
           buttonClassName={`w-full ${buttonColor}`}
           trip={trip}
         />
@@ -135,9 +122,9 @@ export function SideBar() {
         className={`fixed left-0 top-0 z-50 flex h-full w-[260px] flex-row overflow-hidden transition-all
                        ${isSidebarOpen ? 'left-0' : 'left-[-260px]'}`}
       >
-        <div className='relative flex h-full w-full flex-col justify-between overflow-hidden bg-slate-300'>
-          <div className="z-0 h-full w-full flex-grow bg-slate-200 bg-[url('../public/little-prince.jpg')] bg-cover bg-center bg-blend-difference"></div>
-          <div className={`absolute inset-0 z-10 ${blackGradient} p-2`}>
+        <div className='relative flex h-full w-full flex-col justify-between overflow-hidden bg-black bg-black'>
+          <div className="z-0 h-full w-full flex-grow bg-slate-200 bg-[url('../public/little-prince.jpg')] bg-cover bg-center opacity-50 bg-blend-difference"></div>
+          <div className={`black-gradient absolute inset-0 z-10 p-2`}>
             <div className='relative z-20 flex h-full flex-col justify-between'>
               {renderSidebarTrips}
               {renderSidebarBottomPortion}
@@ -159,7 +146,7 @@ export function SideBar() {
           <div className='absolute inset-0 z-0'></div>
           <Button
             onClick={() => dispatch(toggleSidebar())}
-            className={`relative z-10 h-full w-full rounded-none text-6xl ${blackGradient} hover:bg-slate-50/20`}
+            className={`relative z-10 h-full w-full rounded-none bg-gradient-to-b from-transparent via-black/20 to-black/90 text-6xl text-slate-100 hover:bg-slate-400/50 hover:text-white`}
           >
             {isSidebarOpen ? '‹' : '›'}
           </Button>

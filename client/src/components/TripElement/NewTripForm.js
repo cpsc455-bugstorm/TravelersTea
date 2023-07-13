@@ -6,7 +6,7 @@ import {
   clearAllMarkersAndAdd_Store,
 } from '../../redux/reducers/mapSlice'
 import { closeNewTripModal } from '../../redux/reducers/modalsSlice'
-import { createTripAsync } from '../../redux/reducers/trip/thunks'
+import { createTripAsync } from '../../redux/reducers/trips/thunks'
 import { setActiveTripId, setAppView } from '../../redux/reducers/viewSlice'
 import { Modal } from '../common'
 import { TripForm } from './TripForm'
@@ -14,7 +14,8 @@ import { TripForm } from './TripForm'
 export function NewTripForm() {
   const dispatch = useDispatch()
   const appView = useSelector((state) => state.view.appView)
-  const trips = useSelector((state) => state.trip.trips)
+  const trips = useSelector((state) => state.trips.trips)
+  const user = useSelector((state) => state.users.user)
 
   const newTripModalIsOpen = useSelector(
     (state) => state.modals.newTripModalIsOpen,
@@ -29,8 +30,9 @@ export function NewTripForm() {
     const tripDataWithTripName = {
       ...data,
       tripName: `Your Trip ${trips.length + 1}`,
-      destinationLatitude: 49.23990319450836,
-      destinationLongitude: -123.15644121337681,
+      tripLatitude: 49.23990319450836,
+      tripLongitude: -123.15644121337681,
+      userId: user.id,
     }
     const newTrip = await dispatch(
       createTripAsync(tripDataWithTripName),
@@ -40,16 +42,18 @@ export function NewTripForm() {
     dispatch(closeNewTripModal())
     dispatch(
       changeCoordinatesAndZoom({
-        longitude: newTrip.destinationLongitude,
-        latitude: newTrip.destinationLatitude,
+        longitude: newTrip.tripLongitude,
+        latitude: newTrip.tripLatitude,
         zoom: ZOOM_CITY_LEVEL,
       }),
     )
     dispatch(
       clearAllMarkersAndAdd_Store([
         {
-          longitude: newTrip.destinationLongitude,
-          latitude: newTrip.destinationLatitude,
+          longitude: newTrip.tripLongitude,
+          latitude: newTrip.tripLatitude,
+          emoji: '📍',
+          label: 'Marker Icon',
         },
       ]),
     )

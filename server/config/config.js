@@ -1,19 +1,9 @@
+const { Configuration } = require('openai')
 require('dotenv').config()
 
 const MONGO_USERNAME = process.env.MONGO_USERNAME || ''
 const MONGO_PASSWORD = process.env.MONGO_PASSWORD || ''
-let DB_CHOICE = 'BugStormDB'
-
-// Change the value of the DB_USER_FLAG if you want to use your own DB
-let DB_USER_FLAG = ''
-const DB_MAP = {
-  ANDY: 'BugStormDEV_AL',
-  NOREEN: 'BugStormDEV_NC',
-  MENG: 'BugStormDEV_Meng',
-  RITHIN: 'BugStormDEV_Rithin',
-  VEE: 'BugStormDEV_Vee',
-}
-DB_CHOICE = DB_MAP[DB_USER_FLAG] || 'BugStormDB'
+const DB_CHOICE = process.env.DB_USER_FLAG || 'BugStormDB'
 
 const MONGO_URI = `mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@cluster0.4bflh41.mongodb.net/${DB_CHOICE}?retryWrites=true&w=majority`
 const SERVER_PORT = process.env.PORT ? Number(process.env.PORT) : 5001
@@ -27,8 +17,12 @@ const config = {
   server: {
     port: SERVER_PORT,
     env: ENV,
-    JWT_SECRET,
+    jwtSecret: JWT_SECRET,
   },
+  openaiApiKey: process.env.OPENAI_API_KEY,
+  openaiConfig: new Configuration({
+    apiKey: process.env.OPEN_AI_API_KEY || 'add-alt-key-here',
+  }),
 }
 
 module.exports = config

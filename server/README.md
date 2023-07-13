@@ -1,3 +1,20 @@
+## Env File Contents
+
+#### Grab the values from secrets channel
+
+```dotenv
+ENV="DEV"
+MONGO_USERNAME="bugstorm1000"
+MONGO_PASSWORD=""
+
+# OpenAI env vars
+OPEN_AI_API_KEY=
+GPT_MODEL=gpt-3.5-turbo # gpt-4 for better responses
+```
+
+Note: You can grab and add value for `DB_USER_FLAG=""` from secrets channel to use your own database.
+If value is empty or key doesn't exist, database choice will default to the shared database, 'BugStormDB'.
+
 ## How run the backend?
 
 Go into our server folder.
@@ -8,7 +25,8 @@ Install dependencies
 Configure `.env` file.
 
 1. Create a new file `.env` in the `server` folder at the root level.
-2. Go to discord's [secret](https://discord.com/channels/1106050152587874364/1110797187463512116) channel. Paste the contents inside the `.env`
+2. Go to discord's [secret](https://discord.com/channels/1106050152587874364/1110797187463512116) channel. Paste the
+   contents inside the `.env`
 
 Actually run the backend  
 `nodemon` (if you are developing)  

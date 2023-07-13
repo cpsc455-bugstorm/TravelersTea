@@ -5,13 +5,18 @@ const tripSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  },
   tripName: String,
-  destination: String,
+  tripLocation: String,
   stagesPerDay: Number,
   budget: Number,
   numberOfDays: Number,
-  destinationLongitude: Number,
-  destinationLatitude: Number,
+  tripLongitude: Number,
+  tripLatitude: Number,
 })
 
 module.exports = mongoose.model('Trip', tripSchema)
