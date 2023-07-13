@@ -21,6 +21,7 @@ const config = {
   },
   openaiApiKey: process.env.OPENAI_API_KEY,
   openaiConfig: new Configuration({
+    organization: process.env.OPEN_AI_ORG_ID,
     apiKey: process.env.OPEN_AI_API_KEY || 'add-alt-key-here',
   }),
 }
