@@ -23,6 +23,7 @@ const config = {
   openaiConfig: new Configuration({
     apiKey: process.env.OPEN_AI_API_KEY || 'add-alt-key-here',
   }),
+  googleApiKey: process.env.GOOGLE_PLACES_API_KEY,
 }
 
 module.exports = config
