@@ -14,6 +14,7 @@ async function testGetCoordinates() {
       const coordinates = await getStageCoordinates(
         stageLocationName,
         destination,
+        false,
       )
 
       console.log(
