@@ -22,7 +22,7 @@ async function testGetCoordinates() {
       console.log(coordinates)
     }
   } catch (error) {
-    console.error('Error while testing generateTrip function:', error)
+    console.error('Error while testing getStageCoordinates function:', error)
   }
 }
 
