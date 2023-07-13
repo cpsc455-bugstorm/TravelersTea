@@ -6,16 +6,18 @@ import {
   ZOOM_GLOBE_LEVEL,
 } from '../../constants/mapDefaultInfo'
 
+const initialMapState = {
+  currentCoordinatesAndZoom: {
+    longitude: VANCOUVER_LONGITUDE,
+    latitude: VANCOUVER_LATITUDE,
+    zoom: ZOOM_GLOBE_LEVEL,
+  },
+  markers: [],
+}
+
 const mapSlice = createSlice({
   name: 'map',
-  initialState: {
-    currentCoordinatesAndZoom: {
-      longitude: VANCOUVER_LONGITUDE,
-      latitude: VANCOUVER_LATITUDE,
-      zoom: ZOOM_GLOBE_LEVEL,
-    },
-    markers: [],
-  },
+  initialState: initialMapState,
   reducers: {
     changeCoordinatesAndZoom: (state, action) => {
       state.currentCoordinatesAndZoom = action.payload
@@ -32,9 +34,7 @@ const mapSlice = createSlice({
       const markersWithProps = action.payload
       state.markers = markersWithProps
     },
-    resetMap: (state) => {
-      state.markers = []
-    },
+    resetMap: () => initialMapState,
   },
 })
 
