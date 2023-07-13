@@ -4,7 +4,7 @@ import { AppView } from '../../constants/enums'
 const initialState = {
   activeDayNumber: 1,
   activeTripId: undefined,
-  appView: AppView.NEW_TRIP,
+  appView: AppView.GLOBE_VIEW,
   isSidebarOpen: false,
   showDrawer: false,
   showSidePanel: true,
