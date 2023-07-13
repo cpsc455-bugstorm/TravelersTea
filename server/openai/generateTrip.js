@@ -39,6 +39,7 @@ const openaiClient = require('./openaiClient')
 
 async function generateTrip(constraints) {
   try {
+    // test
     const conversation = [
       {
         role: 'system',
@@ -46,7 +47,7 @@ async function generateTrip(constraints) {
         ONLY respond with the following format, do not include any descriptions or codeblocks, I should be able to parse the output to a JavaScript Object
         The response needs to be formatted exactly like the following structure. Add some Food and snack stages as well with an optional: true marker.:
         '''
-        {
+        { 
           plan:[
             {
               day: Number
