@@ -8,7 +8,7 @@ const stageLocations = [
   { stageLocationName: 'Taste of Nawabs', destination: 'Vancouver' },
 ]
 
-async function tesGetCoordinates() {
+async function testGetCoordinates() {
   try {
     for (const { stageLocationName, destination } of stageLocations) {
       const coordinates = await getStageCoordinates(
@@ -26,4 +26,4 @@ async function tesGetCoordinates() {
   }
 }
 
-tesGetCoordinates()
+testGetCoordinates()
