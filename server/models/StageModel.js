@@ -10,10 +10,12 @@ const stageSchema = new mongoose.Schema({
     required: true,
   },
   dayIndex: {
+    // 1-indexed
     type: Number,
     required: true,
   },
   stageIndex: {
+    // 1-indexed
     type: Number,
     required: true,
   },

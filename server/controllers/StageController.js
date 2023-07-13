@@ -4,6 +4,10 @@ const uuid = require('uuid')
 class StageController {
   constructor() {}
 
+  setTripController(tripController) {
+    this.tripController = tripController
+  }
+
   async createStage(stageData) {
     try {
       const newStage = await StageModel.create({
@@ -28,8 +32,11 @@ class StageController {
 
   async getStagesByTripId(tripId) {
     try {
-      const stagesPerTripId = await StageModel.find({ tripId: tripId }).lean()
-      return stagesPerTripId
+      const trip = await this.tripController.getTrip(tripId)
+      const stagesPerTripId = await StageModel.find({ tripId: tripId })
+        .sort({ dayIndex: 1, stageIndex: 1 })
+        .lean()
+      return partitionStagesByDay(stagesPerTripId, trip.stagesPerDay)
     } catch (error) {
       throw new Error(`Could not fetch all stages for trip: ${error}`)
     }
@@ -67,6 +74,21 @@ class StageController {
       throw new Error(`Could not delete all stages for given tripId: ${error}`)
     }
   }
+}
+
+function partitionStagesByDay(arr, stagesPerDay) {
+  const stagesByDayByTrip = []
+
+  arr.forEach((item, index) => {
+    const startNewRow = index % stagesPerDay === 0
+    if (startNewRow) {
+      stagesByDayByTrip.push([item])
+    } else {
+      stagesByDayByTrip[stagesByDayByTrip.length - 1].push(item)
+    }
+  })
+
+  return stagesByDayByTrip
 }
 
 module.exports = StageController
