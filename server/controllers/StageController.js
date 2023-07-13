@@ -1,5 +1,4 @@
 const StageModel = require('../models/StageModel')
-const uuid = require('uuid')
 
 class StageController {
   constructor() {}
@@ -9,7 +8,6 @@ class StageController {
       const newStage = await StageModel.create({
         // eslint-disable-next-line node/no-unsupported-features/es-syntax
         ...stageData,
-        _id: uuid.v4(),
       })
       return newStage.toObject()
     } catch (error) {

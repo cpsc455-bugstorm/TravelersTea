@@ -1,5 +1,4 @@
 const TripModel = require('../models/TripModel')
-const uuid = require('uuid')
 
 class TripController {
   constructor(stageController) {
@@ -23,7 +22,6 @@ class TripController {
       const newTrip = await TripModel.create({
         // eslint-disable-next-line node/no-unsupported-features/es-syntax
         ...tripData,
-        _id: uuid.v4(),
         userId,
       })
       return newTrip.toObject()
