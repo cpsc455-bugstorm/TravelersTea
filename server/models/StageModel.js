@@ -1,13 +1,8 @@
 const mongoose = require('mongoose')
-const { ObjectId } = require('mongodb')
 
 const stageSchema = new mongoose.Schema({
-  _id: {
-    type: ObjectId,
-    required: true,
-  },
   tripId: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
     required: true,
   },
   dayIndex: {
