@@ -17,8 +17,7 @@ class StageController {
 
   async getStage(id) {
     try {
-      const stage = await StageModel.findById(id)
-      return stage
+      return await StageModel.findById(id)
     } catch (error) {
       throw new Error(`Could not fetch stage: ${error}`)
     }
@@ -26,8 +25,7 @@ class StageController {
 
   async getStagesByTripId(tripId) {
     try {
-      const stagesPerTripId = await StageModel.find({ tripId: tripId }).lean()
-      return stagesPerTripId
+      return await StageModel.find({ tripId: tripId }).lean()
     } catch (error) {
       throw new Error(`Could not fetch all stages for trip: ${error}`)
     }
@@ -35,10 +33,9 @@ class StageController {
 
   async updateStage(id, stageData) {
     try {
-      const updatedStage = await StageModel.findByIdAndUpdate(id, stageData, {
+      return await StageModel.findByIdAndUpdate(id, stageData, {
         new: true,
       }).lean()
-      return updatedStage
     } catch (error) {
       throw new Error(`Could not update stage: ${error}`)
     }
@@ -46,8 +43,7 @@ class StageController {
 
   async deleteStage(id) {
     try {
-      const deletedStage = await StageModel.findByIdAndDelete(id).lean()
-      return deletedStage
+      return await StageModel.findByIdAndDelete(id).lean()
     } catch (error) {
       throw new Error(`Could not delete stage: ${error}`)
     }
@@ -59,8 +55,7 @@ class StageController {
    * */
   async deleteStagesByTripId(tripId) {
     try {
-      const result = await StageModel.deleteMany({ tripId: tripId })
-      return result
+      return await StageModel.deleteMany({ tripId: tripId })
     } catch (error) {
       throw new Error(`Could not delete all stages for given tripId: ${error}`)
     }

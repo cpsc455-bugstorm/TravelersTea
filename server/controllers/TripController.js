@@ -10,8 +10,7 @@ class TripController {
       if (!userId) {
         throw new Error('User ID is required to fetch trips.')
       }
-      const trips = await TripModel.find({ userId }).lean()
-      return trips
+      return await TripModel.find({ userId }).lean()
     } catch (error) {
       throw new Error(`Could not fetch all trips: ${error}`)
     }
@@ -32,10 +31,9 @@ class TripController {
 
   async updateTrip(id, tripData) {
     try {
-      const updatedTrip = await TripModel.findByIdAndUpdate(id, tripData, {
+      return await TripModel.findByIdAndUpdate(id, tripData, {
         new: true,
       }).lean()
-      return updatedTrip
     } catch (error) {
       throw new Error(`Could not edit trip: ${error}`)
     }
@@ -44,8 +42,7 @@ class TripController {
   async deleteTrip(id) {
     try {
       await this.stageController.deleteStagesByTripId(id)
-      const deletedTrip = await TripModel.findByIdAndDelete(id).lean()
-      return deletedTrip
+      return await TripModel.findByIdAndDelete(id).lean()
     } catch (error) {
       throw new Error(`Could not delete trip: ${error}`)
     }
