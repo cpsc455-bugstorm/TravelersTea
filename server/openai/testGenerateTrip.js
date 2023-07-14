@@ -1,13 +1,13 @@
 /*
  Simple test example of usage of generateTrip function
- Run via `node openai/test.js` from `server/` or wherever the .env file with the openai key is
+ Run via `node openai/testGenerateTrip.js` from `server/` or wherever the .env file with the openai key is
 */
 
 const generateTrip = require('./generateTrip')
 const TripModel = require('../models/TripModel')
 
 const exampleTrip = new TripModel({
-  destination: 'Paris',
+  tripLocation: 'Paris',
   budget: 2000,
   numberOfDays: 5,
   stagesPerDay: 3,
@@ -19,7 +19,7 @@ const exampleTrip = new TripModel({
 
     console.log(`Generated trip for given constraints:`)
     console.log(exampleTrip)
-    console.log(trip)
+    console.log(JSON.parse(trip))
   } catch (error) {
     console.error('Error while testing generateTrip function:', error)
   }
