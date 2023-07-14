@@ -1,19 +1,24 @@
 /* Run this file with 'yarn coordinates:test' from 'server/' */
-const getStageCoordinates = require('./googleCoordinates')
+const getCoordinatesFromLocation = require('./googleCoordinates')
 
 const stageLocations = [
   { stageLocationName: 'Eiffel Tower', destination: 'Paris' },
   { stageLocationName: 'Tim Hortons', destination: 'Vancouver' },
   { stageLocationName: 'Stanley Park', destination: 'Vancouver' },
   { stageLocationName: 'Taste of Nawabs', destination: 'Vancouver' },
+  { stageLocationName: '', destination: 'Vancouver' },
+  { stageLocationName: 'Eiffel Tower', destination: 'Paris' },
+  { stageLocationName: '', destination: 'Paris' },
+  { stageLocationName: '', destination: 'Beijing' },
+  { stageLocationName: '', destination: 'London' },
 ]
 
 async function testGetCoordinates() {
   try {
     for (const { stageLocationName, destination } of stageLocations) {
-      const coordinates = await getStageCoordinates(
-        stageLocationName,
+      const coordinates = await getCoordinatesFromLocation(
         destination,
+        stageLocationName,
       )
 
       console.log(

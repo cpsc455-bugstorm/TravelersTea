@@ -17,6 +17,16 @@ class StageController {
     }
   }
 
+  async createManyStages(listOfStages) {
+    try {
+      const newStages = await StageModel.insertMany(listOfStages)
+      const newStagesObjects = newStages.map((stage) => stage.toObject())
+      return newStagesObjects
+    } catch (error) {
+      throw new Error(`Could not create stage: ${error}`)
+    }
+  }
+
   async getStage(id) {
     try {
       const stage = await StageModel.findById(id)
