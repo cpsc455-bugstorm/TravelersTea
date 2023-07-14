@@ -8,17 +8,14 @@ import {
 import { closeNewTripModal } from '../../redux/reducers/modalsSlice'
 import { createTripAsync } from '../../redux/reducers/trips/thunks'
 import { setActiveTripId, setAppView } from '../../redux/reducers/viewSlice'
-import { Loader, Modal } from '../common'
+import { Modal } from '../common'
 import { TripForm } from './TripForm'
-import { useState } from 'react'
 
 export function NewTripForm() {
   const dispatch = useDispatch()
   const appView = useSelector((state) => state.view.appView)
   const trips = useSelector((state) => state.trips.trips)
   const user = useSelector((state) => state.users.user)
-
-  const [isLoading, setIsLoading] = useState(false)
 
   const newTripModalIsOpen = useSelector(
     (state) => state.modals.newTripModalIsOpen,
@@ -29,7 +26,6 @@ export function NewTripForm() {
   }
 
   const onSubmit = async (data) => {
-    setIsLoading(true)
     const tripDataWithTripName = {
       ...data,
       tripName: `Your Trip ${trips.length + 1}`,
@@ -38,10 +34,7 @@ export function NewTripForm() {
     const newTrip = await dispatch(
       createTripAsync(tripDataWithTripName),
     ).unwrap()
-    dispatch(setActiveTripId(newTrip._id))
-    dispatch(setAppView(AppView.TRIP_VIEW))
     dispatch(closeNewTripModal())
-    setIsLoading(false)
     dispatch(
       changeCoordinatesAndZoom({
         longitude: newTrip.tripLongitude,
@@ -59,21 +52,21 @@ export function NewTripForm() {
         },
       ]),
     )
+    dispatch(setAppView(AppView.TRIP_VIEW))
+    dispatch(setActiveTripId(newTrip._id))
   }
 
   return (
     <>
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <Modal
-          open={appView === AppView.NEW_TRIP && newTripModalIsOpen}
-          handleClose={handleCloseNewTripModal}
-          title='Manifesting A New Trip...'
-        >
-          <TripForm onSubmit={onSubmit} />
-        </Modal>
-      )}
+      (
+      <Modal
+        open={appView === AppView.NEW_TRIP && newTripModalIsOpen}
+        handleClose={handleCloseNewTripModal}
+        title='Manifesting A New Trip...'
+      >
+        <TripForm onSubmit={onSubmit} />
+      </Modal>
+      )
     </>
   )
 }

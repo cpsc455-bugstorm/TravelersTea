@@ -7,9 +7,14 @@ import { AppView } from './constants/enums'
 import { resetMap } from './redux/reducers/mapSlice'
 import { resetModalsDisplayed } from './redux/reducers/modalsSlice'
 import { resetPreferences } from './redux/reducers/preferencesSlice'
+import { resetStages } from './redux/reducers/stage/stageSlice'
+import { fetchStagesByTripIdAsync } from './redux/reducers/stage/thunks'
 import { fetchTripsAsync } from './redux/reducers/trips/thunks'
 import { resetTrips } from './redux/reducers/trips/tripsSlice'
-import { updateAsLoggedOut } from './redux/reducers/users/usersSlice'
+import {
+  updateAsLoggedIn,
+  updateAsLoggedOut,
+} from './redux/reducers/users/usersSlice'
 import { resetView, setAppView } from './redux/reducers/viewSlice'
 import { REQUEST_STATE } from './redux/states'
 
@@ -20,7 +25,9 @@ SessionController.propTypes = {
 export function SessionController({ children }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const activeTripId = useSelector((state) => state.view.activeTripId)
   const tripsStatus = useSelector((state) => state.trips.status)
+  const stagesStatus = useSelector((state) => state.stages.status)
   const userStates = useSelector((state) => state.users)
   const [isLoading, setIsLoading] = useState(false)
   const [isMinimumLoadingTimeMet, setIsMinimumLoadingTimeMet] = useState(false)
@@ -32,6 +39,7 @@ export function SessionController({ children }) {
       dispatch(resetView())
       dispatch(resetMap())
       dispatch(resetModalsDisplayed())
+      dispatch(resetStages())
       dispatch(updateAsLoggedOut())
     }
   }, [dispatch, userStates])
@@ -55,37 +63,52 @@ export function SessionController({ children }) {
   }, [dispatch, tripsStatus, userStates])
 
   useEffect(() => {
+    if (tripsStatus === REQUEST_STATE.FULFILLED && activeTripId)
+      dispatch(fetchStagesByTripIdAsync(activeTripId))
+  }, [activeTripId, dispatch, tripsStatus])
+
+  useEffect(() => {
     if (
-      (tripsStatus === REQUEST_STATE.WRITING &&
+      ((tripsStatus === REQUEST_STATE.WRITING ||
+        stagesStatus === REQUEST_STATE.WRITING) &&
         userStates.status === REQUEST_STATE.LOGGEDIN) ||
       userStates.status === REQUEST_STATE.READING
     ) {
       setIsLoading(true)
       setIsMinimumLoadingTimeMet(false)
+      dispatch(setAppView(AppView.TRIP_VIEW))
       setTimeout(() => {
         setIsMinimumLoadingTimeMet(true)
       }, 3000)
     }
-  }, [tripsStatus, userStates])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tripsStatus, userStates, stagesStatus])
 
   useEffect(() => {
     if (
       (tripsStatus === REQUEST_STATE.FULFILLED ||
         tripsStatus === REQUEST_STATE.REJECTED) &&
+      (stagesStatus === REQUEST_STATE.FULFILLED ||
+        stagesStatus === REQUEST_STATE.REJECTED) &&
       isMinimumLoadingTimeMet
     ) {
       setIsLoading(false)
     }
-  }, [tripsStatus, isMinimumLoadingTimeMet])
+  }, [tripsStatus, isMinimumLoadingTimeMet, stagesStatus])
 
   useEffect(() => {
     if (
-      userStates.status !== REQUEST_STATE.READING &&
+      userStates.status === REQUEST_STATE.LOGGINGIN &&
       isMinimumLoadingTimeMet
     ) {
       setIsLoading(false)
-      if (userStates.status === REQUEST_STATE.REJECTED)
-        dispatch(updateAsLoggedOut())
+      dispatch(updateAsLoggedIn())
+    } else if (
+      userStates.status === REQUEST_STATE.REJECTED &&
+      isMinimumLoadingTimeMet
+    ) {
+      setIsLoading(false)
+      dispatch(updateAsLoggedOut())
     }
   }, [userStates, isMinimumLoadingTimeMet, dispatch])
 
