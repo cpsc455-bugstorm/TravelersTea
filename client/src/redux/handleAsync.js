@@ -15,7 +15,10 @@ export const handleAsyncAction = (builder, asyncAction, handlers) => {
         handlers.rejected(state, action)
       } else {
         state.status = REQUEST_STATE.REJECTED
-        state.error = action.payload.message
+        state.error =
+          action.payload && action.payload.message
+            ? action.payload.message
+            : null
       }
     })
 }

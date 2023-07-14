@@ -43,6 +43,9 @@ export const usersSlice = createSlice({
       state.error = null
       state.isNewAccount = false
     },
+    updateAsLoggedIn: (state) => {
+      state.status = REQUEST_STATE.LOGGEDIN
+    },
   },
   extraReducers: (builder) => {
     handleAsyncAction(builder, registerUserAsync, {
@@ -50,7 +53,7 @@ export const usersSlice = createSlice({
         state.status = REQUEST_STATE.READING
       },
       fulfilled: (state, action) => {
-        state.status = REQUEST_STATE.LOGGEDIN
+        state.status = REQUEST_STATE.LOGGINGIN
         state.isNewAccount = true
         state.user = action.payload
       },
@@ -60,13 +63,14 @@ export const usersSlice = createSlice({
         state.status = REQUEST_STATE.READING
       },
       fulfilled: (state, action) => {
-        state.status = REQUEST_STATE.LOGGEDIN
+        state.status = REQUEST_STATE.LOGGINGIN
         state.user = action.payload
       },
     })
   },
 })
 
-export const { logoutUser, updateAsLoggedOut } = usersSlice.actions
+export const { logoutUser, updateAsLoggedOut, updateAsLoggedIn } =
+  usersSlice.actions
 
 export default usersSlice.reducer

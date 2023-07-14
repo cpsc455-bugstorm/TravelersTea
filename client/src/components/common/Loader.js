@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { TypeAnimation } from 'react-type-animation'
 
 // https://www.buzzfeed.com/ailbhemalone/15-weirdly-interesting-facts-about-tea
@@ -22,6 +23,18 @@ const getRandomFunFact = () => {
 }
 
 export function Loader() {
+  const [fact, setFact] = useState(getRandomFunFact())
+  const [key, setKey] = useState(Math.random())
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setFact(getRandomFunFact())
+      setKey(Math.random())
+    }, 5000)
+
+    return () => clearInterval(timer)
+  }, [])
+
   return (
     <div className={`fixed left-0 top-0 z-[98] h-full w-full bg-slate-800/30`}>
       <div className='opacity-99 fadesIn fixed left-[50%] top-[50%] z-[99] flex h-[200px] w-[500px] -translate-x-1/2 -translate-y-[60%] transform flex-col items-center justify-center rounded-md bg-black'>
@@ -43,7 +56,8 @@ export function Loader() {
         </p>
         <div className='mx-16 inline-block h-16 text-center text-xs text-white'>
           <TypeAnimation
-            sequence={[getRandomFunFact()]}
+            key={key}
+            sequence={[fact]}
             speed={90}
             repeat={1}
             wrapper='span'

@@ -26,20 +26,15 @@ export function NewTripForm() {
   }
 
   const onSubmit = async (data) => {
-    // this is default tripName, lat, long, TODO: get from other endpoints
+    dispatch(closeNewTripModal())
     const tripDataWithTripName = {
       ...data,
       tripName: `Your Trip ${trips.length + 1}`,
-      tripLatitude: 49.23990319450836,
-      tripLongitude: -123.15644121337681,
       userId: user.id,
     }
     const newTrip = await dispatch(
       createTripAsync(tripDataWithTripName),
     ).unwrap()
-    dispatch(setActiveTripId(newTrip._id))
-    dispatch(setAppView(AppView.TRIP_VIEW))
-    dispatch(closeNewTripModal())
     dispatch(
       changeCoordinatesAndZoom({
         longitude: newTrip.tripLongitude,
@@ -57,15 +52,21 @@ export function NewTripForm() {
         },
       ]),
     )
+    dispatch(setAppView(AppView.TRIP_VIEW))
+    dispatch(setActiveTripId(newTrip._id))
   }
 
   return (
-    <Modal
-      open={appView === AppView.NEW_TRIP && newTripModalIsOpen}
-      handleClose={handleCloseNewTripModal}
-      title='Manifesting A New Trip...'
-    >
-      <TripForm onSubmit={onSubmit} />
-    </Modal>
+    <>
+      (
+      <Modal
+        open={appView === AppView.NEW_TRIP && newTripModalIsOpen}
+        handleClose={handleCloseNewTripModal}
+        title='Manifesting A New Trip...'
+      >
+        <TripForm onSubmit={onSubmit} />
+      </Modal>
+      )
+    </>
   )
 }

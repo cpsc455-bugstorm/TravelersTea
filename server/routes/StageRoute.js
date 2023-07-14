@@ -38,7 +38,10 @@ class StageRoute {
 
   async getByTripId(req, res) {
     const tripId = req.query.tripId
-    if (!tripId) res.status(400).json({ error: 'Missing tripId parameter' })
+    if (!tripId) {
+      res.status(400).json({ error: 'Missing tripId parameter' })
+      return
+    }
 
     try {
       const response = await controllers.stageController.getStagesByTripId(
