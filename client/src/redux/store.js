@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import mapReducer from './reducers/mapSlice'
 import modalsReducer from './reducers/modalsSlice'
 import preferencesReducer from './reducers/preferencesSlice'
+import stageReducer from './reducers/stage/stageSlice'
 import tripsReducer from './reducers/trips/tripsSlice'
 import usersReducer from './reducers/users/usersSlice'
 import viewReducer from './reducers/viewSlice'
@@ -14,5 +15,6 @@ export const store = configureStore({
     map: mapReducer,
     trips: tripsReducer,
     users: usersReducer,
+    stages: stageReducer,
   },
 })

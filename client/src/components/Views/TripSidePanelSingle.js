@@ -4,7 +4,6 @@ import { Button } from '../common'
 import { setAppView, setShowSidePanel } from '../../redux/reducers/viewSlice'
 import { AppView } from '../../constants/enums'
 import { useDispatch, useSelector } from 'react-redux'
-import TripViewJson from '../../temp/tripViewData.json'
 import { getBg400, getTailwindName } from '../../util/tailwindColors'
 import CloseIcon from '@mui/icons-material/Close'
 
@@ -13,14 +12,15 @@ export function TripSidePanelSingle() {
   const isCompactView = useSelector((state) => state.preferences.compactView)
   const showDrawer = useSelector((state) => state.view.showDrawer)
   const showSidePanel = useSelector((state) => state.view.showSidePanel)
+  const stagesByDay = useSelector((state) => state.stages.stages)
   const dispatch = useDispatch()
   const [dayDetails, setDayDetails] = useState()
   const visibilityTimer = useRef(null)
 
   useEffect(() => {
     // TODO this logic needs to fetch the right trip ID when we have real data
-    setDayDetails(TripViewJson[activeDayNumber - 1])
-  }, [activeDayNumber])
+    setDayDetails(stagesByDay[activeDayNumber - 1])
+  }, [activeDayNumber, stagesByDay])
 
   useEffect(() => {
     if (!isCompactView && !showDrawer) {
@@ -45,7 +45,7 @@ export function TripSidePanelSingle() {
           key={`details-${activeDayNumber}-${index}`}
         >
           <p className={'text-xl font-semibold text-slate-100'}>
-            {stage['stageLocation']}
+            {stage['locationName']}
           </p>
           <p className={'text-lg text-slate-100'}>{stage['description']}</p>
         </div>

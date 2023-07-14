@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const stageSchema = new mongoose.Schema({
   tripId: {
     type: mongoose.Schema.Types.ObjectId,
+    ref: 'Trip',
     required: true,
   },
   dayIndex: {

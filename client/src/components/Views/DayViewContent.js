@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import TripViewJson from '../../temp/tripViewData.json'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button } from '../common'
 import { setAppView } from '../../redux/reducers/viewSlice'
@@ -7,15 +6,14 @@ import { AppView } from '../../constants/enums'
 
 export function DayViewContent() {
   const activeDayNumber = useSelector((state) => state.view.activeDayNumber)
+  const stagesByDay = useSelector((state) => state.stages.stages)
   const dispatch = useDispatch()
 
   const [stages, setStages] = useState([])
 
   useEffect(() => {
-    // TODO edit this entire block to fetch from backend
-    const mockData = TripViewJson[activeDayNumber - 1]
-    setStages(mockData)
-  }, [activeDayNumber])
+    setStages(stagesByDay[activeDayNumber - 1])
+  }, [activeDayNumber, stagesByDay])
 
   const generateStage = useCallback((stageInfo, index) => {
     return (

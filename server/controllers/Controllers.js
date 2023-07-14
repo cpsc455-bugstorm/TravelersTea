@@ -6,6 +6,8 @@ const stageController = new StageController()
 const tripController = new TripController(stageController)
 const userController = new UserController(tripController)
 
+stageController.setTripController(tripController)
+
 const controllers = {
   userController: userController,
   tripController: tripController,

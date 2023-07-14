@@ -7,6 +7,15 @@ class TripController {
     this.stageController = stageController
   }
 
+  async getTrip(id) {
+    try {
+      const trip = await TripModel.findById(id)
+      return trip
+    } catch (error) {
+      throw new Error(`Could not fetch trip: ${error}`)
+    }
+  }
+
   async getAll(userId) {
     try {
       if (!userId) {

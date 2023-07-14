@@ -5,6 +5,7 @@ class TripRoute {
   constructor() {
     this.router = express.Router()
     this.router.get('', this.getAll.bind(this))
+    this.router.get('/:id', this.getTrip.bind(this))
     this.router.post('', this.create.bind(this))
     this.router.patch('/:id', this.update.bind(this))
     this.router.delete('/:id', this.delete.bind(this))
@@ -12,6 +13,15 @@ class TripRoute {
 
   initRoutes(apiRouter) {
     apiRouter.use('/trips', this.router)
+  }
+
+  async getTrip(req, res) {
+    try {
+      const response = await controllers.tripController.getTrip(req.params.id)
+      res.status(200).json(response)
+    } catch (err) {
+      res.status(500).json({ error: err.toString() })
+    }
   }
 
   async getAll(req, res) {
