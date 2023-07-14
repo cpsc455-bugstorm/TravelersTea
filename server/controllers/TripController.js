@@ -58,7 +58,7 @@ class TripController {
         stageLatitude: longLatObject.lat,
         stageLocation: stage.stageLocationName,
         description: stage.stageDescription,
-        colourNumber: stage.stageColor,
+        colorNumber: stage.stageColor,
         emoji: stage.stageEmoji,
       }
       stagesToAddFromDay.push(stageToAddFromDay)
