@@ -19,8 +19,7 @@ class TripController {
       if (!userId) {
         throw new Error('User ID is required to fetch trips.')
       }
-      const trips = await TripModel.find({ userId }).lean()
-      return trips
+      return await TripModel.find({ userId }).lean()
     } catch (error) {
       throw new Error(`Could not fetch all trips: ${error}`)
     }

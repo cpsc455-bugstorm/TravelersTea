@@ -41,10 +41,9 @@ class StageController {
 
   async updateStage(id, stageData) {
     try {
-      const updatedStage = await StageModel.findByIdAndUpdate(id, stageData, {
+      return await StageModel.findByIdAndUpdate(id, stageData, {
         new: true,
       }).lean()
-      return updatedStage
     } catch (error) {
       throw new Error(`Could not update stage: ${error}`)
     }

@@ -8,6 +8,7 @@
     "start": "node index.js",
     "dev": "nodemon -L index.js",
     "reset:db": "node resetDB.js",
+    "coordinates:test": "node googleapi/getCoordinateTest.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --cache --fix",
     "format": "prettier --write \"**/*.+(js|jsx|json|yml|yaml|css|md)\"",
@@ -26,8 +27,7 @@
     "mongodb": "^5.5.0",
     "mongoose": "^7.2.1",
     "morgan": "^1.10.0",
-    "openai": "^3.2.1",
-    "uuid": "^9.0.0"
+    "openai": "^3.2.1"
   },
   "devDependencies": {
     "eslint-config-node": "^4.1.0",
