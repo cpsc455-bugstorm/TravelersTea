@@ -23,7 +23,7 @@ export function TripViewContent() {
           colorNumber={item[0]['colorNumber']}
           displayNumber={displayNumber}
           titleText={'Day ' + displayNumber}
-          stageLocations={item.map((stage) => stage['locationName'])}
+          stageLocations={item.map((stage) => stage['stageLocation'])}
         />
       )
     })

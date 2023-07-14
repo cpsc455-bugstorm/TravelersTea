@@ -30,7 +30,7 @@ export function SeeMoreDrawer() {
                 className='p-2 text-white'
               >
                 <p className='font-semibold text-white'>
-                  Stage {stage['stageIndex']}: {stage['locationName']}
+                  Stage {stage['stageIndex']}: {stage['stageLocation']}
                 </p>
                 <p className={'text-white'}>⤷ {stage['description']}</p>
               </div>
