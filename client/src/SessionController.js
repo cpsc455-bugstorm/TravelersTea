@@ -76,7 +76,6 @@ export function SessionController({ children }) {
     ) {
       setIsLoading(true)
       setIsMinimumLoadingTimeMet(false)
-      dispatch(setAppView(AppView.TRIP_VIEW))
       setTimeout(() => {
         setIsMinimumLoadingTimeMet(true)
       }, 3000)

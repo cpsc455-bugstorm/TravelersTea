@@ -26,6 +26,7 @@ export function NewTripForm() {
   }
 
   const onSubmit = async (data) => {
+    dispatch(closeNewTripModal())
     const tripDataWithTripName = {
       ...data,
       tripName: `Your Trip ${trips.length + 1}`,
@@ -34,7 +35,6 @@ export function NewTripForm() {
     const newTrip = await dispatch(
       createTripAsync(tripDataWithTripName),
     ).unwrap()
-    dispatch(closeNewTripModal())
     dispatch(
       changeCoordinatesAndZoom({
         longitude: newTrip.tripLongitude,
