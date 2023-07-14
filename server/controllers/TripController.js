@@ -9,8 +9,7 @@ class TripController {
 
   async getTrip(id) {
     try {
-      const trip = await TripModel.findById(id)
-      return trip
+      return await TripModel.findById(id)
     } catch (error) {
       throw new Error(`Could not fetch trip: ${error}`)
     }
