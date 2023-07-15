@@ -7,7 +7,7 @@ const initialState = {
   appView: AppView.GLOBE_VIEW,
   isSidebarOpen: false,
   showDrawer: false,
-  showSidePanel: true,
+  showSidePanel: false,
 }
 
 // payload: AppView (e.g. AppView.NEW_TRIP)

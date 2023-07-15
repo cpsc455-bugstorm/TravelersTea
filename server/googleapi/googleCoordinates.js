@@ -3,13 +3,13 @@ const axios = require('axios')
 
 /**
  Retrieves the coordinates of a stage location using Google Places API.
- @param {string} destination - The destination of the stage.
+ @param {string} destinationCity - The destinationCity of the stage.
  @param {string} stageLocationName - The name of the stage location.
  @returns {object} The coordinates of the stage location as an object { lat: number, lng: number }
  @throws {Error} If there is an error while fetching place details.
  */
-async function getStageCoordinates(destination, stageLocationName) {
-  const query = `${stageLocationName} ${destination}`
+async function getCoordinatesFromLocation(destinationCity, stageLocationName) {
+  const query = `${stageLocationName} ${destinationCity}`
   const apiKey = process.env.GOOGLE_PLACES_API_KEY
   const url = 'https://maps.googleapis.com/maps/api/place/textsearch/json'
 
@@ -31,4 +31,4 @@ async function getStageCoordinates(destination, stageLocationName) {
   }
 }
 
-module.exports = getStageCoordinates
+module.exports = getCoordinatesFromLocation

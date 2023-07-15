@@ -1,18 +1,11 @@
 import { TeaCup } from './TeaCup'
-import { useEffect, useMemo } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useMemo } from 'react'
 import { SeeMoreDrawer } from './SeeMoreDrawer'
 import { TripSidePanelSingle } from './TripSidePanelSingle'
-import { fetchStagesByTripIdAsync } from '../../redux/reducers/stage/thunks'
+import { useSelector } from 'react-redux'
 
 export function TripViewContent() {
-  const activeTripId = useSelector((state) => state.view.activeTripId)
   const stagesByDay = useSelector((state) => state.stages.stages)
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    dispatch(fetchStagesByTripIdAsync(activeTripId))
-  }, [activeTripId, dispatch])
 
   const teaCups = useMemo(() => {
     return stagesByDay.map((item, index) => {
@@ -23,7 +16,7 @@ export function TripViewContent() {
           colorNumber={item[0]['colorNumber']}
           displayNumber={displayNumber}
           titleText={'Day ' + displayNumber}
-          stageLocations={item.map((stage) => stage['locationName'])}
+          stageLocations={item.map((stage) => stage['stageLocation'])}
         />
       )
     })
