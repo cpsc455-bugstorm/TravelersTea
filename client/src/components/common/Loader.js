@@ -30,7 +30,7 @@ export function Loader() {
     const timer = setInterval(() => {
       setFact(getRandomFunFact())
       setKey(Math.random())
-    }, 5000)
+    }, 10000)
 
     return () => clearInterval(timer)
   }, [])
