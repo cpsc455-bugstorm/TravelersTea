@@ -8,8 +8,12 @@ MONGO_USERNAME="bugstorm1000"
 MONGO_PASSWORD=""
 
 # OpenAI env vars
+OPEN_AI_ORG_ID=
 OPEN_AI_API_KEY=
 GPT_MODEL=gpt-3.5-turbo # gpt-4 for better responses
+
+# GOOGLE API KEY
+GOOGLE_PLACES_API_KEY=
 ```
 
 Note: You can grab and add value for `DB_USER_FLAG=""` from secrets channel to use your own database.

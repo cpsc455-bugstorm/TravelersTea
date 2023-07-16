@@ -1,12 +1,9 @@
 const mongoose = require('mongoose')
 
 const stageSchema = new mongoose.Schema({
-  _id: {
-    type: String,
-    required: true,
-  },
   tripId: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Trip',
     required: true,
   },
   dayIndex: {
@@ -20,7 +17,6 @@ const stageSchema = new mongoose.Schema({
   stageLatitude: Number,
   stageLongitude: Number,
   stageLocation: String,
-  locationName: String,
   description: String,
   colorNumber: Number,
   emoji: String,

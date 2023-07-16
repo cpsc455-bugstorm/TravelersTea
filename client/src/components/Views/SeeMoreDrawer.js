@@ -1,28 +1,18 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button } from '../common'
 import { toggleShowDrawer } from '../../redux/reducers/viewSlice'
-import TripViewJson from '../../temp/tripViewData.json'
 import { getTailwindName } from '../../util/tailwindColors'
 
 export function SeeMoreDrawer() {
-  const activeTripId = useSelector((state) => state.view.activeTripId)
+  const stagesByDay = useSelector((state) => state.stages.stages)
 
   const dispatch = useDispatch()
-  const [tripData, setTripData] = useState([])
-
-  useEffect(() => {
-    // TODO edit this entire block to fetch from backend
-    // id is uuid, can't use activeTripId here
-    const endIndex = 1 + (Math.floor(Math.random() * 3) + 1) * 3
-    const mockData = TripViewJson.slice(0, endIndex)
-    setTripData(mockData)
-  }, [activeTripId])
 
   const showDrawer = useSelector((state) => state.view.showDrawer)
 
   const seeMoreCardContent = useMemo(() => {
-    return tripData.map((dayDetails, index) => {
+    return stagesByDay.map((dayDetails, index) => {
       const dayNumber = index + 1
       const dayColor = dayDetails[0]['colorNumber']
       const colorName = getTailwindName(dayColor)
@@ -40,7 +30,7 @@ export function SeeMoreDrawer() {
                 className='p-2 text-white'
               >
                 <p className='font-semibold text-white'>
-                  {stage['stage']}: {stage['stageLocation']}
+                  Stage {stage['stageIndex']}: {stage['stageLocation']}
                 </p>
                 <p className={'text-white'}>⤷ {stage['description']}</p>
               </div>
@@ -49,7 +39,7 @@ export function SeeMoreDrawer() {
         </div>
       )
     })
-  }, [tripData])
+  }, [stagesByDay])
 
   const renderShowMoreLessButton = useMemo(() => {
     return (

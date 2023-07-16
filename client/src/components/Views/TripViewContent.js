@@ -1,25 +1,14 @@
 import { TeaCup } from './TeaCup'
-import { useEffect, useMemo, useState } from 'react'
-import TripViewJson from '../../temp/tripViewData.json'
-import { useSelector } from 'react-redux'
+import { useMemo } from 'react'
 import { SeeMoreDrawer } from './SeeMoreDrawer'
 import { TripSidePanelSingle } from './TripSidePanelSingle'
+import { useSelector } from 'react-redux'
 
 export function TripViewContent() {
-  const activeTripId = useSelector((state) => state.view.activeTripId)
-
-  const [tripData, setTripData] = useState([])
-
-  useEffect(() => {
-    // TODO edit this entire block to fetch from backend
-    // id is uuid, can't use activeTripId here
-    const endIndex = 1 + (Math.floor(Math.random() * 3) + 1) * 3
-    const mockData = TripViewJson.slice(0, endIndex)
-    setTripData(mockData)
-  }, [activeTripId])
+  const stagesByDay = useSelector((state) => state.stages.stages)
 
   const teaCups = useMemo(() => {
-    return tripData.map((item, index) => {
+    return stagesByDay.map((item, index) => {
       const displayNumber = index + 1
       return (
         <TeaCup
@@ -31,7 +20,7 @@ export function TripViewContent() {
         />
       )
     })
-  }, [tripData])
+  }, [stagesByDay])
 
   const renderTeacupRow = useMemo(() => {
     return (

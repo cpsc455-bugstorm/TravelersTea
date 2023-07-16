@@ -14,6 +14,7 @@ export const fetchStage = createAsyncThunk(
   },
 )
 
+// returns an array of days, where each day is an array of stages.
 export const fetchStagesByTripIdAsync = createAsyncThunk(
   actionTypes.GET_STAGES_BY_TRIP_ID,
   async (tripId, { rejectWithValue }) => {

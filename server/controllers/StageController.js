@@ -1,15 +1,17 @@
 const StageModel = require('../models/StageModel')
-const uuid = require('uuid')
 
 class StageController {
   constructor() {}
+
+  setTripController(tripController) {
+    this.tripController = tripController
+  }
 
   async createStage(stageData) {
     try {
       const newStage = await StageModel.create({
         // eslint-disable-next-line node/no-unsupported-features/es-syntax
         ...stageData,
-        _id: uuid.v4(),
       })
       return newStage.toObject()
     } catch (error) {
@@ -17,10 +19,20 @@ class StageController {
     }
   }
 
+  async createManyStages(listOfStages) {
+    console.log(listOfStages)
+    try {
+      const newStages = await StageModel.insertMany(listOfStages)
+      const newStagesObjects = newStages.map((stage) => stage.toObject())
+      return newStagesObjects
+    } catch (error) {
+      throw new Error(`Could not create stage: ${error}`)
+    }
+  }
+
   async getStage(id) {
     try {
-      const stage = await StageModel.findById(id)
-      return stage
+      return await StageModel.findById(id)
     } catch (error) {
       throw new Error(`Could not fetch stage: ${error}`)
     }
@@ -28,8 +40,11 @@ class StageController {
 
   async getStagesByTripId(tripId) {
     try {
-      const stagesPerTripId = await StageModel.find({ tripId: tripId }).lean()
-      return stagesPerTripId
+      const trip = await this.tripController.getTrip(tripId)
+      const stagesPerTripId = await StageModel.find({ tripId: tripId })
+        .sort({ dayIndex: 1, stageIndex: 1 })
+        .lean()
+      return partitionStagesByDay(stagesPerTripId, trip.stagesPerDay)
     } catch (error) {
       throw new Error(`Could not fetch all stages for trip: ${error}`)
     }
@@ -37,10 +52,9 @@ class StageController {
 
   async updateStage(id, stageData) {
     try {
-      const updatedStage = await StageModel.findByIdAndUpdate(id, stageData, {
+      return await StageModel.findByIdAndUpdate(id, stageData, {
         new: true,
       }).lean()
-      return updatedStage
     } catch (error) {
       throw new Error(`Could not update stage: ${error}`)
     }
@@ -48,8 +62,7 @@ class StageController {
 
   async deleteStage(id) {
     try {
-      const deletedStage = await StageModel.findByIdAndDelete(id).lean()
-      return deletedStage
+      return await StageModel.findByIdAndDelete(id).lean()
     } catch (error) {
       throw new Error(`Could not delete stage: ${error}`)
     }
@@ -61,12 +74,26 @@ class StageController {
    * */
   async deleteStagesByTripId(tripId) {
     try {
-      const result = await StageModel.deleteMany({ tripId: tripId })
-      return result
+      return await StageModel.deleteMany({ tripId: tripId })
     } catch (error) {
       throw new Error(`Could not delete all stages for given tripId: ${error}`)
     }
   }
+}
+
+function partitionStagesByDay(arr, stagesPerDay) {
+  const stagesByDayByTrip = []
+
+  arr.forEach((item, index) => {
+    const startNewRow = index % stagesPerDay === 0
+    if (startNewRow) {
+      stagesByDayByTrip.push([item])
+    } else {
+      stagesByDayByTrip[stagesByDayByTrip.length - 1].push(item)
+    }
+  })
+
+  return stagesByDayByTrip
 }
 
 module.exports = StageController
