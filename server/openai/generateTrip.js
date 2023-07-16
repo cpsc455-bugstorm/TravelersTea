@@ -8,7 +8,7 @@ const openaiClient = require('./openaiClient')
  * @async
  * @param {Object} constraints TripModel Object - The travel constraints.
  * @param {string} constraints.tripLocation - The destination of the trip.
- * @param {number} constraints.budget - The budget for the trip.
+ * @param {number} constraints.budgetPerDay - The budget per day for the trip.
  * @param {number} constraints.numberOfDays - The number of days for the trip.
  * @param {number} constraints.stagesPerDay - The stages per day of the trip.
  *
@@ -48,7 +48,7 @@ async function generateTrip(constraints) {
   }
   const naturalLanguageConstraints = `
       Destination: ${constraints.tripLocation}
-      Budget: $${constraints.budget}
+      Budget per day: $${constraints.budgetPerDay}
       Days: ${constraints.numberOfDays}
       Stages per day: ${constraints.stagesPerDay}
    `
