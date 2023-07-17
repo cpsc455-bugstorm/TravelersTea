@@ -34,15 +34,15 @@ export function TripForm({ onSubmit, initialValues }) {
       />
       <TextField
         {...register('stagesPerDay', { required: true, min: 0 })}
-        label='Stages per day'
+        label='Places per day'
         placeholder='Tell me how many places you want to visit..'
         type='number'
         inputProps={{ min: 0 }}
         error={!!errors.stagesPerDay}
       />
       <TextField
-        {...register('budget', { required: true, min: 0 })}
-        label='Budget'
+        {...register('budgetPerDay', { required: true, min: 0 })}
+        label='Budget per day'
         placeholder='Tell me how much you want to spend...'
         type='number'
         inputProps={{ min: 0 }}
