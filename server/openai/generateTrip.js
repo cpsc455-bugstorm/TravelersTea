@@ -41,10 +41,11 @@ const openaiClient = require('./openaiClient')
  * @throws Will throw an error if the openaiClient or AI response fails.
  */
 async function generateTrip(constraints) {
-  if (constraints.numberOfDays > 5 || constraints.stagesPerDay > 5) {
-    return `{
-          "error": "trips can only be generated on a maximum of 5 days and 5 stages per day" 
-        }`
+  const totalPlaces = constraints.numberOfDays * constraints.stagesPerDay
+  if (totalPlaces > 25) {
+    throw new Error(
+      `Trips must have a maximum of 25 places (user requested ${totalPlaces} places)`,
+    )
   }
   const naturalLanguageConstraints = `
       Destination: ${constraints.tripLocation}
@@ -52,11 +53,10 @@ async function generateTrip(constraints) {
       Days: ${constraints.numberOfDays}
       Stages per day: ${constraints.stagesPerDay}
    `
-  try {
-    const conversation = [
-      {
-        role: 'system',
-        content: `You are an AI that generates travel itineraries. Respond with ONLY JSON that contains the plan for each stage. 
+  const conversation = [
+    {
+      role: 'system',
+      content: `You are an AI that generates travel itineraries. Respond with ONLY JSON that contains the plan for each stage. 
         ONLY respond with the following format, do not include any descriptions or codeblocks, I should be able to parse the output to a JavaScript Object
         The response needs to be formatted exactly like the following structure.:
         '''
@@ -85,22 +85,25 @@ async function generateTrip(constraints) {
         }
         '''
         `,
-      },
-      {
-        role: 'user',
-        content: `Generate a travel itinerary based on these constraints: ${naturalLanguageConstraints}`,
-      },
-    ]
+    },
+    {
+      role: 'user',
+      content: `Generate a travel itinerary based on these constraints: ${naturalLanguageConstraints}`,
+    },
+  ]
 
-    const response = await openaiClient(conversation)
-    if (response) {
-      return response
-    }
-    return 'Unable to generate a travel itinerary. Please try again later.'
-  } catch (error) {
-    console.error('Error while generating itinerary:', error)
-    throw error
+  const response = await openaiClient(conversation).then((str) =>
+    JSON.parse(str),
+  )
+
+  if (!response) {
+    throw new Error(
+      'Unable to generate a travel itinerary. Please try again later.',
+    )
+  } else if (response.error) {
+    throw new Error(response.error)
   }
+  return response
 }
 
 module.exports = generateTrip
