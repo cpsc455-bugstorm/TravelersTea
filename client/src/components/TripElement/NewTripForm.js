@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { AppView } from '../../constants/enums'
-import { ZOOM_CITY_LEVEL } from '../../constants/mapDefaultInfo'
+import { ZOOM_CITY_LEVEL, DEFAULT_SPEED } from '../../constants/mapDefaultInfo'
 import {
   changeCoordinatesAndZoom,
   clearAllMarkersAndAdd_Store,
@@ -32,28 +32,33 @@ export function NewTripForm() {
       tripName: `Your Trip ${trips.length + 1}`,
       userId: user.id,
     }
-    const newTrip = await dispatch(
-      createTripAsync(tripDataWithTripName),
-    ).unwrap()
-    dispatch(
-      changeCoordinatesAndZoom({
-        longitude: newTrip.tripLongitude,
-        latitude: newTrip.tripLatitude,
-        zoom: ZOOM_CITY_LEVEL,
-      }),
-    )
-    dispatch(
-      clearAllMarkersAndAdd_Store([
-        {
+    try {
+      const newTrip = await dispatch(
+        createTripAsync(tripDataWithTripName),
+      ).unwrap()
+      dispatch(
+        changeCoordinatesAndZoom({
           longitude: newTrip.tripLongitude,
           latitude: newTrip.tripLatitude,
-          emoji: '📍',
-          label: 'Marker Icon',
-        },
-      ]),
-    )
-    dispatch(setAppView(AppView.TRIP_VIEW))
-    dispatch(setActiveTripId(newTrip._id))
+          zoom: ZOOM_CITY_LEVEL,
+          speed: DEFAULT_SPEED,
+        }),
+      )
+      dispatch(
+        clearAllMarkersAndAdd_Store([
+          {
+            longitude: newTrip.tripLongitude,
+            latitude: newTrip.tripLatitude,
+            emoji: '📍',
+            label: 'Marker Icon',
+          },
+        ]),
+      )
+      dispatch(setAppView(AppView.TRIP_VIEW))
+      dispatch(setActiveTripId(newTrip._id))
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   return (

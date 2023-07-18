@@ -1,6 +1,9 @@
 import { TextField } from '@mui/material'
 import PropTypes from 'prop-types'
 import { useForm } from 'react-hook-form'
+import { useDispatch } from 'react-redux'
+import { ZOOM_GLOBE_LEVEL, SLOWER_SPEED } from '../../constants/mapDefaultInfo'
+import { changeZoom, changeSpeed } from '../../redux/reducers/mapSlice'
 import { Button } from '../common'
 
 TripForm.propTypes = {
@@ -9,6 +12,7 @@ TripForm.propTypes = {
 }
 
 export function TripForm({ onSubmit, initialValues }) {
+  const dispatch = useDispatch()
   const {
     register,
     handleSubmit,
@@ -17,6 +21,8 @@ export function TripForm({ onSubmit, initialValues }) {
   } = useForm({ defaultValues: initialValues })
 
   const onSubmitForm = (data) => {
+    dispatch(changeZoom(ZOOM_GLOBE_LEVEL))
+    dispatch(changeSpeed(SLOWER_SPEED))
     onSubmit(data)
     reset()
   }
@@ -34,7 +40,7 @@ export function TripForm({ onSubmit, initialValues }) {
       />
       <TextField
         {...register('stagesPerDay', { required: true, min: 0 })}
-        label='Stages per day'
+        label='Places per day'
         placeholder='Tell me how many places you want to visit..'
         type='number'
         inputProps={{ min: 0 }}
@@ -42,7 +48,7 @@ export function TripForm({ onSubmit, initialValues }) {
       />
       <TextField
         {...register('budget', { required: true, min: 0 })}
-        label='Budget'
+        label='Budget per day'
         placeholder='Tell me how much you want to spend...'
         type='number'
         inputProps={{ min: 0 }}

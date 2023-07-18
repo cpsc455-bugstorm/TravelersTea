@@ -1,6 +1,7 @@
 const TripModel = require('../models/TripModel')
 const generateTrip = require('../openai/generateTrip')
 const getCoordinatesFromLocation = require('../googleapi/googleCoordinates')
+const config = require('../config/config')
 
 class TripController {
   constructor(stageController) {
@@ -11,7 +12,9 @@ class TripController {
     try {
       return await TripModel.findById(id)
     } catch (error) {
-      throw new Error(`Could not fetch trip: ${error}`)
+      if (config.server.env === 'DEV')
+        console.error('Error while fetching trip:', error)
+      throw new Error('Could not fetch trip')
     }
   }
 
@@ -22,7 +25,9 @@ class TripController {
     try {
       return await TripModel.find({ userId }).lean()
     } catch (error) {
-      throw new Error(`Could not fetch all trips: ${error}`)
+      if (config.server.env === 'DEV')
+        console.error('Error while fetching all trips:', error)
+      throw new Error('Could not fetch all trips')
     }
   }
 
@@ -103,7 +108,9 @@ class TripController {
       await this.stageController.createManyStages(stagesToAdd)
       return newTrip.toObject()
     } catch (error) {
-      throw new Error(`Could not create trip: ${error}`)
+      if (config.server.env === 'DEV')
+        console.error('Error while creating trip:', error)
+      throw new Error('Could not create trip')
     }
   }
 
@@ -113,7 +120,9 @@ class TripController {
         new: true,
       }).lean()
     } catch (error) {
-      throw new Error(`Could not edit trip: ${error}`)
+      if (config.server.env === 'DEV')
+        console.error('Error while updating trip:', error)
+      throw new Error('Could not edit trip')
     }
   }
 
@@ -122,7 +131,9 @@ class TripController {
       await this.stageController.deleteStagesByTripId(id)
       return await TripModel.findByIdAndDelete(id).lean()
     } catch (error) {
-      throw new Error(`Could not delete trip: ${error}`)
+      if (config.server.env === 'DEV')
+        console.error('Error while deleting trip:', error)
+      throw new Error('Could not delete trip')
     }
   }
 
@@ -136,7 +147,9 @@ class TripController {
 
       await TripModel.deleteMany({ userId: userId }).lean()
     } catch (error) {
-      throw new Error(`Could not delete trip: ${error}`)
+      if (config.server.env === 'DEV')
+        console.error('Error while deleting trips:', error)
+      throw new Error('Could not delete trip')
     }
   }
 }
