@@ -1,9 +1,8 @@
-import { Alert, Snackbar } from '@mui/material'
 import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { Loader } from './components/common'
+import { AlertSnackbar, Loader } from './components/common'
 import { AppView } from './constants/enums'
 import { resetMap } from './redux/reducers/mapSlice'
 import { resetModalsDisplayed } from './redux/reducers/modalsSlice'
@@ -37,10 +36,12 @@ export function SessionController({ children }) {
   const [isLoading, setIsLoading] = useState(false)
   const [alertOpen, setAlertOpen] = useState(false)
   const [alertMessage, setAlertMessage] = useState('')
-  const delaySetLoadingFalse = () => {
+  const [loadingAlertOpen, setLoadingAlertOpen] = useState(false)
+  const delaySetLoadingFalse = (ms, callback = () => {}) => {
     setTimeout(() => {
       setIsLoading(false)
-    }, 1000)
+      callback()
+    }, ms)
   }
 
   useEffect(() => {
@@ -94,17 +95,15 @@ export function SessionController({ children }) {
       (stagesStates.status === REQUEST_STATE.FULFILLED ||
         stagesStates.status === REQUEST_STATE.REJECTED)
     ) {
-      delaySetLoadingFalse()
+      delaySetLoadingFalse(1000)
     }
   }, [tripsStates.status, stagesStates.status])
 
   useEffect(() => {
     if (userStates.status === REQUEST_STATE.LOGGINGIN) {
-      delaySetLoadingFalse()
-      dispatch(updateAsLoggedIn())
+      delaySetLoadingFalse(2500, () => dispatch(updateAsLoggedIn()))
     } else if (userStates.status === REQUEST_STATE.REJECTED) {
-      delaySetLoadingFalse()
-      dispatch(updateAsLoggedOut())
+      delaySetLoadingFalse(2500, () => dispatch(updateAsLoggedOut()))
     }
   }, [userStates, dispatch])
 
@@ -126,9 +125,11 @@ export function SessionController({ children }) {
 
   useEffect(() => {
     if (userStates.error) {
-      setAlertMessage(userStates.error)
-      setAlertOpen(true)
-      dispatch(clearUserError())
+      setTimeout(() => {
+        setAlertMessage('Error: Invalid Credentials')
+        setAlertOpen(true)
+        dispatch(clearUserError())
+      }, 2500)
     }
   }, [dispatch, userStates.error])
 
@@ -148,23 +149,32 @@ export function SessionController({ children }) {
     }
   }, [alertOpen])
 
+  useEffect(() => {
+    let timer
+    if (isLoading) {
+      timer = setTimeout(() => {
+        setLoadingAlertOpen(true)
+      }, 3000)
+    } else {
+      setLoadingAlertOpen(false)
+    }
+    return () => clearTimeout(timer)
+  }, [isLoading])
+
   return (
     <>
       {isLoading && <Loader />}
-      <Snackbar
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      <AlertSnackbar
         open={alertOpen}
-        autoHideDuration={5000}
-        onClose={handleCloseAlert}
-      >
-        <Alert
-          onClose={handleCloseAlert}
-          severity='error'
-          sx={{ width: '100%' }}
-        >
-          {alertMessage}
-        </Alert>
-      </Snackbar>
+        handleClose={handleCloseAlert}
+        message={alertMessage}
+      />
+      <AlertSnackbar
+        open={loadingAlertOpen}
+        handleClose={() => setLoadingAlertOpen(false)}
+        message='This may take a minute!'
+        severity='info'
+      />
       {children}
     </>
   )

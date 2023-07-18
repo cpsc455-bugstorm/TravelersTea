@@ -22,6 +22,9 @@ const mapSlice = createSlice({
     changeCoordinatesAndZoom: (state, action) => {
       state.currentCoordinatesAndZoom = action.payload
     },
+    changeZoom: (state, action) => {
+      state.currentCoordinatesAndZoom.zoom = action.payload
+    },
     /**
      * @property {payload (markers)}: [{ - an array of props with the following structure:
      *       longitude: number, - The longitude coordinate of the marker
@@ -40,6 +43,7 @@ const mapSlice = createSlice({
 
 export const {
   changeCoordinatesAndZoom,
+  changeZoom,
   clearAllMarkersAndAdd_Store,
   resetMap,
 } = mapSlice.actions

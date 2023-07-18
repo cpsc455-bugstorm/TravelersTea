@@ -58,7 +58,6 @@ export function TripEntry({ id, buttonClassName, trip }) {
 
   const handleCheckClick = () => {
     dispatch(updateTripAsync({ id: id, tripData: { tripName: tripName } }))
-    dispatch(closeSidebar())
     setIsRenaming(false)
   }
 
@@ -70,6 +69,7 @@ export function TripEntry({ id, buttonClassName, trip }) {
   const handleDeleteTrip = () => {
     closeModal()
     dispatch(deleteTripAsync({ id: id }))
+    dispatch(setActiveTripId(undefined))
   }
 
   useEffect(() => {
