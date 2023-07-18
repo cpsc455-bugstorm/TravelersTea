@@ -16,7 +16,7 @@ class StageController {
       })
       return newStage.toObject()
     } catch (error) {
-      if (config.server.env === 'dev')
+      if (config.server.env === 'DEV')
         console.error('Error while creating stage:', error)
       throw new Error(`Could not create stage`)
     }
@@ -29,7 +29,7 @@ class StageController {
       const newStagesObjects = newStages.map((stage) => stage.toObject())
       return newStagesObjects
     } catch (error) {
-      if (config.server.env === 'dev')
+      if (config.server.env === 'DEV')
         console.error('Error while creating stages:', error)
       throw new Error('Could not create stages')
     }
@@ -39,7 +39,7 @@ class StageController {
     try {
       return await StageModel.findById(id)
     } catch (error) {
-      if (config.server.env === 'dev')
+      if (config.server.env === 'DEV')
         console.error('Error while fetching stages:', error)
       throw new Error('Could not fetch all stages for trip')
     }
@@ -63,7 +63,7 @@ class StageController {
         new: true,
       }).lean()
     } catch (error) {
-      if (config.server.env === 'dev')
+      if (config.server.env === 'DEV')
         console.error('Could not update stage:', error)
       throw new Error('Could not update stage')
     }
@@ -73,7 +73,7 @@ class StageController {
     try {
       return await StageModel.findByIdAndDelete(id).lean()
     } catch (error) {
-      if (config.server.env === 'dev')
+      if (config.server.env === 'DEV')
         console.error('Error while deleting stages:', error)
       throw new Error('Could not delete all stages for given id')
     }
@@ -87,7 +87,7 @@ class StageController {
     try {
       return await StageModel.deleteMany({ tripId: tripId })
     } catch (error) {
-      if (config.server.env === 'dev')
+      if (config.server.env === 'DEV')
         console.error('Error while deleting stages:', error)
       throw new Error('Could not delete all stages for given tripId')
     }
