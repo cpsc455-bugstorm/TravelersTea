@@ -46,6 +46,9 @@ export const usersSlice = createSlice({
     updateAsLoggedIn: (state) => {
       state.status = REQUEST_STATE.LOGGEDIN
     },
+    clearUserError: (state) => {
+      state.error = null
+    },
   },
   extraReducers: (builder) => {
     handleAsyncAction(builder, registerUserAsync, {
@@ -70,7 +73,11 @@ export const usersSlice = createSlice({
   },
 })
 
-export const { logoutUser, updateAsLoggedOut, updateAsLoggedIn } =
-  usersSlice.actions
+export const {
+  logoutUser,
+  updateAsLoggedOut,
+  updateAsLoggedIn,
+  clearUserError,
+} = usersSlice.actions
 
 export default usersSlice.reducer
