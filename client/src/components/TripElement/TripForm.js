@@ -2,8 +2,8 @@ import { TextField } from '@mui/material'
 import PropTypes from 'prop-types'
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
-import { ZOOM_GLOBE_LEVEL } from '../../constants/mapDefaultInfo'
-import { changeZoom } from '../../redux/reducers/mapSlice'
+import { ZOOM_GLOBE_LEVEL, SLOWER_SPEED } from '../../constants/mapDefaultInfo'
+import { changeZoom, changeSpeed } from '../../redux/reducers/mapSlice'
 import { Button } from '../common'
 
 TripForm.propTypes = {
@@ -22,6 +22,7 @@ export function TripForm({ onSubmit, initialValues }) {
 
   const onSubmitForm = (data) => {
     dispatch(changeZoom(ZOOM_GLOBE_LEVEL))
+    dispatch(changeSpeed(SLOWER_SPEED))
     onSubmit(data)
     reset()
   }

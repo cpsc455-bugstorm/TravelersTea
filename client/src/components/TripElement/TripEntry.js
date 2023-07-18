@@ -8,7 +8,7 @@ import PropTypes from 'prop-types'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppView } from '../../constants/enums'
-import { ZOOM_CITY_LEVEL } from '../../constants/mapDefaultInfo'
+import { ZOOM_CITY_LEVEL, DEFAULT_SPEED } from '../../constants/mapDefaultInfo'
 import {
   changeCoordinatesAndZoom,
   clearAllMarkersAndAdd_Store,
@@ -90,6 +90,7 @@ export function TripEntry({ id, buttonClassName, trip }) {
               longitude: trip.tripLongitude,
               latitude: trip.tripLatitude,
               zoom: ZOOM_CITY_LEVEL,
+              speed: DEFAULT_SPEED,
             }),
           )
           dispatch(

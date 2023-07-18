@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { AppView } from '../../constants/enums'
-import { ZOOM_CITY_LEVEL } from '../../constants/mapDefaultInfo'
+import { ZOOM_CITY_LEVEL, DEFAULT_SPEED } from '../../constants/mapDefaultInfo'
 import {
   changeCoordinatesAndZoom,
   clearAllMarkersAndAdd_Store,
@@ -41,6 +41,7 @@ export function NewTripForm() {
           longitude: newTrip.tripLongitude,
           latitude: newTrip.tripLatitude,
           zoom: ZOOM_CITY_LEVEL,
+          speed: DEFAULT_SPEED,
         }),
       )
       dispatch(

@@ -1,16 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 import {
+  DEFAULT_SPEED,
   VANCOUVER_LATITUDE,
   VANCOUVER_LONGITUDE,
   ZOOM_GLOBE_LEVEL,
 } from '../../constants/mapDefaultInfo'
 
 const initialMapState = {
-  currentCoordinatesAndZoom: {
+  mapData: {
     longitude: VANCOUVER_LONGITUDE,
     latitude: VANCOUVER_LATITUDE,
     zoom: ZOOM_GLOBE_LEVEL,
+    speed: DEFAULT_SPEED,
   },
   markers: [],
 }
@@ -20,10 +22,13 @@ const mapSlice = createSlice({
   initialState: initialMapState,
   reducers: {
     changeCoordinatesAndZoom: (state, action) => {
-      state.currentCoordinatesAndZoom = action.payload
+      state.mapData = action.payload
     },
     changeZoom: (state, action) => {
-      state.currentCoordinatesAndZoom.zoom = action.payload
+      state.mapData.zoom = action.payload
+    },
+    changeSpeed: (state, action) => {
+      state.mapData.speed = action.payload
     },
     /**
      * @property {payload (markers)}: [{ - an array of props with the following structure:
@@ -44,6 +49,7 @@ const mapSlice = createSlice({
 export const {
   changeCoordinatesAndZoom,
   changeZoom,
+  changeSpeed,
   clearAllMarkersAndAdd_Store,
   resetMap,
 } = mapSlice.actions
