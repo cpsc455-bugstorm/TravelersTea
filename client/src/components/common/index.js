@@ -1,3 +1,4 @@
+export { AlertSnackbar } from './AlertSnackbar'
 export { Button } from './Button'
 export { Loader } from './Loader'
 export { Modal } from './Modal'

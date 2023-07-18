@@ -16,6 +16,9 @@ export const stageSlice = createSlice({
   initialState: initialStateStages,
   reducers: {
     resetStages: () => initialStateStages,
+    clearStagesError: (state) => {
+      state.error = null
+    },
   },
   extraReducers: (builder) => {
     handleAsyncAction(builder, fetchStagesByTripIdAsync, {
@@ -47,6 +50,6 @@ export const stageSlice = createSlice({
   },
 })
 
-export const { resetStages } = stageSlice.actions
+export const { resetStages, clearStagesError } = stageSlice.actions
 
 export default stageSlice.reducer

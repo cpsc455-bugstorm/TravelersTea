@@ -29,6 +29,9 @@ export const tripsSlice = createSlice({
   initialState: initialStateTrips,
   reducers: {
     resetTrips: () => initialStateTrips,
+    clearTripsError: (state) => {
+      state.error = null
+    },
   },
   extraReducers: (builder) => {
     handleAsyncAction(builder, fetchTripsAsync, {
@@ -80,6 +83,6 @@ export const tripsSlice = createSlice({
   },
 })
 
-export const { resetTrips } = tripsSlice.actions
+export const { resetTrips, clearTripsError } = tripsSlice.actions
 
 export default tripsSlice.reducer

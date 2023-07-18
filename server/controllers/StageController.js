@@ -1,4 +1,5 @@
 const StageModel = require('../models/StageModel')
+const config = require('../config/config')
 
 class StageController {
   constructor() {}
@@ -15,7 +16,9 @@ class StageController {
       })
       return newStage.toObject()
     } catch (error) {
-      throw new Error(`Could not create stage: ${error}`)
+      if (config.server.env === 'DEV')
+        console.error('Error while creating stage:', error)
+      throw new Error(`Could not create stage`)
     }
   }
 
@@ -26,7 +29,9 @@ class StageController {
       const newStagesObjects = newStages.map((stage) => stage.toObject())
       return newStagesObjects
     } catch (error) {
-      throw new Error(`Could not create stage: ${error}`)
+      if (config.server.env === 'DEV')
+        console.error('Error while creating stages:', error)
+      throw new Error('Could not create stages')
     }
   }
 
@@ -34,7 +39,9 @@ class StageController {
     try {
       return await StageModel.findById(id)
     } catch (error) {
-      throw new Error(`Could not fetch stage: ${error}`)
+      if (config.server.env === 'DEV')
+        console.error('Error while fetching stages:', error)
+      throw new Error('Could not fetch all stages for trip')
     }
   }
 
@@ -56,7 +63,9 @@ class StageController {
         new: true,
       }).lean()
     } catch (error) {
-      throw new Error(`Could not update stage: ${error}`)
+      if (config.server.env === 'DEV')
+        console.error('Could not update stage:', error)
+      throw new Error('Could not update stage')
     }
   }
 
@@ -64,7 +73,9 @@ class StageController {
     try {
       return await StageModel.findByIdAndDelete(id).lean()
     } catch (error) {
-      throw new Error(`Could not delete stage: ${error}`)
+      if (config.server.env === 'DEV')
+        console.error('Error while deleting stages:', error)
+      throw new Error('Could not delete all stages for given id')
     }
   }
 
@@ -76,7 +87,9 @@ class StageController {
     try {
       return await StageModel.deleteMany({ tripId: tripId })
     } catch (error) {
-      throw new Error(`Could not delete all stages for given tripId: ${error}`)
+      if (config.server.env === 'DEV')
+        console.error('Error while deleting stages:', error)
+      throw new Error('Could not delete all stages for given tripId')
     }
   }
 }

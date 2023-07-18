@@ -23,7 +23,8 @@ class UserController {
       const user = await UserModel.findOne({ email: userEmail }).lean()
       return user
     } catch (error) {
-      console.error('Error while retrieving users:', error)
+      if (config.server.env === 'DEV')
+        console.error('Error while retrieving users:', error)
       throw error
     }
   }
@@ -33,7 +34,8 @@ class UserController {
       const newUser = await UserModel.create(userData)
       return newUser.toObject()
     } catch (error) {
-      console.error('Error while creating user:', error)
+      if (config.server.env === 'DEV')
+        console.error('Error while creating user:', error)
       throw error
     }
   }
@@ -49,7 +51,8 @@ class UserController {
       )
       return updatedUser.toObject()
     } catch (error) {
-      console.error('Error while updating user:', error)
+      if (config.server.env === 'DEV')
+        console.error('Error while updating user:', error)
       throw error
     }
   }
@@ -61,7 +64,8 @@ class UserController {
       const deletedUser = await UserModel.findByIdAndRemove(userId)
       return deletedUser.toObject()
     } catch (error) {
-      console.error('Error while deleting user:', error)
+      if (config.server.env === 'DEV')
+        console.error('Error while deleting user:', error)
       throw error
     }
   }
@@ -100,7 +104,8 @@ class UserController {
       )
       return accessToken
     } catch (error) {
-      console.error('Error with creating token')
+      if (config.server.env === 'DEV')
+        console.error('Error with creating token')
       throw new Error(`Could not create token: ${error}`)
     }
   }
