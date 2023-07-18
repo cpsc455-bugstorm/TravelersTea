@@ -36,7 +36,7 @@ export function TripEntry({ id, buttonClassName, trip }) {
   const [isRenaming, setIsRenaming] = useState(false)
   const [tripName, setTripName] = useState(trip.tripName)
   const [openModal, setOpenModal] = useState(false)
-  const inputRef = useRef(null)
+  const inputRef = useRef()
 
   const widthForTripEntry = !isSelected ? 'w-[160px]' : 'w-[228px]'
   const widthForButtonsContainer = isRenaming ? 'w-[46px]' : 'w-[68px]'
@@ -79,6 +79,12 @@ export function TripEntry({ id, buttonClassName, trip }) {
     }
   }, [isSelected, trip, appView])
 
+  useEffect(() => {
+    if (isRenaming && inputRef.current) {
+      inputRef.current.focus()
+    }
+  }, [isRenaming, inputRef])
+
   const tripButton = useMemo(
     () => (
       <Button
@@ -119,6 +125,7 @@ export function TripEntry({ id, buttonClassName, trip }) {
               placeholder={trip.tripName}
               value={tripName}
               onChange={handleInputChange}
+              onFocus={(event) => event.target.select()}
             />
           )}
         </div>
