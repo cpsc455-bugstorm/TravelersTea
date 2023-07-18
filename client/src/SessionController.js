@@ -19,7 +19,7 @@ import {
   updateAsLoggedIn,
   updateAsLoggedOut,
 } from './redux/reducers/users/usersSlice'
-import { resetView, setAppView } from './redux/reducers/viewSlice'
+import { openSidebar, resetView, setAppView } from './redux/reducers/viewSlice'
 import { REQUEST_STATE } from './redux/states'
 
 SessionController.propTypes = {
@@ -111,7 +111,9 @@ export function SessionController({ children }) {
     if (tripsStates.error) {
       setAlertMessage(tripsStates.error)
       setAlertOpen(true)
+      setIsLoading(false)
       dispatch(clearTripsError())
+      dispatch(openSidebar())
     }
   }, [dispatch, tripsStates.error])
 
@@ -119,7 +121,9 @@ export function SessionController({ children }) {
     if (stagesStates.error) {
       setAlertMessage(stagesStates.error)
       setAlertOpen(true)
+      setIsLoading(false)
       dispatch(clearStagesError())
+      dispatch(openSidebar())
     }
   }, [dispatch, stagesStates.error])
 
@@ -129,6 +133,7 @@ export function SessionController({ children }) {
         setAlertMessage('Error: Invalid Credentials')
         setAlertOpen(true)
         dispatch(clearUserError())
+        setIsLoading(false)
       }, 2500)
     }
   }, [dispatch, userStates.error])

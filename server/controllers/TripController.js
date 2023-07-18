@@ -19,10 +19,10 @@ class TripController {
   }
 
   async getAll(userId) {
+    if (!userId) {
+      throw new Error('User ID is required to fetch trips.')
+    }
     try {
-      if (!userId) {
-        throw new Error('User ID is required to fetch trips.')
-      }
       return await TripModel.find({ userId }).lean()
     } catch (error) {
       if (config.server.env === 'DEV')
@@ -71,9 +71,15 @@ class TripController {
   }
 
   async createTrip(userId, tripData) {
+    let generatedTripWithStages
     try {
-      const generatedTripWithStagesJSON = await generateTrip(tripData)
-      const generatedTripWithStages = JSON.parse(generatedTripWithStagesJSON)
+      generatedTripWithStages = await generateTrip(tripData)
+    } catch (e) {
+      console.error('Error while generating itinerary:', e)
+      throw e
+    }
+
+    try {
       const longLatObject = await getCoordinatesFromLocation(
         '',
         tripData.tripLocation,
