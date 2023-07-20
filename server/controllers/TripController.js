@@ -110,11 +110,13 @@ class TripController {
     }
   }
 
-  async updateTrip(id, tripData) {
+  async updateTrip(userId, id, tripData) {
     try {
-      return await TripModel.findByIdAndUpdate(id, tripData, {
-        new: true,
-      }).lean()
+      return await TripModel.findOneAndUpdate(
+        { userId: userId, id: id }, // ensure user1 cannot edit user2's trip
+        tripData,
+        { new: true },
+      ).lean()
     } catch (error) {
       if (config.server.env === 'DEV')
         console.error('Error while updating trip:', error)

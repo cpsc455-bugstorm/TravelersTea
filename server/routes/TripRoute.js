@@ -49,6 +49,7 @@ class TripRoute {
   async update(req, res) {
     try {
       const updatedTrip = await controllers.tripController.updateTrip(
+        req.userId, // prevents user 1 from editing user 2's trip
         req.params.id,
         req.body,
       )
