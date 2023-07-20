@@ -4,7 +4,7 @@ import { SeeMoreDrawer } from './SeeMoreDrawer'
 import { TripSidePanelSingle } from './TripSidePanelSingle'
 import { useSelector } from 'react-redux'
 
-export function TripViewContent() {
+export function NonCompactTripView() {
   const stagesByDay = useSelector((state) => state.stages.stages)
 
   const teaCups = useMemo(() => {

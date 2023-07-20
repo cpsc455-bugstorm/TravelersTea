@@ -3,14 +3,20 @@ import { SideBar } from './components/sideBar'
 import { AppView } from './constants/enums'
 import { MapElement } from './components/MapElement'
 import { useMemo } from 'react'
-import { DayViewContent, TripViewContent } from './components/Views'
+import {
+  CompactTripView,
+  DayViewContent,
+  NonCompactTripView,
+} from './components/Views'
 
 export function AppInterface() {
   const appView = useSelector((state) => state.view.appView)
+  const isCompactView = useSelector((state) => state.preferences.compactView)
 
   const renderMainContent = useMemo(() => {
     let content = <></>
-    if (appView === AppView.TRIP_VIEW) content = <TripViewContent />
+    if (appView === AppView.TRIP_VIEW)
+      content = isCompactView ? <CompactTripView /> : <NonCompactTripView />
     else if (appView === AppView.DAY_VIEW) content = <DayViewContent />
 
     return (
@@ -22,7 +28,7 @@ export function AppInterface() {
         {content}
       </div>
     )
-  }, [appView])
+  }, [appView, isCompactView])
 
   return (
     <div className='h-screen w-screen overflow-hidden'>

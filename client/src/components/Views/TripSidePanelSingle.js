@@ -9,7 +9,6 @@ import { TeaCup } from './TeaCup'
 
 export function TripSidePanelSingle() {
   const activeDayNumber = useSelector((state) => state.view.activeDayNumber)
-  const isCompactView = useSelector((state) => state.preferences.compactView)
   const showDrawer = useSelector((state) => state.view.showDrawer)
   const showSidePanel = useSelector((state) => state.view.showSidePanel)
   const stagesByDay = useSelector((state) => state.stages.stages)
@@ -18,12 +17,11 @@ export function TripSidePanelSingle() {
   const visibilityTimer = useRef(null)
 
   useEffect(() => {
-    // TODO this logic needs to fetch the right trip ID when we have real data
     setDayDetails(stagesByDay[activeDayNumber - 1])
   }, [activeDayNumber, stagesByDay])
 
   useEffect(() => {
-    if (!isCompactView && !showDrawer) {
+    if (!showDrawer) {
       visibilityTimer.current = setTimeout(() => {
         dispatch(setShowSidePanel(true))
       }, 350)
@@ -31,7 +29,7 @@ export function TripSidePanelSingle() {
       clearTimeout(visibilityTimer.current)
       dispatch(setShowSidePanel(false))
     }
-  }, [dispatch, isCompactView, showDrawer])
+  }, [dispatch, showDrawer])
 
   const renderStages = useMemo(() => {
     if (!dayDetails) return <></>
