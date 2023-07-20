@@ -3,12 +3,13 @@ import { createSlice } from '@reduxjs/toolkit'
 const preferenceSlice = createSlice({
   name: 'preferences',
   initialState: {
-    compactView: false,
+    compactView: localStorage.getItem('isCompactView') === 'true',
     verticalTimelines: false,
   },
   reducers: {
     toggleCompactView: (state) => {
       state.compactView = !state.compactView
+      localStorage.setItem('isCompactView', state.compactView.toString())
     },
     toggleVerticalTimelines: (state) => {
       state.verticalTimelines = !state.verticalTimelines
