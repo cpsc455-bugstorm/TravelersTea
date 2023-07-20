@@ -129,7 +129,21 @@ class TripController {
   }
 
   async updateTrip(id, tripData) {
-    return this.generateAndSaveTrip(null, tripData, id)
+    if (
+      tripData.tripName &&
+      !tripData.tripLocation &&
+      !tripData.stagesPerDay &&
+      !tripData.budget &&
+      !tripData.numberOfDays &&
+      !tripData.tripNotes
+    ) {
+      const existingTrip = await TripModel.findById(id)
+      existingTrip.tripName = tripData.tripName
+      await existingTrip.save()
+      return existingTrip
+    } else {
+      return this.generateAndSaveTrip(null, tripData, id)
+    }
   }
 
   async deleteTrip(id) {

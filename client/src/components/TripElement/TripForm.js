@@ -2,8 +2,8 @@ import { TextField } from '@mui/material'
 import PropTypes from 'prop-types'
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
-import { ZOOM_GLOBE_LEVEL, SLOWER_SPEED } from '../../constants/mapDefaultInfo'
-import { changeZoom, changeSpeed } from '../../redux/reducers/mapSlice'
+import { SLOWER_SPEED, ZOOM_GLOBE_LEVEL } from '../../constants/mapDefaultInfo'
+import { changeSpeed, changeZoom } from '../../redux/reducers/mapSlice'
 import { Button } from '../common'
 
 TripForm.propTypes = {
@@ -11,16 +11,24 @@ TripForm.propTypes = {
   initialValues: PropTypes.object,
 }
 
-export function TripForm({ onSubmit, initialValues }) {
+export function TripForm({ onSubmit, initialValues = {} }) {
   const dispatch = useDispatch()
+  const lastEnteredNote = localStorage.getItem('lastEnteredNote')
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm({ defaultValues: initialValues })
+  } = useForm({
+    defaultValues: {
+      ...initialValues,
+      tripNotes: lastEnteredNote || initialValues.tripNotes,
+    },
+  })
 
   const onSubmitForm = (data) => {
+    localStorage.setItem('lastEnteredNote', data.tripNotes)
     dispatch(changeZoom(ZOOM_GLOBE_LEVEL))
     dispatch(changeSpeed(SLOWER_SPEED))
     onSubmit(data)
