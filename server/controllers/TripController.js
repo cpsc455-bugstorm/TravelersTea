@@ -94,7 +94,8 @@ class TripController {
         // eslint-disable-next-line node/no-unsupported-features/es-syntax
         ...tripToCreate,
       })
-      const newTripDTO = newTrip.toObject()
+      // eslint-disable-next-line node/no-unsupported-features/es-syntax
+      const newTripDTO = { ...newTrip.toObject() }
       delete newTripDTO.userId
       const { days } = generatedTripWithStages
       const stagesToAdd = await this.parseStagesFromMultipleDays(
@@ -117,7 +118,9 @@ class TripController {
         tripData,
         { new: true },
       ).lean()
-      const updatedTripDTO = updatedTrip
+      if (!updatedTrip) return null
+      // eslint-disable-next-line node/no-unsupported-features/es-syntax
+      const updatedTripDTO = { ...updatedTrip }
       delete updatedTripDTO.userId
       return updatedTripDTO
     } catch (error) {
