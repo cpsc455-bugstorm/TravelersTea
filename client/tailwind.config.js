@@ -2,7 +2,7 @@
 module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   safelist: [
-    { pattern: /from-(.*)-(400)\/(70)/ },
+    { pattern: /from-(.*)-(400)\/70/ },
     { pattern: /border-(.*)-(500)/ },
     { pattern: /to-(.*)-(500)\/70/ },
     { pattern: /to-(.*)-(400)\/(.*)/ },
