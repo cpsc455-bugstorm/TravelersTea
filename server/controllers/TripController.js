@@ -71,15 +71,9 @@ class TripController {
   }
 
   async createTrip(userId, tripData) {
-    let generatedTripWithStages
     try {
-      generatedTripWithStages = await generateTrip(tripData)
-    } catch (e) {
-      console.error('Error while generating itinerary:', e)
-      throw e
-    }
+      let generatedTripWithStages = await generateTrip(tripData)
 
-    try {
       const longLatObject = await getCoordinatesFromLocation(
         '',
         tripData.tripLocation,
@@ -93,12 +87,15 @@ class TripController {
         numberOfDays: tripData.numberOfDays,
         tripLongitude: longLatObject.lng,
         tripLatitude: longLatObject.lat,
+        isPublic: false,
       }
 
       const newTrip = await TripModel.create({
         // eslint-disable-next-line node/no-unsupported-features/es-syntax
         ...tripToCreate,
       })
+      const newTripDTO = newTrip.toObject()
+      delete newTripDTO.userId
       const { days } = generatedTripWithStages
       const stagesToAdd = await this.parseStagesFromMultipleDays(
         days,
@@ -106,11 +103,10 @@ class TripController {
         tripData.tripLocation,
       )
       await this.stageController.createManyStages(stagesToAdd)
-      return newTrip.toObject()
+      return newTripDTO
     } catch (error) {
-      if (config.server.env === 'DEV')
-        console.error('Error while creating trip:', error)
-      throw new Error('Could not create trip')
+      error.message = 'Could not create trip: ' + error.message
+      throw error
     }
   }
 

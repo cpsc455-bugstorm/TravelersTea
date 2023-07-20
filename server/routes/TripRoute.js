@@ -1,11 +1,12 @@
 const express = require('express')
 const controllers = require('../controllers/Controllers')
-
+const authMiddleware = require('../middlewares/AuthMiddleware')
 class TripRoute {
   constructor() {
     this.router = express.Router()
-    this.router.get('', this.getAll.bind(this))
-    this.router.get('/:id', this.getTrip.bind(this))
+    this.router.use(authMiddleware)
+    this.router.get('', this.getAllByUserId.bind(this))
+    // this.router.get('', this.getTripById.bind(this))
     this.router.post('', this.create.bind(this))
     this.router.patch('/:id', this.update.bind(this))
     this.router.delete('/:id', this.delete.bind(this))
@@ -15,33 +16,33 @@ class TripRoute {
     apiRouter.use('/trips', this.router)
   }
 
-  async getTrip(req, res) {
+  async getTripById(req, res, next) {
     try {
-      const response = await controllers.tripController.getTrip(req.params.id)
+      const response = await controllers.tripController.getTrip(req.userId)
       res.status(200).json(response)
     } catch (err) {
-      res.status(500).json({ error: err.toString() })
+      next(err)
     }
   }
 
-  async getAll(req, res) {
+  async getAllByUserId(req, res, next) {
     try {
-      const response = await controllers.tripController.getAll(req.query.userId)
+      const response = await controllers.tripController.getAll(req.userId)
       res.status(200).json(response)
     } catch (err) {
-      res.status(500).json({ error: err.toString() })
+      next(err)
     }
   }
 
-  async create(req, res) {
+  async create(req, res, next) {
     try {
       const newTrip = await controllers.tripController.createTrip(
-        req.body.userId,
+        req.userId,
         req.body,
       )
       res.status(201).json(newTrip)
     } catch (err) {
-      res.status(500).json({ error: err.toString() })
+      next(err)
     }
   }
 
