@@ -46,7 +46,7 @@ class TripRoute {
     }
   }
 
-  async update(req, res) {
+  async update(req, res, next) {
     try {
       const updatedTrip = await controllers.tripController.updateTrip(
         req.userId, // prevents user 1 from editing user 2's trip
@@ -60,7 +60,7 @@ class TripRoute {
       }
       res.status(200).json(updatedTrip)
     } catch (err) {
-      res.status(500).json({ error: err.toString() })
+      next(err)
     }
   }
 
