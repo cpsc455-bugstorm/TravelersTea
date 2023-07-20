@@ -21,7 +21,7 @@ Modal.propTypes = {
   open: PropTypes.bool.isRequired,
   isDraggable: PropTypes.bool,
   handleClose: PropTypes.func.isRequired,
-  title: PropTypes.string,
+  title: PropTypes.node,
   children: PropTypes.node,
   footer: PropTypes.node,
   classNameMain: PropTypes.string,
