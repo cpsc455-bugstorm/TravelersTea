@@ -5,6 +5,7 @@ import { closeSidebar, toggleShowDrawer } from '../../redux/reducers/viewSlice'
 import { getTailwindName } from '../../util/tailwindColors'
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
 import { openEditStageModal } from '../../redux/reducers/modalsSlice'
+import { updateEditStageId } from '../../redux/reducers/stage/stageSlice'
 
 export function SeeMoreDrawer() {
   const stagesByDay = useSelector((state) => state.stages.stages)
@@ -47,6 +48,7 @@ export function SeeMoreDrawer() {
                     onClick={() => {
                       dispatch(closeSidebar())
                       dispatch(openEditStageModal())
+                      dispatch(updateEditStageId(stage['_id']))
                     }}
                     className={` h-[22px] w-[20px] text-white hover:text-red-400`}
                     padding='p-0 mr-[3px]'

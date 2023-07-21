@@ -1,6 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { closeEditStageModal } from '../../redux/reducers/modalsSlice'
 import { Modal } from '../common'
+import { StageForm } from './StageForm'
+import { updateStageAsync } from '../../redux/reducers/stage/thunks'
 
 export function EditStageForm() {
   const dispatch = useDispatch()
@@ -19,9 +21,19 @@ export function EditStageForm() {
     dispatch(closeEditStageModal())
   }
 
-  const onSubmit = (data) => {
-    // dispatch(updateTripAsync({ id: data._id, tripData: data }))
+  const onSubmit = async (updateData) => {
     handleCloseEditStageModal()
+    try {
+      const updatedStage = await dispatch(
+        updateStageAsync({
+          id: updateData.stage._id,
+          updateData: updateData,
+        }),
+      ).unwrap()
+      // TODO: handle return
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   return (
@@ -30,7 +42,7 @@ export function EditStageForm() {
       handleClose={handleCloseEditStageModal}
       title='Adjusting Course...'
     >
-      Work in progress...
+      <StageForm onSubmit={onSubmit} />
     </Modal>
   )
 }

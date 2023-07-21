@@ -1,84 +1,83 @@
-// import { TextField } from '@mui/material'
-// import PropTypes from 'prop-types'
-// import { useEffect } from 'react'
-// import { useForm } from 'react-hook-form'
-// import { useDispatch, useSelector } from 'react-redux'
-// import { fetchTripsAsync } from '../../redux/reducers/trip/thunks'
-// import { REQUEST_STATE } from '../../redux/states'
-// import { Button } from '../common'
-//
-// TripForm.propTypes = {
-//   onSubmit: PropTypes.func.isRequired,
-//   initialValues: PropTypes.object,
-// }
-//
-// export function TripForm({ onSubmit, initialValues }) {
-//   const dispatch = useDispatch()
-//   const tripsStatus = useSelector((state) => state.trip.status)
-//
-//   const {
-//     register,
-//     handleSubmit,
-//     formState: { errors },
-//     reset,
-//   } = useForm({ defaultValues: initialValues })
-//
-//   const onSubmitForm = (data) => {
-//     onSubmit(data)
-//     reset()
-//   }
-//
-//   useEffect(() => {
-//     if (
-//       tripsStatus === REQUEST_STATE.PENDING ||
-//       tripsStatus === REQUEST_STATE.IDLE
-//     ) {
-//       dispatch(fetchTripsAsync())
-//     }
-//   }, [dispatch, tripsStatus])
-//
-//   return (
-//     <form
-//       onSubmit={handleSubmit(onSubmitForm)}
-//       className='flex flex-col space-y-4 text-center'
-//     >
-//       <TextField
-//         {...register('tripLocation', { required: true })}
-//         label='Destination'
-//         placeholder='Tell me where you want to go...'
-//         error={!!errors.tripLocation}
-//       />
-//       <TextField
-//         {...register('stagesPerDay', { required: true, min: 0 })}
-//         label='Stages per day'
-//         placeholder='Tell me how many places you want to visit..'
-//         type='number'
-//         inputProps={{ min: 0 }}
-//         error={!!errors.stagesPerDay}
-//       />
-//       <TextField
-//         {...register('budget', { required: true, min: 0 })}
-//         label='Budget'
-//         placeholder='Tell me how much you want to spend...'
-//         type='number'
-//         inputProps={{ min: 0 }}
-//         error={!!errors.budget}
-//       />
-//       <TextField
-//         {...register('numberOfDays', { required: true, min: 0 })}
-//         label='Number of days'
-//         placeholder='Tell me how long you are going for...'
-//         type='number'
-//         inputProps={{ min: 0 }}
-//         error={!!errors.numberOfDays}
-//       />
-//       <Button
-//         className='mt-4 w-full rounded bg-slate-300 hover:bg-slate-400'
-//         type='submit'
-//         onClick={() => {}}
-//       >
-//         Brew 🍵
-//       </Button>
-//     </form>
-//   )
-// }
+import { TextField } from '@mui/material'
+import PropTypes from 'prop-types'
+import { useForm } from 'react-hook-form'
+import { useDispatch, useSelector } from 'react-redux'
+import { Button } from '../common'
+
+const objectIdPropType = (props, propName, componentName) => {
+  if (!props[propName]) {
+    return new Error(
+      'Invalid prop `' +
+        propName +
+        '` supplied to' +
+        ' `' +
+        componentName +
+        '`. Prop value is null or undefined.',
+    )
+  }
+  if (!/^[0-9a-fA-F]{24}$/.test(props[propName])) {
+    return new Error(
+      'Invalid prop `' +
+        propName +
+        '` supplied to' +
+        ' `' +
+        componentName +
+        '`. Validation failed.',
+    )
+  }
+}
+
+StageForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+}
+
+export function StageForm({ onSubmit }) {
+  const dispatch = useDispatch()
+  const stagesByDay = useSelector((state) => state.stages.stages)
+  const editStageId = useSelector((state) => state.stages.editStageId)
+  const stage = stagesByDay.flat().find((item) => item._id === editStageId)
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      updateNotes: '',
+    },
+  })
+
+  const onSubmitForm = (data) => {
+    onSubmit({ ...data, stage })
+  }
+
+  // useEffect(() => {
+  //   console.log('stage', stage)
+  // }, [stage])
+
+  return (
+    <form
+      onSubmit={handleSubmit(onSubmitForm)}
+      className='flex flex-col space-y-4 text-center'
+    >
+      <div>
+        <div className={'text-2xl'}>
+          {stage.emoji} {stage.stageLocation}
+        </div>
+        <div>{stage.description}</div>
+      </div>
+      <TextField
+        {...register('updateNotes', { required: false })}
+        label='Update'
+        placeholder='Tell me what you would like to change about this...'
+      />
+      <Button
+        className='mt-4 w-full rounded bg-slate-300 hover:bg-slate-400'
+        type='submit'
+        onClick={() => {}}
+      >
+        Brew 🍵
+      </Button>
+    </form>
+  )
+}
