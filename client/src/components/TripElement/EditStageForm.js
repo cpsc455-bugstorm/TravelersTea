@@ -10,9 +10,6 @@ export function EditStageForm() {
 
   const activeTripId = useSelector((state) => state.view.activeTripId)
   const activeTrip = trips.find((trip) => trip._id === activeTripId)
-  // TODO: remove logging
-  console.log(JSON.stringify(activeTrip, null, 2))
-
   const editStageModalIsOpen = useSelector(
     (state) => state.modals.editStageModalIsOpen,
   )
@@ -27,7 +24,7 @@ export function EditStageForm() {
       const updatedStage = await dispatch(
         updateStageAsync({
           id: updateData.stage._id,
-          updateData: updateData,
+          updateData: { ...updateData, trip: activeTrip },
         }),
       ).unwrap()
       // TODO: handle return
