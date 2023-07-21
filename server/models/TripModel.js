@@ -14,6 +14,7 @@ const tripSchema = new mongoose.Schema({
   tripLongitude: Number,
   tripLatitude: Number,
   isPublic: Boolean,
+  tripNotes: String,
 })
 
 module.exports = mongoose.model('Trip', tripSchema)

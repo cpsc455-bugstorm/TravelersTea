@@ -45,12 +45,12 @@ aspect (e.g. sharing plans, rating plans).
 - [ ] Users can manually update an individual destination within a plan.
 - [ ] Display ratings of suggested places.
 - [x] Login system.
-- [ ] Colloquial Notes section (e.g. dietary restrictions, travel preferences).
+- [x] Colloquial Prompt
 
 #### Stretch Requirements
 
-- [ ] User Preferences: Compact Mode, Light Mode
-- [ ] Users can generate different plans based on the weather
+- [ ] Users' Preferences: Compact Mode, Light Mode
+- [x] Users can generate plans based on extra notes (e.g. dietary restrictions, travel preferences)
 - [ ] Entire application should be mobile-friendly
 - [ ] Share itinerary as a link
 

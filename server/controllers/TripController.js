@@ -1,6 +1,6 @@
 const TripModel = require('../models/TripModel')
 const generateTrip = require('../openai/generateTrip')
-// const generateTripsMetadata = require('../openai/generateTripMetadata')
+const generateTripsMetadata = require('../openai/generateTripMetadata')
 const getCoordinatesFromLocation = require('../googleapi/googleCoordinates')
 const config = require('../config/config')
 
@@ -72,7 +72,9 @@ class TripController {
   }
 
   async generateAndSaveTrip(userId, tripData, id = null) {
-    let filteredTripData = tripData.colloquialPrompt ? tripData : tripData
+    let filteredTripData = tripData.colloquialPrompt
+      ? await generateTripsMetadata(tripData.colloquialPrompt)
+      : tripData
 
     let generatedTripWithStages
     try {
