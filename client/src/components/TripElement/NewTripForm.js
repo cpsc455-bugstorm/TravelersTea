@@ -1,3 +1,6 @@
+import ExpandLessIcon from '@mui/icons-material/ExpandLess'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppView } from '../../constants/enums'
 import { DEFAULT_SPEED, ZOOM_CITY_LEVEL } from '../../constants/mapDefaultInfo'
@@ -9,6 +12,7 @@ import { closeNewTripModal } from '../../redux/reducers/modalsSlice'
 import { createTripAsync } from '../../redux/reducers/trips/thunks'
 import { setActiveTripId, setAppView } from '../../redux/reducers/viewSlice'
 import { Modal } from '../common'
+import { CompressedForm } from './CompressedForm'
 import { TripForm } from './TripForm'
 
 export function NewTripForm() {
@@ -61,24 +65,42 @@ export function NewTripForm() {
     }
   }
 
+  const [compressed, setCompressed] = useState(false)
+
   return (
-    <>
-      (
-      <Modal
-        open={appView === AppView.NEW_TRIP && newTripModalIsOpen}
-        handleClose={handleCloseNewTripModal}
-        title={
+    <Modal
+      open={appView === AppView.NEW_TRIP && newTripModalIsOpen}
+      handleClose={handleCloseNewTripModal}
+      title={
+        !compressed && (
           <>
             Manifesting A New Trip
             <span className='dot-1'>.</span>
             <span className='dot-2'>.</span>
             <span className='dot-3'>.</span>
           </>
-        }
-      >
+        )
+      }
+      isCompressed={compressed}
+    >
+      {compressed ? (
+        <ExpandLessIcon
+          fontSize='large'
+          onClick={() => setCompressed(!compressed)}
+          className='absolute -right-2 top-0 mr-4 w-3 cursor-pointer rounded-lg'
+        />
+      ) : (
+        <ExpandMoreIcon
+          fontSize='large'
+          onClick={() => setCompressed(!compressed)}
+          className='absolute -right-2 top-0 mr-4 w-3 cursor-pointer rounded-lg'
+        />
+      )}
+      {compressed ? (
+        <CompressedForm onSubmit={onSubmit} />
+      ) : (
         <TripForm onSubmit={onSubmit} />
-      </Modal>
-      )
-    </>
+      )}
+    </Modal>
   )
 }
