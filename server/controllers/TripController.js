@@ -1,5 +1,6 @@
 const TripModel = require('../models/TripModel')
 const generateTrip = require('../openai/generateTrip')
+const generateTripsMetadata = require('../openai/generateTripMetadata')
 const getCoordinatesFromLocation = require('../googleapi/googleCoordinates')
 const config = require('../config/config')
 
@@ -71,9 +72,13 @@ class TripController {
   }
 
   async generateAndSaveTrip(userId, tripData, id = null) {
+    let filteredTripData = tripData.colloquialPrompt
+      ? await generateTripsMetadata(tripData.colloquialPrompt)
+      : tripData
+
     let generatedTripWithStages
     try {
-      generatedTripWithStages = await generateTrip(tripData)
+      generatedTripWithStages = await generateTrip(filteredTripData)
     } catch (e) {
       console.error('Error while generating itinerary:', e)
       throw e
@@ -82,17 +87,17 @@ class TripController {
     try {
       const longLatObject = await getCoordinatesFromLocation(
         '',
-        tripData.tripLocation,
+        filteredTripData.tripLocation,
       )
       const tripToSave = {
-        tripName: tripData.tripName,
-        tripLocation: tripData.tripLocation,
-        stagesPerDay: tripData.stagesPerDay,
-        budget: tripData.budget,
-        numberOfDays: tripData.numberOfDays,
+        tripName: filteredTripData.tripName,
+        tripLocation: filteredTripData.tripLocation,
+        stagesPerDay: filteredTripData.stagesPerDay,
+        budget: filteredTripData.budget,
+        numberOfDays: filteredTripData.numberOfDays,
         tripLongitude: longLatObject.lng,
         tripLatitude: longLatObject.lat,
-        tripNotes: tripData.tripNotes,
+        tripNotes: filteredTripData.tripNotes,
       }
 
       if (!id) {
@@ -113,7 +118,7 @@ class TripController {
       const stagesToAdd = await this.parseStagesFromMultipleDays(
         days,
         savedTrip._id,
-        tripData.tripLocation,
+        filteredTripData.tripLocation,
       )
       await this.stageController.createManyStages(stagesToAdd)
       return savedTrip.toObject()

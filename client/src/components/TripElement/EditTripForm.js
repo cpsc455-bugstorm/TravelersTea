@@ -15,6 +15,8 @@ import { TripForm } from './TripForm'
 
 export function EditTripForm() {
   const dispatch = useDispatch()
+  const [compressed, setCompressed] = useState(false)
+
   const trips = useSelector((state) => state.trips.trips)
 
   const activeTripId = useSelector((state) => state.view.activeTripId)
@@ -30,9 +32,19 @@ export function EditTripForm() {
 
   const onSubmit = async (data) => {
     handleCloseEditTripModal()
+    const tripMetadata = compressed
+      ? {
+          colloquialPrompt: data.colloquialPrompt,
+        }
+      : {
+          ...data,
+        }
     try {
       const updatedTrip = await dispatch(
-        updateTripAsync({ id: data._id, tripData: data }),
+        updateTripAsync({
+          id: activeTripId,
+          tripData: tripMetadata,
+        }),
       ).unwrap()
       dispatch(
         changeCoordinatesAndZoom({
@@ -56,8 +68,6 @@ export function EditTripForm() {
       console.error(error)
     }
   }
-
-  const [compressed, setCompressed] = useState(false)
 
   return (
     <Modal

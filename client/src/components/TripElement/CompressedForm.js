@@ -3,6 +3,8 @@ import { InputAdornment, TextField } from '@mui/material'
 import PropTypes from 'prop-types'
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
+import { SLOWER_SPEED, ZOOM_GLOBE_LEVEL } from '../../constants/mapDefaultInfo'
+import { changeSpeed, changeZoom } from '../../redux/reducers/mapSlice'
 import { Button } from '../common'
 
 CompressedForm.propTypes = {
@@ -18,7 +20,11 @@ export function CompressedForm({ onSubmit }) {
     formState: { errors },
   } = useForm()
 
-  const onSubmitForm = (data) => {}
+  const onSubmitForm = (data) => {
+    dispatch(changeZoom(ZOOM_GLOBE_LEVEL))
+    dispatch(changeSpeed(SLOWER_SPEED))
+    onSubmit(data)
+  }
 
   return (
     <div className='flex w-full flex-row'>

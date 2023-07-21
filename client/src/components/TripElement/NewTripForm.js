@@ -17,8 +17,9 @@ import { TripForm } from './TripForm'
 
 export function NewTripForm() {
   const dispatch = useDispatch()
+  const [compressed, setCompressed] = useState(false)
+
   const appView = useSelector((state) => state.view.appView)
-  const trips = useSelector((state) => state.trips.trips)
   const user = useSelector((state) => state.users.user)
 
   const newTripModalIsOpen = useSelector(
@@ -31,15 +32,18 @@ export function NewTripForm() {
 
   const onSubmit = async (data) => {
     handleCloseNewTripModal()
-    const tripDataWithTripName = {
-      ...data,
-      tripName: 'Trip to ' + data.tripLocation,
-      userId: user.id,
-    }
+    const tripMetadata = compressed
+      ? {
+          colloquialPrompt: data.colloquialPrompt,
+          userId: user.id,
+        }
+      : {
+          ...data,
+          tripName: 'Trip to ' + data.tripLocation,
+          userId: user.id,
+        }
     try {
-      const newTrip = await dispatch(
-        createTripAsync(tripDataWithTripName),
-      ).unwrap()
+      const newTrip = await dispatch(createTripAsync(tripMetadata)).unwrap()
       dispatch(
         changeCoordinatesAndZoom({
           longitude: newTrip.tripLongitude,
@@ -64,8 +68,6 @@ export function NewTripForm() {
       console.error(error)
     }
   }
-
-  const [compressed, setCompressed] = useState(false)
 
   return (
     <Modal
