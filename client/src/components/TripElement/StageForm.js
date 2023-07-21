@@ -1,38 +1,14 @@
 import { TextField } from '@mui/material'
 import PropTypes from 'prop-types'
 import { useForm } from 'react-hook-form'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Button } from '../common'
-
-const objectIdPropType = (props, propName, componentName) => {
-  if (!props[propName]) {
-    return new Error(
-      'Invalid prop `' +
-        propName +
-        '` supplied to' +
-        ' `' +
-        componentName +
-        '`. Prop value is null or undefined.',
-    )
-  }
-  if (!/^[0-9a-fA-F]{24}$/.test(props[propName])) {
-    return new Error(
-      'Invalid prop `' +
-        propName +
-        '` supplied to' +
-        ' `' +
-        componentName +
-        '`. Validation failed.',
-    )
-  }
-}
 
 StageForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
 }
 
 export function StageForm({ onSubmit }) {
-  const dispatch = useDispatch()
   const stagesByDay = useSelector((state) => state.stages.stages)
   const editStageId = useSelector((state) => state.stages.editStageId)
   const stage = stagesByDay.flat().find((item) => item._id === editStageId)

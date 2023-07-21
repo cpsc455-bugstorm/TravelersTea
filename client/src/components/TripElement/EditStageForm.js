@@ -21,13 +21,12 @@ export function EditStageForm() {
   const onSubmit = async (updateData) => {
     handleCloseEditStageModal()
     try {
-      const updatedStage = await dispatch(
+      await dispatch(
         updateStageAsync({
           id: updateData.stage._id,
           updateData: { ...updateData, trip: activeTrip },
         }),
       ).unwrap()
-      // TODO: handle return
     } catch (error) {
       console.error(error)
     }
