@@ -28,8 +28,7 @@ class StageController {
     console.log(listOfStages)
     try {
       const newStages = await StageModel.insertMany(listOfStages)
-      const newStagesObjects = newStages.map((stage) => stage.toObject())
-      return newStagesObjects
+      return newStages.map((stage) => stage.toObject())
     } catch (error) {
       if (config.server.env === 'DEV')
         console.error('Error while creating stages:', error)

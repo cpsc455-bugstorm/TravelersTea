@@ -18,7 +18,6 @@ export function SeeMoreDrawer() {
     return stagesByDay.map((dayDetails, index) => {
       const dayNumber = index + 1
       const dayColor = dayDetails[0]['colorNumber']
-      const stageIndex = dayDetails[0]['stageIndex']
       const colorName = getTailwindName(dayColor)
 
       return (
