@@ -39,15 +39,12 @@ export const stageSlice = createSlice({
         state.status = REQUEST_STATE.WRITING
       },
       fulfilled: (state, action) => {
-        const stageIndex = state.stages.findIndex(
-          (stage) => stage._id === action.payload._id,
+        let newStage = action.payload
+        state.stages = state.stages.map((dayStages) =>
+          dayStages.map((stage) =>
+            stage._id === newStage._id ? newStage : stage,
+          ),
         )
-        if (stageIndex !== -1) {
-          state.stages[stageIndex] = {
-            ...state.stages[stageIndex],
-            ...action.payload,
-          }
-        }
         state.status = REQUEST_STATE.FULFILLED
       },
     })
