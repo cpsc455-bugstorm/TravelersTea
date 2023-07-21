@@ -124,9 +124,8 @@ class TripController {
       delete updatedTripDTO.userId
       return updatedTripDTO
     } catch (error) {
-      if (config.server.env === 'DEV')
-        console.error('Error while updating trip:', error)
-      throw new Error('Could not edit trip')
+      error.message = 'Could not create trip: ' + error.message
+      throw error
     }
   }
 
