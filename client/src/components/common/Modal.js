@@ -29,6 +29,7 @@ Modal.propTypes = {
   classNameTitle: PropTypes.string,
   titleSize: PropTypes.string,
   classNameContent: PropTypes.string,
+  isCompressed: PropTypes.bool,
 }
 
 function PaperComponent(props) {
@@ -56,6 +57,7 @@ export function Modal({
   classNameTitle,
   titleSize = 'text-5xl',
   classNameContent,
+  isCompressed = false,
 }) {
   return (
     <Box>
@@ -73,18 +75,22 @@ export function Modal({
             fontSize='2rem'
             className='cursor-grab bg-slate-300'
           />
-          <Box my='0.5rem' pt='1rem'>
-            <h1
-              className={`pb-2 pt-6 text-center font-mono ${titleSize} ${classNameTitle}`}
-            >
-              {title}
-            </h1>
+          <Box my='0.5rem' pt={isCompressed ? '0' : '1rem'}>
+            {title && (
+              <h1
+                className={`pb-2 pt-6 text-center font-mono ${titleSize} ${classNameTitle}`}
+              >
+                {title}
+              </h1>
+            )}
             <DialogContent
-              className={`flex flex-col space-y-4 text-center ${classNameContent}`}
+              className={`flex flex-col ${
+                isCompressed ? '' : 'space-y-4'
+              } text-center ${classNameContent}`}
             >
               {children}
             </DialogContent>
-            <Box p='20px' px='24px'>
+            <Box p={isCompressed ? '0px' : '20px'} px='24px'>
               <DialogActions sx={{ padding: 0 }}>{footer}</DialogActions>
             </Box>
           </Box>
