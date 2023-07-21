@@ -2,8 +2,8 @@ import { TextField } from '@mui/material'
 import PropTypes from 'prop-types'
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
-import { ZOOM_GLOBE_LEVEL, SLOWER_SPEED } from '../../constants/mapDefaultInfo'
-import { changeZoom, changeSpeed } from '../../redux/reducers/mapSlice'
+import { SLOWER_SPEED, ZOOM_GLOBE_LEVEL } from '../../constants/mapDefaultInfo'
+import { changeSpeed, changeZoom } from '../../redux/reducers/mapSlice'
 import { Button } from '../common'
 
 TripForm.propTypes = {
@@ -11,20 +11,26 @@ TripForm.propTypes = {
   initialValues: PropTypes.object,
 }
 
-export function TripForm({ onSubmit, initialValues }) {
+export function TripForm({ onSubmit, initialValues = {} }) {
   const dispatch = useDispatch()
+  const lastEnteredNote = localStorage.getItem('lastEnteredNote')
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
-  } = useForm({ defaultValues: initialValues })
+  } = useForm({
+    defaultValues: {
+      ...initialValues,
+      tripNotes: lastEnteredNote || initialValues.tripNotes,
+    },
+  })
 
   const onSubmitForm = (data) => {
+    localStorage.setItem('lastEnteredNote', data.tripNotes)
     dispatch(changeZoom(ZOOM_GLOBE_LEVEL))
     dispatch(changeSpeed(SLOWER_SPEED))
     onSubmit(data)
-    reset()
   }
 
   return (
@@ -40,15 +46,15 @@ export function TripForm({ onSubmit, initialValues }) {
       />
       <TextField
         {...register('stagesPerDay', { required: true, min: 0 })}
-        label='Places per day'
-        placeholder='Tell me how many places you want to visit..'
+        label='Places per Day'
+        placeholder='Tell me how many places you want to visit...'
         type='number'
         inputProps={{ min: 0 }}
         error={!!errors.stagesPerDay}
       />
       <TextField
         {...register('budget', { required: true, min: 0 })}
-        label='Budget per day'
+        label='Budget per Day'
         placeholder='Tell me how much you want to spend...'
         type='number'
         inputProps={{ min: 0 }}
@@ -56,11 +62,16 @@ export function TripForm({ onSubmit, initialValues }) {
       />
       <TextField
         {...register('numberOfDays', { required: true, min: 0 })}
-        label='Number of days'
+        label='Number of Days'
         placeholder='Tell me how long you are going for...'
         type='number'
         inputProps={{ min: 0 }}
         error={!!errors.numberOfDays}
+      />
+      <TextField
+        {...register('tripNotes', { required: false })}
+        label='Extra Notes'
+        placeholder='Tell me what you would like...'
       />
       <Button
         className='mt-4 w-full rounded bg-slate-300 hover:bg-slate-400'

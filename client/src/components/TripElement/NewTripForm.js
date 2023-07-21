@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { AppView } from '../../constants/enums'
-import { ZOOM_CITY_LEVEL, DEFAULT_SPEED } from '../../constants/mapDefaultInfo'
+import { DEFAULT_SPEED, ZOOM_CITY_LEVEL } from '../../constants/mapDefaultInfo'
 import {
   changeCoordinatesAndZoom,
   clearAllMarkersAndAdd_Store,
@@ -26,7 +26,7 @@ export function NewTripForm() {
   }
 
   const onSubmit = async (data) => {
-    dispatch(closeNewTripModal())
+    handleCloseNewTripModal()
     const tripDataWithTripName = {
       ...data,
       tripName: `Your Trip ${trips.length + 1}`,
@@ -67,7 +67,14 @@ export function NewTripForm() {
       <Modal
         open={appView === AppView.NEW_TRIP && newTripModalIsOpen}
         handleClose={handleCloseNewTripModal}
-        title='Manifesting A New Trip...'
+        title={
+          <>
+            Manifesting A New Trip
+            <span className='dot-1'>.</span>
+            <span className='dot-2'>.</span>
+            <span className='dot-3'>.</span>
+          </>
+        }
       >
         <TripForm onSubmit={onSubmit} />
       </Modal>

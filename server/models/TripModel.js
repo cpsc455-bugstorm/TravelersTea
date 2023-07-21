@@ -13,6 +13,7 @@ const tripSchema = new mongoose.Schema({
   numberOfDays: Number,
   tripLongitude: Number,
   tripLatitude: Number,
+  tripNotes: String,
 })
 
 module.exports = mongoose.model('Trip', tripSchema)

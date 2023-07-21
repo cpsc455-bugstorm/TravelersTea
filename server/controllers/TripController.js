@@ -70,7 +70,7 @@ class TripController {
     return stagesToAddFromDay
   }
 
-  async createTrip(userId, tripData) {
+  async generateAndSaveTrip(userId, tripData, id = null) {
     let generatedTripWithStages
     try {
       generatedTripWithStages = await generateTrip(tripData)
@@ -84,8 +84,7 @@ class TripController {
         '',
         tripData.tripLocation,
       )
-      const tripToCreate = {
-        userId,
+      const tripToSave = {
         tripName: tripData.tripName,
         tripLocation: tripData.tripLocation,
         stagesPerDay: tripData.stagesPerDay,
@@ -93,36 +92,57 @@ class TripController {
         numberOfDays: tripData.numberOfDays,
         tripLongitude: longLatObject.lng,
         tripLatitude: longLatObject.lat,
+        tripNotes: tripData.tripNotes,
       }
 
-      const newTrip = await TripModel.create({
-        // eslint-disable-next-line node/no-unsupported-features/es-syntax
-        ...tripToCreate,
-      })
+      if (!id) {
+        tripToSave.userId = userId
+      }
+
+      let savedTrip
+      if (id) {
+        savedTrip = await TripModel.findByIdAndUpdate(id, tripToSave, {
+          new: true,
+        })
+        await this.stageController.deleteStagesByTripId(savedTrip._id)
+      } else {
+        savedTrip = await TripModel.create(tripToSave)
+      }
+
       const { days } = generatedTripWithStages
       const stagesToAdd = await this.parseStagesFromMultipleDays(
         days,
-        newTrip._id,
+        savedTrip._id,
         tripData.tripLocation,
       )
       await this.stageController.createManyStages(stagesToAdd)
-      return newTrip.toObject()
+      return savedTrip.toObject()
     } catch (error) {
       if (config.server.env === 'DEV')
-        console.error('Error while creating trip:', error)
-      throw new Error('Could not create trip')
+        console.error('Error while saving trip:', error)
+      throw new Error('Could not save trip')
     }
   }
 
+  async createTrip(userId, tripData) {
+    return this.generateAndSaveTrip(userId, tripData)
+  }
+
   async updateTrip(id, tripData) {
-    try {
-      return await TripModel.findByIdAndUpdate(id, tripData, {
-        new: true,
-      }).lean()
-    } catch (error) {
-      if (config.server.env === 'DEV')
-        console.error('Error while updating trip:', error)
-      throw new Error('Could not edit trip')
+    if (
+      tripData.tripName &&
+      !tripData.tripLocation &&
+      !tripData.stagesPerDay &&
+      !tripData.budget &&
+      !tripData.numberOfDays &&
+      !tripData.tripNotes
+    ) {
+      const existingTrip = await TripModel.findById(id)
+      existingTrip.tripName = tripData.tripName
+      await existingTrip.save()
+      return existingTrip
+    } else {
+      return this.generateAndSaveTrip(null, tripData, id)
     }
   }
 

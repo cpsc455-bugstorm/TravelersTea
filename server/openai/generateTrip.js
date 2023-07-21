@@ -11,6 +11,7 @@ const openaiClient = require('./openaiClient')
  * @param {number} constraints.budget - The budget per day for the trip.
  * @param {number} constraints.numberOfDays - The number of days for the trip.
  * @param {number} constraints.stagesPerDay - The stages per day of the trip.
+ * @param {string} constraints.tripNotes - The extra note and/or restriction for the trip.
  *
  * If AI response exists, the function returns the response otherwise,
  * it gives an error message.
@@ -49,16 +50,16 @@ async function generateTrip(constraints) {
   }
   const naturalLanguageConstraints = `
       Destination: ${constraints.tripLocation}
-      Budget per day: $${constraints.budget}
+      Budget per Day: $${constraints.budget}
       Days: ${constraints.numberOfDays}
-      Stages per day: ${constraints.stagesPerDay}
+      Stages per Day: ${constraints.stagesPerDay}
    `
   const conversation = [
     {
       role: 'system',
       content: `You are an AI that generates travel itineraries. Respond with ONLY JSON that contains the plan for each stage. 
-        ONLY respond with the following format, do not include any descriptions or codeblocks, I should be able to parse the output to a JavaScript Object
-        The response needs to be formatted exactly like the following structure.:
+        ONLY respond with the following format, do not include any descriptions or codeblocks, I should be able to parse the output to a JavaScript Object.
+        The response needs to be formatted exactly like the following structure and the stageLocationName should be real places names such that Google Maps can find them:
         '''
         {
           days:[
@@ -88,7 +89,7 @@ async function generateTrip(constraints) {
     },
     {
       role: 'user',
-      content: `Generate a travel itinerary based on these constraints: ${naturalLanguageConstraints}`,
+      content: `${constraints.tripNotes} (This is not a strict constraint, You should still find real places names). Generate a travel itinerary based on these constraints: ${naturalLanguageConstraints}`,
     },
   ]
 
