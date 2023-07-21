@@ -19,7 +19,6 @@ export function TripForm({ onSubmit, initialValues = {} }) {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm({
     defaultValues: {
       ...initialValues,
@@ -32,7 +31,6 @@ export function TripForm({ onSubmit, initialValues = {} }) {
     dispatch(changeZoom(ZOOM_GLOBE_LEVEL))
     dispatch(changeSpeed(SLOWER_SPEED))
     onSubmit(data)
-    reset()
   }
 
   return (
