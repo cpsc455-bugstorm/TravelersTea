@@ -33,7 +33,7 @@ export function NewTripForm() {
     handleCloseNewTripModal()
     const tripDataWithTripName = {
       ...data,
-      tripName: `Your Trip ${trips.length + 1}`,
+      tripName: 'Trip to ' + data.tripLocation,
       userId: user.id,
     }
     try {

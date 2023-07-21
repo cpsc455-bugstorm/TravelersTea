@@ -46,8 +46,9 @@ export function CompressedForm({ onSubmit }) {
               </InputAdornment>
             ),
           }}
-          {...register('colloquialPrompt', { required: false })}
+          {...register('colloquialPrompt', { required: true })}
           placeholder='Tell me your plan...'
+          error={!!errors.colloquialPrompt}
         />
       </form>
     </div>
