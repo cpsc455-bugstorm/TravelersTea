@@ -1,12 +1,11 @@
 const express = require('express')
 const controllers = require('../controllers/Controllers')
-const authMiddleware = require('../middlewares/AuthMiddleware')
+
 class TripRoute {
   constructor() {
     this.router = express.Router()
-    this.router.use(authMiddleware)
-    this.router.get('', this.getAllByUserId.bind(this))
-    // this.router.get('', this.getTripById.bind(this))
+    this.router.get('', this.getAll.bind(this))
+    this.router.get('/:id', this.getTrip.bind(this))
     this.router.post('', this.create.bind(this))
     this.router.patch('/:id', this.update.bind(this))
     this.router.delete('/:id', this.delete.bind(this))
@@ -16,40 +15,39 @@ class TripRoute {
     apiRouter.use('/trips', this.router)
   }
 
-  async getTripById(req, res, next) {
+  async getTrip(req, res) {
     try {
-      const response = await controllers.tripController.getTrip(req.userId)
+      const response = await controllers.tripController.getTrip(req.params.id)
       res.status(200).json(response)
     } catch (err) {
-      next(err)
+      res.status(500).json({ error: err.toString() })
     }
   }
 
-  async getAllByUserId(req, res, next) {
+  async getAll(req, res) {
     try {
-      const response = await controllers.tripController.getAll(req.userId)
+      const response = await controllers.tripController.getAll(req.query.userId)
       res.status(200).json(response)
     } catch (err) {
-      next(err)
+      res.status(500).json({ error: err.toString() })
     }
   }
 
-  async create(req, res, next) {
+  async create(req, res) {
     try {
       const newTrip = await controllers.tripController.createTrip(
-        req.userId,
+        req.body.userId,
         req.body,
       )
       res.status(201).json(newTrip)
     } catch (err) {
-      next(err)
+      res.status(500).json({ error: err.toString() })
     }
   }
 
-  async update(req, res, next) {
+  async update(req, res) {
     try {
       const updatedTrip = await controllers.tripController.updateTrip(
-        req.userId, // prevents user 1 from editing user 2's trip
         req.params.id,
         req.body,
       )
@@ -60,7 +58,7 @@ class TripRoute {
       }
       res.status(200).json(updatedTrip)
     } catch (err) {
-      next(err)
+      res.status(500).json({ error: err.toString() })
     }
   }
 

@@ -1,5 +1,6 @@
 const TripModel = require('../models/TripModel')
 const generateTrip = require('../openai/generateTrip')
+// const generateTripsMetadata = require('../openai/generateTripMetadata')
 const getCoordinatesFromLocation = require('../googleapi/googleCoordinates')
 const config = require('../config/config')
 
@@ -70,62 +71,81 @@ class TripController {
     return stagesToAddFromDay
   }
 
-  async createTrip(userId, tripData) {
-    try {
-      let generatedTripWithStages = await generateTrip(tripData)
+  async generateAndSaveTrip(userId, tripData, id = null) {
+    let filteredTripData = tripData.colloquialPrompt ? tripData : tripData
 
+    let generatedTripWithStages
+    try {
+      generatedTripWithStages = await generateTrip(filteredTripData)
+    } catch (e) {
+      console.error('Error while generating itinerary:', e)
+      throw e
+    }
+
+    try {
       const longLatObject = await getCoordinatesFromLocation(
         '',
-        tripData.tripLocation,
+        filteredTripData.tripLocation,
       )
-      const tripToCreate = {
-        userId,
-        tripName: tripData.tripName,
-        tripLocation: tripData.tripLocation,
-        stagesPerDay: tripData.stagesPerDay,
-        budget: tripData.budget,
-        numberOfDays: tripData.numberOfDays,
+      const tripToSave = {
+        tripName: filteredTripData.tripName,
+        tripLocation: filteredTripData.tripLocation,
+        stagesPerDay: filteredTripData.stagesPerDay,
+        budget: filteredTripData.budget,
+        numberOfDays: filteredTripData.numberOfDays,
         tripLongitude: longLatObject.lng,
         tripLatitude: longLatObject.lat,
-        isPublic: false,
+        tripNotes: filteredTripData.tripNotes,
       }
 
-      const newTrip = await TripModel.create({
-        // eslint-disable-next-line node/no-unsupported-features/es-syntax
-        ...tripToCreate,
-      })
-      // eslint-disable-next-line node/no-unsupported-features/es-syntax
-      const newTripDTO = { ...newTrip.toObject() }
-      delete newTripDTO.userId
+      if (!id) {
+        tripToSave.userId = userId
+      }
+
+      let savedTrip
+      if (id) {
+        savedTrip = await TripModel.findByIdAndUpdate(id, tripToSave, {
+          new: true,
+        })
+        await this.stageController.deleteStagesByTripId(savedTrip._id)
+      } else {
+        savedTrip = await TripModel.create(tripToSave)
+      }
+
       const { days } = generatedTripWithStages
       const stagesToAdd = await this.parseStagesFromMultipleDays(
         days,
-        newTrip._id,
-        tripData.tripLocation,
+        savedTrip._id,
+        filteredTripData.tripLocation,
       )
       await this.stageController.createManyStages(stagesToAdd)
-      return newTripDTO
+      return savedTrip.toObject()
     } catch (error) {
-      error.message = 'Could not create trip: ' + error.message
-      throw error
+      if (config.server.env === 'DEV')
+        console.error('Error while saving trip:', error)
+      throw new Error('Could not save trip')
     }
   }
 
-  async updateTrip(userId, id, tripData) {
-    try {
-      const updatedTrip = await TripModel.findOneAndUpdate(
-        { userId: userId, _id: id }, // ensure user1 cannot edit user2's trip
-        tripData,
-        { new: true },
-      ).lean()
-      if (!updatedTrip) return null
-      // eslint-disable-next-line node/no-unsupported-features/es-syntax
-      const updatedTripDTO = { ...updatedTrip }
-      delete updatedTripDTO.userId
-      return updatedTripDTO
-    } catch (error) {
-      error.message = 'Could not create trip: ' + error.message
-      throw error
+  async createTrip(userId, tripData) {
+    return this.generateAndSaveTrip(userId, tripData)
+  }
+
+  async updateTrip(id, tripData) {
+    if (
+      tripData.tripName &&
+      !tripData.tripLocation &&
+      !tripData.stagesPerDay &&
+      !tripData.budget &&
+      !tripData.numberOfDays &&
+      !tripData.tripNotes
+    ) {
+      const existingTrip = await TripModel.findById(id)
+      existingTrip.tripName = tripData.tripName
+      await existingTrip.save()
+      return existingTrip
+    } else {
+      return this.generateAndSaveTrip(null, tripData, id)
     }
   }
 
