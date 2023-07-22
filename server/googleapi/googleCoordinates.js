@@ -13,7 +13,7 @@ const axios = require('axios')
 async function getCoordinatesFromLocation(
   destinationCity,
   stageLocationName,
-  rating,
+  includeRating,
 ) {
   const query = `${stageLocationName} ${destinationCity}`
   const apiKey = process.env.GOOGLE_PLACES_API_KEY
@@ -29,8 +29,12 @@ async function getCoordinatesFromLocation(
       },
     })
     const { location } = response.data.results[0].geometry
-    if (rating) {
-      const { rating } = response.data.results[0]
+    if (includeRating) {
+      let { rating } = response.data.results[0]
+
+      if (rating === undefined) {
+        rating = 0
+      }
       return { location, rating }
     }
     return location
