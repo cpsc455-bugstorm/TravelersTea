@@ -18,7 +18,11 @@ import {
   deleteTripAsync,
   updateTripAsync,
 } from '../../redux/reducers/trips/thunks'
-import { closeSidebar, setActiveTripId } from '../../redux/reducers/viewSlice'
+import {
+  closeSidebar,
+  resetView,
+  setActiveTripId,
+} from '../../redux/reducers/viewSlice'
 import { Button, Modal } from '../common'
 
 TripEntry.propTypes = {
@@ -70,6 +74,7 @@ export function TripEntry({ id, buttonClassName, trip }) {
     closeModal()
     dispatch(deleteTripAsync({ id: id }))
     dispatch(setActiveTripId(undefined))
+    dispatch(resetView())
   }
 
   useEffect(() => {
