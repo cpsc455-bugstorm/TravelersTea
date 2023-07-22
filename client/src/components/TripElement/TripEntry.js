@@ -12,6 +12,7 @@ import { ZOOM_CITY_LEVEL, DEFAULT_SPEED } from '../../constants/mapDefaultInfo'
 import {
   changeCoordinatesAndZoom,
   clearAllMarkersAndAdd_Store,
+  resetMap,
 } from '../../redux/reducers/mapSlice'
 import { openEditTripModal } from '../../redux/reducers/modalsSlice'
 import {
@@ -75,6 +76,7 @@ export function TripEntry({ id, buttonClassName, trip }) {
     dispatch(deleteTripAsync({ id: id }))
     dispatch(setActiveTripId(undefined))
     dispatch(resetView())
+    dispatch(resetMap())
   }
 
   useEffect(() => {
