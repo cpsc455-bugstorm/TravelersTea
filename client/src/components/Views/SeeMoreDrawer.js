@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Button } from '../common'
 import { closeSidebar, toggleShowDrawer } from '../../redux/reducers/viewSlice'
 import { getTailwindName } from '../../util/tailwindColors'
+import MugRating from './MugRating'
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
 import { openEditStageModal } from '../../redux/reducers/modalsSlice'
 import { updateEditStageId } from '../../redux/reducers/stage/stageSlice'
@@ -39,6 +40,7 @@ export function SeeMoreDrawer() {
                   <p className='font-semibold text-white'>
                     {`${stage['emoji']} ${stage['stageIndex']}: ${stage['stageLocation']}`}
                   </p>
+                  <MugRating rating={stage['stageRating']} />
                   <p className={'text-white'}>⤷ {stage['description']}</p>
                 </div>
                 <div>

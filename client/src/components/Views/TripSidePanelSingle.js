@@ -6,6 +6,7 @@ import { setAppView, setShowSidePanel } from '../../redux/reducers/viewSlice'
 import { getBg400, getTailwindName } from '../../util/tailwindColors'
 import { Button } from '../common'
 import { TeaCup } from './TeaCup'
+import MugRating from './MugRating'
 
 export function TripSidePanelSingle() {
   const activeDayNumber = useSelector((state) => state.view.activeDayNumber)
@@ -44,6 +45,7 @@ export function TripSidePanelSingle() {
         >
           <p className={'text-xl font-semibold text-slate-100'}>
             {stage['stageLocation']}
+            <MugRating rating={stage['stageRating']} />
           </p>
           <p className={'text-lg text-slate-100'}>{stage['description']}</p>
         </div>
