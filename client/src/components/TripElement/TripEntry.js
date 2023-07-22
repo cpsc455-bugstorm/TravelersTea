@@ -126,6 +126,11 @@ export function TripEntry({ id, buttonClassName, trip }) {
               value={tripName}
               onChange={handleInputChange}
               onFocus={(event) => event.target.select()}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter') {
+                  handleCheckClick()
+                }
+              }}
             />
           )}
         </div>
