@@ -13,11 +13,7 @@ export function StageForm({ onSubmit }) {
   const editStageId = useSelector((state) => state.stages.editStageId)
   const stage = stagesByDay.flat().find((item) => item._id === editStageId)
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
+  const { register, handleSubmit } = useForm({
     defaultValues: {
       updateNotes: '',
     },
@@ -26,10 +22,6 @@ export function StageForm({ onSubmit }) {
   const onSubmitForm = (data) => {
     onSubmit({ ...data, stage })
   }
-
-  // useEffect(() => {
-  //   console.log('stage', stage)
-  // }, [stage])
 
   return (
     <form
