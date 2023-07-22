@@ -24,7 +24,7 @@ Mug.propTypes = {
 }
 
 const MugRating = ({ rating }) => {
-  if (rating === 0) {
+  if (rating === 0 || rating === undefined) {
     return null
   }
   return (
