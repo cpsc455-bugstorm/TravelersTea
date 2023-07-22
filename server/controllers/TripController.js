@@ -54,13 +54,15 @@ class TripController {
       const longLatObject = await getCoordinatesFromLocation(
         stage.stageLocationName,
         tripLocation,
+        true,
       )
       const stageToAddFromDay = {
         tripId,
         dayIndex: day.day,
         stageIndex: stage.stageIndex,
-        stageLongitude: longLatObject.lng,
-        stageLatitude: longLatObject.lat,
+        stageLongitude: longLatObject.location.lng,
+        stageLatitude: longLatObject.location.lat,
+        stageRating: longLatObject.rating,
         stageLocation: stage.stageLocationName,
         description: stage.stageDescription,
         colorNumber: stage.stageColor,
@@ -88,6 +90,7 @@ class TripController {
       const longLatObject = await getCoordinatesFromLocation(
         '',
         filteredTripData.tripLocation,
+        false,
       )
       const tripToSave = {
         tripName: filteredTripData.tripName,
