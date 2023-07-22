@@ -1,6 +1,6 @@
 /*
  Simple test example of usage of generateTrip function
- Run via `node openai/testGenerateTrip.js` from `server/` or wherever the .env file with the openai key is
+ Run via `node openai/testGenerateStage.js` from `server/` or wherever the .env file with the openai key is
 */
 
 const generateStage = require('./generateStage')

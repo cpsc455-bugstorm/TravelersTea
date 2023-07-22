@@ -1,5 +1,7 @@
 const StageModel = require('../models/StageModel')
 const config = require('../config/config')
+const generateStage = require('../openai/generateStage')
+const getCoordinatesFromLocation = require('../googleapi/googleCoordinates')
 
 class StageController {
   constructor() {}
@@ -26,8 +28,7 @@ class StageController {
     console.log(listOfStages)
     try {
       const newStages = await StageModel.insertMany(listOfStages)
-      const newStagesObjects = newStages.map((stage) => stage.toObject())
-      return newStagesObjects
+      return newStages.map((stage) => stage.toObject())
     } catch (error) {
       if (config.server.env === 'DEV')
         console.error('Error while creating stages:', error)
@@ -57,11 +58,38 @@ class StageController {
     }
   }
 
-  async updateStage(id, stageData) {
+  async updateStage(id, { updateNotes, stage, trip }) {
     try {
-      return await StageModel.findByIdAndUpdate(id, stageData, {
-        new: true,
-      }).lean()
+      // Call Openai
+      let newStageResponse = JSON.parse(
+        await generateStage(trip, stage, updateNotes),
+      )
+      // Parse response
+      if (newStageResponse.error) {
+        throw new Error(
+          'openai response returned an error: ' + newStageResponse.error,
+        )
+      }
+      // Get Coordinates
+      let coords = await getCoordinatesFromLocation(
+        trip.tripLocation,
+        newStageResponse.newStage.stageLocation,
+      )
+      // Update DB
+      // Return success message
+      await StageModel.updateOne(
+        { _id: stage._id },
+        {
+          $set: {
+            stageLocation: newStageResponse.newStage.stageLocation,
+            emoji: newStageResponse.newStage.emoji,
+            description: newStageResponse.newStage.description,
+            stageLatitude: coords.lat,
+            stageLongitude: coords.lng,
+          },
+        },
+      )
+      return await StageModel.findById(stage._id)
     } catch (error) {
       if (config.server.env === 'DEV')
         console.error('Could not update stage:', error)

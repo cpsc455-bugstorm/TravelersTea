@@ -1,9 +1,12 @@
 import { useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button } from '../common'
-import { toggleShowDrawer } from '../../redux/reducers/viewSlice'
+import { closeSidebar, toggleShowDrawer } from '../../redux/reducers/viewSlice'
 import { getTailwindName } from '../../util/tailwindColors'
 import MugRating from './MugRating'
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
+import { openEditStageModal } from '../../redux/reducers/modalsSlice'
+import { updateEditStageId } from '../../redux/reducers/stage/stageSlice'
 
 export function SeeMoreDrawer() {
   const stagesByDay = useSelector((state) => state.stages.stages)
@@ -27,14 +30,36 @@ export function SeeMoreDrawer() {
           {dayDetails.map((stage, stageIndex) => {
             return (
               <div
-                key={`details-${dayNumber}-${stageIndex}`}
-                className='p-2 text-white'
+                key={`details-container-${dayNumber}-${stageIndex}`}
+                className='flex items-center justify-between'
               >
-                <p className='font-semibold text-white'>
-                  {`${stage['emoji']} ${stage['stageIndex']}: ${stage['stageLocation']}`}
-                </p>
-                <MugRating rating={stage['stageRating']} />
-                <p className={'text-white'}>⤷ {stage['description']}</p>
+                <div
+                  key={`details-${dayNumber}-${stageIndex}`}
+                  className='p-2 text-white'
+                >
+                  <p className='font-semibold text-white'>
+                    {`${stage['emoji']} ${stage['stageIndex']}: ${stage['stageLocation']}`}
+                  </p>
+                  <MugRating rating={stage['stageRating']} />
+                  <p className={'text-white'}>⤷ {stage['description']}</p>
+                </div>
+                <div>
+                  <Button
+                    key={`details-edit-${dayNumber}-${stageIndex}`}
+                    onClick={() => {
+                      dispatch(closeSidebar())
+                      dispatch(openEditStageModal())
+                      dispatch(updateEditStageId(stage['_id']))
+                    }}
+                    className={` h-[22px] w-[20px] text-white hover:text-red-400`}
+                    padding='p-0 mr-[3px]'
+                  >
+                    <EditOutlinedIcon
+                      sx={{ fontSize: 20 }}
+                      className='align-baseline'
+                    />
+                  </Button>
+                </div>
               </div>
             )
           })}

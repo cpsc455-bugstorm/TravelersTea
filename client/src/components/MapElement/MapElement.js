@@ -10,6 +10,7 @@ import {
   ZOOM_GLOBE_LEVEL,
 } from '../../constants/mapDefaultInfo'
 import { EditTripForm, NewTripForm } from '../TripElement'
+import { EditStageForm } from '../TripElement/EditStageForm'
 
 MapElement.propTypes = {
   className: PropTypes.string,
@@ -35,6 +36,7 @@ export function MapElement({ className }) {
           Map (placeholder #{activeTripId})
         </h1>
         <EditTripForm />
+        <EditStageForm />
       </span>
     )
   }, [appView, activeTripId])

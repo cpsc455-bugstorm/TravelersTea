@@ -13,8 +13,8 @@ export const createStage = async (stageData) => {
   return await axios.post(`${API_URL}/stages`, stageData)
 }
 
-export const updateStage = async (id, stageData) => {
-  return await axios.patch(`${API_URL}/stages/${id}`, stageData)
+export const updateStage = async (id, updateData) => {
+  return await axios.patch(`${API_URL}/stages/${id}`, updateData)
 }
 
 export const deleteStage = async (id) => {
