@@ -4,7 +4,7 @@ import { REQUEST_STATE } from '../../states'
 import { loginUserAsync, registerUserAsync } from './thunks'
 
 const DEV_DISABLE_LOGIN = process.env.REACT_APP_DEV_DISABLE_LOGIN === 'true'
-const DEV_ACCESS_TOKEN = process.env.REACT_APP_DEV_ACCESS_TOKEN
+const DEV_ACCESS_TOKEN = process.env.REACT_APP_ACCESS_TOKEN
 
 const initialLoginState = DEV_DISABLE_LOGIN
   ? {
