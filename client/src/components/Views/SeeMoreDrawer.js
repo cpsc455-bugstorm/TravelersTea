@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Button } from '../common'
 import { toggleShowDrawer } from '../../redux/reducers/viewSlice'
 import { getTailwindName } from '../../util/tailwindColors'
+import MugRating from './MugRating'
 
 export function SeeMoreDrawer() {
   const stagesByDay = useSelector((state) => state.stages.stages)
@@ -32,6 +33,7 @@ export function SeeMoreDrawer() {
                 <p className='font-semibold text-white'>
                   {`${stage['emoji']} ${stage['stageIndex']}: ${stage['stageLocation']}`}
                 </p>
+                <MugRating rating={3.5} />
                 <p className={'text-white'}>⤷ {stage['description']}</p>
               </div>
             )
