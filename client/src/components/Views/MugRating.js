@@ -15,7 +15,7 @@ Mug.propTypes = {
 
 const MugRating = ({ rating }) => (
   <div>
-    <span className='text-xs'>{rating.toFixed(1)}</span>
+    <span className='text-xs'>{rating}/5</span>
     {Array.from({ length: 5 }).map((_, index) => {
       const filled = rating >= index + 1
       const halfFilled = rating >= index + 0.5

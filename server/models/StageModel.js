@@ -17,6 +17,7 @@ const stageSchema = new mongoose.Schema({
   stageLatitude: Number,
   stageLongitude: Number,
   stageLocation: String,
+  stageRating: Number,
   description: String,
   colorNumber: Number,
   emoji: String,

@@ -45,7 +45,7 @@ export function TripSidePanelSingle() {
         >
           <p className={'text-xl font-semibold text-slate-100'}>
             {stage['stageLocation']}
-            <MugRating rating={3.5} />
+            <MugRating rating={stage['stageRating']} />
           </p>
           <p className={'text-lg text-slate-100'}>{stage['description']}</p>
         </div>

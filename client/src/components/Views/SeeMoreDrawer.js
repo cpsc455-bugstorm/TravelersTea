@@ -33,7 +33,7 @@ export function SeeMoreDrawer() {
                 <p className='font-semibold text-white'>
                   {`${stage['emoji']} ${stage['stageIndex']}: ${stage['stageLocation']}`}
                 </p>
-                <MugRating rating={3.5} />
+                <MugRating rating={stage['stageRating']} />
                 <p className={'text-white'}>⤷ {stage['description']}</p>
               </div>
             )
