@@ -73,7 +73,7 @@ class StageController {
       // Get Coordinates
       let coords = await getCoordinatesFromLocation(
         trip.tripLocation,
-        newStageResponse.stageLocation,
+        newStageResponse.newStage.stageLocation,
       )
       // Update DB
       // Return success message
