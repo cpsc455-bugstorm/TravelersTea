@@ -35,7 +35,7 @@ export function StageForm({ onSubmit }) {
         <div>{stage.description}</div>
       </div>
       <TextField
-        {...register('updateNotes', { required: false })}
+        {...register('updateNotes', { required: true })}
         label='Update'
         placeholder='Tell me what you would like to change about this...'
       />
