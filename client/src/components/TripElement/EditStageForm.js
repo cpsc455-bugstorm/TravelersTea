@@ -36,7 +36,7 @@ export function EditStageForm() {
     <Modal
       open={editStageModalIsOpen}
       handleClose={handleCloseEditStageModal}
-      title='Adjusting Course...'
+      title='Adjusting Plan...'
     >
       <StageForm onSubmit={onSubmit} />
     </Modal>
