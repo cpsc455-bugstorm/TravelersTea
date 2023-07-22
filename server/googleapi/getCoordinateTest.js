@@ -2,23 +2,27 @@
 const getCoordinatesFromLocation = require('./googleCoordinates')
 
 const stageLocations = [
-  { stageLocationName: 'Eiffel Tower', destination: 'Paris' },
-  { stageLocationName: 'Tim Hortons', destination: 'Vancouver' },
-  { stageLocationName: 'Stanley Park', destination: 'Vancouver' },
-  { stageLocationName: 'Taste of Nawabs', destination: 'Vancouver' },
-  { stageLocationName: '', destination: 'Vancouver' },
-  { stageLocationName: 'Eiffel Tower', destination: 'Paris' },
-  { stageLocationName: '', destination: 'Paris' },
-  { stageLocationName: '', destination: 'Beijing' },
-  { stageLocationName: '', destination: 'London' },
+  { stageLocationName: 'Eiffel Tower', destination: 'Paris', rating: true },
+  { stageLocationName: 'Tim Hortons', destination: 'Vancouver', rating: true },
+  { stageLocationName: 'Stanley Park', destination: 'Vancouver', rating: true },
+  {
+    stageLocationName: 'Taste of Nawabs',
+    destination: 'Vancouver',
+    rating: true,
+  },
+  { stageLocationName: '', destination: 'Vancouver', rating: false },
+  { stageLocationName: '', destination: 'Paris', rating: false },
+  { stageLocationName: '', destination: 'Beijing', rating: false },
+  { stageLocationName: '', destination: 'London', rating: false },
 ]
 
 async function testGetCoordinates() {
   try {
-    for (const { stageLocationName, destination } of stageLocations) {
+    for (const { stageLocationName, destination, rating } of stageLocations) {
       const coordinates = await getCoordinatesFromLocation(
         destination,
         stageLocationName,
+        rating,
       )
 
       console.log(

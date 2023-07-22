@@ -41,9 +41,9 @@ export const createStageAsync = createAsyncThunk(
 
 export const updateStageAsync = createAsyncThunk(
   actionTypes.UPDATE_STAGE,
-  async ({ id, stageData }, { rejectWithValue }) => {
+  async ({ id, updateData }, { rejectWithValue }) => {
     try {
-      const response = await stageService.updateStage(id, stageData)
+      const response = await stageService.updateStage(id, updateData)
       return response.data
     } catch (error) {
       return rejectWithValue({ message: error.response.data.error })

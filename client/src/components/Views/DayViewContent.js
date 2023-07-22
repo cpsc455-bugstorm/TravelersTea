@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Button } from '../common'
 import { setAppView } from '../../redux/reducers/viewSlice'
 import { AppView } from '../../constants/enums'
+import MugRating from './MugRating'
 
 export function DayViewContent() {
   const activeDayNumber = useSelector((state) => state.view.activeDayNumber)
@@ -23,6 +24,7 @@ export function DayViewContent() {
         </div>
         <div className='col-span-4 box-border rounded-md border-2 border-slate-100 bg-slate-200/90 p-2 shadow-xl'>
           <p className='text-lg font-bold'>{stageInfo['stageLocation']}</p>
+          <MugRating rating={stageInfo['stageRating']} />
           <p className='text-base font-normal'>{stageInfo['description']}</p>
         </div>
       </div>
