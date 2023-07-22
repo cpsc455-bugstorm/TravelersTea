@@ -8,7 +8,7 @@ const stageLocations = [
   { stageLocationName: 'Taste of Nawabs', destination: 'Vancouver' },
   { stageLocationName: '', destination: 'Vancouver' },
   { stageLocationName: 'Eiffel Tower', destination: 'Paris' },
-  { stageLocationName: '', destination: 'Paris' },
+  { stageLocationName: '', destination: 'Osaka, Japan' },
   { stageLocationName: '', destination: 'Beijing' },
   { stageLocationName: '', destination: 'London' },
 ]
