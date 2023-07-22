@@ -60,7 +60,7 @@ export function EditTripForm() {
             longitude: updatedTrip.tripLongitude,
             latitude: updatedTrip.tripLatitude,
             emoji: '📍',
-            label: 'Marker Icon',
+            label: updatedTrip.tripLocation,
           },
         ]),
       )

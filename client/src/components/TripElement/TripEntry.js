@@ -105,7 +105,7 @@ export function TripEntry({ id, buttonClassName, trip }) {
                 longitude: trip.tripLongitude,
                 latitude: trip.tripLatitude,
                 emoji: '📍',
-                label: 'Marker Icon',
+                label: trip.tripLocation,
               },
             ]),
           )
