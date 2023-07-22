@@ -3,7 +3,7 @@ const axios = require('axios')
 
 /**
  Retrieves the coordinates of a stage location using Google Places API.
- * @see {@link https://developers.google.com/maps/documentation/javascript/places|Google Places API}
+ @see {@link https://developers.google.com/maps/documentation/javascript/places|Google Places API}
  @param {string} destinationCity - The destinationCity of the stage.
  @param {string} stageLocationName - The name of the stage location.
  @param {Boolean} rating - Boolean indicating whether to return rating in response location. True if stages provided.
