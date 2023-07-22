@@ -8,9 +8,10 @@ const openaiClient = require('./openaiClient')
  * @async
  * @param {Object} constraints TripModel Object - The travel constraints.
  * @param {string} constraints.tripLocation - The destination of the trip.
- * @param {number} constraints.budget - The budget for the trip.
+ * @param {number} constraints.budget - The budget per day for the trip.
  * @param {number} constraints.numberOfDays - The number of days for the trip.
  * @param {number} constraints.stagesPerDay - The stages per day of the trip.
+ * @param {string} constraints.tripNotes - The extra note and/or restriction for the trip.
  *
  * If AI response exists, the function returns the response otherwise,
  * it gives an error message.
@@ -41,24 +42,24 @@ const openaiClient = require('./openaiClient')
  * @throws Will throw an error if the openaiClient or AI response fails.
  */
 async function generateTrip(constraints) {
-  if (constraints.numberOfDays > 5 || constraints.stagesPerDay > 5) {
-    return `{
-          "error": "trips can only be generated on a maximum of 5 days and 5 stages per day" 
-        }`
+  const totalPlaces = constraints.numberOfDays * constraints.stagesPerDay
+  if (totalPlaces > 25) {
+    throw new Error(
+      `Trips must have a maximum of 25 places (user requested ${totalPlaces} places)`,
+    )
   }
   const naturalLanguageConstraints = `
       Destination: ${constraints.tripLocation}
-      Budget: $${constraints.budget}
+      Budget per Day: $${constraints.budget}
       Days: ${constraints.numberOfDays}
-      Stages per day: ${constraints.stagesPerDay}
+      Stages per Day: ${constraints.stagesPerDay}
    `
-  try {
-    const conversation = [
-      {
-        role: 'system',
-        content: `You are an AI that generates travel itineraries. Respond with ONLY JSON that contains the plan for each stage. 
-        ONLY respond with the following format, do not include any descriptions or codeblocks, I should be able to parse the output to a JavaScript Object
-        The response needs to be formatted exactly like the following structure.:
+  const conversation = [
+    {
+      role: 'system',
+      content: `You are an AI that generates travel itineraries. Respond with ONLY JSON that contains the plan for each stage. 
+        ONLY respond with the following format, do not include any descriptions or codeblocks, I should be able to parse the output to a JavaScript Object.
+        The response needs to be formatted exactly like the following structure and the stageLocationName should be real places names such that Google Maps can find them:
         '''
         {
           days:[
@@ -85,22 +86,25 @@ async function generateTrip(constraints) {
         }
         '''
         `,
-      },
-      {
-        role: 'user',
-        content: `Generate a travel itinerary based on these constraints: ${naturalLanguageConstraints}`,
-      },
-    ]
+    },
+    {
+      role: 'user',
+      content: `${constraints.tripNotes} (This is not a strict constraint, You should still find real places names). Generate a travel itinerary based on these constraints: ${naturalLanguageConstraints}`,
+    },
+  ]
 
-    const response = await openaiClient(conversation)
-    if (response) {
-      return response
-    }
-    return 'Unable to generate a travel itinerary. Please try again later.'
-  } catch (error) {
-    console.error('Error while generating itinerary:', error)
-    throw error
+  const response = await openaiClient(conversation).then((str) =>
+    JSON.parse(str),
+  )
+
+  if (!response) {
+    throw new Error(
+      'Unable to generate a travel itinerary. Please try again later.',
+    )
+  } else if (response.error) {
+    throw new Error(response.error)
   }
+  return response
 }
 
 module.exports = generateTrip

@@ -1,6 +1,8 @@
 const TripModel = require('../models/TripModel')
 const generateTrip = require('../openai/generateTrip')
+const generateTripsMetadata = require('../openai/generateTripMetadata')
 const getCoordinatesFromLocation = require('../googleapi/googleCoordinates')
+const config = require('../config/config')
 
 class TripController {
   constructor(stageController) {
@@ -11,18 +13,22 @@ class TripController {
     try {
       return await TripModel.findById(id)
     } catch (error) {
-      throw new Error(`Could not fetch trip: ${error}`)
+      if (config.server.env === 'DEV')
+        console.error('Error while fetching trip:', error)
+      throw new Error('Could not fetch trip')
     }
   }
 
   async getAll(userId) {
+    if (!userId) {
+      throw new Error('User ID is required to fetch trips.')
+    }
     try {
-      if (!userId) {
-        throw new Error('User ID is required to fetch trips.')
-      }
       return await TripModel.find({ userId }).lean()
     } catch (error) {
-      throw new Error(`Could not fetch all trips: ${error}`)
+      if (config.server.env === 'DEV')
+        console.error('Error while fetching all trips:', error)
+      throw new Error('Could not fetch all trips')
     }
   }
 
@@ -65,49 +71,83 @@ class TripController {
     return stagesToAddFromDay
   }
 
-  async createTrip(userId, tripData) {
+  async generateAndSaveTrip(userId, tripData, id = null) {
+    let filteredTripData = tripData.colloquialPrompt
+      ? await generateTripsMetadata(tripData.colloquialPrompt)
+      : tripData
+
+    let generatedTripWithStages
     try {
-      const generatedTripWithStagesJSON = await generateTrip(tripData)
-      const generatedTripWithStages = JSON.parse(generatedTripWithStagesJSON)
+      generatedTripWithStages = await generateTrip(filteredTripData)
+    } catch (e) {
+      console.error('Error while generating itinerary:', e)
+      throw e
+    }
+
+    try {
       const longLatObject = await getCoordinatesFromLocation(
         '',
-        tripData.tripLocation,
+        filteredTripData.tripLocation,
       )
-      const tripToCreate = {
-        userId,
-        tripName: tripData.tripName,
-        tripLocation: tripData.tripLocation,
-        stagesPerDay: tripData.stagesPerDay,
-        budget: tripData.budget,
-        numberOfDays: tripData.numberOfDays,
+      const tripToSave = {
+        tripName: filteredTripData.tripName,
+        tripLocation: filteredTripData.tripLocation,
+        stagesPerDay: filteredTripData.stagesPerDay,
+        budget: filteredTripData.budget,
+        numberOfDays: filteredTripData.numberOfDays,
         tripLongitude: longLatObject.lng,
         tripLatitude: longLatObject.lat,
+        tripNotes: filteredTripData.tripNotes,
       }
 
-      const newTrip = await TripModel.create({
-        // eslint-disable-next-line node/no-unsupported-features/es-syntax
-        ...tripToCreate,
-      })
+      if (!id) {
+        tripToSave.userId = userId
+      }
+
+      let savedTrip
+      if (id) {
+        savedTrip = await TripModel.findByIdAndUpdate(id, tripToSave, {
+          new: true,
+        })
+        await this.stageController.deleteStagesByTripId(savedTrip._id)
+      } else {
+        savedTrip = await TripModel.create(tripToSave)
+      }
+
       const { days } = generatedTripWithStages
       const stagesToAdd = await this.parseStagesFromMultipleDays(
         days,
-        newTrip._id,
-        tripData.tripLocation,
+        savedTrip._id,
+        filteredTripData.tripLocation,
       )
       await this.stageController.createManyStages(stagesToAdd)
-      return newTrip.toObject()
+      return savedTrip.toObject()
     } catch (error) {
-      throw new Error(`Could not create trip: ${error}`)
+      if (config.server.env === 'DEV')
+        console.error('Error while saving trip:', error)
+      throw new Error('Could not save trip')
     }
   }
 
+  async createTrip(userId, tripData) {
+    return this.generateAndSaveTrip(userId, tripData)
+  }
+
   async updateTrip(id, tripData) {
-    try {
-      return await TripModel.findByIdAndUpdate(id, tripData, {
-        new: true,
-      }).lean()
-    } catch (error) {
-      throw new Error(`Could not edit trip: ${error}`)
+    if (
+      tripData.tripName &&
+      !tripData.tripLocation &&
+      !tripData.stagesPerDay &&
+      !tripData.budget &&
+      !tripData.numberOfDays &&
+      !tripData.tripNotes
+    ) {
+      const existingTrip = await TripModel.findById(id)
+      existingTrip.tripName = tripData.tripName
+      await existingTrip.save()
+      return existingTrip
+    } else {
+      return this.generateAndSaveTrip(null, tripData, id)
     }
   }
 
@@ -116,7 +156,9 @@ class TripController {
       await this.stageController.deleteStagesByTripId(id)
       return await TripModel.findByIdAndDelete(id).lean()
     } catch (error) {
-      throw new Error(`Could not delete trip: ${error}`)
+      if (config.server.env === 'DEV')
+        console.error('Error while deleting trip:', error)
+      throw new Error('Could not delete trip')
     }
   }
 
@@ -130,7 +172,9 @@ class TripController {
 
       await TripModel.deleteMany({ userId: userId }).lean()
     } catch (error) {
-      throw new Error(`Could not delete trip: ${error}`)
+      if (config.server.env === 'DEV')
+        console.error('Error while deleting trips:', error)
+      throw new Error('Could not delete trip')
     }
   }
 }

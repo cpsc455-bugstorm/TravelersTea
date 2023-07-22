@@ -8,7 +8,7 @@ import PropTypes from 'prop-types'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppView } from '../../constants/enums'
-import { ZOOM_CITY_LEVEL } from '../../constants/mapDefaultInfo'
+import { ZOOM_CITY_LEVEL, DEFAULT_SPEED } from '../../constants/mapDefaultInfo'
 import {
   changeCoordinatesAndZoom,
   clearAllMarkersAndAdd_Store,
@@ -36,7 +36,7 @@ export function TripEntry({ id, buttonClassName, trip }) {
   const [isRenaming, setIsRenaming] = useState(false)
   const [tripName, setTripName] = useState(trip.tripName)
   const [openModal, setOpenModal] = useState(false)
-  const inputRef = useRef(null)
+  const inputRef = useRef()
 
   const widthForTripEntry = !isSelected ? 'w-[160px]' : 'w-[228px]'
   const widthForButtonsContainer = isRenaming ? 'w-[46px]' : 'w-[68px]'
@@ -58,7 +58,6 @@ export function TripEntry({ id, buttonClassName, trip }) {
 
   const handleCheckClick = () => {
     dispatch(updateTripAsync({ id: id, tripData: { tripName: tripName } }))
-    dispatch(closeSidebar())
     setIsRenaming(false)
   }
 
@@ -70,6 +69,7 @@ export function TripEntry({ id, buttonClassName, trip }) {
   const handleDeleteTrip = () => {
     closeModal()
     dispatch(deleteTripAsync({ id: id }))
+    dispatch(setActiveTripId(undefined))
   }
 
   useEffect(() => {
@@ -78,6 +78,12 @@ export function TripEntry({ id, buttonClassName, trip }) {
       setTripName(trip.tripName)
     }
   }, [isSelected, trip, appView])
+
+  useEffect(() => {
+    if (isRenaming && inputRef.current) {
+      inputRef.current.focus()
+    }
+  }, [isRenaming, inputRef])
 
   const tripButton = useMemo(
     () => (
@@ -90,6 +96,7 @@ export function TripEntry({ id, buttonClassName, trip }) {
               longitude: trip.tripLongitude,
               latitude: trip.tripLatitude,
               zoom: ZOOM_CITY_LEVEL,
+              speed: DEFAULT_SPEED,
             }),
           )
           dispatch(
@@ -118,6 +125,7 @@ export function TripEntry({ id, buttonClassName, trip }) {
               placeholder={trip.tripName}
               value={tripName}
               onChange={handleInputChange}
+              onFocus={(event) => event.target.select()}
             />
           )}
         </div>

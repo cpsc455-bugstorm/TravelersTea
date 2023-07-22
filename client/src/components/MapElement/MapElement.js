@@ -18,9 +18,7 @@ MapElement.propTypes = {
 export function MapElement({ className }) {
   const appView = useSelector((state) => state.view.appView)
   const activeTripId = useSelector((state) => state.view.activeTripId)
-  const defaultCoordinatesAndZoom = useSelector(
-    (state) => state.map.currentCoordinatesAndZoom,
-  )
+  const mapData = useSelector((state) => state.map.mapData)
   const markersWithProps = useSelector((state) => state.map.markers)
   const [map, setMap] = useState(null)
   const mapContainerRef = useRef(null)
@@ -84,22 +82,23 @@ export function MapElement({ className }) {
   }, [markersWithProps, map])
 
   const flyToLocation = useCallback(
-    (longitude, latitude, zoom) => {
+    (longitude, latitude, zoom, speed) => {
       map.flyTo({
         center: [longitude, latitude],
         zoom,
         essential: true,
+        speed,
       })
     },
     [map],
   )
 
   useEffect(() => {
-    const { longitude, latitude, zoom } = defaultCoordinatesAndZoom
+    const { longitude, latitude, zoom, speed } = mapData
     if (map) {
-      flyToLocation(longitude, latitude, zoom)
+      flyToLocation(longitude, latitude, zoom, speed)
     }
-  }, [defaultCoordinatesAndZoom, flyToLocation, map])
+  }, [mapData, flyToLocation, map])
 
   useEffect(() => {
     const map = new mapboxgl.Map({

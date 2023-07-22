@@ -1,3 +1,4 @@
+export { CompressedForm } from './CompressedForm'
 export { EditTripForm } from './EditTripForm'
 export { NewTripForm } from './NewTripForm'
 export { TripEntry } from './TripEntry'

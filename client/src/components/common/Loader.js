@@ -11,7 +11,7 @@ const funFacts = [
   'In 1773, American colonists dumped 342 chests of tea into the Boston Harbor to protest the Tea Act. This event is now known as the Boston Tea Party.',
   'Contrary to popular belief, it’s not just green tea that’s good for you. Black, white, and red tea also have health-giving flavonoids and polyphenols.',
   'The very best tea comes from high elevations and is hand-picked.',
-  'In 1908, tea bags were developed by accident in New York as restuarants began brewing merchant’s tea directly in the silk bags to save time',
+  'In 1908, tea bags were developed by accident in New York as restaurants began brewing merchant’s tea directly in the silk bags to save time',
   'There are around 3,000 different types of tea.',
   'Tea has more caffeine than coffee – but it’s not as simple as that.',
   'You should never use boiling water for tea as you’ll burn the leaf.',
@@ -30,7 +30,7 @@ export function Loader() {
     const timer = setInterval(() => {
       setFact(getRandomFunFact())
       setKey(Math.random())
-    }, 5000)
+    }, 7500)
 
     return () => clearInterval(timer)
   }, [])
