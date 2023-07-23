@@ -162,7 +162,7 @@ class TripController {
         _id: new mongoose.Types.ObjectId(id),
       })
       if (!existingTrip) {
-        const error = new Error('Trip not found during editing trip name')
+        const error = new Error('Trip could not be found')
         error.statusCode = 404
         throw error
       }
@@ -176,14 +176,23 @@ class TripController {
     }
   }
 
-  async deleteTrip(id) {
+  async deleteTrip(userId, id) {
     try {
       await this.stageController.deleteStagesByTripId(id)
-      return await TripModel.findByIdAndDelete(id).lean()
+      const deletedTrip = await TripModel.findOneAndDelete({
+        userId: userId,
+        _id: new mongoose.Types.ObjectId(id), // ensure user1 cannot delete user2's trips
+      }).lean()
+      if (!deletedTrip) {
+        const error = new Error('Trip could not be found')
+        error.statusCode = 404
+        throw error
+      }
+      delete deletedTrip.userId
+      return deletedTrip
     } catch (error) {
-      if (config.server.env === 'DEV')
-        console.error('Error while deleting trip:', error)
-      throw new Error('Could not delete trip')
+      error.message = 'Could not delete trip | ' + error.message
+      throw error
     }
   }
 

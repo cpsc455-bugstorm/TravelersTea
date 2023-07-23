@@ -56,26 +56,22 @@ class TripRoute {
         req.params.id,
         req.body,
       )
-
       res.status(200).json(updatedTrip)
     } catch (err) {
       next(err)
     }
   }
 
-  async delete(req, res) {
+  async delete(req, res, next) {
     try {
       const deletedTrip = await controllers.tripController.deleteTrip(
+        req.userId,
         req.params.id,
       )
-      if (!deletedTrip) {
-        return res
-          .status(404)
-          .json({ error: '404: Trip not found during delete' })
-      }
+      console.log(deletedTrip)
       res.status(200).json(deletedTrip)
     } catch (err) {
-      res.status(500).json({ error: err.toString() })
+      next(err)
     }
   }
 }
