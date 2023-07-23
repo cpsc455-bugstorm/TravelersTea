@@ -22,11 +22,13 @@ async function getCoordinatesFromLocation(destinationCity, stageLocationName) {
         key: apiKey,
       },
     })
-
+    if (!response.data.results.length) {
+      throw new Error('No coordinates found.')
+    }
     const { location } = response.data.results[0].geometry
     return location
   } catch (error) {
-    console.error('Error while fetching place details:', error)
+    error.message = 'Error while fetching place details: ' + error.message
     throw error
   }
 }
