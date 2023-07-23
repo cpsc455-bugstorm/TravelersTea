@@ -12,13 +12,18 @@ import { ZOOM_CITY_LEVEL, DEFAULT_SPEED } from '../../constants/mapDefaultInfo'
 import {
   changeCoordinatesAndZoom,
   clearAllMarkersAndAdd_Store,
+  resetMap,
 } from '../../redux/reducers/mapSlice'
 import { openEditTripModal } from '../../redux/reducers/modalsSlice'
 import {
   deleteTripAsync,
   updateTripAsync,
 } from '../../redux/reducers/trips/thunks'
-import { closeSidebar, setActiveTripId } from '../../redux/reducers/viewSlice'
+import {
+  closeSidebar,
+  resetView,
+  setActiveTripId,
+} from '../../redux/reducers/viewSlice'
 import { Button, Modal } from '../common'
 
 TripEntry.propTypes = {
@@ -70,6 +75,8 @@ export function TripEntry({ id, buttonClassName, trip }) {
     closeModal()
     dispatch(deleteTripAsync({ id: id }))
     dispatch(setActiveTripId(undefined))
+    dispatch(resetView())
+    dispatch(resetMap())
   }
 
   useEffect(() => {
@@ -105,7 +112,7 @@ export function TripEntry({ id, buttonClassName, trip }) {
                 longitude: trip.tripLongitude,
                 latitude: trip.tripLatitude,
                 emoji: '📍',
-                label: 'Marker Icon',
+                label: trip.tripLocation,
               },
             ]),
           )
@@ -126,6 +133,11 @@ export function TripEntry({ id, buttonClassName, trip }) {
               value={tripName}
               onChange={handleInputChange}
               onFocus={(event) => event.target.select()}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter') {
+                  handleCheckClick()
+                }
+              }}
             />
           )}
         </div>

@@ -45,10 +45,10 @@ export function CompactTripView() {
   }, [dispatch, stagesByDay])
 
   return (
-    <div className='pointer-events-auto flex h-full w-full flex-col items-end justify-end'>
+    <div className='flex h-full w-full flex-col items-end justify-end'>
       <div
         className={
-          'relative m-4 h-full w-1/3 overflow-hidden rounded-md city-skyline'
+          'pointer-events-auto relative m-4 h-full w-1/3 overflow-hidden rounded-md city-skyline'
         }
       >
         <div

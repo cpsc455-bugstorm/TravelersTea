@@ -8,6 +8,7 @@ import { fetchStagesByTripIdAsync, updateStageAsync } from './thunks'
  */
 const initialStateStages = {
   stages: [],
+  editStageId: null,
   status: REQUEST_STATE.IDLE,
   error: null,
 }
@@ -18,6 +19,9 @@ export const stageSlice = createSlice({
     resetStages: () => initialStateStages,
     clearStagesError: (state) => {
       state.error = null
+    },
+    updateEditStageId: (state, action) => {
+      state.editStageId = action.payload
     },
   },
   extraReducers: (builder) => {
@@ -35,21 +39,19 @@ export const stageSlice = createSlice({
         state.status = REQUEST_STATE.WRITING
       },
       fulfilled: (state, action) => {
-        const stageIndex = state.stages.findIndex(
-          (stage) => stage._id === action.payload._id,
+        let newStage = action.payload
+        state.stages = state.stages.map((dayStages) =>
+          dayStages.map((stage) =>
+            stage._id === newStage._id ? newStage : stage,
+          ),
         )
-        if (stageIndex !== -1) {
-          state.stages[stageIndex] = {
-            ...state.stages[stageIndex],
-            ...action.payload,
-          }
-        }
         state.status = REQUEST_STATE.FULFILLED
       },
     })
   },
 })
 
-export const { resetStages, clearStagesError } = stageSlice.actions
+export const { resetStages, clearStagesError, updateEditStageId } =
+  stageSlice.actions
 
 export default stageSlice.reducer
