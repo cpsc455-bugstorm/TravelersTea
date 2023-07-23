@@ -25,11 +25,12 @@ class TripController {
       throw new Error('User ID is required to fetch trips.')
     }
     try {
-      return await TripModel.find({ userId }).lean()
+      const trips = await TripModel.find({ userId }).lean()
+      trips.map((trip) => delete trip.userId)
+      return trips
     } catch (error) {
-      if (config.server.env === 'DEV')
-        console.error('Error while fetching all trips:', error)
-      throw new Error('Could not fetch all trips')
+      error.message += 'Could not fetch all trips | ' + error.message
+      throw error
     }
   }
 
@@ -83,7 +84,7 @@ class TripController {
     try {
       generatedTripWithStages = await generateTrip(filteredTripData)
     } catch (error) {
-      error.message = 'Error while generating trip: ' + error.message
+      error.message = 'Error while generating trip | ' + error.message
       throw error
     }
 
@@ -112,18 +113,19 @@ class TripController {
       let savedTrip
       if (id) {
         savedTrip = await TripModel.findOneAndUpdate(
-          { userId: userId, _id: id }, // ensure user1 cannot edit user2's trip
+          { userId: userId, _id: new mongoose.Types.ObjectId(id) }, // ensure user1 cannot edit user2's trip
           tripData,
           { new: true },
         ).lean()
         if (!savedTrip) {
-          const error = new Error('Trip not found during editing trip name')
+          const error = new Error('Trip to edit not found')
           error.statusCode = 404
           throw error
         }
         await this.stageController.deleteStagesByTripId(savedTrip._id)
       } else {
-        savedTrip = await TripModel.create(tripToSave)
+        const _savedTrip = await TripModel.create(tripToSave)
+        savedTrip = _savedTrip.toObject()
       }
 
       const { days } = generatedTripWithStages
@@ -133,11 +135,11 @@ class TripController {
         filteredTripData.tripLocation,
       )
       await this.stageController.createManyStages(stagesToAdd)
-      let savedTripDTO = savedTrip.toObject()
+      let savedTripDTO = savedTrip
       delete savedTripDTO.userId
       return savedTripDTO
     } catch (error) {
-      error.message = 'Could not save trip: ' + error.message
+      error.message = 'Could not save trip | ' + error.message
       throw error
     }
   }
@@ -166,9 +168,11 @@ class TripController {
       }
       existingTrip.tripName = tripData.tripName
       await existingTrip.save()
-      return existingTrip.toObject()
+      const existingTripDTO = existingTrip.toObject()
+      delete existingTripDTO.userId
+      return existingTripDTO
     } else {
-      return this.generateAndSaveTrip(null, tripData, id)
+      return this.generateAndSaveTrip(userId, tripData, id)
     }
   }
 

@@ -42,7 +42,7 @@ async function getCoordinatesFromLocation(
     }
     return location
   } catch (error) {
-    error.message = 'Error while fetching place details: ' + error.message
+    error.message = 'Error while fetching place details | ' + error.message
     throw error
   }
 }
