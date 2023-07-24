@@ -23,6 +23,7 @@ export function MapElement({ className }) {
   const mapData = useSelector((state) => state.map.mapData)
   const [map, setMap] = useState(null)
   const mapContainerRef = useRef(null)
+  const [retryCounter, setRetryCounter] = useState(0)
   mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN
 
   const renderMapForms = useMemo(() => {
@@ -40,20 +41,27 @@ export function MapElement({ className }) {
   // Needs to be extracted out to avoid infinite reruns
   const addMarkersToMap = useCallback(() => {
     const markers = []
-    if (map?.getCanvasContainer()) {
-      for (let day of stagesByDay) {
-        for (let stage of day) {
-          markers.push(createMapMarker(stage).addTo(map))
+    try {
+      if (map?.getCanvasContainer()) {
+        for (let day of stagesByDay) {
+          for (let stage of day) {
+            markers.push(createMapMarker(stage).addTo(map))
+          }
         }
       }
+    } catch (e) {
+      setRetryCounter((prev) => prev + 1)
     }
     return markers
   }, [map, stagesByDay])
 
   useEffect(() => {
     const markers = addMarkersToMap()
-    return () => markers.forEach((marker) => marker.remove())
-  }, [stagesByDay, addMarkersToMap])
+    return () => {
+      markers.forEach((marker) => marker.remove())
+    }
+    // lol
+  }, [stagesByDay, addMarkersToMap, retryCounter])
 
   useEffect(() => {
     const { longitude, latitude, zoom, speed } = mapData
