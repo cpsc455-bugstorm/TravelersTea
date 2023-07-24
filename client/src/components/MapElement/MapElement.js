@@ -21,6 +21,7 @@ export function MapElement({ className }) {
   const appView = useSelector((state) => state.view.appView)
   const stagesByDay = useSelector((state) => state.stages.stages)
   const mapData = useSelector((state) => state.map.mapData)
+  const activeDayNumber = useSelector((state) => state.view.activeDayNumber)
   const [map, setMap] = useState(null)
   const mapContainerRef = useRef(null)
   const [retryCounter, setRetryCounter] = useState(0)
@@ -44,8 +45,13 @@ export function MapElement({ className }) {
     try {
       if (map?.getCanvasContainer()) {
         for (let day of stagesByDay) {
+          const opacity =
+            activeDayNumber === -1 ||
+            activeDayNumber === stagesByDay.indexOf(day) + 1
+              ? 1
+              : 0.2
           for (let stage of day) {
-            markers.push(createMapMarker(stage).addTo(map))
+            markers.push(createMapMarker(stage, opacity).addTo(map))
           }
         }
       }
@@ -53,7 +59,7 @@ export function MapElement({ className }) {
       setRetryCounter((prev) => prev + 1)
     }
     return markers
-  }, [map, stagesByDay])
+  }, [activeDayNumber, map, stagesByDay])
 
   useEffect(() => {
     const markers = addMarkersToMap()
