@@ -24,6 +24,7 @@ import {
   setActiveTripId,
 } from '../../redux/reducers/viewSlice'
 import { Button, Modal } from '../common'
+import { resetStages } from '../../redux/reducers/stage/stageSlice'
 
 TripEntry.propTypes = {
   id: PropTypes.string.isRequired,
@@ -76,6 +77,7 @@ export function TripEntry({ id, buttonClassName, trip }) {
     dispatch(setActiveTripId(undefined))
     dispatch(resetView())
     dispatch(resetMap())
+    dispatch(resetStages())
   }
 
   useEffect(() => {

@@ -4,6 +4,8 @@ const generateTripsMetadata = require('../openai/generateTripMetadata')
 const getCoordinatesFromLocation = require('../googleapi/googleCoordinates')
 const config = require('../config/config')
 
+const NUM_TAILWIND_COLORS = 17
+
 class TripController {
   constructor(stageController) {
     this.stageController = stageController
@@ -35,11 +37,16 @@ class TripController {
   async parseStagesFromMultipleDays(days, tripId, tripLocation) {
     const _tripId = tripId
     const stagesToAdd = []
+    const shuffledColorIndexes = getShuffledIndexes()
+
     for (let day of days) {
+      const index = days.indexOf(day)
+      const colorNumber = shuffledColorIndexes[index % NUM_TAILWIND_COLORS]
       const stagesToAddFromDay = await this.parseStagesFromDay(
         day,
         _tripId,
         tripLocation,
+        colorNumber,
       )
       for (let stage of stagesToAddFromDay) {
         stagesToAdd.push(stage)
@@ -48,7 +55,7 @@ class TripController {
     return stagesToAdd
   }
 
-  async parseStagesFromDay(day, tripId, tripLocation) {
+  async parseStagesFromDay(day, tripId, tripLocation, colorNumber) {
     const stagesToAddFromDay = []
     for (let stage of day.stages) {
       const longLatObject = await getCoordinatesFromLocation(
@@ -65,7 +72,7 @@ class TripController {
         stageRating: longLatObject.rating,
         stageLocation: stage.stageLocationName,
         description: stage.stageDescription,
-        colorNumber: stage.stageColor,
+        colorNumber: colorNumber,
         emoji: stage.stageEmoji,
       }
       stagesToAddFromDay.push(stageToAddFromDay)
@@ -123,6 +130,7 @@ class TripController {
         savedTrip._id,
         filteredTripData.tripLocation,
       )
+      // this adds stages so do the part before this
       await this.stageController.createManyStages(stagesToAdd)
       return savedTrip.toObject()
     } catch (error) {
@@ -183,3 +191,10 @@ class TripController {
 }
 
 module.exports = TripController
+
+const getShuffledIndexes = () => {
+  const unshuffledList = Array.from(Array(NUM_TAILWIND_COLORS).keys())
+  // shuffle credits: https://dev.to/codebubb/how-to-shuffle-an-array-in-javascript-2ikj
+  // eslint-disable-next-line no-unused-vars
+  return unshuffledList.sort((a, b) => 0.5 - Math.random())
+}
