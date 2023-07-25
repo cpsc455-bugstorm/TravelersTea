@@ -7,6 +7,10 @@ export const registerUserAsync = createAsyncThunk(
   async (userData, { rejectWithValue }) => {
     try {
       const response = await usersService.registerUser(userData)
+      localStorage.setItem(
+        'travelersTea_accessToken',
+        response.data.accessToken,
+      )
       return response.data
     } catch (error) {
       return rejectWithValue({ message: error.response.data.error })
@@ -19,6 +23,10 @@ export const loginUserAsync = createAsyncThunk(
   async (userData, { rejectWithValue }) => {
     try {
       const response = await usersService.loginUser(userData)
+      localStorage.setItem(
+        'travelersTea_accessToken',
+        response.data.accessToken,
+      )
       return response.data
     } catch (error) {
       return rejectWithValue({ message: error.response.data.error })

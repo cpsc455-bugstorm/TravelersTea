@@ -99,6 +99,7 @@ class UserController {
       const accessToken = jwt.sign(
         {
           username: userData.username,
+          userId: userData._id,
         },
         config.server.jwtSecret,
       )
