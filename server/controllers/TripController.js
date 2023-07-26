@@ -114,7 +114,7 @@ class TripController {
       if (id) {
         savedTrip = await TripModel.findOneAndUpdate(
           { userId: userId, _id: new mongoose.Types.ObjectId(id) }, // ensure user1 cannot edit user2's trip
-          tripData,
+          filteredTripData,
           { new: true, session },
         ).lean()
         if (!savedTrip) {
