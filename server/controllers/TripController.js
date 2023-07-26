@@ -75,7 +75,7 @@ class TripController {
     return stagesToAddFromDay
   }
 
-  async generateAndSaveTrip(userId, tripData, id = null) {
+  async generateAndSaveTrip(userId, tripData, id = null, session) {
     let filteredTripData = tripData.colloquialPrompt
       ? await generateTripsMetadata(tripData.colloquialPrompt)
       : tripData
@@ -88,91 +88,124 @@ class TripController {
       throw error
     }
 
+    const longLatObject = await getCoordinatesFromLocation(
+      '',
+      filteredTripData.tripLocation,
+      false,
+    )
+    const tripToSave = {
+      tripName: filteredTripData.tripName,
+      tripLocation: filteredTripData.tripLocation,
+      stagesPerDay: filteredTripData.stagesPerDay,
+      budget: filteredTripData.budget,
+      numberOfDays: filteredTripData.numberOfDays,
+      tripLongitude: longLatObject.lng,
+      tripLatitude: longLatObject.lat,
+      tripNotes: filteredTripData.tripNotes,
+      isPublic: false,
+    }
+
+    if (!id) {
+      tripToSave.userId = userId
+    }
+
+    let savedTrip
+    if (id) {
+      savedTrip = await TripModel.findOneAndUpdate(
+        { userId: userId, _id: new mongoose.Types.ObjectId(id) }, // ensure user1 cannot edit user2's trip
+        tripData,
+        { new: true, session },
+      ).lean()
+      if (!savedTrip) {
+        const error = new Error('Trip to edit not found')
+        error.statusCode = 404
+        throw error
+      }
+      await this.stageController.deleteStagesByTripId(savedTrip._id, session)
+    } else {
+      const _savedTrip = await TripModel.create([tripToSave], { session })
+      savedTrip = _savedTrip[0].toObject()
+    }
+
+    const { days } = generatedTripWithStages
+    const stagesToAdd = await this.parseStagesFromMultipleDays(
+      days,
+      savedTrip._id,
+      filteredTripData.tripLocation,
+      session,
+    )
+    await this.stageController.createManyStages(stagesToAdd, session)
+
+    let savedTripDTO = savedTrip
+    delete savedTripDTO.userId
+
+    return savedTripDTO
+  }
+
+  async createTrip(userId, tripData) {
+    const session = await mongoose.startSession()
+    session.startTransaction()
     try {
-      const longLatObject = await getCoordinatesFromLocation(
-        '',
-        filteredTripData.tripLocation,
-        false,
+      const newTrip = await this.generateAndSaveTrip(
+        userId,
+        tripData,
+        null,
+        session,
       )
-      const tripToSave = {
-        tripName: filteredTripData.tripName,
-        tripLocation: filteredTripData.tripLocation,
-        stagesPerDay: filteredTripData.stagesPerDay,
-        budget: filteredTripData.budget,
-        numberOfDays: filteredTripData.numberOfDays,
-        tripLongitude: longLatObject.lng,
-        tripLatitude: longLatObject.lat,
-        tripNotes: filteredTripData.tripNotes,
-        isPublic: false,
-      }
-
-      if (!id) {
-        tripToSave.userId = userId
-      }
-
-      let savedTrip
-      if (id) {
-        savedTrip = await TripModel.findOneAndUpdate(
-          { userId: userId, _id: new mongoose.Types.ObjectId(id) }, // ensure user1 cannot edit user2's trip
-          tripData,
-          { new: true },
-        ).lean()
-        if (!savedTrip) {
-          const error = new Error('Trip to edit not found')
-          error.statusCode = 404
-          throw error
-        }
-        await this.stageController.deleteStagesByTripId(savedTrip._id)
-      } else {
-        const _savedTrip = await TripModel.create(tripToSave)
-        savedTrip = _savedTrip.toObject()
-      }
-
-      const { days } = generatedTripWithStages
-      const stagesToAdd = await this.parseStagesFromMultipleDays(
-        days,
-        savedTrip._id,
-        filteredTripData.tripLocation,
-      )
-      await this.stageController.createManyStages(stagesToAdd)
-      let savedTripDTO = savedTrip
-      delete savedTripDTO.userId
-      return savedTripDTO
+      await session.commitTransaction()
+      session.endSession()
+      return newTrip
     } catch (error) {
-      error.message = 'Could not save trip | ' + error.message
+      await session.abortTransaction()
+      session.endSession()
       throw error
     }
   }
 
-  async createTrip(userId, tripData) {
-    return this.generateAndSaveTrip(userId, tripData)
-  }
-
   async updateTrip(userId, id, tripData) {
-    if (
-      tripData.tripName &&
-      !tripData.tripLocation &&
-      !tripData.stagesPerDay &&
-      !tripData.budget &&
-      !tripData.numberOfDays &&
-      !tripData.tripNotes
-    ) {
-      const existingTrip = await TripModel.findOne({
-        userId: userId,
-        _id: new mongoose.Types.ObjectId(id),
-      })
-      if (!existingTrip) {
-        const error = new Error('Trip could not be found')
-        error.statusCode = 404
-        throw error
+    const session = await mongoose.startSession()
+    session.startTransaction()
+    try {
+      if (
+        tripData.tripName &&
+        !tripData.tripLocation &&
+        !tripData.stagesPerDay &&
+        !tripData.budget &&
+        !tripData.numberOfDays &&
+        !tripData.tripNotes
+      ) {
+        const existingTrip = await TripModel.findOne({
+          userId: userId,
+          _id: new mongoose.Types.ObjectId(id),
+        }).session(session)
+        if (!existingTrip) {
+          const error = new Error('Trip could not be found')
+          error.statusCode = 404
+          throw error
+        }
+        existingTrip.tripName = tripData.tripName
+        await existingTrip.save({ session })
+        const existingTripDTO = existingTrip.toObject()
+        delete existingTripDTO.userId
+
+        await session.commitTransaction()
+        session.endSession()
+        return existingTripDTO
+      } else {
+        const updatedTrip = await this.generateAndSaveTrip(
+          userId,
+          tripData,
+          id,
+          session,
+        )
+        await session.commitTransaction()
+        session.endSession()
+        return updatedTrip
       }
-      existingTrip.tripName = tripData.tripName
-      await existingTrip.save()
-      const existingTripDTO = existingTrip.toObject()
-      delete existingTripDTO.userId
-      return existingTripDTO
-    } else {
-      return this.generateAndSaveTrip(userId, tripData, id)
+    } catch (error) {
+      await session.abortTransaction()
+      session.endSession()
+      throw error
     }
   }
 
