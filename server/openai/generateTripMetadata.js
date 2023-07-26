@@ -30,7 +30,7 @@ async function generateTripsMetadata(prompt) {
     {
       role: 'system',
       content: `You are an AI that generates information based on user's travel plan. You should try your best and make appropriate assumptions, 
-        for example if no destination is mentioned then come up with somewhere fitting then fill in that to tripLocation (this needs to be a specific destination), if other fields are not mentioned and cannot be assumed then default to a default value.
+        for example if some fields are not mentioned and cannot be assumed then default to a default value, but you must come up with a best fitting destination (tripLocation) if it is not provided.
         Respond with ONLY JSON. ONLY respond with the following format, do not include any descriptions or codeblocks, I should be able to parse the output to a JavaScript Object.
         The response needs to be formatted exactly like the following structure, it is important to fill in all fields (except tripNotes which is optional):
         '''

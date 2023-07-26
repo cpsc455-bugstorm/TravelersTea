@@ -88,58 +88,62 @@ class TripController {
       throw error
     }
 
-    const longLatObject = await getCoordinatesFromLocation(
-      '',
-      filteredTripData.tripLocation,
-      false,
-    )
-    const tripToSave = {
-      tripName: filteredTripData.tripName,
-      tripLocation: filteredTripData.tripLocation,
-      stagesPerDay: filteredTripData.stagesPerDay,
-      budget: filteredTripData.budget,
-      numberOfDays: filteredTripData.numberOfDays,
-      tripLongitude: longLatObject.lng,
-      tripLatitude: longLatObject.lat,
-      tripNotes: filteredTripData.tripNotes,
-      isPublic: false,
-    }
-
-    if (!id) {
-      tripToSave.userId = userId
-    }
-
-    let savedTrip
-    if (id) {
-      savedTrip = await TripModel.findOneAndUpdate(
-        { userId: userId, _id: new mongoose.Types.ObjectId(id) }, // ensure user1 cannot edit user2's trip
-        tripData,
-        { new: true, session },
-      ).lean()
-      if (!savedTrip) {
-        const error = new Error('Trip to edit not found')
-        error.statusCode = 404
-        throw error
+    try {
+      const longLatObject = await getCoordinatesFromLocation(
+        '',
+        filteredTripData.tripLocation,
+        false,
+      )
+      const tripToSave = {
+        tripName: filteredTripData.tripName,
+        tripLocation: filteredTripData.tripLocation,
+        stagesPerDay: filteredTripData.stagesPerDay,
+        budget: filteredTripData.budget,
+        numberOfDays: filteredTripData.numberOfDays,
+        tripLongitude: longLatObject.lng,
+        tripLatitude: longLatObject.lat,
+        tripNotes: filteredTripData.tripNotes,
+        isPublic: false,
       }
-      await this.stageController.deleteStagesByTripId(savedTrip._id, session)
-    } else {
-      const _savedTrip = await TripModel.create([tripToSave], { session })
-      savedTrip = _savedTrip[0].toObject()
+
+      if (!id) {
+        tripToSave.userId = userId
+      }
+
+      let savedTrip
+      if (id) {
+        savedTrip = await TripModel.findOneAndUpdate(
+          { userId: userId, _id: new mongoose.Types.ObjectId(id) }, // ensure user1 cannot edit user2's trip
+          tripData,
+          { new: true, session },
+        ).lean()
+        if (!savedTrip) {
+          const error = new Error('Trip to edit not found')
+          error.statusCode = 404
+          throw error
+        }
+        await this.stageController.deleteStagesByTripId(savedTrip._id, session)
+      } else {
+        const _savedTrip = await TripModel.create([tripToSave], { session })
+        savedTrip = _savedTrip[0].toObject()
+      }
+
+      const { days } = generatedTripWithStages
+      const stagesToAdd = await this.parseStagesFromMultipleDays(
+        days,
+        savedTrip._id,
+        filteredTripData.tripLocation,
+      )
+      await this.stageController.createManyStages(stagesToAdd, session)
+
+      let savedTripDTO = savedTrip
+      delete savedTripDTO.userId
+
+      return savedTripDTO
+    } catch (error) {
+      error.message = 'Could not save trip | ' + error.message
+      throw error
     }
-
-    const { days } = generatedTripWithStages
-    const stagesToAdd = await this.parseStagesFromMultipleDays(
-      days,
-      savedTrip._id,
-      filteredTripData.tripLocation,
-      session,
-    )
-    await this.stageController.createManyStages(stagesToAdd, session)
-
-    let savedTripDTO = savedTrip
-    delete savedTripDTO.userId
-
-    return savedTripDTO
   }
 
   async createTrip(userId, tripData) {
@@ -153,12 +157,12 @@ class TripController {
         session,
       )
       await session.commitTransaction()
-      session.endSession()
       return newTrip
     } catch (error) {
       await session.abortTransaction()
-      session.endSession()
       throw error
+    } finally {
+      await session.endSession()
     }
   }
 
@@ -187,7 +191,6 @@ class TripController {
         await existingTrip.save({ session })
         const existingTripDTO = existingTrip.toObject()
         delete existingTripDTO.userId
-
         await session.commitTransaction()
         session.endSession()
         return existingTripDTO
@@ -199,13 +202,13 @@ class TripController {
           session,
         )
         await session.commitTransaction()
-        session.endSession()
         return updatedTrip
       }
     } catch (error) {
       await session.abortTransaction()
-      session.endSession()
       throw error
+    } finally {
+      await session.endSession()
     }
   }
 
