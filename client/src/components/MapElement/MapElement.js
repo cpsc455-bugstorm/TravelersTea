@@ -9,9 +9,9 @@ import {
   VANCOUVER_LONGITUDE,
   ZOOM_GLOBE_LEVEL,
 } from '../../constants/mapDefaultInfo'
+import { createMapMarker } from '../../util/mapMarker'
 import { EditTripForm, NewTripForm } from '../TripElement'
 import { EditStageForm } from '../TripElement/EditStageForm'
-import { createMapMarker } from '../../util/mapMarker'
 
 MapElement.propTypes = {
   className: PropTypes.string,
@@ -173,6 +173,45 @@ export function MapElement({ className }) {
     setMap(map)
     return () => map.remove()
   }, [])
+
+  useEffect(() => {
+    if (stagesByDay.length > 0) {
+      const markers = addMarkersToMap()
+
+      // Calculate the bounding box
+      let minLat = Infinity
+      let maxLat = -Infinity
+      let minLng = Infinity
+      let maxLng = -Infinity
+      console.log(stagesByDay)
+
+      for (let day of stagesByDay) {
+        for (let stage of day) {
+          minLat = Math.min(minLat, stage.stageLatitude)
+          maxLat = Math.max(maxLat, stage.stageLatitude)
+          minLng = Math.min(minLng, stage.stageLongitude)
+          maxLng = Math.max(maxLng, stage.stageLongitude)
+        }
+      }
+      console.log(
+        `minLat: ${minLat}, maxLat: ${maxLat}, minLng: ${minLng}, maxLng: ${maxLng}`,
+      )
+      // Adjust the map's view
+      if (map) {
+        map.fitBounds(
+          [
+            [minLng, minLat],
+            [maxLng, maxLat],
+          ],
+          { padding: 100 },
+        )
+      }
+
+      return () => {
+        markers.forEach((marker) => marker.remove())
+      }
+    }
+  }, [stagesByDay, addMarkersToMap, retryCounter, map])
 
   return (
     <div className={`fixed left-0 top-0 ${className}`}>

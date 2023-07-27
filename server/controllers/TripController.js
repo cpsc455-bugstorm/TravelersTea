@@ -39,32 +39,61 @@ class TripController {
   async parseStagesFromMultipleDays(days, tripId, tripLocation) {
     const _tripId = tripId
     const stagesToAdd = []
+    let totalX = 0
+    let totalY = 0
+    let totalZ = 0
     const shuffledColorIndexes = getShuffledIndexes()
 
     for (let day of days) {
       const index = days.indexOf(day)
       const colorNumber = shuffledColorIndexes[index % NUM_TAILWIND_COLORS]
-      const stagesToAddFromDay = await this.parseStagesFromDay(
+      const { stagesToAddFromDay, x, y, z } = await this.parseStagesFromDay(
         day,
         _tripId,
         tripLocation,
         colorNumber,
       )
+      totalX += x
+      totalY += y
+      totalZ += z
       for (let stage of stagesToAddFromDay) {
         stagesToAdd.push(stage)
       }
     }
-    return stagesToAdd
+
+    const avgX = totalX / days.length
+    const avgY = totalY / days.length
+    const avgZ = totalZ / days.length
+
+    const lon = Math.atan2(avgY, avgX)
+    const hyp = Math.sqrt(avgX * avgX + avgY * avgY)
+    const lat = Math.atan2(avgZ, hyp)
+
+    const centerLat = lat * (180 / Math.PI)
+    const centerLng = lon * (180 / Math.PI)
+
+    return { stagesToAdd, centerLat, centerLng }
   }
 
   async parseStagesFromDay(day, tripId, tripLocation, colorNumber) {
     const stagesToAddFromDay = []
+    let totalX = 0
+    let totalY = 0
+    let totalZ = 0
+
     for (let stage of day.stages) {
       const longLatObject = await getCoordinatesFromLocation(
         stage.stageLocationName,
         tripLocation,
         true,
       )
+      const lat = longLatObject.location.lat * (Math.PI / 180)
+      const lon = longLatObject.location.lng * (Math.PI / 180)
+
+      totalX += Math.cos(lat) * Math.cos(lon)
+      totalY += Math.cos(lat) * Math.sin(lon)
+      totalZ += Math.sin(lat)
+
       const stageToAddFromDay = {
         tripId,
         dayIndex: day.day,
@@ -79,7 +108,13 @@ class TripController {
       }
       stagesToAddFromDay.push(stageToAddFromDay)
     }
-    return stagesToAddFromDay
+
+    return {
+      stagesToAddFromDay,
+      x: totalX / day.stages.length,
+      y: totalY / day.stages.length,
+      z: totalZ / day.stages.length,
+    }
   }
 
   async generateAndSaveTrip(userId, tripData, id = null) {
@@ -96,19 +131,12 @@ class TripController {
     }
 
     try {
-      const longLatObject = await getCoordinatesFromLocation(
-        '',
-        filteredTripData.tripLocation,
-        false,
-      )
       const tripToSave = {
         tripName: filteredTripData.tripName,
         tripLocation: filteredTripData.tripLocation,
         stagesPerDay: filteredTripData.stagesPerDay,
         budget: filteredTripData.budget,
         numberOfDays: filteredTripData.numberOfDays,
-        tripLongitude: longLatObject.lng,
-        tripLatitude: longLatObject.lat,
         tripNotes: filteredTripData.tripNotes,
         isPublic: false,
       }
@@ -136,13 +164,23 @@ class TripController {
       }
 
       const { days } = generatedTripWithStages
-      const stagesToAdd = await this.parseStagesFromMultipleDays(
-        days,
-        savedTrip._id,
-        filteredTripData.tripLocation,
-      )
+      const { stagesToAdd, centerLat, centerLng } =
+        await this.parseStagesFromMultipleDays(
+          days,
+          savedTrip._id,
+          filteredTripData.tripLocation,
+        )
+
       // this adds stages so do the part before this
       await this.stageController.createManyStages(stagesToAdd)
+
+      tripToSave.tripLongitude = centerLng
+      tripToSave.tripLatitude = centerLat
+
+      savedTrip = await TripModel.findByIdAndUpdate(savedTrip._id, tripToSave, {
+        new: true,
+      })
+
       let savedTripDTO = savedTrip
       delete savedTripDTO.userId
       return savedTripDTO
