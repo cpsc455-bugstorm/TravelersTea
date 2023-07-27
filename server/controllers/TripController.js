@@ -36,6 +36,13 @@ class TripController {
     }
   }
 
+  /**
+   * https://en.wikipedia.org/wiki/Spherical_coordinate_system#Cartesian_coordinates
+   * https://medium.com/fishbrain/finding-the-center-point-in-a-cluster-of-coordinates-e607cdf75fd5
+   *
+   * Calculates the geographical center of all stages using spherical coordinates.
+   * Returns an array of stages to add, along with the latitude and longitude of the center.
+   */
   async parseStagesFromMultipleDays(days, tripId, tripLocation) {
     const _tripId = tripId
     const stagesToAdd = []
@@ -75,6 +82,10 @@ class TripController {
     return { stagesToAdd, centerLat, centerLng }
   }
 
+  /**
+   * Calculates the geographical center of all stages in the day using spherical coordinates.
+   * Returns an array of stages to add from the day, along with the x, y, and z coordinates of the center.
+   */
   async parseStagesFromDay(day, tripId, tripLocation, colorNumber) {
     const stagesToAddFromDay = []
     let totalX = 0

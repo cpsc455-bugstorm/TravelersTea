@@ -183,7 +183,6 @@ export function MapElement({ className }) {
       let maxLat = -Infinity
       let minLng = Infinity
       let maxLng = -Infinity
-      console.log(stagesByDay)
 
       for (let day of stagesByDay) {
         for (let stage of day) {
@@ -193,9 +192,7 @@ export function MapElement({ className }) {
           maxLng = Math.max(maxLng, stage.stageLongitude)
         }
       }
-      console.log(
-        `minLat: ${minLat}, maxLat: ${maxLat}, minLng: ${minLng}, maxLng: ${maxLng}`,
-      )
+
       // Adjust the map's view
       if (map) {
         map.fitBounds(
