@@ -1,8 +1,8 @@
 # TravelersTea
 
-Welcome to Traveler’s Tea, an intuitive and personalized travel planning web app that turns your travel dreams into detailed itineraries. 
+Welcome to Traveler’s Tea, an intuitive and personalized travel planning web app that turns your travel dreams into detailed itineraries.
 
-Built around user preferences, the app delivers curated plans comprising places to visit, descriptions, and more, all at your fingertips. 
+Built around user preferences, the app delivers curated plans comprising places to visit, descriptions, and more, all at your fingertips.
 
 Alongside its planning capabilities, TravelersTea thrives on the collective wisdom of its user community, featuring plan sharing with others, and shaping a dynamic and interactive travel planning experience.
 
