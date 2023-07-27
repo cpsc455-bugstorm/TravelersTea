@@ -38,10 +38,6 @@ class TripController {
     const _tripId = tripId
     const stagesToAdd = []
     const shuffledColorIndexes = getShuffledIndexes()
-    let maxLat = Number.MIN_VALUE
-    let maxLng = Number.MIN_VALUE
-    let minLat = Number.MAX_VALUE
-    let minLng = Number.MAX_VALUE
 
     for (let day of days) {
       const index = days.indexOf(day)
@@ -54,17 +50,9 @@ class TripController {
       )
       for (let stage of stagesToAddFromDay) {
         stagesToAdd.push(stage)
-        maxLat = Math.max(maxLat, stage.stageLatitude)
-        minLat = Math.min(minLat, stage.stageLatitude)
-        maxLng = Math.max(maxLng, stage.stageLongitude)
-        minLng = Math.min(minLng, stage.stageLongitude)
       }
     }
-    console.log(maxLat, minLat, maxLng, minLng)
-    const centerLat = (maxLat + minLat) / 2
-    const centerLng = (maxLng + minLng) / 2
-    console.log(centerLat, centerLng)
-    return { stagesToAdd, centerLat, centerLng }
+    return stagesToAdd
   }
 
   async parseStagesFromDay(day, tripId, tripLocation, colorNumber) {
@@ -106,12 +94,19 @@ class TripController {
     }
 
     try {
+      const longLatObject = await getCoordinatesFromLocation(
+        '',
+        filteredTripData.tripLocation,
+        false,
+      )
       const tripToSave = {
         tripName: filteredTripData.tripName,
         tripLocation: filteredTripData.tripLocation,
         stagesPerDay: filteredTripData.stagesPerDay,
         budget: filteredTripData.budget,
         numberOfDays: filteredTripData.numberOfDays,
+        tripLongitude: longLatObject.lng,
+        tripLatitude: longLatObject.lat,
         tripNotes: filteredTripData.tripNotes,
       }
 
@@ -130,23 +125,13 @@ class TripController {
       }
 
       const { days } = generatedTripWithStages
-      const { stagesToAdd, centerLat, centerLng } =
-        await this.parseStagesFromMultipleDays(
-          days,
-          savedTrip._id,
-          filteredTripData.tripLocation,
-        )
+      const stagesToAdd = await this.parseStagesFromMultipleDays(
+        days,
+        savedTrip._id,
+        filteredTripData.tripLocation,
+      )
+      // this adds stages so do the part before this
       await this.stageController.createManyStages(stagesToAdd)
-
-      tripToSave.tripLongitude = centerLng
-      tripToSave.tripLatitude = centerLat
-
-      console.log(tripToSave)
-
-      savedTrip = await TripModel.findByIdAndUpdate(id, tripToSave, {
-        new: true,
-      })
-
       return savedTrip.toObject()
     } catch (error) {
       if (config.server.env === 'DEV')
