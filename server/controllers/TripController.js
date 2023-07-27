@@ -38,10 +38,10 @@ class TripController {
     const _tripId = tripId
     const stagesToAdd = []
     const shuffledColorIndexes = getShuffledIndexes()
-    let maxLat = Number.MIN_VALUE
-    let maxLng = Number.MIN_VALUE
-    let minLat = Number.MAX_VALUE
-    let minLng = Number.MAX_VALUE
+    let maxLat = Number.NEGATIVE_INFINITY
+    let minLat = Number.POSITIVE_INFINITY
+    let maxLng = Number.NEGATIVE_INFINITY
+    let minLng = Number.POSITIVE_INFINITY
 
     for (let day of days) {
       const index = days.indexOf(day)
@@ -143,7 +143,7 @@ class TripController {
 
       console.log(tripToSave)
 
-      savedTrip = await TripModel.findByIdAndUpdate(id, tripToSave, {
+      savedTrip = await TripModel.findByIdAndUpdate(savedTrip._id, tripToSave, {
         new: true,
       })
 
