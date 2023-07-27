@@ -184,7 +184,12 @@ export function MapElement({ className }) {
       let minLng = Infinity
       let maxLng = -Infinity
 
-      for (let day of stagesByDay) {
+      const daysToConsider =
+        activeDayNumber === -1
+          ? stagesByDay
+          : [stagesByDay[activeDayNumber - 1]]
+
+      for (let day of daysToConsider) {
         for (let stage of day) {
           minLat = Math.min(minLat, stage.stageLatitude)
           maxLat = Math.max(maxLat, stage.stageLatitude)
@@ -208,7 +213,7 @@ export function MapElement({ className }) {
         markers.forEach((marker) => marker.remove())
       }
     }
-  }, [stagesByDay, addMarkersToMap, retryCounter, map])
+  }, [stagesByDay, addMarkersToMap, retryCounter, map, activeDayNumber])
 
   return (
     <div className={`fixed left-0 top-0 ${className}`}>
