@@ -66,7 +66,7 @@ export function SeeMoreDrawer() {
         </div>
       )
     })
-  }, [dispatch, stagesByDay])
+  }, [stagesByDay])
 
   const renderShowMoreLessButton = useMemo(() => {
     return (
