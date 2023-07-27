@@ -3,6 +3,7 @@ const generateTrip = require('../openai/generateTrip')
 const generateTripsMetadata = require('../openai/generateTripMetadata')
 const getCoordinatesFromLocation = require('../googleapi/googleCoordinates')
 const config = require('../config/config')
+const mongoose = require('mongoose')
 
 const NUM_TAILWIND_COLORS = 17
 
@@ -21,16 +22,17 @@ class TripController {
     }
   }
 
-  async getAll(userId) {
+  async getAllByUserId(userId) {
     if (!userId) {
       throw new Error('User ID is required to fetch trips.')
     }
     try {
-      return await TripModel.find({ userId }).lean()
+      const trips = await TripModel.find({ userId }).lean()
+      trips.map((trip) => delete trip.userId)
+      return trips
     } catch (error) {
-      if (config.server.env === 'DEV')
-        console.error('Error while fetching all trips:', error)
-      throw new Error('Could not fetch all trips')
+      error.message += 'Could not fetch all trips | ' + error.message
+      throw error
     }
   }
 
@@ -88,9 +90,9 @@ class TripController {
     let generatedTripWithStages
     try {
       generatedTripWithStages = await generateTrip(filteredTripData)
-    } catch (e) {
-      console.error('Error while generating itinerary:', e)
-      throw e
+    } catch (error) {
+      error.message = 'Error while generating trip | ' + error.message
+      throw error
     }
 
     try {
@@ -108,6 +110,7 @@ class TripController {
         tripLongitude: longLatObject.lng,
         tripLatitude: longLatObject.lat,
         tripNotes: filteredTripData.tripNotes,
+        isPublic: false,
       }
 
       if (!id) {
@@ -116,12 +119,20 @@ class TripController {
 
       let savedTrip
       if (id) {
-        savedTrip = await TripModel.findByIdAndUpdate(id, tripToSave, {
-          new: true,
-        })
+        savedTrip = await TripModel.findOneAndUpdate(
+          { userId: userId, _id: new mongoose.Types.ObjectId(id) }, // ensure user1 cannot edit user2's trip
+          tripData,
+          { new: true },
+        ).lean()
+        if (!savedTrip) {
+          const error = new Error('Trip to edit not found')
+          error.statusCode = 404
+          throw error
+        }
         await this.stageController.deleteStagesByTripId(savedTrip._id)
       } else {
-        savedTrip = await TripModel.create(tripToSave)
+        const _savedTrip = await TripModel.create(tripToSave)
+        savedTrip = _savedTrip.toObject()
       }
 
       const { days } = generatedTripWithStages
@@ -132,11 +143,12 @@ class TripController {
       )
       // this adds stages so do the part before this
       await this.stageController.createManyStages(stagesToAdd)
-      return savedTrip.toObject()
+      let savedTripDTO = savedTrip
+      delete savedTripDTO.userId
+      return savedTripDTO
     } catch (error) {
-      if (config.server.env === 'DEV')
-        console.error('Error while saving trip:', error)
-      throw new Error('Could not save trip')
+      error.message = 'Could not save trip | ' + error.message
+      throw error
     }
   }
 
@@ -144,7 +156,7 @@ class TripController {
     return this.generateAndSaveTrip(userId, tripData)
   }
 
-  async updateTrip(id, tripData) {
+  async updateTrip(userId, id, tripData) {
     if (
       tripData.tripName &&
       !tripData.tripLocation &&
@@ -153,23 +165,42 @@ class TripController {
       !tripData.numberOfDays &&
       !tripData.tripNotes
     ) {
-      const existingTrip = await TripModel.findById(id)
+      const existingTrip = await TripModel.findOne({
+        userId: userId,
+        _id: new mongoose.Types.ObjectId(id),
+      })
+      if (!existingTrip) {
+        const error = new Error('Trip could not be found')
+        error.statusCode = 404
+        throw error
+      }
       existingTrip.tripName = tripData.tripName
       await existingTrip.save()
-      return existingTrip
+      const existingTripDTO = existingTrip.toObject()
+      delete existingTripDTO.userId
+      return existingTripDTO
     } else {
-      return this.generateAndSaveTrip(null, tripData, id)
+      return this.generateAndSaveTrip(userId, tripData, id)
     }
   }
 
-  async deleteTrip(id) {
+  async deleteTrip(userId, id) {
     try {
       await this.stageController.deleteStagesByTripId(id)
-      return await TripModel.findByIdAndDelete(id).lean()
+      const deletedTrip = await TripModel.findOneAndDelete({
+        userId: userId,
+        _id: new mongoose.Types.ObjectId(id), // ensure user1 cannot delete user2's trips
+      }).lean()
+      if (!deletedTrip) {
+        const error = new Error('Trip could not be found')
+        error.statusCode = 404
+        throw error
+      }
+      delete deletedTrip.userId
+      return deletedTrip
     } catch (error) {
-      if (config.server.env === 'DEV')
-        console.error('Error while deleting trip:', error)
-      throw new Error('Could not delete trip')
+      error.message = 'Could not delete trip | ' + error.message
+      throw error
     }
   }
 

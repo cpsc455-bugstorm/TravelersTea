@@ -13,6 +13,7 @@ const tripSchema = new mongoose.Schema({
   numberOfDays: Number,
   tripLongitude: Number,
   tripLatitude: Number,
+  isPublic: Boolean,
   tripNotes: String,
 })
 

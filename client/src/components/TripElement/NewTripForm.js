@@ -17,7 +17,6 @@ export function NewTripForm() {
   const [compressed, setCompressed] = useState(false)
 
   const appView = useSelector((state) => state.view.appView)
-  const user = useSelector((state) => state.users.user)
 
   const newTripModalIsOpen = useSelector(
     (state) => state.modals.newTripModalIsOpen,
@@ -32,12 +31,10 @@ export function NewTripForm() {
     const tripMetadata = compressed
       ? {
           colloquialPrompt: data.colloquialPrompt,
-          userId: user.id,
         }
       : {
           ...data,
           tripName: 'Trip to ' + data.tripLocation,
-          userId: user.id,
         }
     try {
       const newTrip = await dispatch(createTripAsync(tripMetadata)).unwrap()

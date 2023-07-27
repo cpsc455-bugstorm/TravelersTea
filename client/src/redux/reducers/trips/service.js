@@ -1,20 +1,30 @@
 import axios from 'axios'
 import { API_URL } from '../../../constants/API_URL'
 
-export const fetchTrips = async (userId) => {
-  return await axios.get(`${API_URL}/trips`, { params: { userId } })
+const axiosWithToken = axios.create({
+  headers: {
+    common: {
+      Authorization: `Bearer ${localStorage.getItem(
+        'travelersTea_accessToken',
+      )}`,
+    },
+  },
+})
+
+export const fetchTrips = async () => {
+  return await axiosWithToken.get(`${API_URL}/trips`)
 }
 
 export const createTrip = async (tripData) => {
-  return await axios.post(`${API_URL}/trips`, tripData)
+  return await axiosWithToken.post(`${API_URL}/trips`, tripData)
 }
 
 export const updateTrip = async (id, tripData) => {
-  return await axios.patch(`${API_URL}/trips/${id}`, tripData)
+  return await axiosWithToken.patch(`${API_URL}/trips/${id}`, tripData)
 }
 
 export const deleteTrip = async (id) => {
-  return await axios.delete(`${API_URL}/trips/${id}`)
+  return await axiosWithToken.delete(`${API_URL}/trips/${id}`)
 }
 
 const tripService = {

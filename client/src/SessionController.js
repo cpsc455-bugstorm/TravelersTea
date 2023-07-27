@@ -79,7 +79,7 @@ export function SessionController({ children }) {
       tripsStates.status === REQUEST_STATE.IDLE &&
       userStates.status === REQUEST_STATE.LOGGEDIN
     ) {
-      dispatch(fetchTripsAsync(userStates.user.id))
+      dispatch(fetchTripsAsync())
     }
   }, [dispatch, tripsStates.status, userStates])
 
