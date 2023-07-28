@@ -7,7 +7,7 @@ class TripRoute {
     this.router = express.Router()
     this.router.use(authMiddleware)
     this.router.get('', this.getAllByUserId.bind(this))
-    // this.router.get('', this.getTripById.bind(this))
+    this.router.get('/:id', this.getTripById.bind(this))
     this.router.post('', this.create.bind(this))
     this.router.patch('/:id', this.update.bind(this))
     this.router.delete('/:id', this.delete.bind(this))
@@ -19,8 +19,8 @@ class TripRoute {
 
   async getTripById(req, res) {
     try {
-      const response = await controllers.tripController.getTrip(req.userId)
-      res.status(200).json(response)
+      const response = await controllers.tripController.getTrip(req.params.id)
+      res.status(200).json([response])
     } catch (err) {
       res.status(500).json({ error: err.toString() })
     }
