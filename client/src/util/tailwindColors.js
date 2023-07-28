@@ -15,7 +15,7 @@ const tailwindColorsMap = {
   indigo: '#818cf8',
   violet: '#818cf8',
   purple: '#a855f7',
-  fuchsia: '#a855f7',
+  fuchsia: '#e879f9',
   pink: '#f879a8',
   rose: '#fecdd3',
   gray: '#9ca3af',

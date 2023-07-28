@@ -8,10 +8,9 @@ import PropTypes from 'prop-types'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppView } from '../../constants/enums'
-import { ZOOM_CITY_LEVEL, DEFAULT_SPEED } from '../../constants/mapDefaultInfo'
+import { DEFAULT_SPEED, ZOOM_CITY_LEVEL } from '../../constants/mapDefaultInfo'
 import {
   changeCoordinatesAndZoom,
-  clearAllMarkersAndAdd_Store,
   resetMap,
 } from '../../redux/reducers/mapSlice'
 import { openEditTripModal } from '../../redux/reducers/modalsSlice'
@@ -25,6 +24,7 @@ import {
   setActiveTripId,
 } from '../../redux/reducers/viewSlice'
 import { Button, Modal } from '../common'
+import { resetStages } from '../../redux/reducers/stage/stageSlice'
 
 TripEntry.propTypes = {
   id: PropTypes.string.isRequired,
@@ -77,6 +77,7 @@ export function TripEntry({ id, buttonClassName, trip }) {
     dispatch(setActiveTripId(undefined))
     dispatch(resetView())
     dispatch(resetMap())
+    dispatch(resetStages())
   }
 
   useEffect(() => {
@@ -105,16 +106,6 @@ export function TripEntry({ id, buttonClassName, trip }) {
               zoom: ZOOM_CITY_LEVEL,
               speed: DEFAULT_SPEED,
             }),
-          )
-          dispatch(
-            clearAllMarkersAndAdd_Store([
-              {
-                longitude: trip.tripLongitude,
-                latitude: trip.tripLatitude,
-                emoji: '📍',
-                label: trip.tripLocation,
-              },
-            ]),
           )
         }}
         className={buttonClassName}

@@ -3,10 +3,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { DEFAULT_SPEED, ZOOM_CITY_LEVEL } from '../../constants/mapDefaultInfo'
-import {
-  changeCoordinatesAndZoom,
-  clearAllMarkersAndAdd_Store,
-} from '../../redux/reducers/mapSlice'
+import { changeCoordinatesAndZoom } from '../../redux/reducers/mapSlice'
 import { closeEditTripModal } from '../../redux/reducers/modalsSlice'
 import { updateTripAsync } from '../../redux/reducers/trips/thunks'
 import { Modal } from '../common'
@@ -53,16 +50,6 @@ export function EditTripForm() {
           zoom: ZOOM_CITY_LEVEL,
           speed: DEFAULT_SPEED,
         }),
-      )
-      dispatch(
-        clearAllMarkersAndAdd_Store([
-          {
-            longitude: updatedTrip.tripLongitude,
-            latitude: updatedTrip.tripLatitude,
-            emoji: '📍',
-            label: updatedTrip.tripLocation,
-          },
-        ]),
       )
     } catch (error) {
       console.error(error)

@@ -2,7 +2,11 @@ import CloseIcon from '@mui/icons-material/Close'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppView } from '../../constants/enums'
-import { setAppView, setShowSidePanel } from '../../redux/reducers/viewSlice'
+import {
+  setActiveDayNumber,
+  setAppView,
+  setShowSidePanel,
+} from '../../redux/reducers/viewSlice'
 import { getBg400, getTailwindName } from '../../util/tailwindColors'
 import { Button } from '../common'
 import MugRating from './MugRating'
@@ -63,7 +67,10 @@ export function TripSidePanelSingle() {
         }`}
     >
       <button
-        onClick={() => dispatch(setShowSidePanel(false))}
+        onClick={() => {
+          dispatch(setShowSidePanel(false))
+          dispatch(setActiveDayNumber(-1))
+        }}
         className={
           'absolute right-3 top-3 h-12 w-12 rounded-md text-slate-400 hover:bg-slate-200/10'
         }

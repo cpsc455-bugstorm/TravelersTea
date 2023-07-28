@@ -71,7 +71,6 @@ async function generateTrip(constraints) {
                   stageLocationName: String,
                   stageDescription: String,
                   stageEmoji: String (best emoji representation of stage),
-                  stageColor: Number (Random number between 1-17)
                 }
               ]
             }
