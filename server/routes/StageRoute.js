@@ -30,7 +30,10 @@ class StageRoute {
     if (!stageId) res.status(400).json({ error: 'Missing stageId parameter' })
 
     try {
-      const response = await controllers.stageController.getStage(stageId)
+      const response = await controllers.stageController.getStage(
+        req.userId,
+        stageId,
+      )
       res.status(200).json(response)
     } catch (err) {
       res.status(500).json({ error: err.toString() })
@@ -46,6 +49,7 @@ class StageRoute {
 
     try {
       const response = await controllers.stageController.getStagesByTripId(
+        req.userId,
         tripId,
       )
       res.status(200).json(response)
@@ -57,6 +61,7 @@ class StageRoute {
   async update(req, res) {
     try {
       const updatedStage = await controllers.stageController.updateStage(
+        req.userId,
         req.params.id,
         req.body,
       )
@@ -74,6 +79,7 @@ class StageRoute {
   async delete(req, res) {
     try {
       const deletedStage = await controllers.stageController.deleteStage(
+        req.userId,
         req.params.id,
       )
       if (!deletedStage) {

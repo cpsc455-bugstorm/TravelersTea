@@ -16,11 +16,19 @@ class TripController {
         userId: userId,
         _id: new mongoose.Types.ObjectId(tripId),
       })
-      return trip
+
+      if (!trip) {
+        const error = new Error('Trip could not be found')
+        error.statusCode = 404
+        throw error
+      }
+
+      const tripDTO = trip.toObject()
+      delete tripDTO.userId
+      return tripDTO
     } catch (error) {
-      if (config.server.env === 'DEV')
-        console.error('Error while fetching trip:', error)
-      throw new Error('Could not fetch trip')
+      error.message = 'Could not fetch trip | ' + error.message
+      throw error
     }
   }
 
@@ -223,8 +231,8 @@ class TripController {
     try {
       await this.stageController.deleteStagesByTripId(id)
       const deletedTrip = await TripModel.findOneAndDelete({
-        userId: userId,
-        _id: new mongoose.Types.ObjectId(id), // ensure user1 cannot delete user2's trips
+        userId: userId, // ensure user1 cannot delete user2's trips
+        _id: new mongoose.Types.ObjectId(id),
       }).lean()
       if (!deletedTrip) {
         const error = new Error('Trip could not be found')

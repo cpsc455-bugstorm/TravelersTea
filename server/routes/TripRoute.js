@@ -17,7 +17,7 @@ class TripRoute {
     apiRouter.use('/trips', this.router)
   }
 
-  async getTripById(req, res) {
+  async getTripById(req, res, next) {
     try {
       const response = await controllers.tripController.getTrip(
         req.userId,
@@ -25,7 +25,7 @@ class TripRoute {
       )
       res.status(200).json(response)
     } catch (err) {
-      res.status(500).json({ error: err.toString() })
+      next(err)
     }
   }
 

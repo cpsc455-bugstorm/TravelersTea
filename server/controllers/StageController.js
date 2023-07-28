@@ -2,6 +2,7 @@ const StageModel = require('../models/StageModel')
 const config = require('../config/config')
 const generateStage = require('../openai/generateStage')
 const getCoordinatesFromLocation = require('../googleapi/googleCoordinates')
+const mongoose = require('mongoose')
 
 class StageController {
   constructor() {}
@@ -38,9 +39,12 @@ class StageController {
     }
   }
 
-  async getStage(id) {
+  async getStage(userId, id) {
     try {
-      return await StageModel.findById(id)
+      return await StageModel.findOne({
+        userId: userId,
+        _id: new mongoose.Types.ObjectId(id),
+      })
     } catch (error) {
       if (config.server.env === 'DEV')
         console.error('Error while fetching stages:', error)
@@ -48,10 +52,13 @@ class StageController {
     }
   }
 
-  async getStagesByTripId(tripId) {
+  async getStagesByTripId(userId, tripId) {
     try {
       const trip = await this.tripController.getTrip(tripId)
-      const stagesPerTripId = await StageModel.find({ tripId: tripId })
+      const stagesPerTripId = await StageModel.find({
+        tripId: tripId,
+        userId: userId,
+      })
         .sort({ dayIndex: 1, stageIndex: 1 })
         .lean()
       return partitionStagesByDay(stagesPerTripId, trip.stagesPerDay)
@@ -60,7 +67,7 @@ class StageController {
     }
   }
 
-  async updateStage(id, { updateNotes, stage, trip }) {
+  async updateStage(userId, id, { updateNotes, stage, trip }) {
     try {
       // Call Openai
       let newStageResponse = JSON.parse(
@@ -80,7 +87,7 @@ class StageController {
       // Update DB
       // Return success message
       await StageModel.updateOne(
-        { _id: stage._id },
+        { _id: stage._id, userId: userId },
         {
           $set: {
             stageLocation: newStageResponse.newStage.stageLocation,
@@ -99,9 +106,12 @@ class StageController {
     }
   }
 
-  async deleteStage(id) {
+  async deleteStage(userId, id) {
     try {
-      return await StageModel.findByIdAndDelete(id).lean()
+      return await StageModel.findOneAndDelete({
+        userId: userId,
+        _id: new mongoose.Types.ObjectId(id), // ensure user1 cannot delete user2's trips
+      }).lean()
     } catch (error) {
       if (config.server.env === 'DEV')
         console.error('Error while deleting stages:', error)
