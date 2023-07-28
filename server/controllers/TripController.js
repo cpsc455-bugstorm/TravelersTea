@@ -190,6 +190,7 @@ class TripController {
 
       savedTrip = await TripModel.findByIdAndUpdate(savedTrip._id, tripToSave, {
         new: true,
+        session,
       })
 
       let savedTripDTO = savedTrip
