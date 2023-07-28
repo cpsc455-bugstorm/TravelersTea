@@ -1,10 +1,11 @@
 const express = require('express')
 const controllers = require('../controllers/Controllers')
-
+const authMiddleware = require('../middlewares/AuthMiddleware')
 class StageRoute {
   constructor() {
     this.router = express.Router()
-    this.router.post('', this.create.bind(this))
+    this.router.use(authMiddleware)
+    // this.router.post('', this.create.bind(this))
     this.router.get('', this.getByTripId.bind(this))
     this.router.get('/:id', this.getById.bind(this))
     this.router.patch('/:id', this.update.bind(this))
@@ -15,14 +16,14 @@ class StageRoute {
     apiRouter.use('/stages', this.router)
   }
 
-  async create(req, res) {
-    try {
-      const newStage = await controllers.stageController.createStage(req.body)
-      res.status(201).json(newStage)
-    } catch (err) {
-      res.status(500).json({ error: err.toString() })
-    }
-  }
+  // async create(req, res) {
+  //   try {
+  //     const newStage = await controllers.stageController.createStage(req.body)
+  //     res.status(201).json(newStage)
+  //   } catch (err) {
+  //     res.status(500).json({ error: err.toString() })
+  //   }
+  // }
 
   async getById(req, res) {
     const stageId = req.params.id

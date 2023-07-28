@@ -10,9 +10,13 @@ class TripController {
     this.stageController = stageController
   }
 
-  async getTrip(id) {
+  async getTrip(userId, tripId) {
     try {
-      return await TripModel.findById(id)
+      const trip = await TripModel.findOne({
+        userId: userId,
+        _id: new mongoose.Types.ObjectId(tripId),
+      })
+      return trip
     } catch (error) {
       if (config.server.env === 'DEV')
         console.error('Error while fetching trip:', error)
@@ -34,7 +38,7 @@ class TripController {
     }
   }
 
-  async parseStagesFromMultipleDays(days, tripId, tripLocation) {
+  async parseStagesFromMultipleDays(days, tripId, tripLocation, userId) {
     const _tripId = tripId
     const stagesToAdd = []
     for (let day of days) {
@@ -42,6 +46,7 @@ class TripController {
         day,
         _tripId,
         tripLocation,
+        userId,
       )
       for (let stage of stagesToAddFromDay) {
         stagesToAdd.push(stage)
@@ -50,7 +55,7 @@ class TripController {
     return stagesToAdd
   }
 
-  async parseStagesFromDay(day, tripId, tripLocation) {
+  async parseStagesFromDay(day, tripId, tripLocation, userId) {
     const stagesToAddFromDay = []
     for (let stage of day.stages) {
       const longLatObject = await getCoordinatesFromLocation(
@@ -60,6 +65,7 @@ class TripController {
       )
       const stageToAddFromDay = {
         tripId,
+        userId,
         dayIndex: day.day,
         stageIndex: stage.stageIndex,
         stageLongitude: longLatObject.location.lng,
@@ -133,6 +139,7 @@ class TripController {
         days,
         savedTrip._id,
         filteredTripData.tripLocation,
+        userId,
       )
       await this.stageController.createManyStages(stagesToAdd, session)
 

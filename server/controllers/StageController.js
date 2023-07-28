@@ -10,19 +10,19 @@ class StageController {
     this.tripController = tripController
   }
 
-  async createStage(stageData) {
-    try {
-      const newStage = await StageModel.create({
-        // eslint-disable-next-line node/no-unsupported-features/es-syntax
-        ...stageData,
-      })
-      return newStage.toObject()
-    } catch (error) {
-      if (config.server.env === 'DEV')
-        console.error('Error while creating stage:', error)
-      throw new Error(`Could not create stage`)
-    }
-  }
+  // async createStage(stageData) {
+  //   try {
+  //     const newStage = await StageModel.create({
+  //       // eslint-disable-next-line node/no-unsupported-features/es-syntax
+  //       ...stageData,
+  //     })
+  //     return newStage.toObject()
+  //   } catch (error) {
+  //     if (config.server.env === 'DEV')
+  //       console.error('Error while creating stage:', error)
+  //     throw new Error(`Could not create stage`)
+  //   }
+  // }
 
   async createManyStages(listOfStages, session) {
     console.log(listOfStages)
