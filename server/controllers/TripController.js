@@ -128,7 +128,7 @@ class TripController {
     }
   }
 
-  async generateAndSaveTrip(userId, tripData, id = null) {
+  async generateAndSaveTrip(userId, tripData, id = null, session) {
     let filteredTripData = tripData.colloquialPrompt
       ? await generateTripsMetadata(tripData.colloquialPrompt)
       : tripData
@@ -160,18 +160,18 @@ class TripController {
       if (id) {
         savedTrip = await TripModel.findOneAndUpdate(
           { userId: userId, _id: new mongoose.Types.ObjectId(id) }, // ensure user1 cannot edit user2's trip
-          tripData,
-          { new: true },
+          filteredTripData,
+          { new: true, session },
         ).lean()
         if (!savedTrip) {
           const error = new Error('Trip to edit not found')
           error.statusCode = 404
           throw error
         }
-        await this.stageController.deleteStagesByTripId(savedTrip._id)
+        await this.stageController.deleteStagesByTripId(savedTrip._id, session)
       } else {
-        const _savedTrip = await TripModel.create(tripToSave)
-        savedTrip = _savedTrip.toObject()
+        const _savedTrip = await TripModel.create([tripToSave], { session })
+        savedTrip = _savedTrip[0].toObject()
       }
 
       const { days } = generatedTripWithStages
@@ -194,6 +194,7 @@ class TripController {
 
       let savedTripDTO = savedTrip
       delete savedTripDTO.userId
+
       return savedTripDTO
     } catch (error) {
       error.message = 'Could not save trip | ' + error.message
@@ -202,34 +203,68 @@ class TripController {
   }
 
   async createTrip(userId, tripData) {
-    return this.generateAndSaveTrip(userId, tripData)
+    const session = await mongoose.startSession()
+    session.startTransaction()
+    try {
+      const newTrip = await this.generateAndSaveTrip(
+        userId,
+        tripData,
+        null,
+        session,
+      )
+      await session.commitTransaction()
+      return newTrip
+    } catch (error) {
+      await session.abortTransaction()
+      throw error
+    } finally {
+      await session.endSession()
+    }
   }
 
   async updateTrip(userId, id, tripData) {
-    if (
-      tripData.tripName &&
-      !tripData.tripLocation &&
-      !tripData.stagesPerDay &&
-      !tripData.budget &&
-      !tripData.numberOfDays &&
-      !tripData.tripNotes
-    ) {
-      const existingTrip = await TripModel.findOne({
-        userId: userId,
-        _id: new mongoose.Types.ObjectId(id),
-      })
-      if (!existingTrip) {
-        const error = new Error('Trip could not be found')
-        error.statusCode = 404
-        throw error
+    const session = await mongoose.startSession()
+    session.startTransaction()
+    try {
+      if (
+        tripData.tripName &&
+        !tripData.tripLocation &&
+        !tripData.stagesPerDay &&
+        !tripData.budget &&
+        !tripData.numberOfDays &&
+        !tripData.tripNotes
+      ) {
+        const existingTrip = await TripModel.findOne({
+          userId: userId,
+          _id: new mongoose.Types.ObjectId(id),
+        }).session(session)
+        if (!existingTrip) {
+          const error = new Error('Trip could not be found')
+          error.statusCode = 404
+          throw error
+        }
+        existingTrip.tripName = tripData.tripName
+        await existingTrip.save({ session })
+        const existingTripDTO = existingTrip.toObject()
+        delete existingTripDTO.userId
+        await session.commitTransaction()
+        session.endSession()
+        return existingTripDTO
+      } else {
+        const updatedTrip = await this.generateAndSaveTrip(
+          userId,
+          tripData,
+          id,
+          session,
+        )
+        await session.commitTransaction()
+        return updatedTrip
       }
-      existingTrip.tripName = tripData.tripName
-      await existingTrip.save()
-      const existingTripDTO = existingTrip.toObject()
-      delete existingTripDTO.userId
-      return existingTripDTO
-    } else {
-      return this.generateAndSaveTrip(userId, tripData, id)
+    } catch (error) {
+      await session.abortTransaction()
+      throw error
+    } finally {
+      await session.endSession()
     }
   }
 

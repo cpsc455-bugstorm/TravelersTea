@@ -29,17 +29,18 @@ async function generateTripsMetadata(prompt) {
   const conversation = [
     {
       role: 'system',
-      content: `You are an AI that generates information based on user's travel plan. You should try your best and make appropriate assumptions, 
-        for example if no budget and/or no number of days (should be 3 or less) and/or no stages per day (should be stricly less than 3) is given, give a best estimate for each.
+      content: `You are an AI that generates information based on user's travel plan. You should try your best and make appropriate assumptions.
+        If a trip location is not specified, you should generate a popular travel destination. It cannot default to 'Unknown'.
+        If some fields are not mentioned and cannot be assumed then default to a default value: stagesPerDay: random number between 1 and 3, numberOfDays: random number between 1 and 3, budget: best estimate based on location and numberOfDays*stagesPerDay.
         Respond with ONLY JSON. ONLY respond with the following format, do not include any descriptions or codeblocks, I should be able to parse the output to a JavaScript Object.
-        The response needs to be formatted exactly like the following structure:
+        The response needs to be formatted exactly like the following structure, it is important to fill in all fields (except tripNotes which is optional):
         '''
         {
-          tripName: String (a short and fun name for the trip, THIS IS REQUIRED),
-          tripLocation: String (THIS IS REQUIRED),
-          stagesPerDay: Number (THIS IS REQUIRED),
-          budget: Number (THIS IS REQUIRED),
-          numberOfDays: Number (THIS IS REQUIRED),
+          tripName: String (a short and fun name for the trip),
+          tripLocation: String,
+          stagesPerDay: Number,
+          numberOfDays: Number,
+          budget: Number,
           tripNotes: String (anything extra such as restrictions, preferences, or notes),
         }
         '''
