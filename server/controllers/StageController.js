@@ -54,16 +54,17 @@ class StageController {
 
   async getStagesByTripId(userId, tripId) {
     try {
-      const trip = await this.tripController.getTrip(tripId)
+      const trip = await this.tripController.getTrip(userId, tripId)
       const stagesPerTripId = await StageModel.find({
-        tripId: tripId,
-        userId: userId,
+        tripId: new mongoose.Types.ObjectId(tripId),
+        userId: new mongoose.Types.ObjectId(userId),
       })
         .sort({ dayIndex: 1, stageIndex: 1 })
         .lean()
       return partitionStagesByDay(stagesPerTripId, trip.stagesPerDay)
     } catch (error) {
-      throw new Error(`Could not fetch all stages for trip: ${error}`)
+      error.message = 'Could not fetch all stages for trip | ' + error.message
+      throw error
     }
   }
 
@@ -87,7 +88,10 @@ class StageController {
       // Update DB
       // Return success message
       await StageModel.updateOne(
-        { _id: stage._id, userId: userId },
+        {
+          _id: new mongoose.Types.ObjectId(stage._id),
+          userId: new mongoose.Types.ObjectId(userId),
+        },
         {
           $set: {
             stageLocation: newStageResponse.newStage.stageLocation,
@@ -109,7 +113,7 @@ class StageController {
   async deleteStage(userId, id) {
     try {
       return await StageModel.findOneAndDelete({
-        userId: userId,
+        userId: new mongoose.Types.ObjectId(userId),
         _id: new mongoose.Types.ObjectId(id), // ensure user1 cannot delete user2's trips
       }).lean()
     } catch (error) {

@@ -11,9 +11,10 @@ class TripController {
   }
 
   async getTrip(userId, tripId) {
+    console.log(tripId)
     try {
       const trip = await TripModel.findOne({
-        userId: userId,
+        userId: new mongoose.Types.ObjectId(userId),
         _id: new mongoose.Types.ObjectId(tripId),
       })
 
