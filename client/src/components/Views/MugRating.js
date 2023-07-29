@@ -48,7 +48,7 @@ const MugRating = ({ rating }) => {
 }
 
 MugRating.propTypes = {
-  rating: PropTypes.number.isRequired,
+  rating: PropTypes.number,
 }
 
 export default MugRating

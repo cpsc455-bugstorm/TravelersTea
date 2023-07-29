@@ -15,6 +15,11 @@ const funFacts = [
   'There are around 3,000 different types of tea.',
   'Tea has more caffeine than coffee – but it’s not as simple as that.',
   'You should never use boiling water for tea as you’ll burn the leaf.',
+  'In Tibet, yak butter tea is a popular salty beverage.',
+  'All tea varieties come from one plant, Camellia sinensis.',
+  'Ireland tops global tea consumption per capita with 3kg annually.',
+  'Tea bag basketball? In the UK, tea bags are a must-have in office sports!',
+  'Love tea? So did a goat! Chinese legend claims a goat discovered the joy of tea first.',
 ]
 
 const getRandomFunFact = () => {

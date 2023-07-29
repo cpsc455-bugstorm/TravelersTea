@@ -20,7 +20,7 @@ app.use(
   }),
 )
 
-app.use(express.static(path.join(__dirname, '../client/build')));
+app.use(express.static(path.join(__dirname, '../client/build')))
 
 const apiRouter = express.Router()
 
@@ -46,8 +46,8 @@ if (config.server.env === 'DEV') {
 app.use(errorHandleMiddleware)
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
-});
+  res.sendFile(path.join(__dirname, '../client/build', 'index.html'))
+})
 
 const connectDB = async () => {
   try {
