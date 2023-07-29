@@ -1,6 +1,6 @@
 import ExpandLessIcon from '@mui/icons-material/ExpandLess'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { DEFAULT_SPEED, ZOOM_CITY_LEVEL } from '../../constants/mapDefaultInfo'
 import { changeCoordinatesAndZoom } from '../../redux/reducers/mapSlice'
@@ -17,7 +17,15 @@ export function EditTripForm() {
   const trips = useSelector((state) => state.trips.trips)
 
   const activeTripId = useSelector((state) => state.view.activeTripId)
-  const activeTrip = trips.find((trip) => trip._id === activeTripId)
+
+  const activeTripRef = useRef()
+
+  useEffect(() => {
+    activeTripRef.current = trips.find((trip) => {
+      if (trip) return trip._id === activeTripId
+      return false
+    })
+  }, [trips, activeTripId])
 
   const editTripModalIsOpen = useSelector(
     (state) => state.modals.editTripModalIsOpen,
@@ -88,7 +96,7 @@ export function EditTripForm() {
       {compressed ? (
         <CompressedForm onSubmit={onSubmit} />
       ) : (
-        <TripForm onSubmit={onSubmit} initialValues={activeTrip} />
+        <TripForm onSubmit={onSubmit} initialValues={activeTripRef.current} />
       )}
     </Modal>
   )

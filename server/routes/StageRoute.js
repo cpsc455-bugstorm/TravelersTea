@@ -32,6 +32,7 @@ class StageRoute {
       const response = await controllers.stageController.getStage(stageId)
       res.status(200).json(response)
     } catch (err) {
+      console.log(err)
       res.status(500).json({ error: err.toString() })
     }
   }
@@ -49,6 +50,7 @@ class StageRoute {
       )
       res.status(200).json(response)
     } catch (err) {
+      console.log(err)
       res.status(500).json({ error: err.toString() })
     }
   }

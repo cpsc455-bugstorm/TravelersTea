@@ -77,6 +77,7 @@ class TripRoute {
   }
 
   async enableShare(req, res, next) {
+    console.log('entered enable share')
     try {
       const enabledTrip = await controllers.tripController.enableShareTrip(
         req.userId,

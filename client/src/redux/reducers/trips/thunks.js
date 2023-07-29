@@ -26,6 +26,18 @@ export const fetchTripByTripIdAsync = createAsyncThunk(
   },
 )
 
+export const fetchSharedTripByTripIdAsync = createAsyncThunk(
+  actionTypes.GET_SHARED_TRIP,
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await tripService.fetchSharedTripByTripId(id)
+      return response.data
+    } catch (error) {
+      return rejectWithValue({ message: error.response.data.error })
+    }
+  },
+)
+
 export const createTripAsync = createAsyncThunk(
   actionTypes.CREATE_TRIP,
   async (tripData, { rejectWithValue }) => {

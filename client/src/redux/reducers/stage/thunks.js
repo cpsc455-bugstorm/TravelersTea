@@ -27,6 +27,18 @@ export const fetchStagesByTripIdAsync = createAsyncThunk(
   },
 )
 
+export const fetchStagesBySharedTripIdAsync = createAsyncThunk(
+  actionTypes.GET_STAGES_BY_SHARED_TRIP_ID,
+  async (tripId, { rejectWithValue }) => {
+    try {
+      const response = await stageService.fetchStagesBySharedTripId(tripId)
+      return response.data
+    } catch (error) {
+      return rejectWithValue({ message: error.response.data.error })
+    }
+  },
+)
+
 export const createStageAsync = createAsyncThunk(
   actionTypes.CREATE_STAGE,
   async (stageData, { rejectWithValue }) => {
@@ -51,7 +63,7 @@ export const updateStageAsync = createAsyncThunk(
   },
 )
 
-export const deleteTripAsync = createAsyncThunk(
+export const deleteStageAsync = createAsyncThunk(
   actionTypes.DELETE_STAGE,
   async ({ id }, { rejectWithValue }) => {
     try {
