@@ -1,4 +1,6 @@
-// to run script: yarn populate:db
+// to run script:
+// 1. cd server
+// 2. yarn populate:db
 const mongoose = require('mongoose')
 const tripSchema = require('../models/TripModel')
 const stageSchema = require('../models/StageModel')
