@@ -1,10 +1,10 @@
+// to run script: yarn populate:db
 const mongoose = require('mongoose')
 const tripSchema = require('../models/TripModel')
 const stageSchema = require('../models/StageModel')
 const userSchema = require('../models/UserModel')
 const { ObjectId } = require('mongodb')
 const config = require('../config/config')
-const resetDB = require('./resetDB')
 
 // Create models
 const Trip = mongoose.model('Trip', tripSchema.schema)
@@ -16,14 +16,16 @@ const populateDB = async () => {
     const conString = config.mongo.uri
 
     // Connect to Mongo DB
-    mongoose.connect(conString, {
+    await mongoose.connect(conString, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     })
     console.log('Connected to database...')
 
-    // Call resetDB to clean collections
-    await resetDB()
+    // Delete all records from trips, stages and users collections
+    await Trip.deleteMany({})
+    await Stage.deleteMany({})
+    await User.deleteMany({})
 
     // Insert a user
     const savedUser = await new User({
