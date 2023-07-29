@@ -3,9 +3,9 @@ const tripSchema = require('../models/TripModel')
 const stageSchema = require('../models/StageModel')
 const userSchema = require('../models/UserModel')
 const { ObjectId } = require('mongodb')
+const config = require('../config/config')
 
-const conString =
-  'mongodb+srv://bugstorm1000:GqHIshuc7OuDPDd1@cluster0.4bflh41.mongodb.net/BugStormDEV_Rithin?retryWrites=true&w=majority'
+const conString = config.mongo.uri
 
 // Connect to Mongo DB
 mongoose.connect(conString, {

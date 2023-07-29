@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
     "dev": "nodemon -L index.js",
-    "reset:db": "node resetDB.js",
+    "reset:db": "node scripts/resetDB.js",
     "coordinates:test": "node googleapi/getCoordinateTest.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --cache --fix",
