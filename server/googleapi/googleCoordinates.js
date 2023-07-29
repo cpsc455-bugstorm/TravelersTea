@@ -28,6 +28,9 @@ async function getCoordinatesFromLocation(
         key: apiKey,
       },
     })
+    if (!response.data.results.length) {
+      throw new Error('No coordinates found.')
+    }
     const { location } = response.data.results[0].geometry
     if (includeRating) {
       let { rating } = response.data.results[0]
@@ -39,7 +42,7 @@ async function getCoordinatesFromLocation(
     }
     return location
   } catch (error) {
-    console.error('Error while fetching place details:', error)
+    error.message = 'Error while fetching place details | ' + error.message
     throw error
   }
 }

@@ -4,9 +4,9 @@ import tripService from './service'
 
 export const fetchTripsAsync = createAsyncThunk(
   actionTypes.GET_TRIPS,
-  async (userId, { rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
-      const response = await tripService.fetchTrips(userId)
+      const response = await tripService.fetchTrips()
       return response.data
     } catch (error) {
       return rejectWithValue({ message: error.response.data.error })

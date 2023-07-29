@@ -4,14 +4,11 @@ import { REQUEST_STATE } from '../../states'
 import { loginUserAsync, registerUserAsync } from './thunks'
 
 const DEV_DISABLE_LOGIN = process.env.REACT_APP_DEV_DISABLE_LOGIN === 'true'
-const ACCESS_TOKEN = process.env.REACT_APP_ACCESS_TOKEN
 
 const initialLoginState = DEV_DISABLE_LOGIN
   ? {
       user: {
-        id: '64a7310aee0a85231209105d',
-        username: 'mypassis123',
-        accessToken: ACCESS_TOKEN,
+        username: 'user1',
       },
       status: REQUEST_STATE.LOGGEDIN,
     }
@@ -58,7 +55,9 @@ export const usersSlice = createSlice({
       fulfilled: (state, action) => {
         state.status = REQUEST_STATE.LOGGINGIN
         state.isNewAccount = true
-        state.user = action.payload
+        state.user = {
+          username: action.payload.username,
+        }
       },
     })
     handleAsyncAction(builder, loginUserAsync, {
@@ -67,7 +66,9 @@ export const usersSlice = createSlice({
       },
       fulfilled: (state, action) => {
         state.status = REQUEST_STATE.LOGGINGIN
-        state.user = action.payload
+        state.user = {
+          username: action.payload.username,
+        }
       },
     })
   },
