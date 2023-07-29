@@ -66,7 +66,7 @@ export function ShareInterface() {
         {content}
       </div>
     )
-  }, [appView, isCompactView])
+  }, [appView, isCompactView, activeTripId])
 
   return (
     <div className='h-screen w-screen overflow-hidden'>
