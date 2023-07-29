@@ -11,6 +11,7 @@ class TripRoute {
     this.router.post('', this.create.bind(this))
     this.router.patch('/:id', this.update.bind(this))
     this.router.delete('/:id', this.delete.bind(this))
+    this.router.patch('/:id/share', this.enableShare.bind(this))
   }
 
   initRoutes(apiRouter) {
@@ -70,6 +71,19 @@ class TripRoute {
       )
       console.log(deletedTrip)
       res.status(200).json(deletedTrip)
+    } catch (err) {
+      next(err)
+    }
+  }
+
+  async enableShare(req, res, next) {
+    try {
+      const enabledTrip = await controllers.tripController.enableShareTrip(
+        req.userId,
+        req.params.id,
+      )
+      console.log(enabledTrip)
+      res.status(200).json(enabledTrip)
     } catch (err) {
       next(err)
     }

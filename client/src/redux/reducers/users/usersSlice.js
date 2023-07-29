@@ -5,6 +5,7 @@ import { loginUserAsync, registerUserAsync } from './thunks'
 
 const DEV_DISABLE_LOGIN = process.env.REACT_APP_DEV_DISABLE_LOGIN === 'true'
 
+// TODO: Remove DEV_DISABLE_LOGIN logic, it may not be working anymore.
 const initialLoginState = DEV_DISABLE_LOGIN
   ? {
       user: {

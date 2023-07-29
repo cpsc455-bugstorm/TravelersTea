@@ -61,3 +61,15 @@ export const deleteTripAsync = createAsyncThunk(
     }
   },
 )
+
+export const enableShareTripAsync = createAsyncThunk(
+  actionTypes.SHARE_TRIP,
+  async ({ id }, { rejectWithValue }) => {
+    try {
+      const response = await tripService.enableShareTrip(id)
+      return response.data
+    } catch (error) {
+      return rejectWithValue({ message: error.response.data.error })
+    }
+  },
+)
