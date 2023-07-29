@@ -9,6 +9,7 @@ import {
   VANCOUVER_LONGITUDE,
   ZOOM_GLOBE_LEVEL,
 } from '../../constants/mapDefaultInfo'
+import { createMapMarker } from '../../util/mapMarker'
 import { EditTripForm, NewTripForm } from '../TripElement'
 import { EditStageForm } from '../TripElement/EditStageForm'
 
@@ -18,89 +19,67 @@ MapElement.propTypes = {
 
 export function MapElement({ className }) {
   const appView = useSelector((state) => state.view.appView)
-  const activeTripId = useSelector((state) => state.view.activeTripId)
+  const stagesByDay = useSelector((state) => state.stages.stages)
   const mapData = useSelector((state) => state.map.mapData)
-  const markersWithProps = useSelector((state) => state.map.markers)
+  const activeDayNumber = useSelector((state) => state.view.activeDayNumber)
   const [map, setMap] = useState(null)
   const mapContainerRef = useRef(null)
-  const [markersOnMap, setMarkersOnMap] = useState([])
+  const [retryCounter, setRetryCounter] = useState(0)
   mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN
 
-  const mapContent = useMemo(() => {
+  const renderMapForms = useMemo(() => {
     if (appView === AppView.NEW_TRIP) {
       return <NewTripForm />
     }
     return (
       <span className='mt-4 inline-flex w-full flex-row justify-center'>
-        <h1 className='w-fit rounded-md bg-slate-900 bg-opacity-40 p-4 text-5xl'>
-          Map (placeholder #{activeTripId})
-        </h1>
         <EditTripForm />
         <EditStageForm />
       </span>
     )
-  }, [appView, activeTripId])
+  }, [appView])
 
-  const addMarkerOnMap = useCallback(
-    (longitude, latitude, emoji, label) => {
-      if (map) {
-        const markerElement = document.createElement('div')
-        markerElement.innerHTML = `<p style='width: 40px; height: 40px; font-size: 40px; opacity: 1; '> ${emoji} <p>`
-        const marker = new mapboxgl.Marker({
-          element: markerElement,
-          occludedOpacity: 1,
-        })
-          .setLngLat([longitude, latitude])
-          .setPopup(
-            new mapboxgl.Popup({ closeOnMove: true }).setHTML(
-              `<p>${label}</p>`,
-            ),
-          )
-          .addTo(map)
-
-        setMarkersOnMap((prevMarkers) => [...prevMarkers, marker])
+  // Needs to be extracted out to avoid infinite reruns
+  const addMarkersToMap = useCallback(() => {
+    const markers = []
+    try {
+      if (map?.getCanvasContainer()) {
+        for (let day of stagesByDay) {
+          const opacity =
+            activeDayNumber === -1 ||
+            activeDayNumber === stagesByDay.indexOf(day) + 1
+              ? 1
+              : 0.2
+          for (let stage of day) {
+            markers.push(createMapMarker(stage, opacity).addTo(map))
+          }
+        }
       }
-    },
-    [map],
-  )
-
-  const clearMarkersOnMap = useCallback(() => {
-    markersOnMap.forEach((marker) => marker.remove())
-    setMarkersOnMap([])
-  }, [markersOnMap])
+    } catch (e) {
+      setRetryCounter((prev) => prev + 1)
+    }
+    return markers
+  }, [activeDayNumber, map, stagesByDay])
 
   useEffect(() => {
-    clearMarkersOnMap()
-    for (let markerWithProps of markersWithProps) {
-      addMarkerOnMap(
-        markerWithProps.longitude,
-        markerWithProps.latitude,
-        markerWithProps.emoji,
-        markerWithProps.label,
-      )
+    const markers = addMarkersToMap()
+    return () => {
+      markers.forEach((marker) => marker.remove())
     }
-    // tracking 'markersOnMap' in this useEffect would trigger constant reruns.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [markersWithProps, map])
+    // lol
+  }, [stagesByDay, addMarkersToMap, retryCounter])
 
-  const flyToLocation = useCallback(
-    (longitude, latitude, zoom, speed) => {
+  useEffect(() => {
+    const { longitude, latitude, zoom, speed } = mapData
+    if (map) {
       map.flyTo({
         center: [longitude, latitude],
         zoom,
         essential: true,
         speed,
       })
-    },
-    [map],
-  )
-
-  useEffect(() => {
-    const { longitude, latitude, zoom, speed } = mapData
-    if (map) {
-      flyToLocation(longitude, latitude, zoom, speed)
     }
-  }, [mapData, flyToLocation, map])
+  }, [mapData, map])
 
   useEffect(() => {
     const map = new mapboxgl.Map({
@@ -195,10 +174,51 @@ export function MapElement({ className }) {
     return () => map.remove()
   }, [])
 
+  useEffect(() => {
+    if (stagesByDay.length > 0) {
+      const markers = addMarkersToMap()
+
+      // Calculate the bounding box
+      let minLat = Infinity
+      let maxLat = -Infinity
+      let minLng = Infinity
+      let maxLng = -Infinity
+
+      const daysToConsider =
+        activeDayNumber === -1
+          ? stagesByDay
+          : [stagesByDay[activeDayNumber - 1]]
+
+      for (let day of daysToConsider) {
+        for (let stage of day) {
+          minLat = Math.min(minLat, stage.stageLatitude)
+          maxLat = Math.max(maxLat, stage.stageLatitude)
+          minLng = Math.min(minLng, stage.stageLongitude)
+          maxLng = Math.max(maxLng, stage.stageLongitude)
+        }
+      }
+
+      // Adjust the map's view
+      if (map) {
+        map.fitBounds(
+          [
+            [minLng, minLat],
+            [maxLng, maxLat],
+          ],
+          { padding: 100 },
+        )
+      }
+
+      return () => {
+        markers.forEach((marker) => marker.remove())
+      }
+    }
+  }, [stagesByDay, addMarkersToMap, retryCounter, map, activeDayNumber])
+
   return (
     <div className={`fixed left-0 top-0 ${className}`}>
       <div ref={mapContainerRef} className='h-screen' />
-      {mapContent}
+      {renderMapForms}
     </div>
   )
 }

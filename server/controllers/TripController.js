@@ -5,6 +5,8 @@ const getCoordinatesFromLocation = require('../googleapi/googleCoordinates')
 const config = require('../config/config')
 const mongoose = require('mongoose')
 
+const NUM_TAILWIND_COLORS = 17
+
 class TripController {
   constructor(stageController) {
     this.stageController = stageController
@@ -34,30 +36,75 @@ class TripController {
     }
   }
 
+  /**
+   * https://en.wikipedia.org/wiki/Spherical_coordinate_system#Cartesian_coordinates
+   * https://medium.com/fishbrain/finding-the-center-point-in-a-cluster-of-coordinates-e607cdf75fd5
+   *
+   * Calculates the geographical center of all stages using spherical coordinates.
+   * Returns an array of stages to add, along with the latitude and longitude of the center.
+   */
   async parseStagesFromMultipleDays(days, tripId, tripLocation) {
     const _tripId = tripId
     const stagesToAdd = []
+    let totalX = 0
+    let totalY = 0
+    let totalZ = 0
+    const shuffledColorIndexes = getShuffledIndexes()
+
     for (let day of days) {
-      const stagesToAddFromDay = await this.parseStagesFromDay(
+      const index = days.indexOf(day)
+      const colorNumber = shuffledColorIndexes[index % NUM_TAILWIND_COLORS]
+      const { stagesToAddFromDay, x, y, z } = await this.parseStagesFromDay(
         day,
         _tripId,
         tripLocation,
+        colorNumber,
       )
+      totalX += x
+      totalY += y
+      totalZ += z
       for (let stage of stagesToAddFromDay) {
         stagesToAdd.push(stage)
       }
     }
-    return stagesToAdd
+
+    const avgX = totalX / days.length
+    const avgY = totalY / days.length
+    const avgZ = totalZ / days.length
+
+    const lon = Math.atan2(avgY, avgX)
+    const hyp = Math.sqrt(avgX * avgX + avgY * avgY)
+    const lat = Math.atan2(avgZ, hyp)
+
+    const centerLat = lat * (180 / Math.PI)
+    const centerLng = lon * (180 / Math.PI)
+
+    return { stagesToAdd, centerLat, centerLng }
   }
 
-  async parseStagesFromDay(day, tripId, tripLocation) {
+  /**
+   * Calculates the geographical center of all stages in the day using spherical coordinates.
+   * Returns an array of stages to add from the day, along with the x, y, and z coordinates of the center.
+   */
+  async parseStagesFromDay(day, tripId, tripLocation, colorNumber) {
     const stagesToAddFromDay = []
+    let totalX = 0
+    let totalY = 0
+    let totalZ = 0
+
     for (let stage of day.stages) {
       const longLatObject = await getCoordinatesFromLocation(
         stage.stageLocationName,
         tripLocation,
         true,
       )
+      const lat = longLatObject.location.lat * (Math.PI / 180)
+      const lon = longLatObject.location.lng * (Math.PI / 180)
+
+      totalX += Math.cos(lat) * Math.cos(lon)
+      totalY += Math.cos(lat) * Math.sin(lon)
+      totalZ += Math.sin(lat)
+
       const stageToAddFromDay = {
         tripId,
         dayIndex: day.day,
@@ -67,12 +114,18 @@ class TripController {
         stageRating: longLatObject.rating,
         stageLocation: stage.stageLocationName,
         description: stage.stageDescription,
-        colorNumber: stage.stageColor,
+        colorNumber: colorNumber,
         emoji: stage.stageEmoji,
       }
       stagesToAddFromDay.push(stageToAddFromDay)
     }
-    return stagesToAddFromDay
+
+    return {
+      stagesToAddFromDay,
+      x: totalX / day.stages.length,
+      y: totalY / day.stages.length,
+      z: totalZ / day.stages.length,
+    }
   }
 
   async generateAndSaveTrip(userId, tripData, id = null, session) {
@@ -89,19 +142,12 @@ class TripController {
     }
 
     try {
-      const longLatObject = await getCoordinatesFromLocation(
-        '',
-        filteredTripData.tripLocation,
-        false,
-      )
       const tripToSave = {
         tripName: filteredTripData.tripName,
         tripLocation: filteredTripData.tripLocation,
         stagesPerDay: filteredTripData.stagesPerDay,
         budget: filteredTripData.budget,
         numberOfDays: filteredTripData.numberOfDays,
-        tripLongitude: longLatObject.lng,
-        tripLatitude: longLatObject.lat,
         tripNotes: filteredTripData.tripNotes,
         isPublic: false,
       }
@@ -129,12 +175,23 @@ class TripController {
       }
 
       const { days } = generatedTripWithStages
-      const stagesToAdd = await this.parseStagesFromMultipleDays(
-        days,
-        savedTrip._id,
-        filteredTripData.tripLocation,
-      )
-      await this.stageController.createManyStages(stagesToAdd, session)
+      const { stagesToAdd, centerLat, centerLng } =
+        await this.parseStagesFromMultipleDays(
+          days,
+          savedTrip._id,
+          filteredTripData.tripLocation,
+        )
+
+      // this adds stages so do the part before this
+      await this.stageController.createManyStages(stagesToAdd)
+
+      tripToSave.tripLongitude = centerLng
+      tripToSave.tripLatitude = centerLat
+
+      savedTrip = await TripModel.findByIdAndUpdate(savedTrip._id, tripToSave, {
+        new: true,
+        session,
+      })
 
       let savedTripDTO = savedTrip
       delete savedTripDTO.userId
@@ -250,3 +307,10 @@ class TripController {
 }
 
 module.exports = TripController
+
+const getShuffledIndexes = () => {
+  const unshuffledList = Array.from(Array(NUM_TAILWIND_COLORS).keys())
+  // shuffle credits: https://dev.to/codebubb/how-to-shuffle-an-array-in-javascript-2ikj
+  // eslint-disable-next-line no-unused-vars
+  return unshuffledList.sort((a, b) => 0.5 - Math.random())
+}
