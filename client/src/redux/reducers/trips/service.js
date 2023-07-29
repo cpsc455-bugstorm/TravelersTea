@@ -29,12 +29,17 @@ export const deleteTrip = async (id) => {
   return await axiosWithToken.delete(`${API_URL}/trips/${id}`)
 }
 
+export const enableShareTrip = async (id) => {
+  return await axiosWithToken.patch(`${API_URL}/trips/${id}/share`)
+}
+
 const tripService = {
   fetchTrips,
   fetchTripByTripId,
   createTrip,
   updateTrip,
   deleteTrip,
+  enableShareTrip,
 }
 
 export default tripService

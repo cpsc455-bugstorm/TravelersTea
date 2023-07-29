@@ -4,4 +4,5 @@ export const actionTypes = {
   GET_TRIPS: 'trips/fetchTrips',
   GET_TRIP: 'trips/fetchTrip',
   DELETE_TRIP: 'trips/deleteTrip',
+  SHARE_TRIP: 'trips/shareTrip',
 }

@@ -14,7 +14,7 @@ class TripController {
 
   async getTrip(id) {
     try {
-      return await TripModel.findById(id)
+      return await TripModel.findOne({ _id: id, isPublic: true })
     } catch (error) {
       if (config.server.env === 'DEV')
         console.error('Error while fetching trip:', error)
@@ -302,6 +302,40 @@ class TripController {
       if (config.server.env === 'DEV')
         console.error('Error while deleting trips:', error)
       throw new Error('Could not delete trip')
+    }
+  }
+
+  async enableShareTrip(userId, id) {
+    try {
+      await TripModel.updateOne(
+        { _id: id, userId: userId },
+        {
+          $set: {
+            isPublic: true, // update the field
+          },
+        },
+        function (err) {
+          if (err) throw err
+          console.log('1 document updated')
+        },
+      ).lean()
+    } catch (error) {
+      if (config.server.env === 'DEV')
+        console.error('Error while deleting trips:', error)
+      throw new Error('Could not enable sharing')
+    }
+  }
+
+  async getSharedTrip(id) {
+    try {
+      await TripModel.findOne({ _id: id, isPublic: true }, {}, function (err) {
+        if (err) throw err
+        console.log('retrieved shared trip')
+      }).lean()
+    } catch (error) {
+      if (config.server.env === 'DEV')
+        console.error('Error while getting shared trip:', error)
+      throw new Error('Could not retrieve shared trip')
     }
   }
 }

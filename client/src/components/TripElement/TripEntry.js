@@ -17,6 +17,7 @@ import {
 import { openEditTripModal } from '../../redux/reducers/modalsSlice'
 import {
   deleteTripAsync,
+  enableShareTripAsync,
   updateTripAsync,
 } from '../../redux/reducers/trips/thunks'
 import {
@@ -149,15 +150,13 @@ export function TripEntry({ id, buttonClassName, trip }) {
   )
 
   const copyShareLinkToClipboard = async (id) => {
+    dispatch(enableShareTripAsync({ id: id }))
     let currentUrl = window.location.href // full current URL
-    console.log('currentUrl', currentUrl)
     let baseUrl = currentUrl.substring(0, currentUrl.lastIndexOf('/')) // trim off '/home' or anything after the last '/'
     const sharedUrl = baseUrl + '/share/' + id
-    console.log('sharedUrl', sharedUrl)
     copy(sharedUrl)
-    setAlertMessage('Copied to Clipboard!' + sharedUrl)
+    setAlertMessage('Copied to Clipboard!')
     setAlertOpen(true)
-    console.log('copy triggered')
   }
 
   const extraButtons = useMemo(
@@ -300,6 +299,7 @@ export function TripEntry({ id, buttonClassName, trip }) {
         open={alertOpen}
         handleClose={handleCloseAlert}
         message={alertMessage}
+        severity={'info'}
       />
     )
   }, [alertMessage, alertOpen])
