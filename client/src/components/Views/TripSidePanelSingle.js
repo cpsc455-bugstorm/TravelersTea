@@ -2,11 +2,15 @@ import CloseIcon from '@mui/icons-material/Close'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppView } from '../../constants/enums'
-import { setAppView, setShowSidePanel } from '../../redux/reducers/viewSlice'
+import {
+  setActiveDayNumber,
+  setAppView,
+  setShowSidePanel,
+} from '../../redux/reducers/viewSlice'
 import { getBg400, getTailwindName } from '../../util/tailwindColors'
 import { Button } from '../common'
-import { TeaCup } from './TeaCup'
 import MugRating from './MugRating'
+import { TeaCup } from './TeaCup'
 
 export function TripSidePanelSingle() {
   const activeDayNumber = useSelector((state) => state.view.activeDayNumber)
@@ -43,10 +47,10 @@ export function TripSidePanelSingle() {
           className={`bg-gradient-to-r from-transparent ${toColor} px-5 py-6`}
           key={`details-${activeDayNumber}-${index}`}
         >
-          <p className={'text-xl font-semibold text-slate-100'}>
+          <div className={'text-xl font-semibold text-slate-100'}>
             {stage['stageLocation']}
             <MugRating rating={stage['stageRating']} />
-          </p>
+          </div>
           <p className={'text-lg text-slate-100'}>{stage['description']}</p>
         </div>
       )
@@ -63,7 +67,10 @@ export function TripSidePanelSingle() {
         }`}
     >
       <button
-        onClick={() => dispatch(setShowSidePanel(false))}
+        onClick={() => {
+          dispatch(setShowSidePanel(false))
+          dispatch(setActiveDayNumber(-1))
+        }}
         className={
           'absolute right-3 top-3 h-12 w-12 rounded-md text-slate-400 hover:bg-slate-200/10'
         }

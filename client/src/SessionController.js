@@ -79,7 +79,7 @@ export function SessionController({ children }) {
       tripsStates.status === REQUEST_STATE.IDLE &&
       userStates.status === REQUEST_STATE.LOGGEDIN
     ) {
-      dispatch(fetchTripsAsync(userStates.user.id))
+      dispatch(fetchTripsAsync())
     }
   }, [dispatch, tripsStates.status, userStates])
 
@@ -91,9 +91,11 @@ export function SessionController({ children }) {
   useEffect(() => {
     if (
       (tripsStates.status === REQUEST_STATE.FULFILLED ||
-        tripsStates.status === REQUEST_STATE.REJECTED) &&
+        tripsStates.status === REQUEST_STATE.REJECTED ||
+        tripsStates.status === REQUEST_STATE.IDLE) &&
       (stagesStates.status === REQUEST_STATE.FULFILLED ||
-        stagesStates.status === REQUEST_STATE.REJECTED)
+        stagesStates.status === REQUEST_STATE.REJECTED ||
+        stagesStates.status === REQUEST_STATE.IDLE)
     ) {
       delaySetLoadingFalse(1000)
     }

@@ -24,10 +24,12 @@ class StageController {
     }
   }
 
-  async createManyStages(listOfStages) {
+  async createManyStages(listOfStages, session) {
     console.log(listOfStages)
+
     try {
-      const newStages = await StageModel.insertMany(listOfStages)
+      const options = session ? { session } : undefined
+      const newStages = await StageModel.insertMany(listOfStages, options)
       return newStages.map((stage) => stage.toObject())
     } catch (error) {
       if (config.server.env === 'DEV')
@@ -111,9 +113,13 @@ class StageController {
    * @param tripId
    * @return { deletedCount: number }
    * */
-  async deleteStagesByTripId(tripId) {
+  async deleteStagesByTripId(tripId, session) {
     try {
-      return await StageModel.deleteMany({ tripId: tripId })
+      const query = StageModel.deleteMany({ tripId: tripId })
+      if (session) {
+        query.session(session)
+      }
+      return await query
     } catch (error) {
       if (config.server.env === 'DEV')
         console.error('Error while deleting stages:', error)
