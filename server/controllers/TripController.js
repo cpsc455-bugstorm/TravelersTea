@@ -93,38 +93,37 @@ class TripController {
     let totalZ = 0
 
     for (let stage of day.stages) {
-      let longLatObject
       try {
-        longLatObject = await getCoordinatesFromLocation(
+        const longLatObject = await getCoordinatesFromLocation(
           stage.stageLocationName,
           tripLocation,
           true,
         )
+        const lat = longLatObject.location.lat * (Math.PI / 180)
+        const lon = longLatObject.location.lng * (Math.PI / 180)
+
+        totalX += Math.cos(lat) * Math.cos(lon)
+        totalY += Math.cos(lat) * Math.sin(lon)
+        totalZ += Math.sin(lat)
+
+        const stageToAddFromDay = {
+          tripId,
+          dayIndex: day.day,
+          stageIndex: stage.stageIndex,
+          stageLongitude: longLatObject.location.lng,
+          stageLatitude: longLatObject.location.lat,
+          stageRating: longLatObject.rating,
+          stageLocation: stage.stageLocationName,
+          description: stage.stageDescription,
+          colorNumber: colorNumber,
+          emoji: stage.stageEmoji,
+        }
+        stagesToAddFromDay.push(stageToAddFromDay)
       } catch (error) {
         if (config.server.env === 'DEV')
-          console.error('Error while fetching coordinates:', error)
-        throw new Error(`Could not get coordinates`)
+          console.error('Could not add stage:', error)
+        throw new Error('Could not add stage')
       }
-      const lat = longLatObject.location.lat * (Math.PI / 180)
-      const lon = longLatObject.location.lng * (Math.PI / 180)
-
-      totalX += Math.cos(lat) * Math.cos(lon)
-      totalY += Math.cos(lat) * Math.sin(lon)
-      totalZ += Math.sin(lat)
-
-      const stageToAddFromDay = {
-        tripId,
-        dayIndex: day.day,
-        stageIndex: stage.stageIndex,
-        stageLongitude: longLatObject.location.lng,
-        stageLatitude: longLatObject.location.lat,
-        stageRating: longLatObject.rating,
-        stageLocation: stage.stageLocationName,
-        description: stage.stageDescription,
-        colorNumber: colorNumber,
-        emoji: stage.stageEmoji,
-      }
-      stagesToAddFromDay.push(stageToAddFromDay)
     }
 
     return {
