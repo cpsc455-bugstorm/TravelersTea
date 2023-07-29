@@ -25,6 +25,7 @@ import {
 } from '../../redux/reducers/viewSlice'
 import { Button, Modal } from '../common'
 import { resetStages } from '../../redux/reducers/stage/stageSlice'
+import IosShareSharpIcon from '@mui/icons-material/IosShareSharp'
 
 TripEntry.propTypes = {
   id: PropTypes.string.isRequired,
@@ -43,8 +44,8 @@ export function TripEntry({ id, buttonClassName, trip }) {
   const [openModal, setOpenModal] = useState(false)
   const inputRef = useRef()
 
-  const widthForTripEntry = !isSelected ? 'w-[160px]' : 'w-[228px]'
-  const widthForButtonsContainer = isRenaming ? 'w-[46px]' : 'w-[68px]'
+  const widthForTripEntry = !isSelected ? 'w-[140px]' : 'w-[228px]'
+  const widthForButtonsContainer = isRenaming ? 'w-[46px]' : 'w-[92px]'
 
   const proceedToDelete = () => {
     setOpenModal(true)
@@ -146,6 +147,10 @@ export function TripEntry({ id, buttonClassName, trip }) {
     ],
   )
 
+  const copyShareLinkToClipboard = () => {
+    console.log('copy triggered')
+  }
+
   const extraButtons = useMemo(
     () => (
       <div
@@ -154,6 +159,19 @@ export function TripEntry({ id, buttonClassName, trip }) {
       >
         {!isRenaming ? (
           <>
+            <Button
+              key={`sidebar-trip-button-${id}-share`}
+              onClick={() => {
+                copyShareLinkToClipboard()
+              }}
+              className={`${isSelected} h-[22px] w-[20px] hover:text-red-400`}
+              padding='p-0 mr-[3px]'
+            >
+              <IosShareSharpIcon
+                sx={{ fontSize: 20 }}
+                className='align-baseline'
+              />
+            </Button>
             <Button
               key={`sidebar-trip-button-${id}-rename`}
               onClick={() => {
