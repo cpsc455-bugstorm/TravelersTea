@@ -9,6 +9,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppView } from '../../constants/enums'
 import { DEFAULT_SPEED, ZOOM_CITY_LEVEL } from '../../constants/mapDefaultInfo'
+import copy from 'copy-to-clipboard'
 import {
   changeCoordinatesAndZoom,
   resetMap,
@@ -23,7 +24,7 @@ import {
   resetView,
   setActiveTripId,
 } from '../../redux/reducers/viewSlice'
-import { Button, Modal } from '../common'
+import { AlertSnackbar, Button, Modal } from '../common'
 import { resetStages } from '../../redux/reducers/stage/stageSlice'
 import IosShareSharpIcon from '@mui/icons-material/IosShareSharp'
 
@@ -147,7 +148,15 @@ export function TripEntry({ id, buttonClassName, trip }) {
     ],
   )
 
-  const copyShareLinkToClipboard = () => {
+  const copyShareLinkToClipboard = async (id) => {
+    let currentUrl = window.location.href // full current URL
+    console.log('currentUrl', currentUrl)
+    let baseUrl = currentUrl.substring(0, currentUrl.lastIndexOf('/')) // trim off '/home' or anything after the last '/'
+    const sharedUrl = baseUrl + '/share/' + id
+    console.log('sharedUrl', sharedUrl)
+    copy(sharedUrl)
+    setAlertMessage('Copied to Clipboard!' + sharedUrl)
+    setAlertOpen(true)
     console.log('copy triggered')
   }
 
@@ -161,8 +170,8 @@ export function TripEntry({ id, buttonClassName, trip }) {
           <>
             <Button
               key={`sidebar-trip-button-${id}-share`}
-              onClick={() => {
-                copyShareLinkToClipboard()
+              onClick={async () => {
+                await copyShareLinkToClipboard(id)
               }}
               className={`${isSelected} h-[22px] w-[20px] hover:text-red-400`}
               padding='p-0 mr-[3px]'
@@ -275,10 +284,31 @@ export function TripEntry({ id, buttonClassName, trip }) {
     ],
   )
 
+  const [alertOpen, setAlertOpen] = useState(false)
+  const [alertMessage, setAlertMessage] = useState('')
+
+  const handleCloseAlert = (event, reason) => {
+    if (reason === 'clickaway') {
+      return
+    }
+    setAlertOpen(false)
+  }
+
+  const alert = useMemo(() => {
+    return (
+      <AlertSnackbar
+        open={alertOpen}
+        handleClose={handleCloseAlert}
+        message={alertMessage}
+      />
+    )
+  }, [alertMessage, alertOpen])
+
   return (
     <div className='group relative'>
       {tripButton}
       {extraButtons}
+      {alert}
     </div>
   )
 }
