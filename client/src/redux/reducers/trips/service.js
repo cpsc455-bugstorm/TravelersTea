@@ -1,14 +1,12 @@
 import axios from 'axios'
 import { API_URL } from '../../../constants/API_URL'
 
-const axiosWithToken = axios.create({
-  headers: {
-    common: {
-      Authorization: `Bearer ${localStorage.getItem(
-        'travelersTea_accessToken',
-      )}`,
-    },
-  },
+const axiosWithToken = axios.create()
+
+axiosWithToken.interceptors.request.use((config) => {
+  const token = localStorage.getItem('travelersTea_accessToken')
+  config.headers.Authorization = token ? `Bearer ${token}` : ''
+  return config
 })
 
 export const fetchTrips = async () => {
