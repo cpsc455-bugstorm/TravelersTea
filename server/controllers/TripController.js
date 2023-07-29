@@ -93,11 +93,18 @@ class TripController {
     let totalZ = 0
 
     for (let stage of day.stages) {
-      const longLatObject = await getCoordinatesFromLocation(
-        stage.stageLocationName,
-        tripLocation,
-        true,
-      )
+      let longLatObject
+      try {
+        longLatObject = await getCoordinatesFromLocation(
+          stage.stageLocationName,
+          tripLocation,
+          true,
+        )
+      } catch (error) {
+        if (config.server.env === 'DEV')
+          console.error('Error while fetching coordinates:', error)
+        throw new Error(`Could not get coordinates`)
+      }
       const lat = longLatObject.location.lat * (Math.PI / 180)
       const lon = longLatObject.location.lng * (Math.PI / 180)
 

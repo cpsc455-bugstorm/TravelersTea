@@ -73,10 +73,17 @@ class StageController {
         )
       }
       // Get Coordinates
-      let coords = await getCoordinatesFromLocation(
-        trip.tripLocation,
-        newStageResponse.newStage.stageLocation,
-      )
+      let coords
+      try {
+        coords = await getCoordinatesFromLocation(
+          trip.tripLocation,
+          newStageResponse.newStage.stageLocation,
+        )
+      } catch (error) {
+        if (config.server.env === 'DEV')
+          console.error('Error while fetching coordinates:', error)
+        throw new Error(`Could not get coordinates`)
+      }
       // Update DB
       // Return success message
       await StageModel.updateOne(
