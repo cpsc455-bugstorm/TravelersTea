@@ -11,6 +11,7 @@ import {
 } from '../../redux/reducers/preferencesSlice'
 import {
   closeSidebar,
+  setActiveDayNumber,
   setAppView,
   toggleSidebar,
 } from '../../redux/reducers/viewSlice'
@@ -65,13 +66,15 @@ export function SideBar() {
   }, [trips, activeTripId, appView])
 
   const preferencesModalBtn = useMemo(() => {
-    // TODO refactor this to return a button that opens a modal.
-    //    Please follow any conventions that Meng uses when styling / storing modal content
     const compactViewToggle = (
       <Toggle
         className='mb-2'
         label='Compact View'
         onClick={() => {
+          if (!isCompactView) {
+            // we are switching over to compact view; clear the focused day
+            dispatch(setActiveDayNumber(-1))
+          }
           dispatch(toggleCompactView())
         }}
         active={isCompactView}

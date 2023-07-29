@@ -1,12 +1,18 @@
 import { useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button } from '../common'
-import { closeSidebar, toggleShowDrawer } from '../../redux/reducers/viewSlice'
+import {
+  closeSidebar,
+  setActiveDayNumber,
+  setAppView,
+  toggleShowDrawer,
+} from '../../redux/reducers/viewSlice'
 import { getTailwindName } from '../../util/tailwindColors'
 import MugRating from './MugRating'
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
 import { openEditStageModal } from '../../redux/reducers/modalsSlice'
 import { updateEditStageId } from '../../redux/reducers/stage/stageSlice'
+import { AppView } from '../../constants/enums'
 
 export function SeeMoreDrawer() {
   const stagesByDay = useSelector((state) => state.stages.stages)
@@ -15,7 +21,7 @@ export function SeeMoreDrawer() {
 
   const showDrawer = useSelector((state) => state.view.showDrawer)
 
-  const seeMoreCardContent = useMemo(() => {
+  const seeMoreCards = useMemo(() => {
     return stagesByDay.map((dayDetails, index) => {
       const dayNumber = index + 1
       const dayColor = dayDetails[0]['colorNumber']
@@ -24,7 +30,11 @@ export function SeeMoreDrawer() {
       return (
         <div
           key={`details-${dayNumber}`}
-          className={`from-${colorName}-400/70 to-${colorName}-500/70 my-4 box-border w-full rounded-md bg-gradient-to-br p-4 shadow-xl`}
+          className={`from-${colorName}-400/70 to-${colorName}-500/70 my-4 box-border w-full cursor-pointer rounded-md bg-gradient-to-br p-4 shadow-xl`}
+          onClick={() => {
+            dispatch(setActiveDayNumber(dayNumber))
+            dispatch(setAppView(AppView.DAY_VIEW))
+          }}
         >
           <h3 className='text-lg font-bold text-white'>Day {dayNumber}</h3>
           {dayDetails.map((stage, stageIndex) => {
@@ -88,7 +98,7 @@ export function SeeMoreDrawer() {
         className={`pointer-events-auto w-full overflow-y-auto bg-transparent transition-all duration-500 ease-in-out mac-scrollbar
           ${showDrawer ? 'max-h-[50vh] p-4 pt-0' : 'max-h-0'}`}
       >
-        {seeMoreCardContent}
+        {seeMoreCards}
       </div>
     </>
   )
