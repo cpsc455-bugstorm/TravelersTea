@@ -47,7 +47,7 @@ async function generateStage(trip, stage, preference) {
         role: 'system',
         content: `You are an AI that generates travel itineraries. Respond with ONLY JSON that contains the information for the new stage. The new stage must be a real place. 
         ONLY respond with the following format, do not include any descriptions or codeblocks, I should be able to parse the output to a JavaScript Object. 
-        Ensure the newStage is strictly ${trip.tripLocation} and is a real place.
+        Ensure the newStage is strictly in ${trip.tripLocation} and is a real place.
         The response needs to be formatted exactly like the following structure and updated stageLocation must be a real place name such that Google Maps can find them:.:
         '''
         {
