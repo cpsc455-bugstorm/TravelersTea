@@ -6,6 +6,10 @@ const stageSchema = new mongoose.Schema({
     ref: 'Trip',
     required: true,
   },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  },
   dayIndex: {
     type: Number,
     required: true,
