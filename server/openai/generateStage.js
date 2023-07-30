@@ -79,7 +79,7 @@ async function generateStage(trip, stage, preference) {
     }
     return 'Unable to generate new stage. Please try again later.'
   } catch (error) {
-    console.error('Error while generating itinerary:', error)
+    error.message = 'Error while generating itinerary | ' + error.message
     throw error
   }
 }

@@ -14,7 +14,7 @@ const authMiddleware = (req, res, next) => {
     const parsedToken = jwt.verify(accessToken, config.server.jwtSecret)
 
     if (parsedToken) {
-      req.userId = parsedToken.userId // TODO: see if this is possible
+      req.userId = parsedToken.userId
       return next()
     } else {
       console.log(parsedToken)
