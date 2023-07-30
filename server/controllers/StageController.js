@@ -74,7 +74,7 @@ class StageController {
       // Parse response
       if (newStageResponse.error) {
         throw new Error(
-          'openai response returned an error: ' + newStageResponse.error,
+          'Openai response returned an error: ' + newStageResponse.error, // this is a error message
         )
       }
       // Get Coordinates
@@ -82,11 +82,9 @@ class StageController {
         trip.tripLocation,
         newStageResponse.newStage.stageLocation,
       )
-      // Update DB
-      // Return success message
-      await StageModel.updateOne(
+      const newStage = await StageModel.findOneAndUpdate(
         {
-          _id: new mongoose.Types.ObjectId(stage._id),
+          _id: new mongoose.Types.ObjectId(id),
           userId: new mongoose.Types.ObjectId(userId),
         },
         {
@@ -98,27 +96,35 @@ class StageController {
             stageLongitude: coords.lng,
           },
         },
-      )
-      return await StageModel.findById(stage._id)
+        { new: true },
+      ).lean()
+
+      if (!newStage) {
+        const error = new Error('Stage could not be found')
+        error.statusCode = 404
+        throw error
+      }
+
+      delete newStage.userId
+      return newStage
     } catch (error) {
-      if (config.server.env === 'DEV')
-        console.error('Could not update stage:', error)
-      throw new Error('Could not update stage')
+      error.message = 'Could not update stage | ' + error.message
+      throw error
     }
   }
 
-  async deleteStage(userId, id) {
-    try {
-      return await StageModel.findOneAndDelete({
-        userId: new mongoose.Types.ObjectId(userId),
-        _id: new mongoose.Types.ObjectId(id), // ensure user1 cannot delete user2's trips
-      }).lean()
-    } catch (error) {
-      if (config.server.env === 'DEV')
-        console.error('Error while deleting stages:', error)
-      throw new Error('Could not delete all stages for given id')
-    }
-  }
+  // async deleteStage(userId, id) {
+  //   try {
+  //     return await StageModel.findOneAndDelete({
+  //       userId: new mongoose.Types.ObjectId(userId),
+  //       _id: new mongoose.Types.ObjectId(id), // ensure user1 cannot delete user2's trips
+  //     }).lean()
+  //   } catch (error) {
+  //     if (config.server.env === 'DEV')
+  //       console.error('Error while deleting stages:', error)
+  //     throw new Error('Could not delete all stages for given id')
+  //   }
+  // }
 
   /**
    * @param tripId

@@ -9,7 +9,7 @@ class StageRoute {
     this.router.get('', this.getByTripId.bind(this))
     this.router.get('/:id', this.getById.bind(this))
     this.router.patch('/:id', this.update.bind(this))
-    this.router.delete('/:id', this.delete.bind(this))
+    // this.router.delete('/:id', this.delete.bind(this))
   }
 
   initRoutes(apiRouter) {
@@ -58,40 +58,35 @@ class StageRoute {
     }
   }
 
-  async update(req, res) {
+  async update(req, res, next) {
     try {
       const updatedStage = await controllers.stageController.updateStage(
         req.userId,
         req.params.id,
         req.body,
       )
-      if (!updatedStage) {
-        return res
-          .status(404)
-          .json({ error: '404: Stage not found during edit' })
-      }
       res.status(200).json(updatedStage)
     } catch (err) {
-      res.status(500).json({ error: err.toString() })
+      next(err)
     }
   }
 
-  async delete(req, res) {
-    try {
-      const deletedStage = await controllers.stageController.deleteStage(
-        req.userId,
-        req.params.id,
-      )
-      if (!deletedStage) {
-        return res
-          .status(404)
-          .json({ error: '404: Trip not found during delete' })
-      }
-      res.status(200).json(deletedStage)
-    } catch (err) {
-      res.status(500).json({ error: err.toString() })
-    }
-  }
+  // async delete(req, res) {
+  //   try {
+  //     const deletedStage = await controllers.stageController.deleteStage(
+  //       req.userId,
+  //       req.params.id,
+  //     )
+  //     if (!deletedStage) {
+  //       return res
+  //         .status(404)
+  //         .json({ error: '404: Trip not found during delete' })
+  //     }
+  //     res.status(200).json(deletedStage)
+  //   } catch (err) {
+  //     res.status(500).json({ error: err.toString() })
+  //   }
+  // }
 }
 
 module.exports = StageRoute
