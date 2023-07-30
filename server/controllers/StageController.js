@@ -26,16 +26,13 @@ class StageController {
   // }
 
   async createManyStages(listOfStages, session) {
-    console.log(listOfStages)
-
     try {
       const options = session ? { session } : undefined
       const newStages = await StageModel.insertMany(listOfStages, options)
       return newStages.map((stage) => stage.toObject())
     } catch (error) {
-      if (config.server.env === 'DEV')
-        console.error('Error while creating stages:', error)
-      throw new Error('Could not create stages')
+      error.message = 'Could not save trip | ' + error.message
+      throw error
     }
   }
 
@@ -145,12 +142,13 @@ class StageController {
 function partitionStagesByDay(arr, stagesPerDay) {
   const stagesByDayByTrip = []
 
-  arr.forEach((item, index) => {
+  arr.forEach((stage, index) => {
+    delete stage.userId
     const startNewRow = index % stagesPerDay === 0
     if (startNewRow) {
-      stagesByDayByTrip.push([item])
+      stagesByDayByTrip.push([stage])
     } else {
-      stagesByDayByTrip[stagesByDayByTrip.length - 1].push(item)
+      stagesByDayByTrip[stagesByDayByTrip.length - 1].push(stage)
     }
   })
 

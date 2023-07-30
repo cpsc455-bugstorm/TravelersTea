@@ -37,6 +37,7 @@ export function SessionController({ children }) {
   const [alertOpen, setAlertOpen] = useState(false)
   const [alertMessage, setAlertMessage] = useState('')
   const [loadingAlertOpen, setLoadingAlertOpen] = useState(false)
+  const storedTokenExists = localStorage.getItem('travelersTea_accessToken')
   const delaySetLoadingFalse = (ms, callback = () => {}) => {
     setTimeout(() => {
       setIsLoading(false)
@@ -76,12 +77,23 @@ export function SessionController({ children }) {
 
   useEffect(() => {
     if (
+      userStates.status === REQUEST_STATE.IDLE ||
+      userStates.status === REQUEST_STATE.REJECTED ||
+      userStates.status === REQUEST_STATE.LOGGEDOUT
+    ) {
+      localStorage.removeItem('travelersTea_accessToken')
+    }
+  }, [userStates])
+
+  useEffect(() => {
+    if (
       tripsStates.status === REQUEST_STATE.IDLE &&
-      userStates.status === REQUEST_STATE.LOGGEDIN
+      userStates.status === REQUEST_STATE.LOGGEDIN &&
+      storedTokenExists
     ) {
       dispatch(fetchTripsAsync())
     }
-  }, [dispatch, tripsStates.status, userStates])
+  }, [dispatch, tripsStates.status, userStates, storedTokenExists])
 
   useEffect(() => {
     if (tripsStates.status === REQUEST_STATE.FULFILLED && activeTripId)
@@ -91,9 +103,11 @@ export function SessionController({ children }) {
   useEffect(() => {
     if (
       (tripsStates.status === REQUEST_STATE.FULFILLED ||
-        tripsStates.status === REQUEST_STATE.REJECTED) &&
+        tripsStates.status === REQUEST_STATE.REJECTED ||
+        tripsStates.status === REQUEST_STATE.IDLE) &&
       (stagesStates.status === REQUEST_STATE.FULFILLED ||
-        stagesStates.status === REQUEST_STATE.REJECTED)
+        stagesStates.status === REQUEST_STATE.REJECTED ||
+        stagesStates.status === REQUEST_STATE.IDLE)
     ) {
       delaySetLoadingFalse(1000)
     }

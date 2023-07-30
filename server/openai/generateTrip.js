@@ -71,7 +71,6 @@ async function generateTrip(constraints) {
                   stageLocationName: String,
                   stageDescription: String,
                   stageEmoji: String (best emoji representation of stage),
-                  stageColor: Number (Random number between 1-17)
                 }
               ]
             }
@@ -94,7 +93,6 @@ async function generateTrip(constraints) {
   ]
 
   const tripJson = await openaiClient(conversation)
-  console.log(tripJson)
   const response = JSON.parse(tripJson)
 
   if (!response) {
