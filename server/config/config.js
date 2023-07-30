@@ -10,6 +10,8 @@ const SERVER_PORT = process.env.PORT ? Number(process.env.PORT) : 5001
 const ENV = process.env.ENV || ''
 const JWT_SECRET = process.env.JWT_SECRET || ''
 
+const CLIENT_URL = process.env.CLIENT_URL
+
 const config = {
   mongo: {
     uri: MONGO_URI,
@@ -18,6 +20,7 @@ const config = {
     port: SERVER_PORT,
     env: ENV,
     jwtSecret: JWT_SECRET,
+    clientURL: CLIENT_URL,
   },
   openaiApiKey: process.env.OPENAI_API_KEY,
   openaiConfig: new Configuration({

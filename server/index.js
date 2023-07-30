@@ -1,4 +1,5 @@
 const express = require('express')
+const path = require('path')
 const mongoose = require('mongoose')
 const cors = require('cors')
 const morgan = require('morgan')
@@ -15,9 +16,11 @@ app.use(express.json())
 app.use(
   cors({
     credentials: true,
-    origin: 'http://localhost:3000',
+    origin: config.server.clientURL,
   }),
 )
+
+app.use(express.static(path.join(__dirname, '../client/build')))
 
 const apiRouter = express.Router()
 
@@ -42,8 +45,8 @@ if (config.server.env === 'DEV') {
 
 app.use(errorHandleMiddleware)
 
-app.get('/', (req, res) => {
-  res.send('Hello, world!')
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/build', 'index.html'))
 })
 
 const connectDB = async () => {
