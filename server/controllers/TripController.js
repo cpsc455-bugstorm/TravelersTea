@@ -12,13 +12,25 @@ class TripController {
     this.stageController = stageController
   }
 
-  async getTrip(id) {
+  async getTrip(userId, tripId) {
     try {
-      return await TripModel.findById(id)
+      const trip = await TripModel.findOne({
+        userId: new mongoose.Types.ObjectId(userId),
+        _id: new mongoose.Types.ObjectId(tripId),
+      })
+
+      if (!trip) {
+        const error = new Error('Trip could not be found')
+        error.statusCode = 404
+        throw error
+      }
+
+      const tripDTO = trip.toObject()
+      delete tripDTO.userId
+      return tripDTO
     } catch (error) {
-      if (config.server.env === 'DEV')
-        console.error('Error while fetching trip:', error)
-      throw new Error('Could not fetch trip')
+      error.message = 'Could not fetch trip | ' + error.message
+      throw error
     }
   }
 
@@ -43,7 +55,7 @@ class TripController {
    * Calculates the geographical center of all stages using spherical coordinates.
    * Returns an array of stages to add, along with the latitude and longitude of the center.
    */
-  async parseStagesFromMultipleDays(days, tripId, tripLocation) {
+  async parseStagesFromMultipleDays(days, tripId, tripLocation, userId) {
     const _tripId = tripId
     const stagesToAdd = []
     let totalX = 0
@@ -58,6 +70,7 @@ class TripController {
         day,
         _tripId,
         tripLocation,
+        userId,
         colorNumber,
       )
       totalX += x
@@ -86,7 +99,7 @@ class TripController {
    * Calculates the geographical center of all stages in the day using spherical coordinates.
    * Returns an array of stages to add from the day, along with the x, y, and z coordinates of the center.
    */
-  async parseStagesFromDay(day, tripId, tripLocation, colorNumber) {
+  async parseStagesFromDay(day, tripId, tripLocation, userId, colorNumber) {
     const stagesToAddFromDay = []
     let totalX = 0
     let totalY = 0
@@ -107,6 +120,7 @@ class TripController {
 
       const stageToAddFromDay = {
         tripId,
+        userId,
         dayIndex: day.day,
         stageIndex: stage.stageIndex,
         stageLongitude: longLatObject.location.lng,
@@ -180,6 +194,7 @@ class TripController {
           days,
           savedTrip._id,
           filteredTripData.tripLocation,
+          userId,
         )
 
       // this adds stages so do the part before this
@@ -193,7 +208,7 @@ class TripController {
         session,
       })
 
-      let savedTripDTO = savedTrip
+      let savedTripDTO = savedTrip.toObject()
       delete savedTripDTO.userId
 
       return savedTripDTO
@@ -273,8 +288,8 @@ class TripController {
     try {
       await this.stageController.deleteStagesByTripId(id)
       const deletedTrip = await TripModel.findOneAndDelete({
-        userId: userId,
-        _id: new mongoose.Types.ObjectId(id), // ensure user1 cannot delete user2's trips
+        userId: userId, // ensure user1 cannot delete user2's trips
+        _id: new mongoose.Types.ObjectId(id),
       }).lean()
       if (!deletedTrip) {
         const error = new Error('Trip could not be found')

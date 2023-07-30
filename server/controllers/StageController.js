@@ -2,6 +2,7 @@ const StageModel = require('../models/StageModel')
 const config = require('../config/config')
 const generateStage = require('../openai/generateStage')
 const getCoordinatesFromLocation = require('../googleapi/googleCoordinates')
+const mongoose = require('mongoose')
 
 class StageController {
   constructor() {}
@@ -10,57 +11,53 @@ class StageController {
     this.tripController = tripController
   }
 
-  async createStage(stageData) {
-    try {
-      const newStage = await StageModel.create({
-        // eslint-disable-next-line node/no-unsupported-features/es-syntax
-        ...stageData,
-      })
-      return newStage.toObject()
-    } catch (error) {
-      if (config.server.env === 'DEV')
-        console.error('Error while creating stage:', error)
-      throw new Error(`Could not create stage`)
-    }
-  }
-
   async createManyStages(listOfStages, session) {
-    console.log(listOfStages)
-
     try {
       const options = session ? { session } : undefined
       const newStages = await StageModel.insertMany(listOfStages, options)
       return newStages.map((stage) => stage.toObject())
     } catch (error) {
-      if (config.server.env === 'DEV')
-        console.error('Error while creating stages:', error)
-      throw new Error('Could not create stages')
+      error.message = 'Could not save trip | ' + error.message
+      throw error
     }
   }
 
-  async getStage(id) {
+  async getStage(userId, id) {
     try {
-      return await StageModel.findById(id)
+      const stage = await StageModel.findOne({
+        userId: new mongoose.Types.ObjectId(userId),
+        _id: new mongoose.Types.ObjectId(id),
+      }).lean()
+      if (!stage) {
+        const error = new Error('Stage could not be found')
+        error.statusCode = 404
+        throw error
+      }
+      delete stage.userId
+      return stage
     } catch (error) {
-      if (config.server.env === 'DEV')
-        console.error('Error while fetching stages:', error)
-      throw new Error('Could not fetch all stages for trip')
+      error.message = 'Could not fetch stage | ' + error.message
+      throw error
     }
   }
 
-  async getStagesByTripId(tripId) {
+  async getStagesByTripId(userId, tripId) {
     try {
-      const trip = await this.tripController.getTrip(tripId)
-      const stagesPerTripId = await StageModel.find({ tripId: tripId })
+      const trip = await this.tripController.getTrip(userId, tripId)
+      const stagesPerTripId = await StageModel.find({
+        tripId: new mongoose.Types.ObjectId(tripId),
+        userId: new mongoose.Types.ObjectId(userId),
+      })
         .sort({ dayIndex: 1, stageIndex: 1 })
         .lean()
       return partitionStagesByDay(stagesPerTripId, trip.stagesPerDay)
     } catch (error) {
-      throw new Error(`Could not fetch all stages for trip: ${error}`)
+      error.message = 'Could not fetch all stages for trip | ' + error.message
+      throw error
     }
   }
 
-  async updateStage(id, { updateNotes, stage, trip }) {
+  async updateStage(userId, id, { updateNotes, stage, trip }) {
     try {
       // Call Openai
       let newStageResponse = JSON.parse(
@@ -69,7 +66,7 @@ class StageController {
       // Parse response
       if (newStageResponse.error) {
         throw new Error(
-          'openai response returned an error: ' + newStageResponse.error,
+          'Openai response returned an error: ' + newStageResponse.error, // this is a error message
         )
       }
       // Get Coordinates
@@ -77,10 +74,11 @@ class StageController {
         trip.tripLocation,
         newStageResponse.newStage.stageLocation,
       )
-      // Update DB
-      // Return success message
-      await StageModel.updateOne(
-        { _id: stage._id },
+      const newStage = await StageModel.findOneAndUpdate(
+        {
+          _id: new mongoose.Types.ObjectId(id),
+          userId: new mongoose.Types.ObjectId(userId),
+        },
         {
           $set: {
             stageLocation: newStageResponse.newStage.stageLocation,
@@ -90,22 +88,20 @@ class StageController {
             stageLongitude: coords.lng,
           },
         },
-      )
-      return await StageModel.findById(stage._id)
-    } catch (error) {
-      if (config.server.env === 'DEV')
-        console.error('Could not update stage:', error)
-      throw new Error('Could not update stage')
-    }
-  }
+        { new: true },
+      ).lean()
 
-  async deleteStage(id) {
-    try {
-      return await StageModel.findByIdAndDelete(id).lean()
+      if (!newStage) {
+        const error = new Error('Stage could not be found')
+        error.statusCode = 404
+        throw error
+      }
+
+      delete newStage.userId
+      return newStage
     } catch (error) {
-      if (config.server.env === 'DEV')
-        console.error('Error while deleting stages:', error)
-      throw new Error('Could not delete all stages for given id')
+      error.message = 'Could not update stage | ' + error.message
+      throw error
     }
   }
 
@@ -131,12 +127,13 @@ class StageController {
 function partitionStagesByDay(arr, stagesPerDay) {
   const stagesByDayByTrip = []
 
-  arr.forEach((item, index) => {
+  arr.forEach((stage, index) => {
+    delete stage.userId
     const startNewRow = index % stagesPerDay === 0
     if (startNewRow) {
-      stagesByDayByTrip.push([item])
+      stagesByDayByTrip.push([stage])
     } else {
-      stagesByDayByTrip[stagesByDayByTrip.length - 1].push(item)
+      stagesByDayByTrip[stagesByDayByTrip.length - 1].push(stage)
     }
   })
 

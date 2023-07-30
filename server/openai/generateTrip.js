@@ -92,9 +92,8 @@ async function generateTrip(constraints) {
     },
   ]
 
-  const response = await openaiClient(conversation).then((str) =>
-    JSON.parse(str),
-  )
+  const tripJson = await openaiClient(conversation)
+  const response = JSON.parse(tripJson)
 
   if (!response) {
     throw new Error(
