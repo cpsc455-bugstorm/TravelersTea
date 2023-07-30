@@ -11,20 +11,6 @@ class StageController {
     this.tripController = tripController
   }
 
-  // async createStage(stageData) {
-  //   try {
-  //     const newStage = await StageModel.create({
-  //       // eslint-disable-next-line node/no-unsupported-features/es-syntax
-  //       ...stageData,
-  //     })
-  //     return newStage.toObject()
-  //   } catch (error) {
-  //     if (config.server.env === 'DEV')
-  //       console.error('Error while creating stage:', error)
-  //     throw new Error(`Could not create stage`)
-  //   }
-  // }
-
   async createManyStages(listOfStages, session) {
     try {
       const options = session ? { session } : undefined
@@ -118,19 +104,6 @@ class StageController {
       throw error
     }
   }
-
-  // async deleteStage(userId, id) {
-  //   try {
-  //     return await StageModel.findOneAndDelete({
-  //       userId: new mongoose.Types.ObjectId(userId),
-  //       _id: new mongoose.Types.ObjectId(id), // ensure user1 cannot delete user2's trips
-  //     }).lean()
-  //   } catch (error) {
-  //     if (config.server.env === 'DEV')
-  //       console.error('Error while deleting stages:', error)
-  //     throw new Error('Could not delete all stages for given id')
-  //   }
-  // }
 
   /**
    * @param tripId

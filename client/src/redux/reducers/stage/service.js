@@ -17,17 +17,9 @@ export const fetchStagesByTripId = async (tripId) => {
   return await axiosWithToken.get(`${API_URL}/stages`, { params: { tripId } })
 }
 
-// export const createStage = async (stageData) => {
-//   return await axios.post(`${API_URL}/stages`, stageData)
-// }
-
 export const updateStage = async (id, updateData) => {
   return await axiosWithToken.patch(`${API_URL}/stages/${id}`, updateData)
 }
-
-// export const deleteStage = async (id) => {
-//   return await axiosWithToken.delete(`${API_URL}/stages/${id}`)
-// }
 
 const stageService = {
   fetchStage,
