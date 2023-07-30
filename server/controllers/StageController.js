@@ -38,14 +38,20 @@ class StageController {
 
   async getStage(userId, id) {
     try {
-      return await StageModel.findOne({
-        userId: userId,
+      const stage = await StageModel.findOne({
+        userId: new mongoose.Types.ObjectId(userId),
         _id: new mongoose.Types.ObjectId(id),
-      })
+      }).lean()
+      if (!stage) {
+        const error = new Error('Stage could not be found')
+        error.statusCode = 404
+        throw error
+      }
+      delete stage.userId
+      return stage
     } catch (error) {
-      if (config.server.env === 'DEV')
-        console.error('Error while fetching stages:', error)
-      throw new Error('Could not fetch all stages for trip')
+      error.message = 'Could not fetch stage | ' + error.message
+      throw error
     }
   }
 

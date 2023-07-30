@@ -25,18 +25,21 @@ class StageRoute {
   //   }
   // }
 
-  async getById(req, res) {
+  async getById(req, res, next) {
     const stageId = req.params.id
-    if (!stageId) res.status(400).json({ error: 'Missing stageId parameter' })
-
     try {
+      if (!stageId) {
+        const error = new Error('Missing stageId parameter')
+        error.statusCode = 400
+        throw error
+      }
       const response = await controllers.stageController.getStage(
         req.userId,
         stageId,
       )
       res.status(200).json(response)
     } catch (err) {
-      res.status(500).json({ error: err.toString() })
+      next(err)
     }
   }
 
