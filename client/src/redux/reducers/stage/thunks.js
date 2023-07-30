@@ -51,14 +51,14 @@ export const updateStageAsync = createAsyncThunk(
   },
 )
 
-export const deleteTripAsync = createAsyncThunk(
-  actionTypes.DELETE_STAGE,
-  async ({ id }, { rejectWithValue }) => {
-    try {
-      const response = await stageService.deleteStage(id)
-      return response.data
-    } catch (error) {
-      return rejectWithValue({ message: error.response.data.error })
-    }
-  },
-)
+// export const deleteTripAsync = createAsyncThunk(
+//   actionTypes.DELETE_STAGE,
+//   async ({ id }, { rejectWithValue }) => {
+//     try {
+//       const response = await stageService.deleteStage(id)
+//       return response.data
+//     } catch (error) {
+//       return rejectWithValue({ message: error.response.data.error })
+//     }
+//   },
+// )
