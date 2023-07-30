@@ -71,7 +71,6 @@ class TripRoute {
         req.userId,
         req.params.id,
       )
-      console.log(deletedTrip)
       res.status(200).json(deletedTrip)
     } catch (err) {
       next(err)
