@@ -6,6 +6,11 @@ const apiLimiter = rateLimit({
   message: 'You have exceeded the 4 requests in 8 hours limit!',
   headers: true,
   skipFailedRequests: true,
+  // eslint-disable-next-line no-unused-vars
+  skip: function (req, res) {
+    console.log(req.ip, req.userId, req.isAdmin)
+    return req.isAdmin
+  },
 })
 
 module.exports = apiLimiter
