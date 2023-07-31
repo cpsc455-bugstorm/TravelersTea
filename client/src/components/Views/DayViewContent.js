@@ -58,7 +58,7 @@ export function DayViewContent() {
   return (
     <>
       <Button
-        className='absolute left-4 top-4 inline-block border-2 border-slate-950 bg-slate-800 px-3 text-slate-100 shadow-xl hover:bg-slate-700 md:px-4'
+        className='absolute left-4 top-4 flex border-2 border-slate-950 bg-slate-800 px-3 text-slate-100 shadow-xl hover:bg-slate-700 md:px-4'
         onClick={openTripView}
       >
         <p className='inline-block hidden pr-1 md:block'>←</p>

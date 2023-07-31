@@ -7,7 +7,7 @@ import { AppView } from '../../constants/enums'
 import { openNewTripModal } from '../../redux/reducers/modalsSlice'
 import {
   toggleCompactView,
-  toggleVerticalTimelines,
+  toggleLightMode,
 } from '../../redux/reducers/preferencesSlice'
 import {
   closeSidebar,
@@ -18,17 +18,20 @@ import {
 import { TripEntry } from '../TripElement'
 import { Button, Toggle } from '../common'
 import { Logout } from '../user'
+import PropTypes from 'prop-types'
 
-export function SideBar() {
+SideBar.propTypes = {
+  isLoading: PropTypes.bool.isRequired,
+}
+
+export function SideBar({ isLoading }) {
   const dispatch = useDispatch()
   const appView = useSelector((state) => state.view.appView)
   const activeTripId = useSelector((state) => state.view.activeTripId)
   const isSidebarOpen = useSelector((state) => state.view.isSidebarOpen)
   const trips = useSelector((state) => state.trips.trips)
   const isCompactView = useSelector((state) => state.preferences.compactView)
-  const isVerticalTimelines = useSelector(
-    (state) => state.preferences.verticalTimelines,
-  )
+  const isLightMode = useSelector((state) => state.preferences.lightMode)
 
   const newTripButton = useMemo(() => {
     return (
@@ -80,13 +83,13 @@ export function SideBar() {
         active={isCompactView}
       />
     )
-    const verticalTimelinesToggle = (
+    const lightModeToggle = (
       <Toggle
-        label='Vertical Timelines'
+        label='Light Mode'
         onClick={() => {
-          dispatch(toggleVerticalTimelines())
+          dispatch(toggleLightMode())
         }}
-        active={isVerticalTimelines}
+        active={isLightMode}
       />
     )
 
@@ -94,10 +97,10 @@ export function SideBar() {
       <div className='mb-2 w-full rounded-md bg-slate-300/20 p-2 text-white'>
         <h3 className='mb-1 text-lg font-semibold'>Preferences</h3>
         {compactViewToggle}
-        {verticalTimelinesToggle}
+        {lightModeToggle}
       </div>
     )
-  }, [isVerticalTimelines, isCompactView, dispatch])
+  }, [isLightMode, isCompactView, dispatch])
 
   const renderSidebarTrips = useMemo(() => {
     return (
@@ -139,9 +142,13 @@ export function SideBar() {
   }, [isSidebarOpen, renderSidebarTrips, renderSidebarBottomPortion])
 
   const renderSidebarToggleButton = useMemo(() => {
+    const toggleColors = isLightMode
+      ? 'via-white/20 to-white/90'
+      : 'via-black/20 to-black/90'
+    const visible = isLoading && !isSidebarOpen ? 'hidden' : 'flex'
     return (
       <span
-        className={`fixed top-0 z-50 flex h-full items-center transition-all ${
+        className={`${visible} fixed top-0 z-50 h-full items-center transition-all ${
           isSidebarOpen ? 'left-[260px]' : 'left-0'
         }`}
       >
@@ -149,14 +156,14 @@ export function SideBar() {
           <div className='absolute inset-0 z-0'></div>
           <Button
             onClick={() => dispatch(toggleSidebar())}
-            className={`relative z-10 h-full w-full rounded-none bg-gradient-to-b from-transparent via-black/20 to-black/90 text-6xl text-slate-100 hover:bg-slate-400/50 hover:text-white`}
+            className={`relative z-10 h-full w-full rounded-none bg-gradient-to-b from-transparent ${toggleColors} text-6xl text-slate-100 hover:bg-slate-400/50 hover:text-white`}
           >
             {isSidebarOpen ? '‹' : '›'}
           </Button>
         </div>
       </span>
     )
-  }, [isSidebarOpen, dispatch])
+  }, [isLoading, isLightMode, isSidebarOpen, dispatch])
 
   const renderSidebarShading = useMemo(() => {
     if (!isSidebarOpen) return <></>
