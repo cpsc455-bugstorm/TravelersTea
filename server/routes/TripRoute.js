@@ -1,6 +1,7 @@
 const express = require('express')
 const controllers = require('../controllers/Controllers')
 const authMiddleware = require('../middlewares/AuthMiddleware')
+const apiLimiter = require('../config/rateLimiter')
 
 class TripRoute {
   constructor() {
@@ -8,8 +9,8 @@ class TripRoute {
     this.router.use(authMiddleware)
     this.router.get('', this.getAllByUserId.bind(this))
     this.router.get('/:tripId', this.getTripById.bind(this))
-    this.router.post('', this.create.bind(this))
-    this.router.patch('/:id', this.update.bind(this))
+    this.router.post('', apiLimiter, this.create.bind(this))
+    this.router.patch('/:id', apiLimiter, this.update.bind(this))
     this.router.delete('/:id', this.delete.bind(this))
   }
 
