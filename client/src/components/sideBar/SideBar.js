@@ -21,10 +21,11 @@ import { Logout } from '../user'
 import PropTypes from 'prop-types'
 
 SideBar.propTypes = {
+  shouldHide: PropTypes.bool.isRequired,
   isLoading: PropTypes.bool.isRequired,
 }
 
-export function SideBar({ isLoading }) {
+export function SideBar({ shouldHide, isLoading }) {
   const dispatch = useDispatch()
   const appView = useSelector((state) => state.view.appView)
   const activeTripId = useSelector((state) => state.view.activeTripId)
@@ -145,10 +146,11 @@ export function SideBar({ isLoading }) {
     const toggleColors = isLightMode
       ? 'via-white/20 to-white/90'
       : 'via-black/20 to-black/90'
-    const visible = isLoading && !isSidebarOpen ? 'hidden' : 'flex'
+    const invisible =
+      shouldHide || (isLoading && !isSidebarOpen) ? 'hidden' : 'flex'
     return (
       <span
-        className={`${visible} fixed top-0 z-50 h-full items-center transition-all ${
+        className={`${invisible} fixed top-0 z-50 h-full items-center transition-all ${
           isSidebarOpen ? 'left-[260px]' : 'left-0'
         }`}
       >
@@ -163,7 +165,7 @@ export function SideBar({ isLoading }) {
         </div>
       </span>
     )
-  }, [isLoading, isLightMode, isSidebarOpen, dispatch])
+  }, [isLightMode, shouldHide, isLoading, isSidebarOpen, dispatch])
 
   const renderSidebarShading = useMemo(() => {
     if (!isSidebarOpen) return <></>

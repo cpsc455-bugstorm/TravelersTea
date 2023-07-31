@@ -184,7 +184,10 @@ export function SessionController({ children }) {
   return (
     <>
       {isLoading && <Loader />}
-      <SideBar isLoading={isLoading} />
+      <SideBar
+        shouldHide={userStates.status !== REQUEST_STATE.LOGGEDIN}
+        isLoading={isLoading}
+      />
       <AlertSnackbar
         open={alertOpen}
         handleClose={handleCloseAlert}
