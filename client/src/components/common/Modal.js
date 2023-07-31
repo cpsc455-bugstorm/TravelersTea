@@ -55,7 +55,7 @@ export function Modal({
   classNameMain,
   modalSize = 'md',
   classNameTitle,
-  titleSize = 'text-5xl',
+  titleSize = 'text-4xl md:text-5xl',
   classNameContent,
   isCompressed = false,
 }) {

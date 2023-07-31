@@ -42,7 +42,7 @@ export function Loader() {
 
   return (
     <div className={`fixed left-0 top-0 z-[98] h-full w-full bg-slate-800/30`}>
-      <div className='opacity-99 fadesIn fixed left-[50%] top-[50%] z-[99] flex h-[200px] w-[500px] -translate-x-1/2 -translate-y-[60%] transform flex-col items-center justify-center rounded-md bg-black'>
+      <div className='opacity-99 fadesIn fixed left-[50%] top-[50%] z-[99] flex h-[400px] w-[300px] -translate-x-1/2 -translate-y-[60%] transform flex-col items-center justify-center rounded-md bg-black md:h-[200px] md:w-[500px]'>
         <div className='mx-5 my-2 flex flex-row items-center'>
           <img
             src='/brewing.gif'

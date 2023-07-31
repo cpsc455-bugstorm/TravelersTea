@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux'
 import { SLOWER_SPEED, ZOOM_GLOBE_LEVEL } from '../../constants/mapDefaultInfo'
 import { changeSpeed, changeZoom } from '../../redux/reducers/mapSlice'
 import { Button } from '../common'
+import { setActiveDayNumber } from '../../redux/reducers/viewSlice'
 
 TripForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
@@ -30,6 +31,7 @@ export function TripForm({ onSubmit, initialValues = {} }) {
     localStorage.setItem('lastEnteredNote', data.tripNotes)
     dispatch(changeZoom(ZOOM_GLOBE_LEVEL))
     dispatch(changeSpeed(SLOWER_SPEED))
+    dispatch(setActiveDayNumber(-1))
     onSubmit(data)
   }
 

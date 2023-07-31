@@ -41,7 +41,10 @@ export function TripSidePanelSingle() {
 
     return dayDetails.map((stage, index) => {
       const dayColor = dayDetails[0]['colorNumber']
-      const toColor = `to-${getTailwindName(dayColor)}-400/${index * 10 + 10}`
+      const toColor = `to-${getTailwindName(dayColor)}-400/${Math.min(
+        index * 10 + 10,
+        100,
+      )}`
       return (
         <div
           className={`bg-gradient-to-r from-transparent ${toColor} px-5 py-6`}
@@ -59,7 +62,7 @@ export function TripSidePanelSingle() {
 
   return showSidePanel && dayDetails ? (
     <div
-      className={`pointer-events-auto relative m-4 flex w-1/3 flex-col items-center justify-center overflow-hidden rounded-md bg-slate-900 text-center drop-shadow-[10px_-10px_15px_rgba(150,150,150,0.25)] transition-all
+      className={`pointer-events-auto relative m-4 hidden w-1/3 flex-col items-center justify-center overflow-hidden rounded-md bg-slate-900 text-center drop-shadow-[10px_-10px_15px_rgba(150,150,150,0.25)] transition-all md:flex
         ${
           showSidePanel
             ? 'h-full scale-100 opacity-100'

@@ -21,6 +21,7 @@ import {
 } from './redux/reducers/users/usersSlice'
 import { openSidebar, resetView, setAppView } from './redux/reducers/viewSlice'
 import { REQUEST_STATE } from './redux/states'
+import { SideBar } from './components/sideBar'
 
 SessionController.propTypes = {
   children: PropTypes.node,
@@ -183,6 +184,7 @@ export function SessionController({ children }) {
   return (
     <>
       {isLoading && <Loader />}
+      <SideBar isLoading={isLoading} />
       <AlertSnackbar
         open={alertOpen}
         handleClose={handleCloseAlert}
