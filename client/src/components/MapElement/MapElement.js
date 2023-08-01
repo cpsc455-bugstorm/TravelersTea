@@ -205,7 +205,7 @@ export function MapElement({ className }) {
             [minLng, minLat],
             [maxLng, maxLat],
           ],
-          { padding: 100 },
+          { padding: { top: 100, bottom: 250, left: 250, right: 500 } },
         )
       }
 
