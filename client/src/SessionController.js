@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { AlertSnackbar, Loader } from './components/common'
+import { SideBar } from './components/sideBar'
 import { AppView } from './constants/enums'
 import { resetMap } from './redux/reducers/mapSlice'
 import { resetModalsDisplayed } from './redux/reducers/modalsSlice'
@@ -21,7 +22,6 @@ import {
 } from './redux/reducers/users/usersSlice'
 import { openSidebar, resetView, setAppView } from './redux/reducers/viewSlice'
 import { REQUEST_STATE } from './redux/states'
-import { SideBar } from './components/sideBar'
 
 SessionController.propTypes = {
   children: PropTypes.node,
@@ -99,7 +99,8 @@ export function SessionController({ children }) {
   useEffect(() => {
     if (tripsStates.status === REQUEST_STATE.FULFILLED && activeTripId)
       dispatch(fetchStagesByTripIdAsync(activeTripId))
-  }, [activeTripId, dispatch, tripsStates.status])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTripId, dispatch])
 
   useEffect(() => {
     if (
