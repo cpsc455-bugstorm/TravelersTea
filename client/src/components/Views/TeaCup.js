@@ -102,7 +102,7 @@ export function TeaCup({
           onClose={handlePopoverClose}
           disableRestoreFocus
         >
-          <div className='overflow-hidden rounded-md bg-slate-300/90 p-2'>
+          <div className='pointer-events-none hidden overflow-hidden rounded-md bg-slate-300/90 p-2 md:block'>
             <p className='text-lg font-bold'>{titleText}</p>
             {stageLocationList}
           </div>

@@ -43,7 +43,7 @@ export function AuthScreen() {
   }
 
   return (
-    <div className='login-container relative h-screen'>
+    <div className='login-container relative h-screen overflow-hidden'>
       <video
         className='login-video absolute inset-0 h-full w-full object-cover'
         autoPlay

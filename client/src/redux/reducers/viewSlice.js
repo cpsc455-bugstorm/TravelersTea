@@ -26,7 +26,6 @@ const _setActiveTripId = (state, action) => {
 // payload: number (the day number we are interested in). ** This is 1-indexed **
 const _setActiveDayNumber = (state, action) => {
   state.activeDayNumber = action.payload
-  _setAppView(state, { payload: AppView.TRIP_VIEW })
 }
 
 const _toggleSidebar = (state) => {
