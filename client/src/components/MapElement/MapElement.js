@@ -176,6 +176,7 @@ export function MapElement({ className }) {
 
   useEffect(() => {
     if (stagesByDay.length > 0) {
+      const rightPadding = window.innerWidth / 3 + 50
       const markers = addMarkersToMap()
 
       // Calculate the bounding box
@@ -205,7 +206,9 @@ export function MapElement({ className }) {
             [minLng, minLat],
             [maxLng, maxLat],
           ],
-          { padding: { top: 100, bottom: 250, left: 250, right: 500 } },
+          {
+            padding: { top: 100, bottom: 250, left: 100, right: rightPadding },
+          },
         )
       }
 
