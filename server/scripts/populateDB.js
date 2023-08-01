@@ -7,8 +7,8 @@ const stageSchema = require('../models/StageModel')
 const userSchema = require('../models/UserModel')
 const { ObjectId } = require('mongodb')
 const config = require('../config/config')
+const bcrypt = require('bcrypt')
 
-// Create models
 const Trip = mongoose.model('Trip', tripSchema.schema)
 const Stage = mongoose.model('Stage', stageSchema.schema)
 const User = mongoose.model('User', userSchema.schema)
@@ -17,26 +17,25 @@ const populateDB = async () => {
   try {
     const conString = config.mongo.uri
 
-    // Connect to Mongo DB
     await mongoose.connect(conString, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     })
     console.log('Connected to database...')
 
-    // Delete all records from trips, stages and users collections
     await Trip.deleteMany({})
     await Stage.deleteMany({})
     await User.deleteMany({})
 
-    // Insert a user
+    const saltRounds = 10
+    const hashedPassword = await bcrypt.hash('pass', saltRounds)
+
     const savedUser = await new User({
       username: 'test',
       email: 'passwordis@pass.com',
-      password: 'pass',
+      password: hashedPassword,
     }).save()
 
-    // Insert trips
     const trips = [
       {
         _id: new ObjectId(),
@@ -64,7 +63,6 @@ const populateDB = async () => {
     const savedTrips = await Trip.insertMany(trips)
     console.log('Trips has been added.')
 
-    // Insert stages
     const stages = [
       {
         _id: new ObjectId(),
