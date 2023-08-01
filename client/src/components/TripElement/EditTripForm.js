@@ -9,6 +9,7 @@ import { updateTripAsync } from '../../redux/reducers/trips/thunks'
 import { Modal } from '../common'
 import { CompressedForm } from './CompressedForm'
 import { TripForm } from './TripForm'
+import { fetchStagesByTripIdAsync } from '../../redux/reducers/stage/thunks'
 
 export function EditTripForm() {
   const dispatch = useDispatch()
@@ -51,6 +52,7 @@ export function EditTripForm() {
           speed: DEFAULT_SPEED,
         }),
       )
+      dispatch(fetchStagesByTripIdAsync(updatedTrip._id))
     } catch (error) {
       console.error(error)
     }

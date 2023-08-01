@@ -12,7 +12,6 @@ import {
   clearStagesError,
   resetStages,
 } from './redux/reducers/stage/stageSlice'
-import { fetchStagesByTripIdAsync } from './redux/reducers/stage/thunks'
 import { fetchTripsAsync } from './redux/reducers/trips/thunks'
 import { clearTripsError, resetTrips } from './redux/reducers/trips/tripsSlice'
 import {
@@ -30,7 +29,6 @@ SessionController.propTypes = {
 export function SessionController({ children }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const activeTripId = useSelector((state) => state.view.activeTripId)
   const tripsStates = useSelector((state) => state.trips)
   const stagesStates = useSelector((state) => state.stages)
   const userStates = useSelector((state) => state.users)
@@ -95,12 +93,6 @@ export function SessionController({ children }) {
       dispatch(fetchTripsAsync())
     }
   }, [dispatch, tripsStates.status, userStates, storedTokenExists])
-
-  useEffect(() => {
-    if (tripsStates.status === REQUEST_STATE.FULFILLED && activeTripId)
-      dispatch(fetchStagesByTripIdAsync(activeTripId))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeTripId, dispatch])
 
   useEffect(() => {
     if (
