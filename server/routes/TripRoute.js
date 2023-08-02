@@ -47,6 +47,7 @@ class TripRoute {
         req.userId,
         req.body,
       )
+      res.isTripAPI = true
       res.status(201).json(newTrip)
     } catch (err) {
       next(err)
@@ -60,6 +61,7 @@ class TripRoute {
         req.params.id,
         req.body,
       )
+      res.isTripAPI = true
       res.status(200).json(updatedTrip)
     } catch (err) {
       next(err)

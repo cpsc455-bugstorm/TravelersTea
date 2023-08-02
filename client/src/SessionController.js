@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { AlertSnackbar, Loader } from './components/common'
+import { SideBar } from './components/sideBar'
 import { AppView } from './constants/enums'
 import { resetMap } from './redux/reducers/mapSlice'
 import { resetModalsDisplayed } from './redux/reducers/modalsSlice'
@@ -21,7 +22,6 @@ import {
 } from './redux/reducers/users/usersSlice'
 import { openSidebar, resetView, setAppView } from './redux/reducers/viewSlice'
 import { REQUEST_STATE } from './redux/states'
-import { SideBar } from './components/sideBar'
 
 SessionController.propTypes = {
   children: PropTypes.node,
@@ -39,6 +39,7 @@ export function SessionController({ children }) {
   const [alertMessage, setAlertMessage] = useState('')
   const [loadingAlertOpen, setLoadingAlertOpen] = useState(false)
   const storedTokenExists = localStorage.getItem('travelersTea_accessToken')
+  const [severityType, setSeverityType] = useState('error')
   const delaySetLoadingFalse = (ms, callback = () => {}) => {
     setTimeout(() => {
       setIsLoading(false)
@@ -158,7 +159,18 @@ export function SessionController({ children }) {
       return
     }
     setAlertOpen(false)
+    setSeverityType('error')
   }
+
+  useEffect(() => {
+    if (userStates.status === REQUEST_STATE.LOGGEDIN) {
+      setAlertMessage(
+        `You have ${userStates.attemptLeft} requests to create/update trips left`,
+      )
+      setSeverityType('warning')
+      setAlertOpen(true)
+    }
+  }, [userStates.status, userStates.attemptLeft])
 
   useEffect(() => {
     if (alertOpen) {
@@ -192,6 +204,7 @@ export function SessionController({ children }) {
         open={alertOpen}
         handleClose={handleCloseAlert}
         message={alertMessage}
+        severity={severityType}
       />
       <AlertSnackbar
         open={loadingAlertOpen}

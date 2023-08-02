@@ -29,6 +29,7 @@ export const usersSlice = createSlice({
     status: initialLoginState.status,
     error: null,
     isNewAccount: false,
+    attemptLeft: 4,
   },
   reducers: {
     updateAsLoggedOut: (state) => {
@@ -58,6 +59,7 @@ export const usersSlice = createSlice({
         state.user = {
           username: action.payload.username,
         }
+        state.attemptLeft = action.payload.attemptLeft
       },
     })
     handleAsyncAction(builder, loginUserAsync, {
@@ -69,6 +71,7 @@ export const usersSlice = createSlice({
         state.user = {
           username: action.payload.username,
         }
+        state.attemptLeft = action.payload.attemptLeft
       },
     })
   },
