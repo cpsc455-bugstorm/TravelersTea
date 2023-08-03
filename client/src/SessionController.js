@@ -178,9 +178,9 @@ export function SessionController({ children }) {
         editStageModalIsOpen)
     ) {
       setAlertMessage(
-        `You have ${userStates.attemptLeft} requests to create/update trips left today`,
+        `You have ${userStates.attemptLeft} trip creation/update requests left today`,
       )
-      setSeverityType('info')
+      setSeverityType(userStates.attemptLeft > 3 ? 'info' : 'warning')
       setAlertOpen(true)
     }
   }, [
