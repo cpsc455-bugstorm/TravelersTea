@@ -31,6 +31,13 @@ export function SessionController({ children }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const activeTripId = useSelector((state) => state.view.activeTripId)
+  const newTripModalIsOpen = useSelector(
+    (state) => state.modals.newTripModalIsOpen,
+  )
+  const editStageModalIsOpen = useSelector(
+    (state) => state.modals.editStageModalIsOpen,
+  )
+  const appView = useSelector((state) => state.view.appView)
   const tripsStates = useSelector((state) => state.trips)
   const stagesStates = useSelector((state) => state.stages)
   const userStates = useSelector((state) => state.users)
@@ -126,6 +133,7 @@ export function SessionController({ children }) {
   useEffect(() => {
     if (tripsStates.error) {
       setAlertMessage(tripsStates.error)
+      setSeverityType('error')
       setAlertOpen(true)
       setIsLoading(false)
       dispatch(clearTripsError())
@@ -136,6 +144,7 @@ export function SessionController({ children }) {
   useEffect(() => {
     if (stagesStates.error) {
       setAlertMessage(stagesStates.error)
+      setSeverityType('error')
       setAlertOpen(true)
       setIsLoading(false)
       dispatch(clearStagesError())
@@ -147,6 +156,7 @@ export function SessionController({ children }) {
     if (userStates.error) {
       setTimeout(() => {
         setAlertMessage('Error: Invalid Credentials')
+        setSeverityType('error')
         setAlertOpen(true)
         dispatch(clearUserError())
         setIsLoading(false)
@@ -159,18 +169,27 @@ export function SessionController({ children }) {
       return
     }
     setAlertOpen(false)
-    setSeverityType('error')
   }
 
   useEffect(() => {
-    if (userStates.status === REQUEST_STATE.LOGGEDIN) {
+    if (
+      userStates.status === REQUEST_STATE.LOGGEDIN &&
+      ((appView === AppView.NEW_TRIP && newTripModalIsOpen) ||
+        editStageModalIsOpen)
+    ) {
       setAlertMessage(
-        `You have ${userStates.attemptLeft} requests to create/update trips left`,
+        `You have ${userStates.attemptLeft} requests to create/update trips left today`,
       )
-      setSeverityType('warning')
+      setSeverityType('info')
       setAlertOpen(true)
     }
-  }, [userStates.status, userStates.attemptLeft])
+  }, [
+    userStates.status,
+    userStates.attemptLeft,
+    newTripModalIsOpen,
+    editStageModalIsOpen,
+    appView,
+  ])
 
   useEffect(() => {
     if (alertOpen) {

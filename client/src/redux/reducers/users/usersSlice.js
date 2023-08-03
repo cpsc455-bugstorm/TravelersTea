@@ -29,7 +29,7 @@ export const usersSlice = createSlice({
     status: initialLoginState.status,
     error: null,
     isNewAccount: false,
-    attemptLeft: 4,
+    attemptLeft: 10,
   },
   reducers: {
     updateAsLoggedOut: (state) => {
@@ -46,6 +46,9 @@ export const usersSlice = createSlice({
     },
     clearUserError: (state) => {
       state.error = null
+    },
+    decrementAttemptsLeft: (state) => {
+      state.attemptLeft = state.attemptLeft - 1
     },
   },
   extraReducers: (builder) => {
@@ -82,6 +85,7 @@ export const {
   updateAsLoggedOut,
   updateAsLoggedIn,
   clearUserError,
+  decrementAttemptsLeft,
 } = usersSlice.actions
 
 export default usersSlice.reducer

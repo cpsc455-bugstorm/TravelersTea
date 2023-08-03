@@ -11,6 +11,7 @@ import { setActiveTripId, setAppView } from '../../redux/reducers/viewSlice'
 import { Modal } from '../common'
 import { CompressedForm } from './CompressedForm'
 import { TripForm } from './TripForm'
+import { decrementAttemptsLeft } from '../../redux/reducers/users/usersSlice'
 
 export function NewTripForm() {
   const dispatch = useDispatch()
@@ -48,6 +49,7 @@ export function NewTripForm() {
       )
       dispatch(setAppView(AppView.TRIP_VIEW))
       dispatch(setActiveTripId(newTrip._id))
+      dispatch(decrementAttemptsLeft())
     } catch (error) {
       console.error(error)
     }

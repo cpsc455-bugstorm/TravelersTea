@@ -2,9 +2,9 @@
 const rateLimit = require('express-rate-limit')
 
 const apiLimiter = rateLimit({
-  windowMs: 8 * 60 * 60 * 1000, // 8 hours
+  windowMs: 24 * 60 * 60 * 1000, // 1 day
   max: 4,
-  message: 'You have exceeded the 4 trip requests in 8 hours limit!',
+  message: 'You have exceeded the 10 trip requests in 24 hours limit!',
   headers: true,
   skipFailedRequests: true,
   requestWasSuccessful: (request, response) => {
