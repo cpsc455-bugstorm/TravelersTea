@@ -1,7 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { handleAsyncAction } from '../../handleAsync'
 import { REQUEST_STATE } from '../../states'
-import { loginUserAsync, registerUserAsync } from './thunks'
+import {
+  fetchLimitLeftAsync,
+  loginUserAsync,
+  registerUserAsync,
+} from './thunks'
 
 const DEV_DISABLE_LOGIN = process.env.REACT_APP_DEV_DISABLE_LOGIN === 'true'
 
@@ -29,7 +33,7 @@ export const usersSlice = createSlice({
     status: initialLoginState.status,
     error: null,
     isNewAccount: false,
-    attemptLeft: 10,
+    attemptLeft: null,
   },
   reducers: {
     updateAsLoggedOut: (state) => {
@@ -52,6 +56,15 @@ export const usersSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    handleAsyncAction(builder, fetchLimitLeftAsync, {
+      pending: () => {},
+      fulfilled: (state, action) => {
+        state.attemptLeft = action.payload.attemptLeft
+      },
+      rejected: (state) => {
+        state.attemptLeft = 0
+      },
+    })
     handleAsyncAction(builder, registerUserAsync, {
       pending: (state) => {
         state.status = REQUEST_STATE.READING
@@ -62,7 +75,6 @@ export const usersSlice = createSlice({
         state.user = {
           username: action.payload.username,
         }
-        state.attemptLeft = action.payload.attemptLeft
       },
     })
     handleAsyncAction(builder, loginUserAsync, {
@@ -74,7 +86,6 @@ export const usersSlice = createSlice({
         state.user = {
           username: action.payload.username,
         }
-        state.attemptLeft = action.payload.attemptLeft
       },
     })
   },

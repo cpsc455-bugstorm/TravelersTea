@@ -61,7 +61,9 @@ class TripRoute {
         req.params.id,
         req.body,
       )
-      res.isTripAPI = true
+      res.isTripAPI = !(
+        Object.keys(req.body).length === 1 && 'tripName' in req.body
+      )
       res.status(200).json(updatedTrip)
     } catch (err) {
       next(err)

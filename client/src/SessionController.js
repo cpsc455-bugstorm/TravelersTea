@@ -23,6 +23,7 @@ import {
 } from './redux/reducers/users/usersSlice'
 import { openSidebar, resetView, setAppView } from './redux/reducers/viewSlice'
 import { REQUEST_STATE } from './redux/states'
+import { fetchLimitLeftAsync } from './redux/reducers/users/thunks'
 
 SessionController.propTypes = {
   children: PropTypes.node,
@@ -116,6 +117,7 @@ export function SessionController({ children }) {
 
   useEffect(() => {
     if (userStates.status === REQUEST_STATE.LOGGINGIN) {
+      dispatch(fetchLimitLeftAsync())
       delaySetLoadingFalse(2500, () => dispatch(updateAsLoggedIn()))
     } else if (userStates.status === REQUEST_STATE.REJECTED) {
       delaySetLoadingFalse(2500, () => dispatch(updateAsLoggedOut()))

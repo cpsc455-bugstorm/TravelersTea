@@ -2,6 +2,20 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import { actionTypes } from './actionTypes'
 import usersService from './service'
 
+export const fetchLimitLeftAsync = createAsyncThunk(
+  actionTypes.FETCH_LIMIT,
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await usersService.fetchLimit()
+      return response.data
+    } catch (error) {
+      return rejectWithValue({
+        message: error.response.data.error || error.response.data,
+      })
+    }
+  },
+)
+
 export const registerUserAsync = createAsyncThunk(
   actionTypes.REGISTER_USER,
   async (userData, { rejectWithValue }) => {
@@ -13,7 +27,9 @@ export const registerUserAsync = createAsyncThunk(
       )
       return response.data
     } catch (error) {
-      return rejectWithValue({ message: error.response.data.error })
+      return rejectWithValue({
+        message: error.response.data.error || error.response.data,
+      })
     }
   },
 )
@@ -29,7 +45,9 @@ export const loginUserAsync = createAsyncThunk(
       )
       return response.data
     } catch (error) {
-      return rejectWithValue({ message: error.response.data.error })
+      return rejectWithValue({
+        message: error.response.data.error || error.response.data,
+      })
     }
   },
 )

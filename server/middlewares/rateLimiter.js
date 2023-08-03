@@ -13,7 +13,7 @@ const apiLimiter = rateLimit({
   },
   skip: (request, response) => {
     console.log(request.ip, request.userId, request.isAdmin)
-    return (config.server.env && config.server.env === 'DEV') || request.isAdmin
+    return request.isAdmin || config.server.env === 'TEST'
   },
 })
 
