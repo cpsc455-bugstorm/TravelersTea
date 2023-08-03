@@ -1,9 +1,10 @@
 /* eslint-disable no-unused-vars */
 const rateLimit = require('express-rate-limit')
+const config = require('../config/config')
 
 const apiLimiter = rateLimit({
   windowMs: 24 * 60 * 60 * 1000, // 1 day
-  max: 4,
+  max: 10,
   message: 'You have exceeded the 10 trip requests in 24 hours limit!',
   headers: true,
   skipFailedRequests: true,
@@ -12,7 +13,7 @@ const apiLimiter = rateLimit({
   },
   skip: (request, response) => {
     console.log(request.ip, request.userId, request.isAdmin)
-    return request.isAdmin
+    return (config.server.env && config.server.env === 'DEV') || request.isAdmin
   },
 })
 

@@ -1,6 +1,6 @@
 const express = require('express')
 const controllers = require('../controllers/Controllers')
-const apiLimiter = require('../config/rateLimiter')
+const apiLimiter = require('../middlewares/rateLimiter')
 
 class UserRoute {
   constructor() {

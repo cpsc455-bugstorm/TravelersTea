@@ -1,7 +1,7 @@
 const express = require('express')
 const controllers = require('../controllers/Controllers')
 const authMiddleware = require('../middlewares/AuthMiddleware')
-const apiLimiter = require('../config/rateLimiter')
+const apiLimiter = require('../middlewares/rateLimiter')
 
 class TripRoute {
   constructor() {
