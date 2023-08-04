@@ -42,7 +42,6 @@ export const tripsSlice = createSlice({
         state.status = REQUEST_STATE.READING
       },
       fulfilled: (state, action) => {
-        console.log('action payload', action.payload)
         state.trips = action.payload
         state.status = REQUEST_STATE.FULFILLED
       },
