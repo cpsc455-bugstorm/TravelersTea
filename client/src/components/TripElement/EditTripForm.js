@@ -6,6 +6,7 @@ import { DEFAULT_SPEED, ZOOM_CITY_LEVEL } from '../../constants/mapDefaultInfo'
 import { changeCoordinatesAndZoom } from '../../redux/reducers/mapSlice'
 import { closeEditTripModal } from '../../redux/reducers/modalsSlice'
 import { updateTripAsync } from '../../redux/reducers/trips/thunks'
+import { decrementAttemptsLeft } from '../../redux/reducers/users/usersSlice'
 import { Modal } from '../common'
 import { CompressedForm } from './CompressedForm'
 import { TripForm } from './TripForm'
@@ -53,6 +54,7 @@ export function EditTripForm() {
         }),
       )
       dispatch(fetchStagesByTripIdAsync(updatedTrip._id))
+      dispatch(decrementAttemptsLeft())
     } catch (error) {
       console.error(error)
     }

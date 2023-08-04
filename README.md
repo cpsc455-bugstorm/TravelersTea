@@ -57,7 +57,7 @@ aspect (e.g. sharing plans, rating plans).
 
 - [ ] Users' Preferences: Compact Mode, Light Mode
 - [x] Users can generate plans based on extra notes (e.g. dietary restrictions, travel preferences)
-- [ ] Entire application should be mobile-friendly
+- [x] Entire application should be mobile-friendly
 - [ ] Share itinerary as a link
 
 ## Task Breakdown
@@ -145,15 +145,16 @@ The content of `server/.env` file should look like this (with the `<value>` repl
 `server/.env.example` provides a template for this file.
 
 ```
-ENV = <value>
-MONGO_USERNAME = <value>
-MONGO_PASSWORD = <value>
-JWT_SECRET= <value>
-OPEN_AI_ORG_ID = <value>
-OPEN_AI_API_KEY = <value>
-GPT_MODEL = <value>
-DB_USER_FLAG=
-GOOGLE_PLACES_API_KEY = <value>
+ENV=<value>
+MONGO_USERNAME=<value>
+MONGO_PASSWORD=<value>
+JWT_SECRET=<value>
+OPEN_AI_ORG_ID=<value>
+OPEN_AI_API_KEY=<value>
+GPT_MODEL=<value>
+DB_USER_FLAG=<value>
+GOOGLE_PLACES_API_KEY=<value>
+CLIENT_URL=<value>
 ```
 
 5. Create a new file `.env` in the `client` folder:
@@ -169,9 +170,8 @@ The content of `client/.env` file should look like this (with the `<value>` repl
 `client/.env.example` provides a template for this file.
 
 ```
-REACT_APP_MAPBOX_TOKEN = <value>
-REACT_APP_API_URL  = <value>
-REACT_APP_ACCESS_TOKEN = <value>
+REACT_APP_MAPBOX_TOKEN=<value>
+REACT_APP_API_URL=<value>
 ```
 
 #### Running the Project

@@ -1,12 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+const initialModalStates = {
+  newTripModalIsOpen: false,
+  editTripModalIsOpen: false,
+  editStageModalIsOpen: false,
+}
+
 const modalsSlice = createSlice({
   name: 'modals',
-  initialState: {
-    newTripModalIsOpen: true,
-    editTripModalIsOpen: false,
-    editStageModalIsOpen: false,
-  },
+  initialState: initialModalStates,
   reducers: {
     openNewTripModal: (state) => {
       state.newTripModalIsOpen = true
@@ -26,10 +28,7 @@ const modalsSlice = createSlice({
     closeEditStageModal: (state) => {
       state.editStageModalIsOpen = false
     },
-    resetModalsDisplayed: (state) => {
-      state.editTripModalIsOpen = false
-      state.newTripModalIsOpen = true
-    },
+    resetModalsDisplayed: () => initialModalStates,
   },
 })
 

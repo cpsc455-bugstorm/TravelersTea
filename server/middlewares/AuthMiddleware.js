@@ -15,6 +15,7 @@ const authMiddleware = (req, res, next) => {
 
     if (parsedToken) {
       req.userId = parsedToken.userId
+      req.isAdmin = parsedToken.isAdmin
       return next()
     } else {
       console.log(parsedToken)

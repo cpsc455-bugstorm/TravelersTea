@@ -56,18 +56,16 @@ export function SeeMoreDrawer() {
                 <div>
                   <Button
                     key={`details-edit-${dayNumber}-${stageIndex}`}
-                    onClick={() => {
+                    onClick={(e) => {
                       dispatch(closeSidebar())
                       dispatch(openEditStageModal())
                       dispatch(updateEditStageId(stage['_id']))
+                      e.stopPropagation()
                     }}
-                    className={` h-[22px] w-[20px] text-white hover:text-red-400`}
+                    className={` flex h-[22px] w-[20px] p-6 text-white hover:text-red-400`}
                     padding='p-0 mr-[3px]'
                   >
-                    <EditOutlinedIcon
-                      sx={{ fontSize: 20 }}
-                      className='align-baseline'
-                    />
+                    <EditOutlinedIcon sx={{ fontSize: 20 }} />
                   </Button>
                 </div>
               </div>
