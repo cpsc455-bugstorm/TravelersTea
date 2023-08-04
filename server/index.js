@@ -14,7 +14,7 @@ const errorHandleMiddleware = require('./middlewares/ErrorHandling')
 const config = require('./config/config')
 
 const app = express()
-app.set('trust proxy', true)
+app.set('trust proxy', 1)
 app.use(express.json())
 app.use(
   cors({
@@ -68,13 +68,15 @@ const startServer = () => {
   app.listen(config.server.port, () => {
     console.log(`Server is running on port ${config.server.port}`)
 
-    cron.schedule('*/13 * * * *', () => {
-      console.log('Pinging self...')
-      axios
-        .get(`${config.server.clientURL}/ping`)
-        .then(() => console.log('Self-ping successful'))
-        .catch((error) => console.error('Self-ping failed:', error))
-    })
+    if (config.server.env === 'PROD') {
+      cron.schedule('*/13 * * * *', () => {
+        console.log('Pinging self...')
+        axios
+          .get(`${config.server.clientURL}/ping`)
+          .then(() => console.log('Self-ping successful'))
+          .catch((error) => console.error('Self-ping failed:', error))
+      })
+    }
   })
 }
 
