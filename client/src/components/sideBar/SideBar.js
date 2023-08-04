@@ -105,7 +105,7 @@ export function SideBar({ shouldHide, isLoading }) {
 
   const renderSidebarTrips = useMemo(() => {
     return (
-      <div className='my-2 grid w-full grid-cols-1 gap-2 overflow-y-auto overflow-x-hidden overflow-x-hidden border-y-2 border-slate-300 py-2 mac-scrollbar'>
+      <div className='my-2 grid w-full grid-cols-1 gap-2 overflow-y-auto overflow-x-hidden border-y-2 border-slate-300 py-2 mac-scrollbar'>
         {tripEntries}
       </div>
     )
