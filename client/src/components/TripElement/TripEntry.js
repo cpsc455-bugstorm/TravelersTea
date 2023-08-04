@@ -150,13 +150,19 @@ export function TripEntry({ id, buttonClassName, trip }) {
   )
 
   const copyShareLinkToClipboard = async (id) => {
-    await dispatch(enableShareTripAsync({ id: id })).unwrap()
-    let currentUrl = window.location.href // full current URL
-    let baseUrl = currentUrl.substring(0, currentUrl.lastIndexOf('/')) // trim off '/home' or anything after the last '/'
-    const sharedUrl = baseUrl + '/share/' + id
-    copy(sharedUrl)
-    setAlertMessage('Copied to Clipboard!')
-    setAlertOpen(true)
+    try {
+      await dispatch(enableShareTripAsync({ id: id })).unwrap()
+      let currentUrl = window.location.href // full current URL
+      let baseUrl = currentUrl.substring(0, currentUrl.lastIndexOf('/')) // trim off '/home' or anything after the last '/'
+      const sharedUrl = baseUrl + '/share/' + id
+      copy(sharedUrl)
+      setAlertMessage('Copied to Clipboard!')
+      setAlertOpen(true)
+    } catch (err) {
+      console.error('Failed to copy link: ', err)
+      setAlertMessage('Failed to copy link, please try again.')
+      setAlertOpen(true)
+    }
   }
 
   const extraButtons = useMemo(

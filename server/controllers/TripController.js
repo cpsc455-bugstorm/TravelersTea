@@ -2,7 +2,6 @@ const TripModel = require('../models/TripModel')
 const generateTrip = require('../openai/generateTrip')
 const generateTripsMetadata = require('../openai/generateTripMetadata')
 const getCoordinatesFromLocation = require('../googleapi/googleCoordinates')
-const config = require('../config/config')
 const mongoose = require('mongoose')
 
 const NUM_TAILWIND_COLORS = 17
@@ -15,8 +14,11 @@ class TripController {
   async getTrip(userId, tripId) {
     try {
       const trip = await TripModel.findOne({
-        userId: new mongoose.Types.ObjectId(userId),
         _id: new mongoose.Types.ObjectId(tripId),
+        $or: [
+          { userId: new mongoose.Types.ObjectId(userId) },
+          { isPublic: true },
+        ],
       })
 
       if (!trip) {
@@ -324,8 +326,6 @@ class TripController {
 
       await TripModel.deleteMany({ userId: userId }).lean()
     } catch (error) {
-      if (config.server.env === 'DEV')
-        console.error('Error while deleting trips:', error)
       throw new Error('Could not delete trip')
     }
   }
@@ -341,8 +341,6 @@ class TripController {
         },
       ).lean()
     } catch (error) {
-      if (config.server.env === 'DEV')
-        console.error('Error while enabling sharing:', error)
       throw new Error('Could not enable sharing')
     }
   }

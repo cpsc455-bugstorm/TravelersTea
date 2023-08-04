@@ -46,7 +46,6 @@ class StageController {
       const trip = await this.tripController.getTrip(userId, tripId)
       const stagesPerTripId = await StageModel.find({
         tripId: new mongoose.Types.ObjectId(tripId),
-        userId: new mongoose.Types.ObjectId(userId),
       })
         .sort({ dayIndex: 1, stageIndex: 1 })
         .lean()
@@ -54,18 +53,6 @@ class StageController {
     } catch (error) {
       error.message = 'Could not fetch all stages for trip | ' + error.message
       throw error
-    }
-  }
-
-  async getStagesBySharedTripId(tripId) {
-    try {
-      const trip = await this.tripController.getSharedTrip(tripId)
-      const stagesPerTripId = await StageModel.find({ tripId: tripId })
-        .sort({ dayIndex: 1, stageIndex: 1 })
-        .lean()
-      return partitionStagesByDay(stagesPerTripId, trip.stagesPerDay)
-    } catch (error) {
-      throw new Error(`Could not fetch all stages for trip: ${error}`)
     }
   }
 

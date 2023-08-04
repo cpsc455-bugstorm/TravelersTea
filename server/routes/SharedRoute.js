@@ -21,6 +21,9 @@ class SharedRoute {
 
     try {
       const response = await controllers.tripController.getSharedTrip(tripId)
+      if (!response) {
+        throw new Error('Cannot retrieve trip')
+      }
       res.status(200).json([response])
     } catch (err) {
       res.status(500).json({ error: err.toString() })
@@ -36,8 +39,10 @@ class SharedRoute {
     }
 
     try {
-      const response =
-        await controllers.stageController.getStagesBySharedTripId(tripId)
+      const response = await controllers.stageController.getStagesByTripId(
+        null,
+        tripId,
+      )
       res.status(200).json(response)
     } catch (err) {
       console.log(err)
