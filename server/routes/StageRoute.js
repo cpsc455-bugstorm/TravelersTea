@@ -1,6 +1,8 @@
 const express = require('express')
 const controllers = require('../controllers/Controllers')
 const authMiddleware = require('../middlewares/AuthMiddleware')
+const apiLimiter = require('../middlewares/rateLimiter')
+
 class StageRoute {
   constructor() {
     this.router = express.Router()
@@ -8,7 +10,7 @@ class StageRoute {
     // this.router.post('', this.create.bind(this))
     this.router.get('', this.getByTripId.bind(this))
     this.router.get('/:id', this.getById.bind(this))
-    this.router.patch('/:id', this.update.bind(this))
+    this.router.patch('/:id', apiLimiter, this.update.bind(this))
     // this.router.delete('/:id', this.delete.bind(this))
   }
 
@@ -59,6 +61,7 @@ class StageRoute {
         req.params.id,
         req.body,
       )
+      res.isTripAPI = true
       res.status(200).json(updatedStage)
     } catch (err) {
       next(err)

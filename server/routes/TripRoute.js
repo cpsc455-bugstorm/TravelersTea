@@ -1,6 +1,7 @@
 const express = require('express')
 const controllers = require('../controllers/Controllers')
 const authMiddleware = require('../middlewares/AuthMiddleware')
+const apiLimiter = require('../middlewares/rateLimiter')
 
 class TripRoute {
   constructor() {
@@ -8,8 +9,8 @@ class TripRoute {
     this.router.use(authMiddleware)
     this.router.get('', this.getAllByUserId.bind(this))
     this.router.get('/:tripId', this.getTripById.bind(this))
-    this.router.post('', this.create.bind(this))
-    this.router.patch('/:id', this.update.bind(this))
+    this.router.post('', apiLimiter, this.create.bind(this))
+    this.router.patch('/:id', apiLimiter, this.update.bind(this))
     this.router.delete('/:id', this.delete.bind(this))
   }
 
@@ -46,6 +47,7 @@ class TripRoute {
         req.userId,
         req.body,
       )
+      res.isTripAPI = true
       res.status(201).json(newTrip)
     } catch (err) {
       next(err)
@@ -58,6 +60,9 @@ class TripRoute {
         req.userId,
         req.params.id,
         req.body,
+      )
+      res.isTripAPI = !(
+        Object.keys(req.body).length === 1 && 'tripName' in req.body
       )
       res.status(200).json(updatedTrip)
     } catch (err) {

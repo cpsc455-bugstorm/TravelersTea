@@ -68,6 +68,7 @@ export function Modal({
         className={`${classNameMain}`}
         open={open}
         onClose={handleClose}
+        disableEnforceFocus
       >
         <Box m='0'>
           <DialogTitle

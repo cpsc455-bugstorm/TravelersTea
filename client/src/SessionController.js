@@ -1,8 +1,10 @@
+import { useSnackbar } from 'notistack'
 import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { AlertSnackbar, Loader } from './components/common'
+import { Loader } from './components/common'
+import { SideBar } from './components/sideBar'
 import { AppView } from './constants/enums'
 import { resetMap } from './redux/reducers/mapSlice'
 import { resetModalsDisplayed } from './redux/reducers/modalsSlice'
@@ -21,7 +23,7 @@ import {
 } from './redux/reducers/users/usersSlice'
 import { openSidebar, resetView, setAppView } from './redux/reducers/viewSlice'
 import { REQUEST_STATE } from './redux/states'
-import { SideBar } from './components/sideBar'
+import { fetchLimitLeftAsync } from './redux/reducers/users/thunks'
 
 SessionController.propTypes = {
   children: PropTypes.node,
@@ -31,13 +33,12 @@ export function SessionController({ children }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const activeTripId = useSelector((state) => state.view.activeTripId)
+  const modalStates = useSelector((state) => state.modals)
   const tripsStates = useSelector((state) => state.trips)
   const stagesStates = useSelector((state) => state.stages)
   const userStates = useSelector((state) => state.users)
   const [isLoading, setIsLoading] = useState(false)
-  const [alertOpen, setAlertOpen] = useState(false)
-  const [alertMessage, setAlertMessage] = useState('')
-  const [loadingAlertOpen, setLoadingAlertOpen] = useState(false)
+  const { enqueueSnackbar } = useSnackbar()
   const storedTokenExists = localStorage.getItem('travelersTea_accessToken')
   const delaySetLoadingFalse = (ms, callback = () => {}) => {
     setTimeout(() => {
@@ -116,70 +117,71 @@ export function SessionController({ children }) {
 
   useEffect(() => {
     if (userStates.status === REQUEST_STATE.LOGGINGIN) {
+      dispatch(fetchLimitLeftAsync())
       delaySetLoadingFalse(2500, () => dispatch(updateAsLoggedIn()))
     } else if (userStates.status === REQUEST_STATE.REJECTED) {
       delaySetLoadingFalse(2500, () => dispatch(updateAsLoggedOut()))
     }
-  }, [userStates, dispatch])
+  }, [userStates.status, dispatch])
 
   useEffect(() => {
     if (tripsStates.error) {
-      setAlertMessage(tripsStates.error)
-      setAlertOpen(true)
-      setIsLoading(false)
+      enqueueSnackbar(tripsStates.error, { variant: 'error' })
       dispatch(clearTripsError())
       dispatch(openSidebar())
     }
-  }, [dispatch, tripsStates.error])
+  }, [dispatch, enqueueSnackbar, tripsStates.error])
 
   useEffect(() => {
     if (stagesStates.error) {
-      setAlertMessage(stagesStates.error)
-      setAlertOpen(true)
-      setIsLoading(false)
+      enqueueSnackbar(stagesStates.error, { variant: 'error' })
       dispatch(clearStagesError())
       dispatch(openSidebar())
     }
-  }, [dispatch, stagesStates.error])
+  }, [dispatch, enqueueSnackbar, stagesStates.error])
 
   useEffect(() => {
     if (userStates.error) {
       setTimeout(() => {
-        setAlertMessage('Error: Invalid Credentials')
-        setAlertOpen(true)
+        enqueueSnackbar('Error: Invalid Credentials', { variant: 'error' })
         dispatch(clearUserError())
-        setIsLoading(false)
       }, 2500)
     }
-  }, [dispatch, userStates.error])
-
-  const handleCloseAlert = (event, reason) => {
-    if (reason === 'clickaway') {
-      return
-    }
-    setAlertOpen(false)
-  }
+  }, [dispatch, enqueueSnackbar, userStates.error])
 
   useEffect(() => {
-    if (alertOpen) {
-      const timer = setTimeout(() => {
-        setAlertOpen(false)
-      }, 5000)
-      return () => clearTimeout(timer)
+    if (
+      modalStates.newTripModalIsOpen ||
+      modalStates.editStageModalIsOpen ||
+      modalStates.editTripModalIsOpen
+    ) {
+      enqueueSnackbar(
+        `You have ${userStates.attemptLeft} trip creation/update requests left today`,
+        { variant: userStates.attemptLeft > 3 ? 'info' : 'warning' },
+      )
     }
-  }, [alertOpen])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [modalStates, enqueueSnackbar])
+
+  useEffect(() => {
+    if (userStates.status === REQUEST_STATE.LOGGEDIN) {
+      enqueueSnackbar(
+        `You have ${userStates.attemptLeft} trip creation/update requests left today`,
+        { variant: userStates.attemptLeft > 3 ? 'info' : 'warning' },
+      )
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [enqueueSnackbar, userStates.status])
 
   useEffect(() => {
     let timer
     if (isLoading) {
       timer = setTimeout(() => {
-        setLoadingAlertOpen(true)
+        enqueueSnackbar('This may take a minute', { variant: 'info' })
       }, 3000)
-    } else {
-      setLoadingAlertOpen(false)
     }
     return () => clearTimeout(timer)
-  }, [isLoading])
+  }, [enqueueSnackbar, isLoading])
 
   return (
     <>
@@ -187,17 +189,6 @@ export function SessionController({ children }) {
       <SideBar
         shouldHide={userStates.status !== REQUEST_STATE.LOGGEDIN}
         isLoading={isLoading}
-      />
-      <AlertSnackbar
-        open={alertOpen}
-        handleClose={handleCloseAlert}
-        message={alertMessage}
-      />
-      <AlertSnackbar
-        open={loadingAlertOpen}
-        handleClose={() => setLoadingAlertOpen(false)}
-        message='This may take a minute!'
-        severity='info'
       />
       {children}
     </>

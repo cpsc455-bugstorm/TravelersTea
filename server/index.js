@@ -3,6 +3,8 @@ const path = require('path')
 const mongoose = require('mongoose')
 const cors = require('cors')
 const morgan = require('morgan')
+const cron = require('node-cron')
+const axios = require('axios')
 
 const UserRoute = require('./routes/UserRoute')
 const TripRoute = require('./routes/TripRoute')
@@ -21,6 +23,9 @@ app.use(
 )
 
 app.use(express.static(path.join(__dirname, '../client/build')))
+app.get('/ping', (req, res) => {
+  res.status(200).send('Server is running')
+})
 
 const apiRouter = express.Router()
 
@@ -61,6 +66,14 @@ const connectDB = async () => {
 const startServer = () => {
   app.listen(config.server.port, () => {
     console.log(`Server is running on port ${config.server.port}`)
+
+    cron.schedule('*/13 * * * *', () => {
+      console.log('Pinging self...')
+      axios
+        .get(`${config.server.clientURL}/ping`)
+        .then(() => console.log('Self-ping successful'))
+        .catch((error) => console.error('Self-ping failed:', error))
+    })
   })
 }
 
