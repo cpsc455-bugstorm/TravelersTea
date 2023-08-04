@@ -1,5 +1,4 @@
 import { useSelector } from 'react-redux'
-import { SideBar } from './components/sideBar'
 import { AppView } from './constants/enums'
 import { MapElement } from './components/MapElement'
 import { useMemo } from 'react'
@@ -34,7 +33,6 @@ export function AppInterface() {
     <div className='h-screen w-screen overflow-hidden'>
       <MapElement className={`relative h-full w-full`} />
       {renderMainContent}
-      <SideBar />
     </div>
   )
 }

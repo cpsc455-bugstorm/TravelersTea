@@ -4,24 +4,24 @@ const preferenceSlice = createSlice({
   name: 'preferences',
   initialState: {
     compactView: localStorage.getItem('isCompactView') === 'true',
-    verticalTimelines: false,
+    lightMode: false, // TODO this should be populated by 1st localstorage, 2nd user OS preference
   },
   reducers: {
     toggleCompactView: (state) => {
       state.compactView = !state.compactView
       localStorage.setItem('isCompactView', state.compactView.toString())
     },
-    toggleVerticalTimelines: (state) => {
-      state.verticalTimelines = !state.verticalTimelines
+    toggleLightMode: (state) => {
+      state.lightMode = !state.lightMode
     },
     resetPreferences: (state) => {
       state.compactView = false
-      state.verticalTimelines = false
+      state.lightMode = false
     },
   },
 })
 
-export const { toggleCompactView, toggleVerticalTimelines, resetPreferences } =
+export const { toggleCompactView, toggleLightMode, resetPreferences } =
   preferenceSlice.actions
 
 export default preferenceSlice.reducer

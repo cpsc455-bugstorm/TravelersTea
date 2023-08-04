@@ -45,7 +45,9 @@ export const createTripAsync = createAsyncThunk(
       const response = await tripService.createTrip(tripData)
       return response.data
     } catch (error) {
-      return rejectWithValue({ message: error.response.data.error })
+      return rejectWithValue({
+        message: error.response.data.error || error.response.data,
+      })
     }
   },
 )
@@ -57,7 +59,9 @@ export const updateTripAsync = createAsyncThunk(
       const response = await tripService.updateTrip(id, tripData)
       return response.data
     } catch (error) {
-      return rejectWithValue({ message: error.response.data.error })
+      return rejectWithValue({
+        message: error.response.data.error || error.response.data,
+      })
     }
   },
 )

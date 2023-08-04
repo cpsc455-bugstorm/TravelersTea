@@ -1,7 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { handleAsyncAction } from '../../handleAsync'
 import { REQUEST_STATE } from '../../states'
-import { loginUserAsync, registerUserAsync } from './thunks'
+import {
+  fetchLimitLeftAsync,
+  loginUserAsync,
+  registerUserAsync,
+} from './thunks'
 
 const DEV_DISABLE_LOGIN = process.env.REACT_APP_DEV_DISABLE_LOGIN === 'true'
 
@@ -30,6 +34,7 @@ export const usersSlice = createSlice({
     status: initialLoginState.status,
     error: null,
     isNewAccount: false,
+    attemptLeft: null,
   },
   reducers: {
     updateAsLoggedOut: (state) => {
@@ -47,8 +52,20 @@ export const usersSlice = createSlice({
     clearUserError: (state) => {
       state.error = null
     },
+    decrementAttemptsLeft: (state) => {
+      state.attemptLeft = state.attemptLeft - 1
+    },
   },
   extraReducers: (builder) => {
+    handleAsyncAction(builder, fetchLimitLeftAsync, {
+      pending: () => {},
+      fulfilled: (state, action) => {
+        state.attemptLeft = action.payload.attemptLeft
+      },
+      rejected: (state) => {
+        state.attemptLeft = 0
+      },
+    })
     handleAsyncAction(builder, registerUserAsync, {
       pending: (state) => {
         state.status = REQUEST_STATE.READING
@@ -80,6 +97,7 @@ export const {
   updateAsLoggedOut,
   updateAsLoggedIn,
   clearUserError,
+  decrementAttemptsLeft,
 } = usersSlice.actions
 
 export default usersSlice.reducer

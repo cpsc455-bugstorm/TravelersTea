@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import stageService from './service'
 import { actionTypes } from './actionTypes'
+import stageService from './service'
 
 export const fetchStage = createAsyncThunk(
   actionTypes.GET_STAGE,
@@ -9,7 +9,9 @@ export const fetchStage = createAsyncThunk(
       const response = await stageService.fetchStage(id)
       return response.data
     } catch (error) {
-      return rejectWithValue({ message: error.response.data.error })
+      return rejectWithValue({
+        message: error.response.data.error || error.response.data,
+      })
     }
   },
 )

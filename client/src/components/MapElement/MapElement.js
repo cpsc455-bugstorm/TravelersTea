@@ -3,7 +3,6 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 import PropTypes from 'prop-types'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { AppView } from '../../constants/enums'
 import {
   LAT_START,
   LONG_START,
@@ -18,7 +17,6 @@ MapElement.propTypes = {
 }
 
 export function MapElement({ className }) {
-  const appView = useSelector((state) => state.view.appView)
   const stagesByDay = useSelector((state) => state.stages.stages)
   const mapData = useSelector((state) => state.map.mapData)
   const activeDayNumber = useSelector((state) => state.view.activeDayNumber)
@@ -28,16 +26,14 @@ export function MapElement({ className }) {
   mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN
 
   const renderMapForms = useMemo(() => {
-    if (appView === AppView.NEW_TRIP) {
-      return <NewTripForm />
-    }
     return (
       <span className='mt-4 inline-flex w-full flex-row justify-center'>
+        <NewTripForm />
         <EditTripForm />
         <EditStageForm />
       </span>
     )
-  }, [appView])
+  }, [])
 
   // Needs to be extracted out to avoid infinite reruns
   const addMarkersToMap = useCallback(() => {
