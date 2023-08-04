@@ -14,6 +14,7 @@ const errorHandleMiddleware = require('./middlewares/ErrorHandling')
 const config = require('./config/config')
 
 const app = express()
+app.set('trust proxy', true)
 app.use(express.json())
 app.use(
   cors({
