@@ -105,14 +105,11 @@ export function SideBar({ shouldHide, isLoading }) {
 
   const renderSidebarTrips = useMemo(() => {
     return (
-      <div className='overflow-x-auto'>
-        {newTripButton}
-        <div className='my-2 grid w-full grid-cols-1 gap-2 border-y-2 border-slate-300 py-2'>
-          {tripEntries}
-        </div>
+      <div className='my-2 grid w-full grid-cols-1 gap-2 overflow-y-auto overflow-x-hidden overflow-x-hidden border-y-2 border-slate-300 py-2 mac-scrollbar'>
+        {tripEntries}
       </div>
     )
-  }, [newTripButton, tripEntries])
+  }, [tripEntries])
 
   const renderSidebarBottomPortion = useMemo(() => {
     return (
@@ -132,15 +129,23 @@ export function SideBar({ shouldHide, isLoading }) {
         <div className='relative flex h-full w-full flex-col justify-between overflow-hidden bg-black bg-black'>
           <div className="z-0 h-full w-full flex-grow bg-slate-200 bg-[url('../public/little-prince.jpg')] bg-cover bg-center opacity-50 bg-blend-difference"></div>
           <div className={`black-gradient absolute inset-0 z-10 p-2`}>
-            <div className='relative z-20 flex h-full flex-col justify-between'>
-              {renderSidebarTrips}
-              {renderSidebarBottomPortion}
+            <div className='relative z-20 flex h-full flex-col overflow-hidden'>
+              {newTripButton}
+              <div className='flex min-h-0 w-full grow flex-col justify-between overflow-y-hidden'>
+                {renderSidebarTrips}
+                {renderSidebarBottomPortion}
+              </div>
             </div>
           </div>
         </div>
       </div>
     )
-  }, [isSidebarOpen, renderSidebarTrips, renderSidebarBottomPortion])
+  }, [
+    newTripButton,
+    isSidebarOpen,
+    renderSidebarTrips,
+    renderSidebarBottomPortion,
+  ])
 
   const renderSidebarToggleButton = useMemo(() => {
     const toggleColors = isLightMode
