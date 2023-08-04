@@ -12,7 +12,6 @@ import { setActiveTripId, setAppView } from '../../redux/reducers/viewSlice'
 import { Modal } from '../common'
 import { CompressedForm } from './CompressedForm'
 import { TripForm } from './TripForm'
-import { fetchStagesByTripIdAsync } from '../../redux/reducers/stage/thunks'
 
 export function NewTripForm() {
   const dispatch = useDispatch()
@@ -50,7 +49,6 @@ export function NewTripForm() {
       )
       dispatch(setAppView(AppView.TRIP_VIEW))
       dispatch(setActiveTripId(newTrip._id))
-      dispatch(fetchStagesByTripIdAsync(newTrip._id))
       dispatch(decrementAttemptsLeft())
     } catch (error) {
       console.error(error)

@@ -4,7 +4,7 @@ const config = require('../config/config')
 
 const apiLimiter = rateLimit({
   windowMs: 24 * 60 * 60 * 1000, // 1 day
-  max: 10,
+  max: config.server.rateLimit,
   message: 'You have exceeded the 10 trip requests in 24 hours limit!',
   headers: true,
   skipFailedRequests: true,

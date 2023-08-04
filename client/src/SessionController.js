@@ -13,8 +13,13 @@ import {
   clearStagesError,
   resetStages,
 } from './redux/reducers/stage/stageSlice'
+import { fetchStagesByTripIdAsync } from './redux/reducers/stage/thunks'
 import { fetchTripsAsync } from './redux/reducers/trips/thunks'
-import { clearTripsError, resetTrips } from './redux/reducers/trips/tripsSlice'
+import {
+  clearTripsError,
+  flagAsFulfilled,
+  resetTrips,
+} from './redux/reducers/trips/tripsSlice'
 import { fetchLimitLeftAsync } from './redux/reducers/users/thunks'
 import {
   clearUserError,
@@ -31,6 +36,7 @@ SessionController.propTypes = {
 export function SessionController({ children }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const activeTripId = useSelector((state) => state.view.activeTripId)
   const modalStates = useSelector((state) => state.modals)
   const tripsStates = useSelector((state) => state.trips)
   const stagesStates = useSelector((state) => state.stages)
@@ -44,6 +50,21 @@ export function SessionController({ children }) {
       callback()
     }, ms)
   }
+
+  // when creating trip (or changing tripEntry), it is enough to rely on the changes of tripId (if id changed then the trip is created)
+  useEffect(() => {
+    if (tripsStates.status === REQUEST_STATE.FULFILLED && activeTripId)
+      dispatch(fetchStagesByTripIdAsync(activeTripId))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTripId, dispatch])
+  // when updating trip, the id does not change (+ the status does), so we need to use an extra flag (that is not FULFILLED to avoid double dispatch)
+  useEffect(() => {
+    if (tripsStates.status === REQUEST_STATE.UPDATED) {
+      dispatch(flagAsFulfilled())
+      dispatch(fetchStagesByTripIdAsync(activeTripId))
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tripsStates.status, dispatch])
 
   useEffect(() => {
     if (userStates.status === REQUEST_STATE.LOGGINGOUT) {

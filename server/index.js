@@ -68,13 +68,15 @@ const startServer = () => {
   app.listen(config.server.port, () => {
     console.log(`Server is running on port ${config.server.port}`)
 
-    cron.schedule('*/13 * * * *', () => {
-      console.log('Pinging self...')
-      axios
-        .get(`${config.server.clientURL}/ping`)
-        .then(() => console.log('Self-ping successful'))
-        .catch((error) => console.error('Self-ping failed:', error))
-    })
+    if (config.server.env === 'PROD') {
+      cron.schedule('*/13 * * * *', () => {
+        console.log('Pinging self...')
+        axios
+          .get(`${config.server.clientURL}/ping`)
+          .then(() => console.log('Self-ping successful'))
+          .catch((error) => console.error('Self-ping failed:', error))
+      })
+    }
   })
 }
 
