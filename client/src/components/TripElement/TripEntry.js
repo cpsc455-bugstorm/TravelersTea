@@ -311,7 +311,7 @@ export function TripEntry({ id, buttonClassName, trip }) {
   }, [alertMessage, alertOpen])
 
   return (
-    <div className='group relative'>
+    <div className='group relative w-full'>
       {tripButton}
       {extraButtons}
       {alert}

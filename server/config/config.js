@@ -11,6 +11,7 @@ const ENV = process.env.ENV || ''
 const JWT_SECRET = process.env.JWT_SECRET || ''
 
 const CLIENT_URL = process.env.CLIENT_URL
+const RATE_LIMIT = process.env.RATE_LIMIT || 10
 
 const config = {
   mongo: {
@@ -21,6 +22,7 @@ const config = {
     env: ENV,
     jwtSecret: JWT_SECRET,
     clientURL: CLIENT_URL,
+    rateLimit: RATE_LIMIT,
   },
   openaiApiKey: process.env.OPENAI_API_KEY,
   openaiConfig: new Configuration({

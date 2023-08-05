@@ -15,7 +15,12 @@ import {
 } from './redux/reducers/stage/stageSlice'
 import { fetchStagesByTripIdAsync } from './redux/reducers/stage/thunks'
 import { fetchTripsAsync } from './redux/reducers/trips/thunks'
-import { clearTripsError, resetTrips } from './redux/reducers/trips/tripsSlice'
+import {
+  clearTripsError,
+  flagAsFulfilled,
+  resetTrips,
+} from './redux/reducers/trips/tripsSlice'
+import { fetchLimitLeftAsync } from './redux/reducers/users/thunks'
 import {
   clearUserError,
   updateAsLoggedIn,
@@ -23,7 +28,6 @@ import {
 } from './redux/reducers/users/usersSlice'
 import { openSidebar, resetView, setAppView } from './redux/reducers/viewSlice'
 import { REQUEST_STATE } from './redux/states'
-import { fetchLimitLeftAsync } from './redux/reducers/users/thunks'
 
 SessionController.propTypes = {
   children: PropTypes.node,
@@ -46,6 +50,21 @@ export function SessionController({ children }) {
       callback()
     }, ms)
   }
+
+  // when creating trip (or changing tripEntry), it is enough to rely on the changes of tripId (if id changed then the trip is created)
+  useEffect(() => {
+    if (tripsStates.status === REQUEST_STATE.FULFILLED && activeTripId)
+      dispatch(fetchStagesByTripIdAsync(activeTripId))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTripId, dispatch])
+  // when updating trip, the id does not change (+ the status does), so we need to use an extra flag (that is not FULFILLED to avoid double dispatch)
+  useEffect(() => {
+    if (tripsStates.status === REQUEST_STATE.UPDATED) {
+      dispatch(flagAsFulfilled())
+      dispatch(fetchStagesByTripIdAsync(activeTripId))
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tripsStates.status, dispatch])
 
   useEffect(() => {
     if (userStates.status === REQUEST_STATE.LOGGINGOUT) {
@@ -96,11 +115,6 @@ export function SessionController({ children }) {
       dispatch(fetchTripsAsync())
     }
   }, [dispatch, tripsStates.status, userStates, storedTokenExists])
-
-  useEffect(() => {
-    if (tripsStates.status === REQUEST_STATE.FULFILLED && activeTripId)
-      dispatch(fetchStagesByTripIdAsync(activeTripId))
-  }, [activeTripId, dispatch, tripsStates.status])
 
   useEffect(() => {
     if (

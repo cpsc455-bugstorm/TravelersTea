@@ -35,6 +35,9 @@ export const tripsSlice = createSlice({
     clearTripsError: (state) => {
       state.error = null
     },
+    flagAsFulfilled: (state) => {
+      state.status = REQUEST_STATE.FULFILLED
+    },
   },
   extraReducers: (builder) => {
     handleAsyncAction(builder, fetchTripsAsync, {
@@ -87,7 +90,7 @@ export const tripsSlice = createSlice({
             ...action.payload,
           }
         }
-        state.status = REQUEST_STATE.FULFILLED
+        state.status = REQUEST_STATE.UPDATED
       },
     })
     handleAsyncAction(builder, enableShareTripAsync, {
@@ -112,6 +115,7 @@ export const tripsSlice = createSlice({
   },
 })
 
-export const { resetTrips, clearTripsError } = tripsSlice.actions
+export const { resetTrips, clearTripsError, flagAsFulfilled } =
+  tripsSlice.actions
 
 export default tripsSlice.reducer
