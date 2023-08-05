@@ -39,10 +39,8 @@ class SharedRoute {
     }
 
     try {
-      const response = await controllers.stageController.getStagesByTripId(
-        null,
-        tripId,
-      )
+      const response =
+        await controllers.stageController.getStagesBySharedTripId(tripId)
       res.status(200).json(response)
     } catch (err) {
       console.log(err)

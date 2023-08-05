@@ -13,6 +13,7 @@ import { fetchSharedTripByTripIdAsync } from './redux/reducers/trips/thunks'
 import { DEFAULT_SPEED, ZOOM_CITY_LEVEL } from './constants/mapDefaultInfo'
 import { changeCoordinatesAndZoom } from './redux/reducers/mapSlice'
 import { setActiveTripId } from './redux/reducers/viewSlice'
+import { AlertSnackbar } from './components/common'
 
 export function ShareInterface() {
   const { id } = useParams()
@@ -51,6 +52,14 @@ export function ShareInterface() {
   const renderMainContent = useMemo(() => {
     let content = <></>
     if (!activeTripId) {
+      content = (
+        <AlertSnackbar
+          handleClose={() => {}}
+          message={'Trip Not found'}
+          open={true}
+          severity={'error'}
+        />
+      )
       return content
     }
     if (appView === AppView.TRIP_VIEW)

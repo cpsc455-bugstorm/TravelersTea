@@ -57,6 +57,22 @@ class StageController {
     }
   }
 
+  async getStagesBySharedTripId(tripId) {
+    try {
+      const trip = await this.tripController.getSharedTrip(tripId)
+      const stagesPerTripId = await StageModel.find({
+        tripId: new mongoose.Types.ObjectId(tripId),
+      })
+        .sort({ dayIndex: 1, stageIndex: 1 })
+        .lean()
+      return partitionStagesByDay(stagesPerTripId, trip.stagesPerDay)
+    } catch (error) {
+      error.message =
+        'Could not fetch all stages for shared trip | ' + error.message
+      throw error
+    }
+  }
+
   async updateStage(userId, id, { updateNotes, stage, trip }) {
     try {
       // Call Openai

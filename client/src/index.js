@@ -2,11 +2,11 @@ import { SnackbarProvider } from 'notistack'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { Provider } from 'react-redux'
-import { BrowserRouter as Router } from 'react-router-dom'
-import App from './App'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { SessionController } from './SessionController'
 import './index.css'
 import { store } from './redux/store'
+import { ShareInterface } from './ShareInterface'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
@@ -20,9 +20,10 @@ root.render(
             horizontal: 'center',
           }}
         >
-          <SessionController>
-            <App />
-          </SessionController>
+          <Routes>
+            <Route path='/share/:id' element={<ShareInterface />} />
+            <Route path='/*' element={<SessionController />} />
+          </Routes>
         </SnackbarProvider>
       </Router>
     </Provider>
