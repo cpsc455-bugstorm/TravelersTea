@@ -8,7 +8,10 @@ import { SideBar } from './components/sideBar'
 import { AppView } from './constants/enums'
 import { resetMap } from './redux/reducers/mapSlice'
 import { resetModalsDisplayed } from './redux/reducers/modalsSlice'
-import { resetPreferences } from './redux/reducers/preferencesSlice'
+import {
+  resetPreferences,
+  setLightMode,
+} from './redux/reducers/preferencesSlice'
 import {
   clearStagesError,
   resetStages,
@@ -196,6 +199,20 @@ export function SessionController({ children }) {
     }
     return () => clearTimeout(timer)
   }, [enqueueSnackbar, isLoading])
+
+  // credits: https://stackoverflow.com/a/57795518 & ChatGPT
+  useEffect(() => {
+    const lightModeWatcher = window.matchMedia('(prefers-color-scheme: light)')
+    const handleChange = (e) => {
+      dispatch(setLightMode(e.matches))
+    }
+
+    lightModeWatcher.addEventListener('change', handleChange)
+
+    return () => {
+      lightModeWatcher.removeEventListener('change', handleChange)
+    }
+  }, [dispatch])
 
   return (
     <>

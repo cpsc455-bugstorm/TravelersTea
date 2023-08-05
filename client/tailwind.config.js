@@ -11,6 +11,7 @@ module.exports = {
       variants: ['hover'],
     },
     { pattern: /bg-(.*)-(400)/ },
+    { pattern: /(.*)-slate-(.*)/ },
   ],
   theme: {
     extend: {},
