@@ -38,7 +38,6 @@ class TripController {
   async getSharedTrip(id) {
     try {
       const receivedTrip = await TripModel.findOne({ _id: id, isPublic: true })
-      console.log('receivedTrip', receivedTrip)
       return receivedTrip
     } catch (error) {
       error.message = 'Could not fetch trip | ' + error.message
@@ -339,7 +338,7 @@ class TripController {
             isPublic: true, // update the field
           },
         },
-      ).lean()
+      )
     } catch (error) {
       throw new Error('Could not enable sharing')
     }

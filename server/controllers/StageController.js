@@ -46,6 +46,7 @@ class StageController {
       const trip = await this.tripController.getTrip(userId, tripId)
       const stagesPerTripId = await StageModel.find({
         tripId: new mongoose.Types.ObjectId(tripId),
+        userId: new mongoose.Types.ObjectId(userId),
       })
         .sort({ dayIndex: 1, stageIndex: 1 })
         .lean()
