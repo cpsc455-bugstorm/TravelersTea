@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { MapElement } from './components/MapElement'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import {
   CompactTripView,
@@ -21,6 +21,8 @@ export function ShareInterface() {
   const appView = useSelector((state) => state.view.appView)
   const isCompactView = useSelector((state) => state.preferences.compactView)
   const activeTripId = useSelector((state) => state.view.activeTripId)
+
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     async function fetchSharedTrip() {
@@ -43,6 +45,8 @@ export function ShareInterface() {
         }
       } catch (error) {
         console.log(error.message)
+      } finally {
+        setLoading(false)
       }
     }
 
@@ -50,6 +54,10 @@ export function ShareInterface() {
   }, [dispatch, id])
 
   const renderMainContent = useMemo(() => {
+    if (loading) {
+      return <></>
+    }
+
     let content = <></>
     if (!activeTripId) {
       content = (
@@ -75,7 +83,7 @@ export function ShareInterface() {
         {content}
       </div>
     )
-  }, [appView, isCompactView, activeTripId])
+  }, [loading, appView, isCompactView, activeTripId])
 
   return (
     <div className='h-screen w-screen overflow-hidden'>
