@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { shouldUseLightMode } from '../../util/lightMode'
 
 const preferenceSlice = createSlice({
   name: 'preferences',
@@ -34,15 +35,3 @@ export const {
 } = preferenceSlice.actions
 
 export default preferenceSlice.reducer
-
-function shouldUseLightMode() {
-  const localStoragePreference = localStorage.getItem('isLightMode')
-
-  if (localStoragePreference !== null) return localStoragePreference === 'true'
-
-  const userOSPreference =
-    window.matchMedia &&
-    window.matchMedia('(prefers-color-scheme: light)').matches
-
-  return userOSPreference || false
-}

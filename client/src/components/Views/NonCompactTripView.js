@@ -26,8 +26,12 @@ export function NonCompactTripView() {
   const renderTeacupRow = useMemo(() => {
     return (
       <div
-        className={`pointer-events-auto z-[5] flex w-full shrink-0 items-end overflow-y-hidden overflow-x-scroll px-4 pt-8 mac-scrollbar
-        ${isLightMode ? 'white-gradient' : 'black-gradient'}`}
+        className={`pointer-events-auto z-[5] flex w-full shrink-0 items-end overflow-y-hidden overflow-x-scroll px-4 pt-8
+        ${
+          isLightMode
+            ? 'white-gradient mac-scrollbar-light'
+            : 'black-gradient mac-scrollbar'
+        }`}
       >
         {teaCups}
       </div>

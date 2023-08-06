@@ -25,7 +25,7 @@ import {
 } from '../../redux/reducers/viewSlice'
 import { Button, Modal } from '../common'
 import { resetStages } from '../../redux/reducers/stage/stageSlice'
-import { getBlackWhite } from '../../util/tailwindColors'
+import { getBlackWhite } from '../../util/lightMode'
 
 TripEntry.propTypes = {
   id: PropTypes.string.isRequired,

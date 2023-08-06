@@ -92,8 +92,9 @@ export function SeeMoreDrawer() {
     <>
       {renderShowMoreLessButton}
       <div
-        className={`pointer-events-auto w-full overflow-y-auto bg-transparent transition-all duration-500 ease-in-out mac-scrollbar
-          ${showDrawer ? 'max-h-[50vh] p-4 pt-0' : 'max-h-0'}`}
+        className={`pointer-events-auto w-full overflow-y-auto bg-transparent transition-all duration-500 ease-in-out
+          ${showDrawer ? 'max-h-[50vh] p-4 pt-0' : 'max-h-0'}
+          ${isLightMode ? 'mac-scrollbar-light' : 'mac-scrollbar'}`}
       >
         {seeMoreCards}
       </div>

@@ -31,6 +31,7 @@ import {
 } from './redux/reducers/users/usersSlice'
 import { openSidebar, resetView, setAppView } from './redux/reducers/viewSlice'
 import { REQUEST_STATE } from './redux/states'
+import { shouldUseLightMode } from './util/lightMode'
 
 SessionController.propTypes = {
   children: PropTypes.node,
@@ -135,7 +136,10 @@ export function SessionController({ children }) {
   useEffect(() => {
     if (userStates.status === REQUEST_STATE.LOGGINGIN) {
       dispatch(fetchLimitLeftAsync())
-      delaySetLoadingFalse(2500, () => dispatch(updateAsLoggedIn()))
+      delaySetLoadingFalse(2500, () => {
+        dispatch(updateAsLoggedIn())
+        dispatch(setLightMode(shouldUseLightMode()))
+      })
     } else if (userStates.status === REQUEST_STATE.REJECTED) {
       delaySetLoadingFalse(2500, () => dispatch(updateAsLoggedOut()))
     }

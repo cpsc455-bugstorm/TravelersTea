@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types'
 import LocalCafeIcon from '@mui/icons-material/LocalCafe'
+import { useSelector } from 'react-redux'
 
-const Mug = ({ filled, halfFilled, lessFilled }) => (
+const Mug = ({ filled, halfFilled, lessFilled, color }) => (
   <span>
     <LocalCafeIcon
-      className={`h-6 w-6 text-yellow-500 ${
+      className={`h-6 w-6 ${color} ${
         filled
           ? ''
           : halfFilled
@@ -21,9 +22,12 @@ Mug.propTypes = {
   filled: PropTypes.bool.isRequired,
   halfFilled: PropTypes.bool,
   lessFilled: PropTypes.bool,
+  color: PropTypes.string.isRequired,
 }
 
 const MugRating = ({ rating }) => {
+  const isLightMode = useSelector((state) => state.preferences.lightMode)
+
   if (rating === 0 || rating === undefined) {
     return null
   }
@@ -40,6 +44,7 @@ const MugRating = ({ rating }) => {
             filled={filled}
             halfFilled={halfFilled}
             lessFilled={lessFilled}
+            color={isLightMode ? 'text-yellow-600' : 'text-yellow-500'}
           />
         )
       })}

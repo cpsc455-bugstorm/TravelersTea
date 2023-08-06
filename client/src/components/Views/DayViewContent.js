@@ -4,7 +4,7 @@ import { Button } from '../common'
 import { setAppView } from '../../redux/reducers/viewSlice'
 import { AppView } from '../../constants/enums'
 import MugRating from './MugRating'
-import { getSlate } from '../../util/tailwindColors'
+import { getSlate } from '../../util/lightMode'
 
 export function DayViewContent() {
   const activeDayNumber = useSelector((state) => state.view.activeDayNumber)
@@ -45,11 +45,14 @@ export function DayViewContent() {
     })
 
     return (
-      <div className='h-full overflow-y-auto p-4 pt-2 mac-scrollbar'>
+      <div
+        className={`h-full overflow-y-auto p-4 pt-2 
+          ${isLightMode ? 'mac-scrollbar-light' : 'mac-scrollbar'}`}
+      >
         {stagesContent}
       </div>
     )
-  }, [stages, generateStage])
+  }, [stages, isLightMode, generateStage])
 
   const openTripView = useCallback(() => {
     dispatch(setAppView(AppView.TRIP_VIEW))

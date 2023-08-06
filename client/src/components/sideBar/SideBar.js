@@ -20,9 +20,9 @@ import { TripEntry } from '../TripElement'
 import { Button, Toggle } from '../common'
 import { Logout } from '../user'
 import PropTypes from 'prop-types'
-import { getBlackWhite, getSlate } from '../../util/tailwindColors'
 import { resetMap } from '../../redux/reducers/mapSlice'
 import { resetStages } from '../../redux/reducers/stage/stageSlice'
+import { getBlackWhite, getSlate } from '../../util/lightMode'
 
 SideBar.propTypes = {
   shouldHide: PropTypes.bool.isRequired,
@@ -117,11 +117,14 @@ export function SideBar({ shouldHide, isLoading }) {
 
   const renderSidebarTrips = useMemo(() => {
     return (
-      <div className='my-2 grid w-full grid-cols-1 gap-2 overflow-y-auto overflow-x-hidden border-y-2 border-slate-300 py-2 mac-scrollbar'>
+      <div
+        className={`my-2 grid w-full grid-cols-1 gap-2 overflow-y-auto overflow-x-hidden border-y-2 border-slate-300 py-2 
+        ${isLightMode ? 'mac-scrollbar-light' : 'mac-scrollbar'}`}
+      >
         {tripEntries}
       </div>
     )
-  }, [tripEntries])
+  }, [isLightMode, tripEntries])
 
   const renderSidebarBottomPortion = useMemo(() => {
     return (
