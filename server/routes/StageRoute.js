@@ -23,7 +23,6 @@ class StageRoute {
 
   async getById(req, res, next) {
     const stageId = req.params.id
-    console.log('hitting getbyid: ', req.params.id)
     try {
       if (!stageId) {
         const error = new Error('Missing stageId parameter')
@@ -41,7 +40,6 @@ class StageRoute {
   }
 
   async getByTripId(req, res, next) {
-    console.log('hitting getbytripid')
     const tripId = req.query.tripId
     try {
       if (!tripId) {
