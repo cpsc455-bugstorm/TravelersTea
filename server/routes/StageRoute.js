@@ -6,12 +6,15 @@ const apiLimiter = require('../middlewares/rateLimiter')
 class StageRoute {
   constructor() {
     this.router = express.Router()
-    this.router.use(authMiddleware)
-    // this.router.post('', this.create.bind(this))
-    this.router.get('', this.getByTripId.bind(this))
-    this.router.get('/:id', this.getById.bind(this))
-    this.router.patch('/:id', apiLimiter, this.update.bind(this))
-    // this.router.delete('/:id', this.delete.bind(this))
+    this.router.get('', authMiddleware, this.getByTripId.bind(this))
+    this.router.get('/share', this.getByTripId.bind(this))
+    this.router.get('/:id', authMiddleware, this.getById.bind(this))
+    this.router.patch(
+      '/:id',
+      authMiddleware,
+      apiLimiter,
+      this.update.bind(this),
+    )
   }
 
   initRoutes(apiRouter) {
@@ -20,6 +23,7 @@ class StageRoute {
 
   async getById(req, res, next) {
     const stageId = req.params.id
+    console.log('hitting getbyid: ', req.params.id)
     try {
       if (!stageId) {
         const error = new Error('Missing stageId parameter')
@@ -37,6 +41,7 @@ class StageRoute {
   }
 
   async getByTripId(req, res, next) {
+    console.log('hitting getbytripid')
     const tripId = req.query.tripId
     try {
       if (!tripId) {

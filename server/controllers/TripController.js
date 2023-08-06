@@ -11,16 +11,15 @@ class TripController {
     this.stageController = stageController
   }
 
-  async getTrip(userId, tripId) {
+  async getTripById(userId, id) {
     try {
       const trip = await TripModel.findOne({
-        _id: new mongoose.Types.ObjectId(tripId),
+        _id: id,
         $or: [
           { userId: new mongoose.Types.ObjectId(userId) },
           { isPublic: true },
         ],
       })
-
       if (!trip) {
         const error = new Error('Trip could not be found')
         error.statusCode = 404
@@ -30,15 +29,6 @@ class TripController {
       const tripDTO = trip.toObject()
       delete tripDTO.userId
       return tripDTO
-    } catch (error) {
-      throw new Error('Could not fetch trip')
-    }
-  }
-
-  async getSharedTrip(id) {
-    try {
-      const receivedTrip = await TripModel.findOne({ _id: id, isPublic: true })
-      return receivedTrip
     } catch (error) {
       error.message = 'Could not fetch trip | ' + error.message
       throw error
@@ -331,7 +321,7 @@ class TripController {
 
   async enableShareTrip(userId, id) {
     try {
-      await TripModel.updateOne(
+      const { modifiedCount } = await TripModel.updateOne(
         { _id: id, userId: userId },
         {
           $set: {
@@ -339,8 +329,15 @@ class TripController {
           },
         },
       )
+      if (!modifiedCount) {
+        const error = new Error('Trip could not be found or is already public')
+        error.statusCode = 404
+        throw error
+      }
+      return modifiedCount
     } catch (error) {
-      throw new Error('Could not enable sharing')
+      error.message = 'Could not enable sharing | ' + error.message
+      throw error
     }
   }
 }

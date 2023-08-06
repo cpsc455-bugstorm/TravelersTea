@@ -6,7 +6,6 @@ import {
   deleteTripAsync,
   enableShareTripAsync,
   fetchSharedTripByTripIdAsync,
-  fetchTripByTripIdAsync,
   fetchTripsAsync,
   updateTripAsync,
 } from './thunks'
@@ -41,15 +40,6 @@ export const tripsSlice = createSlice({
   },
   extraReducers: (builder) => {
     handleAsyncAction(builder, fetchTripsAsync, {
-      pending: (state) => {
-        state.status = REQUEST_STATE.READING
-      },
-      fulfilled: (state, action) => {
-        state.trips = action.payload
-        state.status = REQUEST_STATE.FULFILLED
-      },
-    })
-    handleAsyncAction(builder, fetchTripByTripIdAsync, {
       pending: (state) => {
         state.status = REQUEST_STATE.READING
       },

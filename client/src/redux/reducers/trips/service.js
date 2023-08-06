@@ -13,12 +13,8 @@ export const fetchTrips = async () => {
   return await axiosWithToken.get(`${API_URL}/trips`)
 }
 
-export const fetchTripByTripId = async (id) => {
-  return await axiosWithToken.get(`${API_URL}/trips/${id}`)
-}
-
 export const fetchSharedTripByTripId = async (id) => {
-  return await axiosWithToken.get(`${API_URL}/shared/trip/${id}`)
+  return await axiosWithToken.get(`${API_URL}/trips/share/${id}`)
 }
 
 export const createTrip = async (tripData) => {
@@ -34,12 +30,11 @@ export const deleteTrip = async (id) => {
 }
 
 export const enableShareTrip = async (id) => {
-  return await axiosWithToken.patch(`${API_URL}/trips/${id}/share`)
+  return await axiosWithToken.patch(`${API_URL}/trips/share/${id}`)
 }
 
 const tripService = {
   fetchTrips,
-  fetchTripByTripId,
   fetchSharedTripByTripId,
   createTrip,
   updateTrip,

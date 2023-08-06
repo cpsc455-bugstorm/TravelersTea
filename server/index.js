@@ -9,7 +9,6 @@ const axios = require('axios')
 const UserRoute = require('./routes/UserRoute')
 const TripRoute = require('./routes/TripRoute')
 const StageRoute = require('./routes/StageRoute')
-const SharedRoute = require('./routes/SharedRoute')
 const loggingMiddleware = require('./middlewares/Logging')
 const errorHandleMiddleware = require('./middlewares/ErrorHandling')
 const config = require('./config/config')
@@ -45,9 +44,6 @@ tripRoute.initRoutes(apiRouter)
 
 const stageRoute = new StageRoute()
 stageRoute.initRoutes(apiRouter)
-
-const sharedRoute = new SharedRoute()
-sharedRoute.initRoutes(apiRouter)
 
 if (config.server.env === 'DEV') {
   app.use(loggingMiddleware.errorLoggingMiddleware)

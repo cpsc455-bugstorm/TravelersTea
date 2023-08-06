@@ -18,7 +18,7 @@ export const fetchStagesByTripId = async (tripId) => {
 }
 
 export const fetchStagesBySharedTripId = async (tripId) => {
-  return await axios.get(`${API_URL}/shared/stages/${tripId}`)
+  return await axios.get(`${API_URL}/stages/share`, { params: { tripId } })
 }
 
 export const createStage = async (stageData) => {
