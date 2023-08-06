@@ -7,7 +7,7 @@ const stageSchema = require('../models/StageModel')
 const userSchema = require('../models/UserModel')
 const { ObjectId } = require('mongodb')
 const config = require('../config/config')
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 
 const Trip = mongoose.model('Trip', tripSchema.schema)
 const Stage = mongoose.model('Stage', stageSchema.schema)
