@@ -100,6 +100,7 @@ class UserController {
         {
           username: userData.username,
           userId: userData._id,
+          isAdmin: userData.isAdmin,
         },
         config.server.jwtSecret,
       )

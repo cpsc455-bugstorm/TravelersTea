@@ -3,6 +3,7 @@ import { closeEditStageModal } from '../../redux/reducers/modalsSlice'
 import { Modal } from '../common'
 import { StageForm } from './StageForm'
 import { updateStageAsync } from '../../redux/reducers/stage/thunks'
+import { decrementAttemptsLeft } from '../../redux/reducers/users/usersSlice'
 
 export function EditStageForm() {
   const dispatch = useDispatch()
@@ -26,7 +27,9 @@ export function EditStageForm() {
           id: updateData.stage._id,
           updateData: { ...updateData, trip: activeTrip },
         }),
-      ).unwrap()
+      )
+        .unwrap()
+        .then(() => dispatch(decrementAttemptsLeft()))
     } catch (error) {
       console.error(error)
     }

@@ -1,3 +1,4 @@
+import { SnackbarProvider } from 'notistack'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { Provider } from 'react-redux'
@@ -12,9 +13,17 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <Router>
-        <SessionController>
-          <App />
-        </SessionController>
+        <SnackbarProvider
+          maxSnack={3}
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'center',
+          }}
+        >
+          <SessionController>
+            <App />
+          </SessionController>
+        </SnackbarProvider>
       </Router>
     </Provider>
   </React.StrictMode>,
