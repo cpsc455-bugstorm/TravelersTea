@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux'
 
 export function NonCompactTripView() {
   const stagesByDay = useSelector((state) => state.stages.stages)
+  const isLightMode = useSelector((state) => state.preferences.lightMode)
 
   const teaCups = useMemo(() => {
     return stagesByDay.map((item, index) => {
@@ -25,16 +26,19 @@ export function NonCompactTripView() {
   const renderTeacupRow = useMemo(() => {
     return (
       <div
-        className={`black-gradient pointer-events-auto z-[5] flex w-full shrink-0 items-end overflow-y-hidden overflow-x-scroll px-4 pt-8 mac-scrollbar`}
+        className={`pointer-events-auto z-[5] flex w-full shrink-0 items-end overflow-y-hidden overflow-x-scroll px-4 pt-8 mac-scrollbar
+        ${isLightMode ? 'white-gradient' : 'black-gradient'}`}
       >
         {teaCups}
       </div>
     )
-  }, [teaCups])
+  }, [teaCups, isLightMode])
 
   return (
     <div
-      className={`black-gradient flex h-full w-full flex-col items-end justify-end`}
+      className={`flex h-full w-full flex-col items-end justify-end ${
+        isLightMode ? 'white-gradient' : 'black-gradient'
+      }`}
     >
       <TripSidePanelSingle />
       {renderTeacupRow}

@@ -138,7 +138,7 @@ export function SideBar({ shouldHide, isLoading }) {
         >
           <div
             className={`z-0 h-full w-full flex-grow bg-slate-200 bg-[url(../public/little-prince.jpg)] bg-cover bg-center opacity-50 
-              ${isLightMode ? 'bg-blend-normal' : 'bg-blend-difference'}`}
+              ${isLightMode ? 'bg-blend-color-burn' : 'bg-blend-difference'}`}
           />
           <div
             className={`absolute inset-0 z-10 p-2 ${

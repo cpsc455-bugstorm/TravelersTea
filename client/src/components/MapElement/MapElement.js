@@ -23,6 +23,7 @@ export function MapElement({ className }) {
   const [map, setMap] = useState(null)
   const mapContainerRef = useRef(null)
   const [retryCounter, setRetryCounter] = useState(0)
+  const isLightMode = useSelector((state) => state.preferences.lightMode)
   mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN
 
   const renderMapForms = useMemo(() => {
@@ -58,12 +59,15 @@ export function MapElement({ className }) {
   }, [activeDayNumber, map, stagesByDay])
 
   useEffect(() => {
-    const markers = addMarkersToMap()
-    return () => {
-      markers.forEach((marker) => marker.remove())
+    try {
+      const markers = addMarkersToMap()
+      return () => {
+        markers.forEach((marker) => marker.remove())
+      }
+    } catch (e) {
+      setRetryCounter((prev) => prev + 1)
     }
-    // lol
-  }, [stagesByDay, addMarkersToMap, retryCounter])
+  }, [map, stagesByDay, addMarkersToMap, retryCounter])
 
   useEffect(() => {
     const { longitude, latitude, zoom, speed } = mapData
@@ -80,7 +84,9 @@ export function MapElement({ className }) {
   useEffect(() => {
     const map = new mapboxgl.Map({
       container: mapContainerRef.current,
-      style: 'mapbox://styles/mapbox/navigation-night-v1',
+      style: isLightMode
+        ? 'mapbox://styles/mapbox/navigation-day-v1'
+        : 'mapbox://styles/mapbox/navigation-night-v1',
       center: [VANCOUVER_LONGITUDE, VANCOUVER_LATITUDE],
       zoom: ZOOM_GLOBE_LEVEL,
       projection: 'globe',
@@ -168,7 +174,7 @@ export function MapElement({ className }) {
 
     setMap(map)
     return () => map.remove()
-  }, [])
+  }, [isLightMode])
 
   useEffect(() => {
     if (stagesByDay.length > 0) {

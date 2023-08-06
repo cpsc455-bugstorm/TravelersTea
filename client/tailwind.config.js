@@ -28,7 +28,7 @@ module.exports = {
           'background-color': 'rgba(57,64,80)',
         },
         '.mac-scrollbar::-webkit-scrollbar-track': {
-          background: 'rgba(27,33,46)',
+          background: 'rgba(27,33,46, 0.6)', // rgb(27 33 46 / 58%)
           position: 'absolute',
           'z-index': 10,
         },
