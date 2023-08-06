@@ -82,7 +82,7 @@ export function NewTripForm() {
           </>
         ) : (
           <>
-            <span className='relative'>Chat with GPT</span>
+            <span className='relative'>Speak Your Mind 🧠</span>
             <ExpandMoreIcon fontSize='large' className='w-3' />
           </>
         )}
