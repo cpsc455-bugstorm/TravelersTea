@@ -16,6 +16,7 @@ import { AppView } from '../../constants/enums'
 
 export function SeeMoreDrawer() {
   const stagesByDay = useSelector((state) => state.stages.stages)
+  const user = useSelector((state) => state.users.user)
 
   const dispatch = useDispatch()
 
@@ -54,19 +55,21 @@ export function SeeMoreDrawer() {
                   <p className={'text-white'}>⤷ {stage['description']}</p>
                 </div>
                 <div>
-                  <Button
-                    key={`details-edit-${dayNumber}-${stageIndex}`}
-                    onClick={(e) => {
-                      dispatch(closeSidebar())
-                      dispatch(openEditStageModal())
-                      dispatch(updateEditStageId(stage['_id']))
-                      e.stopPropagation()
-                    }}
-                    className={` flex h-[22px] w-[20px] p-6 text-white hover:text-red-400`}
-                    padding='p-0 mr-[3px]'
-                  >
-                    <EditOutlinedIcon sx={{ fontSize: 20 }} />
-                  </Button>
+                  {user ? (
+                    <Button
+                      key={`details-edit-${dayNumber}-${stageIndex}`}
+                      onClick={(e) => {
+                        dispatch(closeSidebar())
+                        dispatch(openEditStageModal())
+                        dispatch(updateEditStageId(stage['_id']))
+                        e.stopPropagation()
+                      }}
+                      className={` flex h-[22px] w-[20px] p-6 text-white hover:text-red-400`}
+                      padding='p-0 mr-[3px]'
+                    >
+                      <EditOutlinedIcon sx={{ fontSize: 20 }} />
+                    </Button>
+                  ) : null}
                 </div>
               </div>
             )
@@ -74,7 +77,7 @@ export function SeeMoreDrawer() {
         </div>
       )
     })
-  }, [dispatch, stagesByDay])
+  }, [user, dispatch, stagesByDay])
 
   const renderShowMoreLessButton = useMemo(() => {
     return (
