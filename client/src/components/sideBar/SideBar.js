@@ -11,6 +11,7 @@ import {
 } from '../../redux/reducers/preferencesSlice'
 import {
   closeSidebar,
+  resetView,
   setActiveDayNumber,
   setAppView,
   toggleSidebar,
@@ -20,6 +21,8 @@ import { Button, Toggle } from '../common'
 import { Logout } from '../user'
 import PropTypes from 'prop-types'
 import { getBlackWhite, getSlate } from '../../util/tailwindColors'
+import { resetMap } from '../../redux/reducers/mapSlice'
+import { resetStages } from '../../redux/reducers/stage/stageSlice'
 
 SideBar.propTypes = {
   shouldHide: PropTypes.bool.isRequired,
@@ -92,6 +95,9 @@ export function SideBar({ shouldHide, isLoading }) {
         label='Light Mode'
         onClick={() => {
           dispatch(toggleLightMode())
+          dispatch(resetView())
+          dispatch(resetMap())
+          dispatch(resetStages())
         }}
         active={isLightMode}
       />
