@@ -2,7 +2,6 @@ const errorHandleMiddleware = (err, req, res, next) => {
   if (err.statusCode) {
     return res.status(err.statusCode).json({ error: err.toString() })
   }
-  console.log(err.toString())
   res.status(500).json({ error: err.toString() })
   next()
 }
