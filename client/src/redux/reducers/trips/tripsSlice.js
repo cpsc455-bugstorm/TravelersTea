@@ -4,6 +4,8 @@ import { REQUEST_STATE } from '../../states'
 import {
   createTripAsync,
   deleteTripAsync,
+  enableShareTripAsync,
+  fetchSharedTripByTripIdAsync,
   fetchTripsAsync,
   updateTripAsync,
 } from './thunks'
@@ -46,6 +48,15 @@ export const tripsSlice = createSlice({
         state.status = REQUEST_STATE.FULFILLED
       },
     })
+    handleAsyncAction(builder, fetchSharedTripByTripIdAsync, {
+      pending: (state) => {
+        state.status = REQUEST_STATE.READING
+      },
+      fulfilled: (state, action) => {
+        state.trips = action.payload
+        state.status = REQUEST_STATE.FULFILLED
+      },
+    })
     handleAsyncAction(builder, createTripAsync, {
       pending: (state) => {
         state.status = REQUEST_STATE.WRITING
@@ -70,6 +81,14 @@ export const tripsSlice = createSlice({
           }
         }
         state.status = REQUEST_STATE.UPDATED
+      },
+    })
+    handleAsyncAction(builder, enableShareTripAsync, {
+      pending: (state) => {
+        state.status = REQUEST_STATE.WRITING
+      },
+      fulfilled: (state) => {
+        state.status = REQUEST_STATE.FULFILLED
       },
     })
     handleAsyncAction(builder, deleteTripAsync, {

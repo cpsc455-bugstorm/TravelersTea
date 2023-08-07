@@ -9,6 +9,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppView } from '../../constants/enums'
 import { DEFAULT_SPEED, ZOOM_CITY_LEVEL } from '../../constants/mapDefaultInfo'
+import copy from 'copy-to-clipboard'
 import {
   changeCoordinatesAndZoom,
   resetMap,
@@ -16,6 +17,7 @@ import {
 import { openEditTripModal } from '../../redux/reducers/modalsSlice'
 import {
   deleteTripAsync,
+  enableShareTripAsync,
   updateTripAsync,
 } from '../../redux/reducers/trips/thunks'
 import {
@@ -23,8 +25,9 @@ import {
   resetView,
   setActiveTripId,
 } from '../../redux/reducers/viewSlice'
-import { Button, Modal } from '../common'
+import { AlertSnackbar, Button, Modal } from '../common'
 import { resetStages } from '../../redux/reducers/stage/stageSlice'
+import IosShareSharpIcon from '@mui/icons-material/IosShareSharp'
 
 TripEntry.propTypes = {
   id: PropTypes.string.isRequired,
@@ -43,8 +46,8 @@ export function TripEntry({ id, buttonClassName, trip }) {
   const [openModal, setOpenModal] = useState(false)
   const inputRef = useRef()
 
-  const widthForTripEntry = !isSelected ? 'w-[160px]' : 'w-[228px]'
-  const widthForButtonsContainer = isRenaming ? 'w-[46px]' : 'w-[68px]'
+  const widthForTripEntry = !isSelected ? 'w-[140px]' : 'w-[228px]'
+  const widthForButtonsContainer = isRenaming ? 'w-[46px]' : 'w-[92px]'
 
   const proceedToDelete = () => {
     setOpenModal(true)
@@ -146,6 +149,22 @@ export function TripEntry({ id, buttonClassName, trip }) {
     ],
   )
 
+  const copyShareLinkToClipboard = async (id) => {
+    try {
+      await dispatch(enableShareTripAsync({ id: id })).unwrap()
+      let currentUrl = window.location.href // full current URL
+      let baseUrl = currentUrl.substring(0, currentUrl.lastIndexOf('/')) // trim off '/home' or anything after the last '/'
+      const sharedUrl = baseUrl + '/share/' + id
+      copy(sharedUrl)
+      setAlertMessage('Copied to Clipboard!')
+      setAlertOpen(true)
+    } catch (err) {
+      console.error('Failed to copy link: ', err)
+      setAlertMessage('Failed to copy link, please try again.')
+      setAlertOpen(true)
+    }
+  }
+
   const extraButtons = useMemo(
     () => (
       <div
@@ -154,6 +173,19 @@ export function TripEntry({ id, buttonClassName, trip }) {
       >
         {!isRenaming ? (
           <>
+            <Button
+              key={`sidebar-trip-button-${id}-share`}
+              onClick={async () => {
+                await copyShareLinkToClipboard(id)
+              }}
+              className={`${isSelected} h-[22px] w-[20px] hover:text-red-400`}
+              padding='p-0 mr-[3px]'
+            >
+              <IosShareSharpIcon
+                sx={{ fontSize: 20 }}
+                className='align-baseline'
+              />
+            </Button>
             <Button
               key={`sidebar-trip-button-${id}-rename`}
               onClick={() => {
@@ -257,10 +289,32 @@ export function TripEntry({ id, buttonClassName, trip }) {
     ],
   )
 
+  const [alertOpen, setAlertOpen] = useState(false)
+  const [alertMessage, setAlertMessage] = useState('')
+
+  const handleCloseAlert = (event, reason) => {
+    if (reason === 'clickaway') {
+      return
+    }
+    setAlertOpen(false)
+  }
+
+  const alert = useMemo(() => {
+    return (
+      <AlertSnackbar
+        open={alertOpen}
+        handleClose={handleCloseAlert}
+        message={alertMessage}
+        severity={'info'}
+      />
+    )
+  }, [alertMessage, alertOpen])
+
   return (
     <div className='group relative w-full'>
       {tripButton}
       {extraButtons}
+      {alert}
     </div>
   )
 }

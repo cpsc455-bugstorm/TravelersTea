@@ -28,12 +28,13 @@ import {
 } from './redux/reducers/users/usersSlice'
 import { openSidebar, resetView, setAppView } from './redux/reducers/viewSlice'
 import { REQUEST_STATE } from './redux/states'
+import App from './App'
 
 SessionController.propTypes = {
   children: PropTypes.node,
 }
 
-export function SessionController({ children }) {
+export function SessionController() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const activeTripId = useSelector((state) => state.view.activeTripId)
@@ -204,7 +205,7 @@ export function SessionController({ children }) {
         shouldHide={userStates.status !== REQUEST_STATE.LOGGEDIN}
         isLoading={isLoading}
       />
-      {children}
+      <App />
     </>
   )
 }

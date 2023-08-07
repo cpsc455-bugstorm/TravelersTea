@@ -2,15 +2,15 @@ import { createSlice } from '@reduxjs/toolkit'
 
 import {
   DEFAULT_SPEED,
-  VANCOUVER_LATITUDE,
-  VANCOUVER_LONGITUDE,
+  LAT_START,
+  LONG_START,
   ZOOM_GLOBE_LEVEL,
 } from '../../constants/mapDefaultInfo'
 
 const initialMapState = {
   mapData: {
-    longitude: VANCOUVER_LONGITUDE,
-    latitude: VANCOUVER_LATITUDE,
+    longitude: LONG_START,
+    latitude: LAT_START,
     zoom: ZOOM_GLOBE_LEVEL,
     speed: DEFAULT_SPEED,
   },

@@ -14,6 +14,18 @@ export const fetchTripsAsync = createAsyncThunk(
   },
 )
 
+export const fetchSharedTripByTripIdAsync = createAsyncThunk(
+  actionTypes.GET_SHARED_TRIP,
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await tripService.fetchSharedTripByTripId(id)
+      return response.data
+    } catch (error) {
+      return rejectWithValue({ message: error.response.data.error })
+    }
+  },
+)
+
 export const createTripAsync = createAsyncThunk(
   actionTypes.CREATE_TRIP,
   async (tripData, { rejectWithValue }) => {
@@ -47,6 +59,18 @@ export const deleteTripAsync = createAsyncThunk(
   async ({ id }, { rejectWithValue }) => {
     try {
       const response = await tripService.deleteTrip(id)
+      return response.data
+    } catch (error) {
+      return rejectWithValue({ message: error.response.data.error })
+    }
+  },
+)
+
+export const enableShareTripAsync = createAsyncThunk(
+  actionTypes.SHARE_TRIP,
+  async ({ id }, { rejectWithValue }) => {
+    try {
+      const response = await tripService.enableShareTrip(id)
       return response.data
     } catch (error) {
       return rejectWithValue({ message: error.response.data.error })
