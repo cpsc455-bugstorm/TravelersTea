@@ -12,7 +12,13 @@ const apiLimiter = rateLimit({
     return response.isTripAPI && response.statusCode < 400
   },
   skip: (request, response) => {
-    console.log(request.ip, request.userId, request.isAdmin)
+    console.log(
+      request.ip,
+      request.userId,
+      request.isAdmin,
+      request.headers['x-forwarded-for'],
+      request.headers
+    )
     return request.isAdmin || config.server.env === 'TEST'
   },
 })
