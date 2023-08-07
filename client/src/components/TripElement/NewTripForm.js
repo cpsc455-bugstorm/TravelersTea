@@ -71,19 +71,23 @@ export function NewTripForm() {
       }
       isCompressed={compressed}
     >
-      {compressed ? (
-        <ExpandLessIcon
-          fontSize='large'
-          onClick={() => setCompressed(!compressed)}
-          className='absolute -right-2 top-0 mr-4 w-3 cursor-pointer rounded-lg'
-        />
-      ) : (
-        <ExpandMoreIcon
-          fontSize='large'
-          onClick={() => setCompressed(!compressed)}
-          className='absolute -right-2 top-0 mr-4 w-3 cursor-pointer rounded-lg'
-        />
-      )}
+      <div
+        className='absolute -right-2 top-0 mr-4 cursor-pointer rounded-lg font-mono'
+        onClick={() => setCompressed(!compressed)}
+      >
+        {compressed ? (
+          <>
+            <span className='relative'>Form</span>
+            <ExpandLessIcon fontSize='large' className='w-3' />
+          </>
+        ) : (
+          <>
+            <span className='relative'>Speak Your Mind 🧠</span>
+            <ExpandMoreIcon fontSize='large' className='w-3' />
+          </>
+        )}
+      </div>
+
       {compressed ? (
         <CompressedForm onSubmit={onSubmit} />
       ) : (
