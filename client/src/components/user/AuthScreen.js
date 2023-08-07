@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useSnackbar } from 'notistack'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -10,6 +11,7 @@ import { Button } from '../common'
 
 export function AuthScreen() {
   const dispatch = useDispatch()
+  const { enqueueSnackbar } = useSnackbar()
   const userStatus = useSelector((state) => state.users.status)
   const allowAuthAttempts = userStatus === REQUEST_STATE.LOGGEDOUT
 
@@ -41,6 +43,12 @@ export function AuthScreen() {
     }
     reset()
   }
+
+  useEffect(() => {
+    enqueueSnackbar('Do NOT use real credentials! Product is in beta.', {
+      variant: 'warning',
+    })
+  }, [enqueueSnackbar])
 
   return (
     <div className='login-container relative h-screen overflow-hidden'>
