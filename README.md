@@ -1,10 +1,13 @@
 # TravelersTea
 
-Welcome to Traveler’s Tea, an intuitive and personalized travel planning web app that turns your travel dreams into detailed itineraries.
+Welcome to Traveler’s Tea, an intuitive and personalized travel planning web app that turns your travel dreams into
+detailed itineraries.
 
-Built around user preferences, the app delivers curated plans comprising places to visit, descriptions, and more, all at your fingertips.
+Built around user preferences, the app delivers curated plans comprising places to visit, descriptions, and more, all at
+your fingertips.
 
-Alongside its planning capabilities, TravelersTea thrives on the collective wisdom of its user community, featuring plan sharing with others, and shaping a dynamic and interactive travel planning experience.
+Alongside its planning capabilities, TravelersTea thrives on the collective wisdom of its user community, featuring plan
+sharing with others, and shaping a dynamic and interactive travel planning experience.
 
 ## Table of Contents
 
@@ -39,7 +42,8 @@ aspect (e.g. sharing plans, rating plans).
 
 #### Minimal Requirements
 
-- [x] Users should be able to input a set of preferences (Destination, Number of Days, Budget, Places per day), to generate
+- [x] Users should be able to input a set of preferences (Destination, Number of Days, Budget, Places per day), to
+      generate
       personalized travel plans.
 - [x] Users can see destination markers on a map.
 - [x] Users can see a description of each destination.
@@ -58,7 +62,7 @@ aspect (e.g. sharing plans, rating plans).
 - [ ] Users' Preferences: Compact Mode, Light Mode
 - [x] Users can generate plans based on extra notes (e.g. dietary restrictions, travel preferences)
 - [x] Entire application should be mobile-friendly
-- [ ] Share itinerary as a link
+- [x] Share itinerary as a link
 
 ## Task Breakdown
 

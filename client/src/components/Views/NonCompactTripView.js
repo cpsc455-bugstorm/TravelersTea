@@ -27,6 +27,7 @@ export function NonCompactTripView() {
       <div
         className={`black-gradient pointer-events-auto z-[5] flex w-full shrink-0 items-end overflow-y-hidden overflow-x-scroll px-4 pt-8 mac-scrollbar`}
       >
+        <div className={'w-10'}></div>
         {teaCups}
       </div>
     )

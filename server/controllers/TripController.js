@@ -2,7 +2,6 @@ const TripModel = require('../models/TripModel')
 const generateTrip = require('../openai/generateTrip')
 const generateTripsMetadata = require('../openai/generateTripMetadata')
 const getCoordinatesFromLocation = require('../googleapi/googleCoordinates')
-const config = require('../config/config')
 const mongoose = require('mongoose')
 
 const NUM_TAILWIND_COLORS = 17
@@ -12,13 +11,15 @@ class TripController {
     this.stageController = stageController
   }
 
-  async getTrip(userId, tripId) {
+  async getTripById(userId, id) {
     try {
       const trip = await TripModel.findOne({
-        userId: new mongoose.Types.ObjectId(userId),
-        _id: new mongoose.Types.ObjectId(tripId),
+        _id: id,
+        $or: [
+          { userId: new mongoose.Types.ObjectId(userId) },
+          { isPublic: true },
+        ],
       })
-
       if (!trip) {
         const error = new Error('Trip could not be found')
         error.statusCode = 404
@@ -314,9 +315,29 @@ class TripController {
 
       await TripModel.deleteMany({ userId: userId }).lean()
     } catch (error) {
-      if (config.server.env === 'DEV')
-        console.error('Error while deleting trips:', error)
       throw new Error('Could not delete trip')
+    }
+  }
+
+  async enableShareTrip(userId, id) {
+    try {
+      const { modifiedCount } = await TripModel.updateOne(
+        { _id: id, userId: userId },
+        {
+          $set: {
+            isPublic: true, // update the field
+          },
+        },
+      )
+      if (!modifiedCount) {
+        const error = new Error('Trip could not be found or is already public')
+        error.statusCode = 404
+        throw error
+      }
+      return modifiedCount
+    } catch (error) {
+      error.message = 'Could not enable sharing | ' + error.message
+      throw error
     }
   }
 }

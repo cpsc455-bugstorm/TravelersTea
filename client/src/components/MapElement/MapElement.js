@@ -4,8 +4,8 @@ import PropTypes from 'prop-types'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import {
-  VANCOUVER_LATITUDE,
-  VANCOUVER_LONGITUDE,
+  LAT_START,
+  LONG_START,
   ZOOM_GLOBE_LEVEL,
 } from '../../constants/mapDefaultInfo'
 import { createMapMarker } from '../../util/mapMarker'
@@ -81,7 +81,7 @@ export function MapElement({ className }) {
     const map = new mapboxgl.Map({
       container: mapContainerRef.current,
       style: 'mapbox://styles/mapbox/navigation-night-v1',
-      center: [VANCOUVER_LONGITUDE, VANCOUVER_LATITUDE],
+      center: [LONG_START, LAT_START],
       zoom: ZOOM_GLOBE_LEVEL,
       projection: 'globe',
     })
