@@ -43,13 +43,14 @@ class StageController {
 
   async getStagesByTripId(userId, tripId) {
     try {
-      const trip = await this.tripController.getTrip(userId, tripId)
+      const trip = await this.tripController.getTripById(userId, tripId)
       const stagesPerTripId = await StageModel.find({
         tripId: new mongoose.Types.ObjectId(tripId),
-        userId: new mongoose.Types.ObjectId(userId),
+        // userId: new mongoose.Types.ObjectId(userId),
       })
         .sort({ dayIndex: 1, stageIndex: 1 })
         .lean()
+      // otherwise, trip is public, or userId match, in either case, we can return
       return partitionStagesByDay(stagesPerTripId, trip.stagesPerDay)
     } catch (error) {
       error.message = 'Could not fetch all stages for trip | ' + error.message

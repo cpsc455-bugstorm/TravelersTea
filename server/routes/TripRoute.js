@@ -6,28 +6,22 @@ const apiLimiter = require('../middlewares/rateLimiter')
 class TripRoute {
   constructor() {
     this.router = express.Router()
-    this.router.use(authMiddleware)
-    this.router.get('', this.getAllByUserId.bind(this))
-    this.router.get('/:tripId', this.getTripById.bind(this))
-    this.router.post('', apiLimiter, this.create.bind(this))
-    this.router.patch('/:id', apiLimiter, this.update.bind(this))
-    this.router.delete('/:id', this.delete.bind(this))
+    this.router.get('', authMiddleware, this.getAllByUserId.bind(this))
+    this.router.post('', authMiddleware, apiLimiter, this.create.bind(this))
+    this.router.patch(
+      '/:id',
+      authMiddleware,
+      apiLimiter,
+      this.update.bind(this),
+    )
+    this.router.delete('/:id', authMiddleware, this.delete.bind(this))
+    // share route
+    this.router.patch('/share/:id', authMiddleware, this.enableShare.bind(this))
+    this.router.get('/share/:id', this.getTripById.bind(this))
   }
 
   initRoutes(apiRouter) {
     apiRouter.use('/trips', this.router)
-  }
-
-  async getTripById(req, res, next) {
-    try {
-      const response = await controllers.tripController.getTrip(
-        req.userId,
-        req.params.tripId,
-      )
-      res.status(200).json(response)
-    } catch (err) {
-      next(err)
-    }
   }
 
   async getAllByUserId(req, res, next) {
@@ -77,6 +71,32 @@ class TripRoute {
         req.params.id,
       )
       res.status(200).json(deletedTrip)
+    } catch (err) {
+      next(err)
+    }
+  }
+
+  async enableShare(req, res, next) {
+    try {
+      const modifiedCount = await controllers.tripController.enableShareTrip(
+        req.userId,
+        req.params.id,
+      )
+      res.status(200).json(modifiedCount)
+    } catch (err) {
+      next(err)
+    }
+  }
+
+  async getTripById(req, res, next) {
+    const tripId = req.params.id
+
+    try {
+      const response = await controllers.tripController.getTripById(
+        null,
+        tripId,
+      )
+      res.status(200).json([response])
     } catch (err) {
       next(err)
     }
