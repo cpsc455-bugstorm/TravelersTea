@@ -13,6 +13,7 @@ const JWT_SECRET = process.env.JWT_SECRET || ''
 const CLIENT_URL = process.env.CLIENT_URL
 const RATE_LIMIT = process.env.RATE_LIMIT || 10
 const PROXY = process.env.PROXY || 1
+const TIME_LIMT = process.env.TIME_LIMT || 24 * 60 * 60 * 1000 // 1 day
 
 const config = {
   mongo: {
@@ -25,6 +26,7 @@ const config = {
     clientURL: CLIENT_URL,
     rateLimit: RATE_LIMIT,
     proxy: PROXY,
+    timeLimit: TIME_LIMT,
   },
   openaiApiKey: process.env.OPENAI_API_KEY,
   openaiConfig: new Configuration({

@@ -3,18 +3,18 @@ const rateLimit = require('express-rate-limit')
 const config = require('../config/config')
 
 const apiLimiter = rateLimit({
-  windowMs: 24 * 60 * 60 * 1000, // 1 day
+  windowMs: config.server.timeLimit,
   max: config.server.rateLimit,
-  message: 'You have exceeded the 10 trip requests in 24 hours limit!',
+  message: `You have exceeded the ${config.server.rateLimit} trip requests in 24 hours limit!`,
   headers: true,
   skipFailedRequests: true,
-  keyGenerator: (req) => {
-    return req.headers['true-client-ip'] || req.ip
+  keyGenerator: (request) => {
+    return request.headers['true-client-ip'] || request.ip
   },
-  requestWasSuccessful: (request, response) => {
+  requestWasSuccessful: (_, response) => {
     return response.isTripAPI && response.statusCode < 400
   },
-  skip: (request, response) => {
+  skip: (request, _) => {
     console.log(request.userId, request.isAdmin, request.headers)
     return request.isAdmin || config.server.env === 'TEST'
   },
