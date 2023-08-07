@@ -9,20 +9,13 @@ const apiLimiter = rateLimit({
   headers: true,
   skipFailedRequests: true,
   keyGenerator: (req) => {
-    console.log(req.headers)
     return req.headers['true-client-ip'] || req.ip
   },
   requestWasSuccessful: (request, response) => {
     return response.isTripAPI && response.statusCode < 400
   },
   skip: (request, response) => {
-    console.log(
-      request.ip,
-      request.userId,
-      request.isAdmin,
-      request.headers['x-forwarded-for'],
-      request.headers,
-    )
+    console.log(request.userId, request.isAdmin, request.headers)
     return request.isAdmin || config.server.env === 'TEST'
   },
 })
