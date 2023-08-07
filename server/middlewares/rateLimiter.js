@@ -8,6 +8,9 @@ const apiLimiter = rateLimit({
   message: 'You have exceeded the 10 trip requests in 24 hours limit!',
   headers: true,
   skipFailedRequests: true,
+  keyGenerator: (req) => {
+    return req.headers['x-forwarded-for'].split(',')[0] || req.ip;
+  },
   requestWasSuccessful: (request, response) => {
     return response.isTripAPI && response.statusCode < 400
   },
