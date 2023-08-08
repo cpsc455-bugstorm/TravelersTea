@@ -8,6 +8,7 @@ export function createMapMarker(stage, opacity = 1) {
     stageLatitude: latitude,
     emoji,
     stageLocation: label,
+    description,
     colorNumber,
   } = stage
   const colorHex = getHexCode(colorNumber)
@@ -19,8 +20,23 @@ export function createMapMarker(stage, opacity = 1) {
   })
     .setLngLat([longitude, latitude])
     .setPopup(
-      new mapboxgl.Popup({ closeOnMove: true }).setHTML(`<p>${label}</p>`),
+      new mapboxgl.Popup({ closeOnMove: true }).setHTML(`
+        <style>
+          .mapboxgl-popup-close-button {
+            top: 0.1rem !important;
+            right: 0.5rem !important;
+          }
+          .mapboxgl-popup-content {
+            border-radius: 0.5rem !important;
+            background-color: #fbfdff !important;
+            opacity: 0.95 !important;
+          }
+        </style>
+        <div>
+            <span class="font-bold my-1 mr-2">${emoji} ${label}</span>
+            <p class="text-gray-700">${description}</p>
+        </div>
+      `),
     )
-
   return marker
 }

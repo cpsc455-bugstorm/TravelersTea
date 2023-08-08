@@ -16,6 +16,7 @@ import { AppView } from '../../constants/enums'
 
 export function SeeMoreDrawer() {
   const stagesByDay = useSelector((state) => state.stages.stages)
+  const user = useSelector((state) => state.users.user)
   const isLightMode = useSelector((state) => state.preferences.lightMode)
   const showDrawer = useSelector((state) => state.view.showDrawer)
 
@@ -52,19 +53,21 @@ export function SeeMoreDrawer() {
                   <p>⤷ {stage['description']}</p>
                 </div>
                 <div>
-                  <Button
-                    key={`details-edit-${dayNumber}-${stageIndex}`}
-                    onClick={(e) => {
-                      dispatch(closeSidebar())
-                      dispatch(openEditStageModal())
-                      dispatch(updateEditStageId(stage['_id']))
-                      e.stopPropagation()
-                    }}
-                    className={` flex h-[22px] w-[20px] p-6 hover:text-red-400`}
-                    padding='p-0 mr-[3px]'
-                  >
-                    <EditOutlinedIcon sx={{ fontSize: 20 }} />
-                  </Button>
+                  {user ? (
+                    <Button
+                      key={`details-edit-${dayNumber}-${stageIndex}`}
+                      onClick={(e) => {
+                        dispatch(closeSidebar())
+                        dispatch(openEditStageModal())
+                        dispatch(updateEditStageId(stage['_id']))
+                        e.stopPropagation()
+                      }}
+                      className={` flex h-[22px] w-[20px] p-6 hover:text-red-400`}
+                      padding='p-0 mr-[3px]'
+                    >
+                      <EditOutlinedIcon sx={{ fontSize: 20 }} />
+                    </Button>
+                  ) : null}
                 </div>
               </div>
             )
@@ -72,7 +75,7 @@ export function SeeMoreDrawer() {
         </div>
       )
     })
-  }, [dispatch, stagesByDay, isLightMode])
+  }, [user, dispatch, stagesByDay, isLightMode])
 
   const renderShowMoreLessButton = useMemo(() => {
     return (
@@ -92,7 +95,7 @@ export function SeeMoreDrawer() {
     <>
       {renderShowMoreLessButton}
       <div
-        className={`pointer-events-auto w-full overflow-y-auto bg-transparent transition-all duration-500 ease-in-out
+        className={`pointer-events-auto w-full overflow-y-auto bg-transparent pl-10 transition-all duration-500 ease-in-out
           ${showDrawer ? 'max-h-[50vh] p-4 pt-0' : 'max-h-0'}
           ${isLightMode ? 'mac-scrollbar-light' : 'mac-scrollbar'}`}
       >

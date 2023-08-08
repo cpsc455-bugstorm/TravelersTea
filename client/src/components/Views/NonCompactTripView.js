@@ -33,6 +33,7 @@ export function NonCompactTripView() {
             : 'black-gradient mac-scrollbar'
         }`}
       >
+        <div className={'w-10'}></div>
         {teaCups}
       </div>
     )

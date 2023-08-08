@@ -20,7 +20,7 @@ export function AppInterface() {
 
     return (
       <div
-        className={`pointer-events-none absolute bottom-0 left-10 z-10 flex w-[calc(100%-2.5rem)] items-end overflow-hidden transition-all ${
+        className={`pointer-events-none absolute bottom-0 z-10 flex w-full items-end overflow-x-hidden overflow-y-hidden transition-all ${
           appView === AppView.NEW_TRIP ? 'h-0' : 'h-full'
         }`}
       >
