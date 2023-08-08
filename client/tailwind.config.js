@@ -59,7 +59,7 @@ module.exports = {
           backgroundSize: 'cover',
           'z-index': 0,
           backgroundBlendMode: 'lighten',
-          backgroundColor: '#a7cbd9',
+          backgroundColor: '#a4d1e3',
         },
       }
 

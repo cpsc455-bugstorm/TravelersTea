@@ -175,8 +175,8 @@ export function SideBar({ shouldHide, isLoading }) {
 
   const renderSidebarToggleButton = useMemo(() => {
     const toggleColors = isLightMode
-      ? 'via-white/20 to-white/90'
-      : 'via-black/20 to-black/90'
+      ? 'via-white/20 to-white/90 text-slate-700 hover:text-black'
+      : 'via-black/20 to-black/90 text-slate-100 hover:text-white'
     const invisible =
       shouldHide || (isLoading && !isSidebarOpen) ? 'hidden' : 'flex'
     return (
@@ -189,7 +189,7 @@ export function SideBar({ shouldHide, isLoading }) {
           <div className='absolute inset-0 z-0'></div>
           <Button
             onClick={() => dispatch(toggleSidebar())}
-            className={`relative z-10 h-full w-full rounded-none bg-gradient-to-b from-transparent ${toggleColors} text-6xl text-slate-100 hover:bg-slate-400/50 hover:text-white`}
+            className={`relative z-10 h-full w-full rounded-none bg-gradient-to-b from-transparent ${toggleColors} text-6xl hover:bg-slate-400/50`}
           >
             {isSidebarOpen ? '‹' : '›'}
           </Button>

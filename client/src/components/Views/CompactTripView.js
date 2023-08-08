@@ -59,12 +59,8 @@ export function CompactTripView() {
           ${isLightMode ? 'city-skyline-light' : 'city-skyline'}`}
       >
         <div
-          className={`h-full overflow-y-scroll rounded-md px-2 
-            ${
-              isLightMode
-                ? 'bg-slate-100/10 mac-scrollbar-light'
-                : 'bg-slate-950/10 mac-scrollbar'
-            }`}
+          className={`h-full overflow-y-scroll rounded-md bg-slate-950/10 px-2
+            ${isLightMode ? 'mac-scrollbar-light' : 'mac-scrollbar'}`}
         >
           {renderCards}
         </div>
