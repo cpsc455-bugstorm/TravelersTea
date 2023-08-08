@@ -53,6 +53,14 @@ module.exports = {
           backgroundBlendMode: 'difference',
           backgroundColor: '#210a07',
         },
+        '.city-skyline-light': {
+          background:
+            "url('https://static.vecteezy.com/system/resources/previews/008/045/334/original/silhouette-of-the-city-city-skyline-silhouette-modern-cityscape-for-t-shirt-abstract-city-landscape-illustration-free-vector.jpg')",
+          backgroundSize: 'cover',
+          'z-index': 0,
+          backgroundBlendMode: 'lighten',
+          backgroundColor: '#a7cbd9',
+        },
       }
 
       addUtilities(utilities)
