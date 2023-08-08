@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button } from '../common'
-import { setAppView } from '../../redux/reducers/viewSlice'
+import { setActiveDayNumber, setAppView } from '../../redux/reducers/viewSlice'
 import { AppView } from '../../constants/enums'
 import MugRating from './MugRating'
 import { getSlate } from '../../util/lightMode'
@@ -10,6 +10,7 @@ export function DayViewContent() {
   const activeDayNumber = useSelector((state) => state.view.activeDayNumber)
   const stagesByDay = useSelector((state) => state.stages.stages)
   const isLightMode = useSelector((state) => state.preferences.lightMode)
+  const isCompactView = useSelector((state) => state.preferences.compactView)
   const dispatch = useDispatch()
 
   const [stages, setStages] = useState([])
@@ -56,7 +57,8 @@ export function DayViewContent() {
 
   const openTripView = useCallback(() => {
     dispatch(setAppView(AppView.TRIP_VIEW))
-  }, [dispatch])
+    if (isCompactView) dispatch(setActiveDayNumber(-1))
+  }, [dispatch, isCompactView])
 
   const renderTimelineLine = useMemo(() => {
     return (

@@ -210,9 +210,6 @@ export function SessionController() {
     const lightModeWatcher = window.matchMedia('(prefers-color-scheme: light)')
     const handleChange = (e) => {
       dispatch(setLightMode(e.matches))
-      dispatch(resetView())
-      dispatch(resetMap())
-      dispatch(resetStages())
     }
 
     lightModeWatcher.addEventListener('change', handleChange)
