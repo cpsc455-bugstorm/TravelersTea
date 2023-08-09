@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { TypeAnimation } from 'react-type-animation'
+import { useSelector } from 'react-redux'
 
 // https://www.buzzfeed.com/ailbhemalone/15-weirdly-interesting-facts-about-tea
 // https://www.irely.com/insights/ten-fun-facts-about-tea/
@@ -30,6 +31,7 @@ const getRandomFunFact = () => {
 export function Loader() {
   const [fact, setFact] = useState(getRandomFunFact())
   const [key, setKey] = useState(Math.random())
+  const isLightMode = useSelector((state) => state.preferences.lightMode)
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -42,12 +44,17 @@ export function Loader() {
 
   return (
     <div className={`fixed left-0 top-0 z-[98] h-full w-full bg-slate-800/30`}>
-      <div className='opacity-99 fadesIn fixed left-[50%] top-[50%] z-[99] flex h-[400px] w-[300px] -translate-x-1/2 -translate-y-[60%] transform flex-col items-center justify-center rounded-md bg-black md:h-[200px] md:w-[500px]'>
+      <div
+        className={`opacity-99 fadesIn fixed left-[50%] top-[50%] z-[99] flex h-[400px] w-[300px] -translate-x-1/2 -translate-y-[60%] transform flex-col items-center justify-center rounded-md bg-black md:h-[200px] md:w-[500px]
+        ${isLightMode ? 'invert' : 'invert-0'}`}
+      >
         <div className='mx-5 my-2 flex flex-row items-center'>
           <img
             src='/brewing.gif'
             alt='Loading...'
-            className='mb-4 h-12 w-12 bg-black'
+            className={`mb-4 h-12 w-12 ${
+              isLightMode ? 'bg-white' : 'bg-black'
+            }`}
           />
           <p className='ml-4 text-white'>
             Brewing

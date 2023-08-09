@@ -1,0 +1,2989 @@
+{
+  "info": {
+    "_postman_id": "ac80e279-d09c-4e4c-82dd-8ffee5f0a330",
+    "name": "CPSC 455 TravelersTea",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "16069262"
+  },
+  "item": [
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Clear DB",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/tests/clearDB",
+              "host": ["{{url}}"],
+              "path": ["tests", "clearDB"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Reg User 1 Success",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Register Success\", ()=> {\r",
+                  "    pm.response.to.have.status(200)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.status)\r",
+                  "    pm.expect(response.username).to.equal(\"User1\")\r",
+                  "    pm.environment.set('user1Id', response.id)\r",
+                  "    pm.environment.set('user1AT', response.accessToken)\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"username\": \"User1\",\r\n    \"password\": \"Pass1\",\r\n    \"email\": \"user1@gmail.com\",\r\n    \"isAdmin\": true\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/users/register",
+              "host": ["{{url}}"],
+              "path": ["users", "register"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Reg User 2 Success",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Register Success\", ()=> {\r",
+                  "    pm.response.to.have.status(200)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.status)\r",
+                  "    pm.expect(response.username).to.equal(\"User2\")\r",
+                  "    pm.environment.set('user2Id', response.id)\r",
+                  "    pm.environment.set('user2AT', response.accessToken)\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"username\": \"User2\",\r\n    \"password\": \"Pass2\",\r\n    \"email\": \"user2@gmail.com\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/users/register",
+              "host": ["{{url}}"],
+              "path": ["users", "register"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "VAL Register Bad Body",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Register Fail\", ()=> {\r",
+                  "    pm.response.to.have.status(500)\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"username\": \"Stormi User 2\",\r\n    \"email\": \"StormiEmail2@gmail.com\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/users/register",
+              "host": ["{{url}}"],
+              "path": ["users", "register"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login Fail DNE Email",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Login Fail\", ()=> {\r",
+                  "    pm.response.to.have.status(404)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.error).to.equal(\"Error: No user with this email\")\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"DNE@gmail.com\",\r\n    \"password\": \"Stormi Pass 30\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/users/login",
+              "host": ["{{url}}"],
+              "path": ["users", "login"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login Fail Wrong Pass",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Login Fail\", ()=> {\r",
+                  "    pm.response.to.have.status(400)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.error).to.equal(\"Error: Invalid password\")\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"user1@gmail.com\",\r\n    \"password\": \"Pass1'\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/users/login",
+              "host": ["{{url}}"],
+              "path": ["users", "login"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login Success",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Login Success\", ()=> {\r",
+                  "    pm.response.to.have.status(200)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.status)\r",
+                  "    pm.expect(response.username).to.equal(\"User1\")\r",
+                  "    pm.environment.set('user1Id', response.id)\r",
+                  "    pm.environment.set('user1AT', response.accessToken)\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"user1@gmail.com\",\r\n    \"password\": \"Pass1\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/users/login",
+              "host": ["{{url}}"],
+              "path": ["users", "login"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Trips",
+      "item": [
+        {
+          "name": "Login Success Copy",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Login Success\", ()=> {\r",
+                  "    pm.response.to.have.status(200)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.status)\r",
+                  "    pm.expect(response.username).to.equal(\"User1\")\r",
+                  "    pm.environment.set('user1Id', response.id)\r",
+                  "    pm.environment.set('user1AT', response.accessToken)\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"user1@gmail.com\",\r\n    \"password\": \"Pass1\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/users/login",
+              "host": ["{{url}}"],
+              "path": ["users", "login"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "VAL Get Trip For User Invalid Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Get Trips\", ()=> {\r",
+                  "    pm.response.to.have.status(403)\r",
+                  "    const response = pm.response.json()\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user1AT}}a",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/trips",
+              "host": ["{{url}}"],
+              "path": ["trips"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "VAL Create Over 25 Stages",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Create Trips\", ()=> {\r",
+                  "     pm.response.to.have.status(500)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.error).to.equal(\r",
+                  "        \"Error: Error while generating trip | Trips must have a maximum of 25 places (user requested 30 places)\"\r",
+                  "    )\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user1AT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"tripLocation\":\"Paris\",\r\n    \"stagesPerDay\":\"5\",\r\n    \"budget\":\"300\",\r\n    \"numberOfDays\":\"6\",\r\n    \"tripName\":\"Your Trip 5\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/trips",
+              "host": ["{{url}}"],
+              "path": ["trips"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Trips For User 1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Get Trips\", ()=> {\r",
+                  "    pm.response.to.have.status(200)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.length).to.equal(0)\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user1AT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/trips",
+              "host": ["{{url}}"],
+              "path": ["trips"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Trips",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Create Trips\", ()=> {\r",
+                  "    pm.response.to.have.status(201)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.userId).to.equal(undefined)\r",
+                  "    pm.expect(response.tripName).to.equal(\"Your Trip 5\")\r",
+                  "    pm.expect(response.tripLocation).to.equal('Paris')\r",
+                  "    pm.expect(response.stagesPerDay).to.equal(3)\r",
+                  "    pm.expect(response.budget).to.equal(300)\r",
+                  "    pm.expect(response.numberOfDays).to.equal(3)\r",
+                  "    pm.expect(response.isPublic).to.equal(false)\r",
+                  "    pm.expect(response.tripNotes).to.equal(\"I like vegetarian food\")\r",
+                  "    pm.environment.set('user1Trip1Id', response._id)\r",
+                  "\r",
+                  "    const originalTripId = pm.environment.get(\"user1Trip1Id\");\r",
+                  "    const firstCharacter = originalTripId.charAt(0);\r",
+                  "    const newFirstCharacter = firstCharacter === 'a' ? 'b' : 'a';\r",
+                  "    const user1Trip1IdAltered = newFirstCharacter + originalTripId.slice(1);\r",
+                  "    pm.environment.set(\"user1Trip1IdAltered\", user1Trip1IdAltered);\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user1AT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"tripLocation\":\"Paris\",\r\n    \"stagesPerDay\":\"3\",\r\n    \"budget\":\"300\",\r\n    \"numberOfDays\":\"3\",\r\n    \"tripName\":\"Your Trip 5\",\r\n    \"tripNotes\": \"I like vegetarian food\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/trips",
+              "host": ["{{url}}"],
+              "path": ["trips"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Trips For User2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Get Trips\", ()=> {\r",
+                  "    pm.response.to.have.status(200)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.length).to.equal(0)\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user2AT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/trips",
+              "host": ["{{url}}"],
+              "path": ["trips"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "VAL Edit Trip Meta Data Fail 404",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Edit Trips\", ()=> {\r",
+                  "    pm.response.to.have.status(404)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.error).to.equal(\"Error: Trip could not be found\")\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user1AT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"tripLocation\":\"\",\r\n    \"stagesPerDay\":\"\",\r\n    \"budget\":0,\r\n    \"numberOfDays\":\"\",\r\n    \"tripName\":\"Your Trip 5'\",\r\n    \"tripNotes\":\"\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/trips/{{user1Trip1IdAltered}}",
+              "host": ["{{url}}"],
+              "path": ["trips", "{{user1Trip1IdAltered}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "VAL GoogleCoordinatesDon'tBreak",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Edit Trips\", ()=> {\r",
+                  "    // pm.response.to.have.status(500)\r",
+                  "    // const response = pm.response.json()\r",
+                  "    // pm.expect(response.error).to.equal(\r",
+                  "    // \"Error: Could not save trip | Error while fetching place details | No coordinates found.\"\r",
+                  "    // )\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user1AT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"tripLocation\":\"\",\r\n    \"stagesPerDay\":1,\r\n    \"budget\":1,\r\n    \"numberOfDays\":1,\r\n    \"tripNotes\":\"\",\r\n    \"tripName\": \"Boop'\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/trips/{{user1Trip1Id}}",
+              "host": ["{{url}}"],
+              "path": ["trips", "{{user1Trip1Id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Edit Trip For User 1 Trip 1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Edit Trips\", ()=> {\r",
+                  "    pm.response.to.have.status(200)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.userId).to.equal(undefined)\r",
+                  "    pm.expect(response.tripName).to.equal(\"Beijing\")\r",
+                  "    pm.expect(response.tripLocation).to.equal('Beijing')\r",
+                  "    pm.expect(response.stagesPerDay).to.equal(2)\r",
+                  "    pm.expect(response.budget).to.equal(500)\r",
+                  "    pm.expect(response.numberOfDays).to.equal(2)\r",
+                  "    pm.expect(response.isPublic).to.equal(false)\r",
+                  "    pm.expect(response.tripNotes).to.equal('I like BBQ')\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user1AT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"tripLocation\":\"Beijing\",\r\n    \"stagesPerDay\":\"2\",\r\n    \"budget\":\"500\",\r\n    \"numberOfDays\":\"2\",\r\n    \"tripName\":\"Beijing\",\r\n    \"tripNotes\": \"I like BBQ\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/trips/{{user1Trip1Id}}",
+              "host": ["{{url}}"],
+              "path": ["trips", "{{user1Trip1Id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Trips For User 1 Copy 2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Get Trips\", ()=> {\r",
+                  "    pm.response.to.have.status(200)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.length).to.equal(1)\r",
+                  "\r",
+                  "    const trip1 = response[0]\r",
+                  "    pm.expect(trip1.userId).to.equal(undefined)\r",
+                  "    pm.expect(trip1.tripLocation).to.equal('Beijing')\r",
+                  "    pm.expect(trip1.stagesPerDay).to.equal(2)\r",
+                  "    pm.expect(trip1.budget).to.equal(500)\r",
+                  "    pm.expect(trip1.numberOfDays).to.equal(2)\r",
+                  "    pm.expect(trip1.isPublic).to.equal(false)\r",
+                  "    pm.expect(trip1.tripNotes).to.equal(\"I like BBQ\")\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user1AT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/trips",
+              "host": ["{{url}}"],
+              "path": ["trips"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "VAL User 2 Cannot Edit User 1 Trip",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Edit Trips\", ()=> {\r",
+                  "    pm.response.to.have.status(404)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.error).to.equal(\"Error: Could not save trip | Trip to edit not found\")\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user2AT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"tripLocation\":\"Paris\",\r\n    \"stagesPerDay\":\"3\",\r\n    \"budget\":\"3000\",\r\n    \"numberOfDays\":\"3\",\r\n    \"tripName\":\"Your Trip 5'\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/trips/{{user1Trip1Id}}",
+              "host": ["{{url}}"],
+              "path": ["trips", "{{user1Trip1Id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Edit Trip Name For User 1 Trip 1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Edit Trips\", ()=> {\r",
+                  "    pm.response.to.have.status(200)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.userId).to.equal(undefined)\r",
+                  "    pm.expect(response.tripName).to.equal(\"My Trip to Beijing\")\r",
+                  "    pm.expect(response.tripLocation).to.equal('Beijing')\r",
+                  "    pm.expect(response.stagesPerDay).to.equal(2)\r",
+                  "    pm.expect(response.budget).to.equal(500)\r",
+                  "    pm.expect(response.numberOfDays).to.equal(2)\r",
+                  "    pm.expect(response.isPublic).to.equal(false)\r",
+                  "    pm.expect(response.tripNotes).to.equal('I like BBQ')\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user1AT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"tripLocation\":\"\",\r\n    \"stagesPerDay\":\"\",\r\n    \"budget\":\"\",\r\n    \"numberOfDays\":\"\",\r\n    \"tripName\":\"My Trip to Beijing\",\r\n    \"tripNotes\": \"\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/trips/{{user1Trip1Id}}",
+              "host": ["{{url}}"],
+              "path": ["trips", "{{user1Trip1Id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Trips For User 1 Copy 3",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Get Trips\", ()=> {\r",
+                  "    pm.response.to.have.status(200)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.length).to.equal(1)\r",
+                  "\r",
+                  "    const trip1 = response[0]\r",
+                  "    pm.expect(trip1.userId).to.equal(undefined)\r",
+                  "    pm.expect(trip1.tripLocation).to.equal('Beijing')\r",
+                  "    pm.expect(trip1.tripName).to.equal('My Trip to Beijing')\r",
+                  "    pm.expect(trip1.stagesPerDay).to.equal(2)\r",
+                  "    pm.expect(trip1.budget).to.equal(500)\r",
+                  "    pm.expect(trip1.numberOfDays).to.equal(2)\r",
+                  "    pm.expect(trip1.isPublic).to.equal(false)\r",
+                  "    pm.expect(trip1.tripNotes).to.equal(\"I like BBQ\")\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user1AT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/trips",
+              "host": ["{{url}}"],
+              "path": ["trips"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "VAL User 2 cannot delete User 1 Trip1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Edit Trips\", ()=> {\r",
+                  "    pm.response.to.have.status(404)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.error).to.equal(\"Error: Could not delete trip | Trip could not be found\")\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user2AT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/trips/{{user1Trip1Id}}",
+              "host": ["{{url}}"],
+              "path": ["trips", "{{user1Trip1Id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Trips For User 1 Copy 4",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Get Trips\", ()=> {\r",
+                  "    pm.response.to.have.status(200)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.length).to.equal(1)\r",
+                  "\r",
+                  "    const trip1 = response[0]\r",
+                  "    pm.expect(trip1.userId).to.equal(undefined)\r",
+                  "    pm.expect(trip1.tripLocation).to.equal('Beijing')\r",
+                  "    pm.expect(trip1.tripName).to.equal('My Trip to Beijing')\r",
+                  "    pm.expect(trip1.stagesPerDay).to.equal(2)\r",
+                  "    pm.expect(trip1.budget).to.equal(500)\r",
+                  "    pm.expect(trip1.numberOfDays).to.equal(2)\r",
+                  "    pm.expect(trip1.isPublic).to.equal(false)\r",
+                  "    pm.expect(trip1.tripNotes).to.equal(\"I like BBQ\")\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user1AT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/trips",
+              "host": ["{{url}}"],
+              "path": ["trips"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete User 1 Trip 1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Delete Trips\", ()=> {\r",
+                  "    pm.response.to.have.status(200)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.userId).to.equal(undefined)\r",
+                  "    pm.expect(response.tripName).to.equal(\"My Trip to Beijing\")\r",
+                  "    pm.expect(response.tripLocation).to.equal('Beijing')\r",
+                  "    pm.expect(response.stagesPerDay).to.equal(2)\r",
+                  "    pm.expect(response.budget).to.equal(500)\r",
+                  "    pm.expect(response.numberOfDays).to.equal(2)\r",
+                  "    pm.expect(response.isPublic).to.equal(false)\r",
+                  "    pm.expect(response.tripNotes).to.equal('I like BBQ')\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user1AT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/trips/{{user1Trip1Id}}",
+              "host": ["{{url}}"],
+              "path": ["trips", "{{user1Trip1Id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Trips For User 1 Copy",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Get Trips\", ()=> {\r",
+                  "    pm.response.to.have.status(200)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.length).to.equal(0)\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user1AT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/trips",
+              "host": ["{{url}}"],
+              "path": ["trips"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Trips and Stages",
+      "item": [
+        {
+          "name": "Create Trips Copy",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Create Trips\", ()=> {\r",
+                  "    pm.response.to.have.status(201)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.userId).to.equal(undefined)\r",
+                  "    pm.expect(response.tripName).to.equal(\"Your Trip 5\")\r",
+                  "    pm.expect(response.tripLocation).to.equal('Paris')\r",
+                  "    pm.expect(response.stagesPerDay).to.equal(3)\r",
+                  "    pm.expect(response.budget).to.equal(300)\r",
+                  "    pm.expect(response.numberOfDays).to.equal(3)\r",
+                  "    pm.expect(response.isPublic).to.equal(false)\r",
+                  "    pm.expect(response.tripNotes).to.equal(\"I like vegetarian food\")\r",
+                  "    pm.environment.set('user1Trip1Id', response._id)\r",
+                  "\r",
+                  "    const originalTripId = pm.environment.get(\"user1Trip1Id\");\r",
+                  "    const firstCharacter = originalTripId.charAt(0);\r",
+                  "    const newFirstCharacter = firstCharacter === 'a' ? 'b' : 'a';\r",
+                  "    const user1Trip1IdAltered = newFirstCharacter + originalTripId.slice(1);\r",
+                  "    pm.environment.set(\"user1Trip1IdAltered\", user1Trip1IdAltered);\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user1AT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"tripLocation\":\"Paris\",\r\n    \"stagesPerDay\":\"3\",\r\n    \"budget\":\"300\",\r\n    \"numberOfDays\":\"3\",\r\n    \"tripName\":\"Your Trip 5\",\r\n    \"tripNotes\": \"I like vegetarian food\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/trips",
+              "host": ["{{url}}"],
+              "path": ["trips"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Trips For User 1 Copy",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Get Trips\", ()=> {\r",
+                  "    pm.response.to.have.status(200)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.length).to.equal(1)\r",
+                  "\r",
+                  "    const trip1 = response[0]\r",
+                  "    pm.expect(trip1.userId).to.equal(undefined)\r",
+                  "    pm.expect(trip1.tripName).to.equal('Your Trip 5')\r",
+                  "    pm.expect(trip1.tripLocation).to.equal('Paris')\r",
+                  "    pm.expect(trip1.stagesPerDay).to.equal(3)\r",
+                  "    pm.expect(trip1.budget).to.equal(300)\r",
+                  "    pm.expect(trip1.numberOfDays).to.equal(3)\r",
+                  "    pm.expect(trip1.isPublic).to.equal(false)\r",
+                  "    pm.expect(trip1.tripNotes).to.equal(\"I like vegetarian food\")\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user1AT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/trips",
+              "host": ["{{url}}"],
+              "path": ["trips"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "VAL Get Stages for Trip1 No TripId",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Get Stages for Trip1\", ()=> {\r",
+                  "    pm.response.to.have.status(400)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.error).to.equal(\"Error: Missing tripId parameter\")\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user1AT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/stages/",
+              "host": ["{{url}}"],
+              "path": ["stages", ""]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Stages For Trip1 Copy",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Get Stages for Trip1\", ()=> {\r",
+                  "    pm.response.to.have.status(200)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.length).to.equal(3)\r",
+                  "    let stagesForDay1 = response[0]\r",
+                  "    let stagesForDay2 = response[1]\r",
+                  "    let stagesForDay3 = response[2]\r",
+                  "    let numberOfDayIndex1 = 0;\r",
+                  "    let numberOfDayIndex2 = 0;\r",
+                  "    let numberOfDayIndex3 = 0;\r",
+                  "\r",
+                  "    for(let stage of stagesForDay1) {\r",
+                  "        if(stage.dayIndex == 1) {\r",
+                  "            numberOfDayIndex1 += 1\r",
+                  "        } else if (stage.dayIndex == 2) {\r",
+                  "            numberOfDayIndex2 += 1\r",
+                  "        } else if (stage.dayIndex == 3) {\r",
+                  "            numberOfDayIndex3 += 1\r",
+                  "        }\r",
+                  "    }\r",
+                  "\r",
+                  "    for(let stage of stagesForDay2) {\r",
+                  "        if(stage.dayIndex == 1) {\r",
+                  "            numberOfDayIndex1 += 1\r",
+                  "        } else if (stage.dayIndex == 2) {\r",
+                  "            numberOfDayIndex2 += 1\r",
+                  "        } else if (stage.dayIndex == 3) {\r",
+                  "            numberOfDayIndex3 += 1\r",
+                  "        }\r",
+                  "    }\r",
+                  "\r",
+                  "    for(let stage of stagesForDay3) {\r",
+                  "        if(stage.dayIndex == 1) {\r",
+                  "            numberOfDayIndex1 += 1\r",
+                  "        } else if (stage.dayIndex == 2) {\r",
+                  "            numberOfDayIndex2 += 1\r",
+                  "        } else if (stage.dayIndex == 3) {\r",
+                  "            numberOfDayIndex3 += 1\r",
+                  "        }\r",
+                  "    }\r",
+                  "\r",
+                  "    pm.expect(numberOfDayIndex1).to.equal(3)\r",
+                  "    pm.expect(numberOfDayIndex2).to.equal(3)\r",
+                  "    pm.expect(numberOfDayIndex3).to.equal(3)\r",
+                  "\r",
+                  "    for(let arrayOfStages of response) {\r",
+                  "        for(let stage of arrayOfStages) {\r",
+                  "            pm.expect(stage.tripId).to.equal(pm.environment.get('user1Trip1Id'))\r",
+                  "            pm.expect(stage.userId).to.equal(undefined)\r",
+                  "        }\r",
+                  "    }\r",
+                  "\r",
+                  "    pm.environment.set(\"user1Trip1Stage2Id\", stagesForDay1[1]._id);\r",
+                  "    pm.environment.set(\"user1Trip1Stage2Location\", stagesForDay1[1].stageLocation);\r",
+                  "    pm.environment.set(\"user1Trip1Stage2Description\", stagesForDay1[1].description);\r",
+                  "    pm.environment.set(\"user1Trip1Stage2Emoji\", stagesForDay1[1].emoji);\r",
+                  "\r",
+                  "\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user1AT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/stages?tripId={{user1Trip1Id}}",
+              "host": ["{{url}}"],
+              "path": ["stages"],
+              "query": [
+                {
+                  "key": "tripId",
+                  "value": "{{user1Trip1Id}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "VAL User2 cannot get User1's Trip1 Stages",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Get Stages for Trip1\", ()=> {\r",
+                  "    pm.response.to.have.status(404)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.error).to.equal(\"Error: Could not fetch all stages for trip | Could not fetch trip | Trip could not be found\")\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user2AT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/stages?tripId={{user1Trip1Id}}",
+              "host": ["{{url}}"],
+              "path": ["stages"],
+              "query": [
+                {
+                  "key": "tripId",
+                  "value": "{{user1Trip1Id}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "VAL User2 cannot Edit User1 Trip1Stage2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Edit Stages for Trip1\", ()=> {\r",
+                  "    pm.response.to.have.status(404)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.error).to.equal(\"Error: Could not update stage | Stage could not be found\")\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user2AT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"updateNotes\":\"I want to go to a park instead.\",\r\n    \"stage\":{\r\n        \"_id\":\"{{user1Trip1Stage2Id}}\",\r\n        \"tripId\":\"{{user1Trip1Id}}\",\r\n        \"dayIndex\":1,\r\n        \"stageIndex\":3,\r\n        \"stageLatitude\":49.2831972,\r\n        \"stageLongitude\":-123.109475,\r\n        \"stageLocation\":\"{{user1Trip1Stage2Location}}\",\r\n        \"stageRating\":4.6,\r\n        \"description\": \"{{user1Trip1Stage2Description}}\",\r\n        \"colorNumber\":2,\r\n        \"emoji\":\"{{user1Trip1Stage2Emoji}}\",\r\n        \"__v\":0\r\n    },\r\n    \"trip\":{\r\n        \"_id\": \"{{user1Trip1Id}}\",\r\n        \"tripName\": \"Your Trip 5\",\r\n        \"tripLocation\": \"{{user1Trip1Location}}\",\r\n        \"stagesPerDay\": 3,\r\n        \"budget\": 300,\r\n        \"numberOfDays\": 3,\r\n        \"isPublic\": false,\r\n        \"tripNotes\": \"I like vegetarian food\",\r\n        \"__v\": 0,\r\n        \"tripLatitude\": 48.8628213097403,\r\n        \"tripLongitude\": 2.3456027910071224\r\n    }  \r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/stages/{{user1Trip1Id}}",
+              "host": ["{{url}}"],
+              "path": ["stages", "{{user1Trip1Id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "VAL Edit Stage Wrong Id",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Edit Stages for Trip1\", ()=> {\r",
+                  "    pm.response.to.have.status(404)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.error).to.equal(\"Error: Could not update stage | Stage could not be found\")\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user1AT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"updateNotes\":\"I want to go to a park instead.\",\r\n    \"stage\":{\r\n        \"_id\":\"{{user1Trip1Stage2Id}}\",\r\n        \"tripId\":\"{{user1Trip1Id}}\",\r\n        \"dayIndex\":1,\r\n        \"stageIndex\":3,\r\n        \"stageLatitude\":49.2831972,\r\n        \"stageLongitude\":-123.109475,\r\n        \"stageLocation\":\"{{user1Trip1Stage2Location}}\",\r\n        \"stageRating\":4.6,\r\n        \"description\": \"{{user1Trip1Stage2Description}}\",\r\n        \"colorNumber\":2,\r\n        \"emoji\":\"{{user1Trip1Stage2Emoji}}\",\r\n        \"__v\":0\r\n    },\r\n    \"trip\":{\r\n        \"_id\": \"{{user1Trip1Id}}\",\r\n        \"tripName\": \"Your Trip 5\",\r\n        \"tripLocation\": \"{{user1Trip1Location}}\",\r\n        \"stagesPerDay\": 3,\r\n        \"budget\": 300,\r\n        \"numberOfDays\": 3,\r\n        \"isPublic\": false,\r\n        \"tripNotes\": \"I like vegetarian food\",\r\n        \"__v\": 0,\r\n        \"tripLatitude\": 48.8628213097403,\r\n        \"tripLongitude\": 2.3456027910071224\r\n    }  \r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/stages/{{user1Trip1Id}}",
+              "host": ["{{url}}"],
+              "path": ["stages", "{{user1Trip1Id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "User1 Edit Trip1 Stage2 Copy",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Get Stages for Trip1\", ()=> {\r",
+                  "    pm.response.to.have.status(200)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.stageLocation).to.not.equal(pm.environment.get('user1Trip1Stage2Location'))\r",
+                  "    pm.expect(response.tripId).to.equal(pm.environment.get('user1Trip1Id'))\r",
+                  "    pm.expect(response.userId).to.equal(undefined)\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user1AT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"updateNotes\":\"I want to go to a park instead.\",\r\n    \"stage\":{\r\n        \"_id\":\"{{user1Trip1Stage2Id}}\",\r\n        \"tripId\":\"{{user1Trip1Id}}\",\r\n        \"dayIndex\":1,\r\n        \"stageIndex\":3,\r\n        \"stageLatitude\":49.2831972,\r\n        \"stageLongitude\":-123.109475,\r\n        \"stageLocation\":\"{{user1Trip1Stage2Location}}\",\r\n        \"stageRating\":4.6,\r\n        \"description\": \"{{user1Trip1Stage2Description}}\",\r\n        \"colorNumber\":2,\r\n        \"emoji\":\"{{user1Trip1Stage2Emoji}}\",\r\n        \"__v\":0\r\n    },\r\n    \"trip\":{\r\n        \"_id\": \"{{user1Trip1Id}}\",\r\n        \"tripName\": \"Your Trip 5\",\r\n        \"tripLocation\": \"{{user1Trip1Location}}\",\r\n        \"stagesPerDay\": 3,\r\n        \"budget\": 300,\r\n        \"numberOfDays\": 3,\r\n        \"isPublic\": false,\r\n        \"tripNotes\": \"I like vegetarian food\",\r\n        \"__v\": 0,\r\n        \"tripLatitude\": 48.8628213097403,\r\n        \"tripLongitude\": 2.3456027910071224\r\n    }  \r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/stages/{{user1Trip1Stage2Id}}",
+              "host": ["{{url}}"],
+              "path": ["stages", "{{user1Trip1Stage2Id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "VAL User2 cannot get User1 Trip1  Stage2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Get Day 1Stage2 for Trip1\", ()=> {\r",
+                  "    pm.response.to.have.status(404)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.error).to.equal(\"Error: Could not fetch stage | Stage could not be found\")\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user2AT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"updateNotes\":\"I want to go to a park instead.\",\r\n    \"stage\":{\r\n        \"_id\":\"{{user1Trip1Stage2Id}}\",\r\n        \"tripId\":\"{{user1Trip1Id}}\",\r\n        \"dayIndex\":1,\r\n        \"stageIndex\":3,\r\n        \"stageLatitude\":49.2831972,\r\n        \"stageLongitude\":-123.109475,\r\n        \"stageLocation\":\"{{user1Trip1Stage2Location}}\",\r\n        \"stageRating\":4.6,\r\n        \"description\": \"{{user1Trip1Stage2Description}}\",\r\n        \"colorNumber\":2,\r\n        \"emoji\":\"{{user1Trip1Stage2Emoji}}\",\r\n        \"__v\":0\r\n    },\r\n    \"trip\":{\r\n        \"_id\": \"{{user1Trip1Id}}\",\r\n        \"tripName\": \"Your Trip 5\",\r\n        \"tripLocation\": \"{{user1Trip1Location}}\",\r\n        \"stagesPerDay\": 3,\r\n        \"budget\": 300,\r\n        \"numberOfDays\": 3,\r\n        \"isPublic\": false,\r\n        \"tripNotes\": \"I like vegetarian food\",\r\n        \"__v\": 0,\r\n        \"tripLatitude\": 48.8628213097403,\r\n        \"tripLongitude\": 2.3456027910071224\r\n    }  \r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/stages/{{user1Trip1Stage2Id}}",
+              "host": ["{{url}}"],
+              "path": ["stages", "{{user1Trip1Stage2Id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "VAL Get Stage Wrong Id",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Get Day 1Stage2 for Trip1\", ()=> {\r",
+                  "    pm.response.to.have.status(404)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.error).to.equal(\"Error: Could not fetch stage | Stage could not be found\")\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user1AT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"updateNotes\":\"I want to go to a park instead.\",\r\n    \"stage\":{\r\n        \"_id\":\"{{user1Trip1Stage2Id}}\",\r\n        \"tripId\":\"{{user1Trip1Id}}\",\r\n        \"dayIndex\":1,\r\n        \"stageIndex\":3,\r\n        \"stageLatitude\":49.2831972,\r\n        \"stageLongitude\":-123.109475,\r\n        \"stageLocation\":\"{{user1Trip1Stage2Location}}\",\r\n        \"stageRating\":4.6,\r\n        \"description\": \"{{user1Trip1Stage2Description}}\",\r\n        \"colorNumber\":2,\r\n        \"emoji\":\"{{user1Trip1Stage2Emoji}}\",\r\n        \"__v\":0\r\n    },\r\n    \"trip\":{\r\n        \"_id\": \"{{user1Trip1Id}}\",\r\n        \"tripName\": \"Your Trip 5\",\r\n        \"tripLocation\": \"{{user1Trip1Location}}\",\r\n        \"stagesPerDay\": 3,\r\n        \"budget\": 300,\r\n        \"numberOfDays\": 3,\r\n        \"isPublic\": false,\r\n        \"tripNotes\": \"I like vegetarian food\",\r\n        \"__v\": 0,\r\n        \"tripLatitude\": 48.8628213097403,\r\n        \"tripLongitude\": 2.3456027910071224\r\n    }  \r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/stages/{{user1Trip1Id}}",
+              "host": ["{{url}}"],
+              "path": ["stages", "{{user1Trip1Id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get User1 Trip1 Stage2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Get Day 1Stage2 for Trip1\", ()=> {\r",
+                  "    pm.response.to.have.status(200)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.tripId).to.equal(pm.environment.get('user1Trip1Id'))\r",
+                  "    pm.expect(response.userId).to.equal(undefined)\r",
+                  "    pm.expect(response.dayIndex).to.equal(1)\r",
+                  "    pm.expect(response.stageIndex).to.equal(2)\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user1AT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"updateNotes\":\"I want to go to a park instead.\",\r\n    \"stage\":{\r\n        \"_id\":\"{{user1Trip1Stage2Id}}\",\r\n        \"tripId\":\"{{user1Trip1Id}}\",\r\n        \"dayIndex\":1,\r\n        \"stageIndex\":3,\r\n        \"stageLatitude\":49.2831972,\r\n        \"stageLongitude\":-123.109475,\r\n        \"stageLocation\":\"{{user1Trip1Stage2Location}}\",\r\n        \"stageRating\":4.6,\r\n        \"description\": \"{{user1Trip1Stage2Description}}\",\r\n        \"colorNumber\":2,\r\n        \"emoji\":\"{{user1Trip1Stage2Emoji}}\",\r\n        \"__v\":0\r\n    },\r\n    \"trip\":{\r\n        \"_id\": \"{{user1Trip1Id}}\",\r\n        \"tripName\": \"Your Trip 5\",\r\n        \"tripLocation\": \"{{user1Trip1Location}}\",\r\n        \"stagesPerDay\": 3,\r\n        \"budget\": 300,\r\n        \"numberOfDays\": 3,\r\n        \"isPublic\": false,\r\n        \"tripNotes\": \"I like vegetarian food\",\r\n        \"__v\": 0,\r\n        \"tripLatitude\": 48.8628213097403,\r\n        \"tripLongitude\": 2.3456027910071224\r\n    }  \r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/stages/{{user1Trip1Stage2Id}}",
+              "host": ["{{url}}"],
+              "path": ["stages", "{{user1Trip1Stage2Id}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Sharing",
+      "item": [
+        {
+          "name": "VAL Get Trip1 Wrong Id",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Get Trip1\", ()=> {\r",
+                  "    pm.response.to.have.status(404)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.error).to.equal(\"Error: Could not fetch trip | Trip could not be found\")\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user1AT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/trips/share/{{user1Trip1IdAltered}}",
+              "host": ["{{url}}"],
+              "path": ["trips", "share", "{{user1Trip1IdAltered}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "VAL Public User Get Unshared Trip1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Get Trip1\", ()=> {\r",
+                  "    pm.response.to.have.status(404)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.error).to.equal(\"Error: Could not fetch trip | Trip could not be found\")\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/trips/share/{{user1Trip1Id}}",
+              "host": ["{{url}}"],
+              "path": ["trips", "share", "{{user1Trip1Id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "VAL User2 Get Unshared Trip1 Copy",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Get Trip1\", ()=> {\r",
+                  "    pm.response.to.have.status(404)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.error).to.equal(\"Error: Could not fetch trip | Trip could not be found\")\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user2AT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/trips/share/{{user1Trip1Id}}",
+              "host": ["{{url}}"],
+              "path": ["trips", "share", "{{user1Trip1Id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Stages For Trip1 Copy 2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Get Stages for Trip1\", ()=> {\r",
+                  "    pm.response.to.have.status(200)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.length).to.equal(3)\r",
+                  "    let stagesForDay1 = response[0]\r",
+                  "    let stagesForDay2 = response[1]\r",
+                  "    let stagesForDay3 = response[2]\r",
+                  "    let numberOfDayIndex1 = 0;\r",
+                  "    let numberOfDayIndex2 = 0;\r",
+                  "    let numberOfDayIndex3 = 0;\r",
+                  "\r",
+                  "    for(let stage of stagesForDay1) {\r",
+                  "        if(stage.dayIndex == 1) {\r",
+                  "            numberOfDayIndex1 += 1\r",
+                  "        } else if (stage.dayIndex == 2) {\r",
+                  "            numberOfDayIndex2 += 1\r",
+                  "        } else if (stage.dayIndex == 3) {\r",
+                  "            numberOfDayIndex3 += 1\r",
+                  "        }\r",
+                  "    }\r",
+                  "\r",
+                  "    for(let stage of stagesForDay2) {\r",
+                  "        if(stage.dayIndex == 1) {\r",
+                  "            numberOfDayIndex1 += 1\r",
+                  "        } else if (stage.dayIndex == 2) {\r",
+                  "            numberOfDayIndex2 += 1\r",
+                  "        } else if (stage.dayIndex == 3) {\r",
+                  "            numberOfDayIndex3 += 1\r",
+                  "        }\r",
+                  "    }\r",
+                  "\r",
+                  "    for(let stage of stagesForDay3) {\r",
+                  "        if(stage.dayIndex == 1) {\r",
+                  "            numberOfDayIndex1 += 1\r",
+                  "        } else if (stage.dayIndex == 2) {\r",
+                  "            numberOfDayIndex2 += 1\r",
+                  "        } else if (stage.dayIndex == 3) {\r",
+                  "            numberOfDayIndex3 += 1\r",
+                  "        }\r",
+                  "    }\r",
+                  "\r",
+                  "    pm.expect(numberOfDayIndex1).to.equal(3)\r",
+                  "    pm.expect(numberOfDayIndex2).to.equal(3)\r",
+                  "    pm.expect(numberOfDayIndex3).to.equal(3)\r",
+                  "\r",
+                  "    for(let arrayOfStages of response) {\r",
+                  "        for(let stage of arrayOfStages) {\r",
+                  "            pm.expect(stage.tripId).to.equal(pm.environment.get('user1Trip1Id'))\r",
+                  "            pm.expect(stage.userId).to.equal(undefined)\r",
+                  "        }\r",
+                  "    }\r",
+                  "\r",
+                  "    pm.environment.set(\"user1Trip1Stage2Id\", stagesForDay1[1]._id);\r",
+                  "    pm.environment.set(\"user1Trip1Stage2Location\", stagesForDay1[1].stageLocation);\r",
+                  "    pm.environment.set(\"user1Trip1Stage2Description\", stagesForDay1[1].description);\r",
+                  "    pm.environment.set(\"user1Trip1Stage2Emoji\", stagesForDay1[1].emoji);\r",
+                  "\r",
+                  "\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user1AT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/stages?tripId={{user1Trip1Id}}",
+              "host": ["{{url}}"],
+              "path": ["stages"],
+              "query": [
+                {
+                  "key": "tripId",
+                  "value": "{{user1Trip1Id}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "VAL Public User Get Stages For Unshared Trip1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Get Stages for Trip1\", ()=> {\r",
+                  "    pm.response.to.have.status(404)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.error).to.equal(\"Error: Could not fetch all stages for trip | Could not fetch trip | Trip could not be found\")\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/stages/share?tripId={{user1Trip1Id}}",
+              "host": ["{{url}}"],
+              "path": ["stages", "share"],
+              "query": [
+                {
+                  "key": "tripId",
+                  "value": "{{user1Trip1Id}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "VAL User2 Get Stages For Unshared Trip1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Get Stages for Trip1\", ()=> {\r",
+                  "    pm.response.to.have.status(404)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.error).to.equal(\"Error: Could not fetch all stages for trip | Could not fetch trip | Trip could not be found\")\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user2AT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/stages/share?tripId={{user1Trip1Id}}",
+              "host": ["{{url}}"],
+              "path": ["stages", "share"],
+              "query": [
+                {
+                  "key": "tripId",
+                  "value": "{{user1Trip1Id}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "VAL Share Trip Id DNE",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Edit Trips\", ()=> {\r",
+                  "    pm.response.to.have.status(404)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.error).to.equal(\"Error: Could not enable sharing | Trip could not be found or is already public\")\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user1AT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/trips/share/{{user1Trip1IdAltered}}",
+              "host": ["{{url}}"],
+              "path": ["trips", "share", "{{user1Trip1IdAltered}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "VAL User 2 Cannot Share User1Trip1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Edit Trips\", ()=> {\r",
+                  "    pm.response.to.have.status(404)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.error).to.equal(\"Error: Could not enable sharing | Trip could not be found or is already public\")\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user2AT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/trips/share/{{user1Trip1Id}}",
+              "host": ["{{url}}"],
+              "path": ["trips", "share", "{{user1Trip1Id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Share Trip1 Copy",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Edit Trips\", ()=> {\r",
+                  "    pm.response.to.have.status(200)\r",
+                  "    const response = pm.response.json()\r",
+                  "    \r",
+                  "    pm.expect(response).to.equal(1)\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user1AT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/trips/share/{{user1Trip1Id}}",
+              "host": ["{{url}}"],
+              "path": ["trips", "share", "{{user1Trip1Id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Public User get User1 Trip1 Copy",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Get Trip1\", ()=> {\r",
+                  "    pm.response.to.have.status(200)\r",
+                  "    const response = pm.response.json()\r",
+                  "    const trip1 = response[0]\r",
+                  "    pm.expect(trip1.userId).to.equal(undefined)\r",
+                  "    pm.expect(trip1.tripName).to.equal('Your Trip 5')\r",
+                  "    pm.expect(trip1.tripLocation).to.equal('Paris')\r",
+                  "    pm.expect(trip1.stagesPerDay).to.equal(3)\r",
+                  "    pm.expect(trip1.budget).to.equal(300)\r",
+                  "    pm.expect(trip1.numberOfDays).to.equal(3)\r",
+                  "    pm.expect(trip1.isPublic).to.equal(true)\r",
+                  "    pm.expect(trip1.tripNotes).to.equal(\"I like vegetarian food\")\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/trips/share/{{user1Trip1Id}}",
+              "host": ["{{url}}"],
+              "path": ["trips", "share", "{{user1Trip1Id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "User2 get User1 Trip1 Copy 2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Get Trip1\", ()=> {\r",
+                  "    pm.response.to.have.status(200)\r",
+                  "    const response = pm.response.json()\r",
+                  "    const trip1 = response[0]\r",
+                  "    pm.expect(trip1.userId).to.equal(undefined)\r",
+                  "    pm.expect(trip1.tripName).to.equal('Your Trip 5')\r",
+                  "    pm.expect(trip1.tripLocation).to.equal('Paris')\r",
+                  "    pm.expect(trip1.stagesPerDay).to.equal(3)\r",
+                  "    pm.expect(trip1.budget).to.equal(300)\r",
+                  "    pm.expect(trip1.numberOfDays).to.equal(3)\r",
+                  "    pm.expect(trip1.isPublic).to.equal(true)\r",
+                  "    pm.expect(trip1.tripNotes).to.equal(\"I like vegetarian food\")\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user2AT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/trips/share/{{user1Trip1Id}}",
+              "host": ["{{url}}"],
+              "path": ["trips", "share", "{{user1Trip1Id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Public User Get Stages For Unshared Trip1 Copy",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Get Stages for Trip1\", ()=> {\r",
+                  "    pm.response.to.have.status(200)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.length).to.equal(3)\r",
+                  "    let stagesForDay1 = response[0]\r",
+                  "    let stagesForDay2 = response[1]\r",
+                  "    let stagesForDay3 = response[2]\r",
+                  "    let numberOfDayIndex1 = 0;\r",
+                  "    let numberOfDayIndex2 = 0;\r",
+                  "    let numberOfDayIndex3 = 0;\r",
+                  "\r",
+                  "    for(let stage of stagesForDay1) {\r",
+                  "        if(stage.dayIndex == 1) {\r",
+                  "            numberOfDayIndex1 += 1\r",
+                  "        } else if (stage.dayIndex == 2) {\r",
+                  "            numberOfDayIndex2 += 1\r",
+                  "        } else if (stage.dayIndex == 3) {\r",
+                  "            numberOfDayIndex3 += 1\r",
+                  "        }\r",
+                  "    }\r",
+                  "\r",
+                  "    for(let stage of stagesForDay2) {\r",
+                  "        if(stage.dayIndex == 1) {\r",
+                  "            numberOfDayIndex1 += 1\r",
+                  "        } else if (stage.dayIndex == 2) {\r",
+                  "            numberOfDayIndex2 += 1\r",
+                  "        } else if (stage.dayIndex == 3) {\r",
+                  "            numberOfDayIndex3 += 1\r",
+                  "        }\r",
+                  "    }\r",
+                  "\r",
+                  "    for(let stage of stagesForDay3) {\r",
+                  "        if(stage.dayIndex == 1) {\r",
+                  "            numberOfDayIndex1 += 1\r",
+                  "        } else if (stage.dayIndex == 2) {\r",
+                  "            numberOfDayIndex2 += 1\r",
+                  "        } else if (stage.dayIndex == 3) {\r",
+                  "            numberOfDayIndex3 += 1\r",
+                  "        }\r",
+                  "    }\r",
+                  "\r",
+                  "    pm.expect(numberOfDayIndex1).to.equal(3)\r",
+                  "    pm.expect(numberOfDayIndex2).to.equal(3)\r",
+                  "    pm.expect(numberOfDayIndex3).to.equal(3)\r",
+                  "\r",
+                  "    for(let arrayOfStages of response) {\r",
+                  "        for(let stage of arrayOfStages) {\r",
+                  "            pm.expect(stage.tripId).to.equal(pm.environment.get('user1Trip1Id'))\r",
+                  "            pm.expect(stage.userId).to.equal(undefined)\r",
+                  "        }\r",
+                  "    }\r",
+                  "\r",
+                  "    pm.environment.set(\"user1Trip1Stage2Id\", stagesForDay1[1]._id);\r",
+                  "    pm.environment.set(\"user1Trip1Stage2Location\", stagesForDay1[1].stageLocation);\r",
+                  "    pm.environment.set(\"user1Trip1Stage2Description\", stagesForDay1[1].description);\r",
+                  "    pm.environment.set(\"user1Trip1Stage2Emoji\", stagesForDay1[1].emoji);\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/stages/share?tripId={{user1Trip1Id}}",
+              "host": ["{{url}}"],
+              "path": ["stages", "share"],
+              "query": [
+                {
+                  "key": "tripId",
+                  "value": "{{user1Trip1Id}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "VAL User2 Get Stages For Unshared Trip1 Copy",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Get Stages for Trip1\", ()=> {\r",
+                  "    pm.response.to.have.status(200)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.length).to.equal(3)\r",
+                  "    let stagesForDay1 = response[0]\r",
+                  "    let stagesForDay2 = response[1]\r",
+                  "    let stagesForDay3 = response[2]\r",
+                  "    let numberOfDayIndex1 = 0;\r",
+                  "    let numberOfDayIndex2 = 0;\r",
+                  "    let numberOfDayIndex3 = 0;\r",
+                  "\r",
+                  "    for(let stage of stagesForDay1) {\r",
+                  "        if(stage.dayIndex == 1) {\r",
+                  "            numberOfDayIndex1 += 1\r",
+                  "        } else if (stage.dayIndex == 2) {\r",
+                  "            numberOfDayIndex2 += 1\r",
+                  "        } else if (stage.dayIndex == 3) {\r",
+                  "            numberOfDayIndex3 += 1\r",
+                  "        }\r",
+                  "    }\r",
+                  "\r",
+                  "    for(let stage of stagesForDay2) {\r",
+                  "        if(stage.dayIndex == 1) {\r",
+                  "            numberOfDayIndex1 += 1\r",
+                  "        } else if (stage.dayIndex == 2) {\r",
+                  "            numberOfDayIndex2 += 1\r",
+                  "        } else if (stage.dayIndex == 3) {\r",
+                  "            numberOfDayIndex3 += 1\r",
+                  "        }\r",
+                  "    }\r",
+                  "\r",
+                  "    for(let stage of stagesForDay3) {\r",
+                  "        if(stage.dayIndex == 1) {\r",
+                  "            numberOfDayIndex1 += 1\r",
+                  "        } else if (stage.dayIndex == 2) {\r",
+                  "            numberOfDayIndex2 += 1\r",
+                  "        } else if (stage.dayIndex == 3) {\r",
+                  "            numberOfDayIndex3 += 1\r",
+                  "        }\r",
+                  "    }\r",
+                  "\r",
+                  "    pm.expect(numberOfDayIndex1).to.equal(3)\r",
+                  "    pm.expect(numberOfDayIndex2).to.equal(3)\r",
+                  "    pm.expect(numberOfDayIndex3).to.equal(3)\r",
+                  "\r",
+                  "    for(let arrayOfStages of response) {\r",
+                  "        for(let stage of arrayOfStages) {\r",
+                  "            pm.expect(stage.tripId).to.equal(pm.environment.get('user1Trip1Id'))\r",
+                  "            pm.expect(stage.userId).to.equal(undefined)\r",
+                  "        }\r",
+                  "    }\r",
+                  "\r",
+                  "    pm.environment.set(\"user1Trip1Stage2Id\", stagesForDay1[1]._id);\r",
+                  "    pm.environment.set(\"user1Trip1Stage2Location\", stagesForDay1[1].stageLocation);\r",
+                  "    pm.environment.set(\"user1Trip1Stage2Description\", stagesForDay1[1].description);\r",
+                  "    pm.environment.set(\"user1Trip1Stage2Emoji\", stagesForDay1[1].emoji);\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user2AT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/stages/share?tripId={{user1Trip1Id}}",
+              "host": ["{{url}}"],
+              "path": ["stages", "share"],
+              "query": [
+                {
+                  "key": "tripId",
+                  "value": "{{user1Trip1Id}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Trip2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Create Trips\", ()=> {\r",
+                  "    pm.response.to.have.status(201)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.userId).to.equal(undefined)\r",
+                  "    pm.expect(response.tripName).to.equal(\"Your Trip 5\")\r",
+                  "    pm.expect(response.tripLocation).to.equal('Paris')\r",
+                  "    pm.expect(response.stagesPerDay).to.equal(1)\r",
+                  "    pm.expect(response.budget).to.equal(300)\r",
+                  "    pm.expect(response.numberOfDays).to.equal(1)\r",
+                  "    pm.expect(response.isPublic).to.equal(false)\r",
+                  "    pm.expect(response.tripNotes).to.equal(\"I like vegetarian food\")\r",
+                  "    pm.environment.set('user1Trip2Id', response._id)\r",
+                  "\r",
+                  "    const originalTripId = pm.environment.get(\"user1Trip2Id\");\r",
+                  "    const firstCharacter = originalTripId.charAt(0);\r",
+                  "    const newFirstCharacter = firstCharacter === 'a' ? 'b' : 'a';\r",
+                  "    const user1Trip1IdAltered = newFirstCharacter + originalTripId.slice(1);\r",
+                  "    pm.environment.set(\"user1Trip2IdAltered\", user1Trip1IdAltered);\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user1AT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"tripLocation\":\"Paris\",\r\n    \"stagesPerDay\":\"1\",\r\n    \"budget\":\"300\",\r\n    \"numberOfDays\":\"1\",\r\n    \"tripName\":\"Your Trip 5\",\r\n    \"tripNotes\": \"I like vegetarian food\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/trips",
+              "host": ["{{url}}"],
+              "path": ["trips"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "VAL Public User Get Unshared Trip1 Copy",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Get Trip1\", ()=> {\r",
+                  "    pm.response.to.have.status(404)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.error).to.equal(\"Error: Could not fetch trip | Trip could not be found\")\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/trips/share/{{user1Trip2Id}}",
+              "host": ["{{url}}"],
+              "path": ["trips", "share", "{{user1Trip2Id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "VAL User2 Get Unshared Trip1 Copy 2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Get Trip1\", ()=> {\r",
+                  "    pm.response.to.have.status(404)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.error).to.equal(\"Error: Could not fetch trip | Trip could not be found\")\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user2AT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/trips/share/{{user1Trip2Id}}",
+              "host": ["{{url}}"],
+              "path": ["trips", "share", "{{user1Trip2Id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Stages For Trip1 Copy 3",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Get Stages for Trip1\", ()=> {\r",
+                  "    pm.response.to.have.status(200)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.length).to.equal(1)\r",
+                  "    let stagesForDay1 = response[0]\r",
+                  "    let numberOfDayIndex1 = 0\r",
+                  "    for(let stage of stagesForDay1) {\r",
+                  "        if(stage.dayIndex == 1) {\r",
+                  "            numberOfDayIndex1 += 1\r",
+                  "        } else if (stage.dayIndex == 2) {\r",
+                  "            numberOfDayIndex2 += 1\r",
+                  "        } else if (stage.dayIndex == 3) {\r",
+                  "            numberOfDayIndex3 += 1\r",
+                  "        }\r",
+                  "    }\r",
+                  "\r",
+                  "    pm.expect(numberOfDayIndex1).to.equal(1)\r",
+                  "\r",
+                  "    for(let arrayOfStages of response) {\r",
+                  "        for(let stage of arrayOfStages) {\r",
+                  "            pm.expect(stage.tripId).to.equal(pm.environment.get('user1Trip2Id'))\r",
+                  "            pm.expect(stage.userId).to.equal(undefined)\r",
+                  "        }\r",
+                  "    }\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user1AT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/stages?tripId={{user1Trip2Id}}",
+              "host": ["{{url}}"],
+              "path": ["stages"],
+              "query": [
+                {
+                  "key": "tripId",
+                  "value": "{{user1Trip2Id}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "VAL Public User Get Stages For Unshared Trip1 Copy",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Get Stages for Trip1\", ()=> {\r",
+                  "    pm.response.to.have.status(404)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.error).to.equal(\"Error: Could not fetch all stages for trip | Could not fetch trip | Trip could not be found\")\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/stages/share?tripId={{user1Trip2Id}}",
+              "host": ["{{url}}"],
+              "path": ["stages", "share"],
+              "query": [
+                {
+                  "key": "tripId",
+                  "value": "{{user1Trip2Id}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "VAL User2 Get Stages For Unshared Trip1 Copy",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Get Stages for Trip1\", ()=> {\r",
+                  "    pm.response.to.have.status(404)\r",
+                  "    const response = pm.response.json()\r",
+                  "    pm.expect(response.error).to.equal(\"Error: Could not fetch all stages for trip | Could not fetch trip | Trip could not be found\")\r",
+                  "})"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user2AT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/stages/share?tripId={{user1Trip2Id}}",
+              "host": ["{{url}}"],
+              "path": ["stages", "share"],
+              "query": [
+                {
+                  "key": "tripId",
+                  "value": "{{user1Trip2Id}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

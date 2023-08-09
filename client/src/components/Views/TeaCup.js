@@ -2,12 +2,14 @@ import LocalCafeTwoTone from '@mui/icons-material/LocalCafeTwoTone'
 import PropTypes from 'prop-types'
 import { getHexCode } from '../../util/tailwindColors'
 import { useCallback, useMemo, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import {
+  hideDrawer,
   setActiveDayNumber,
   setShowSidePanel,
 } from '../../redux/reducers/viewSlice'
 import { Popover } from '@mui/material'
+import { getSlate } from '../../util/lightMode'
 
 const PIN_WIDTH_PX = 128
 
@@ -29,6 +31,7 @@ export function TeaCup({
   const dispatch = useDispatch()
   const [anchorEl, setAnchorEl] = useState(null)
   const hexColor = useMemo(() => getHexCode(colorNumber), [colorNumber])
+  const isLightMode = useSelector((state) => state.preferences.lightMode)
   const shouldHavePopover = titleText || stageLocations
 
   const stageLocationList = useMemo(() => {
@@ -50,6 +53,7 @@ export function TeaCup({
   const handleTeacupClicked = useCallback(() => {
     dispatch(setActiveDayNumber(displayNumber))
     dispatch(setShowSidePanel(true))
+    dispatch(hideDrawer())
   }, [dispatch, displayNumber])
 
   const handlePopoverOpen = (event) => {
@@ -77,7 +81,13 @@ export function TeaCup({
           className='absolute -bottom-4 left-0'
           sx={{ color: hexColor, fontSize: PIN_WIDTH_PX }}
         />
-        <span className='absolute left-0 top-10 w-[90%] cursor-pointer text-center text-5xl font-bold text-slate-300'>
+        <span
+          className={`absolute left-0 top-10 w-[90%] cursor-pointer text-center text-5xl font-bold ${getSlate(
+            isLightMode,
+            'text',
+            300,
+          )}`}
+        >
           {displayNumber}
         </span>
       </div>

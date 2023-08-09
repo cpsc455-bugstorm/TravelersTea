@@ -1,13 +1,16 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button } from '../common'
-import { setAppView } from '../../redux/reducers/viewSlice'
+import { setActiveDayNumber, setAppView } from '../../redux/reducers/viewSlice'
 import { AppView } from '../../constants/enums'
 import MugRating from './MugRating'
+import { getSlate } from '../../util/lightMode'
 
 export function DayViewContent() {
   const activeDayNumber = useSelector((state) => state.view.activeDayNumber)
   const stagesByDay = useSelector((state) => state.stages.stages)
+  const isLightMode = useSelector((state) => state.preferences.lightMode)
+  const isCompactView = useSelector((state) => state.preferences.compactView)
   const dispatch = useDispatch()
 
   const [stages, setStages] = useState([])
@@ -16,20 +19,26 @@ export function DayViewContent() {
     setStages(stagesByDay[activeDayNumber - 1])
   }, [activeDayNumber, stagesByDay])
 
-  const generateStage = useCallback((stageInfo, index) => {
-    return (
-      <div className='grid grid-cols-5 py-2' key={`stage-${index}`}>
-        <div className='z-[5] w-10 text-center text-3xl md:w-20 md:text-5xl'>
-          {stageInfo['emoji']}
+  const generateStage = useCallback(
+    (stageInfo, index) => {
+      return (
+        <div className='grid grid-cols-5 py-2' key={`stage-${index}`}>
+          <div className='z-[5] w-10 text-center text-3xl md:w-20 md:text-5xl'>
+            {stageInfo['emoji']}
+          </div>
+          <div
+            className={`col-span-4 box-border rounded-md border-2 bg-slate-200/90 p-2 shadow-xl
+            ${isLightMode ? 'border-slate-600' : 'border-slate-100'}`}
+          >
+            <p className='text-lg font-bold'>{stageInfo['stageLocation']}</p>
+            <MugRating rating={stageInfo['stageRating']} />
+            <p className='text-base font-normal'>{stageInfo['description']}</p>
+          </div>
         </div>
-        <div className='col-span-4 box-border rounded-md border-2 border-slate-100 bg-slate-200/90 p-2 shadow-xl'>
-          <p className='text-lg font-bold'>{stageInfo['stageLocation']}</p>
-          <MugRating rating={stageInfo['stageRating']} />
-          <p className='text-base font-normal'>{stageInfo['description']}</p>
-        </div>
-      </div>
-    )
-  }, [])
+      )
+    },
+    [isLightMode],
+  )
 
   const renderStages = useMemo(() => {
     const stagesContent = stages?.map((stageInfo, index) => {
@@ -37,23 +46,28 @@ export function DayViewContent() {
     })
 
     return (
-      <div className='h-full overflow-y-auto p-4 pt-2 mac-scrollbar'>
+      <div
+        className={`h-full overflow-y-auto p-4 pt-2 
+          ${isLightMode ? 'mac-scrollbar-light' : 'mac-scrollbar'}`}
+      >
         {stagesContent}
       </div>
     )
-  }, [stages, generateStage])
+  }, [stages, isLightMode, generateStage])
 
   const openTripView = useCallback(() => {
     dispatch(setAppView(AppView.TRIP_VIEW))
-  }, [dispatch])
+    if (isCompactView) dispatch(setActiveDayNumber(-1))
+  }, [dispatch, isCompactView])
 
   const renderTimelineLine = useMemo(() => {
     return (
       <div
-        className={`absolute left-0 top-0 h-full w-10 border-r-4 border-slate-300 md:w-14`}
+        className={`absolute left-0 top-0 h-full w-10 border-r-4 md:w-14
+          ${getSlate(isLightMode, 'border', 300)}`}
       />
     )
-  }, [])
+  }, [isLightMode])
 
   return (
     <>
