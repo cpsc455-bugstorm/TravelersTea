@@ -78,7 +78,7 @@ export function SideBar({ shouldHide, isLoading }) {
         className='mb-2'
         label='Compact View'
         onClick={() => {
-          if (!isCompactView) {
+          if (!isCompactView && appView === AppView.TRIP_VIEW) {
             // we are switching over to compact view; clear the focused day
             dispatch(setActiveDayNumber(-1))
           }
@@ -107,7 +107,7 @@ export function SideBar({ shouldHide, isLoading }) {
         {lightModeToggle}
       </div>
     )
-  }, [isLightMode, isCompactView, dispatch])
+  }, [isCompactView, isLightMode, appView, dispatch])
 
   const renderSidebarTrips = useMemo(() => {
     return (
