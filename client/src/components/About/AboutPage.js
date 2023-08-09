@@ -28,7 +28,8 @@ const AboutPage = () => {
     },
     {
       name: 'Vaishnavi Sinha',
-      imageURL: 'https://via.placeholder.com/200',
+      imageURL:
+        'https://media.licdn.com/dms/image/D4E03AQE9MRFnA9hYvw/profile-displayphoto-shrink_400_400/0/1665122576136?e=1697068800&v=beta&t=1GoXBhVQtWu6mA9yCuhRusS8LzHjEb-phCMOt6IjA5A',
       socialLinks: [
         { platform: 'GitHub', url: 'https://github.com/vee-16' },
         {
@@ -40,7 +41,7 @@ const AboutPage = () => {
     {
       name: 'Andy Liang',
       imageURL:
-        'https://instagram.fcxh2-1.fna.fbcdn.net/v/t51.2885-19/242227090_546933233267116_242392761055372403_n.jpg?stp=dst-jpg_s150x150&_nc_ht=instagram.fcxh2-1.fna.fbcdn.net&_nc_cat=104&_nc_ohc=uzaMVX6LRNEAX-E_gEd&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_AfDk8pL7p8euPjocqJSrBe2ctEjV8XTLcdF9onEvOs8MOQ&oe=64D7B886&_nc_sid=8b3546',
+        'https://media.discordapp.net/attachments/1138670571132031126/1138677413954461736/242227090_546933233267116_242392761055372403_n.png',
       socialLinks: [
         { platform: 'GitHub', url: 'https://github.com/AndyLiang1' },
         {
@@ -53,16 +54,33 @@ const AboutPage = () => {
         },
       ],
     },
+    {
+      name: 'Rithin Kumar',
+      imageURL:
+        'https://media.licdn.com/dms/image/C5603AQFxt0mogWEkmw/profile-displayphoto-shrink_800_800/0/1635227352414?e=1697068800&v=beta&t=CKvWBVXgY528aak86O2g4s1mMwxxFrFsZ7cWb2_M_iM',
+      socialLinks: [
+        {
+          platform: 'GitHub',
+          url: 'https://avatars.githubusercontent.com/u/36722714?v=4',
+        },
+        {
+          platform: 'LinkedIn',
+          url: 'https://www.linkedin.com/in/rithin-kumar/',
+        },
+      ],
+    },
   ]
 
   return (
-    <div className='overflow-y-aut container mx-auto h-fit p-4'>
+    <div className='container mx-auto h-screen overflow-y-auto p-4'>
       <h1 className='my-8 text-center text-4xl font-bold'>
         Made with ❤️ by Team BugStorm
       </h1>
-      {developers.map((developer, index) => (
-        <DeveloperSection key={index} developer={developer} />
-      ))}
+      <div>
+        {developers.map((developer, index) => (
+          <DeveloperSection key={index} developer={developer} />
+        ))}
+      </div>
     </div>
   )
 }

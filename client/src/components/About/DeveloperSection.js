@@ -1,8 +1,7 @@
-import React from 'react'
 import PropTypes from 'prop-types'
 
 const DeveloperSection = ({ developer }) => (
-  <div className='mx-auto max-w-xl overflow-hidden rounded-lg border-b-2 bg-white pb-8 shadow-md'>
+  <div className='m-4 mx-auto max-w-xl overflow-hidden rounded-lg border-b-2 bg-white pb-8 pt-4 shadow-md'>
     <img
       className='mx-auto mt-4 h-16 w-16 rounded-full'
       src={developer.imageURL}
