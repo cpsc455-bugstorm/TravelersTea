@@ -1,5 +1,6 @@
 # TravelersTea
 
+## Project Description
 Welcome to Traveler’s Tea, an intuitive and personalized travel planning web app that turns your travel dreams into
 detailed itineraries.
 
@@ -11,29 +12,14 @@ sharing with others, and shaping a dynamic and interactive travel planning exper
 
 ## Table of Contents
 
-- [Project Description](#project-description)
 - [Team Members](#team-members)
 - [Project Requirements](#project-requirements)
   - [Minimal Requirements](#minimal-requirements)
   - [Standard Requirements](#standard-requirements)
   - [Stretch Requirements](#stretch-requirements)
-- [Task Breakdown](#task-breakdown)
+  - [Limitations](#limitations)
 - [Prototypes](#prototypes)
 - [Instructions](#instructions)
-
-## Project Description
-
-This project is for users who would like to create plans in some location X, and the app will serve as a personal
-assistant. Our app will suggest an itinerary based on the user's preferences to make planning a trip less daunting and
-less time-consuming. We will store information related to travel plans. A plan will consist of stageLocation (e.g. a
-movie theater, a cute park), and information regarding that stageLocation (e.g. description, name, price, location etc).
-Given this data, users will be able to have meaningful thought out trips. Additional functionalities include a social
-aspect (e.g. sharing plans, rating plans).
-
-## Limitations
-
-- Some locations don't necessarily have a corresponding coordinate; please try a different location if you run into
-  this.
 
 ## Team Members
 
@@ -69,32 +55,12 @@ aspect (e.g. sharing plans, rating plans).
 - [x] Entire application should be mobile-friendly
 - [x] Share itinerary as a link
 
-## Task Breakdown
+## Limitations
 
-#### Users should be able to input a set of preferences (Destination, Number of Days, Budget, Places per day), to generate personalized travel plans.
-
-- Users will enter the following preferences for example in the form:
-  - Number of days
-  - Number of places per day
-  - Budget
-  - Destination city
-- App will provide Expected Outputs:
-  - Stage
-  - Name of Place
-  - Description
-  - Location
-  - Expense
-- Design the frontend
-  - Mockup for input form
-  - Mockups for output of stages
-- Design the backend routes
-
-#### Users can create, read, update, and delete plan metadata
-
-- Create: this creates the plan, along with the metadata fields `Name` and `Description`.
-- Read: display the metadata in an UI
-- Update: can update the plan’s metadata or destinations
-- Delete: this deletes the entire plan
+- Some locations don't necessarily have corresponding coordinates, this will cause an error
+  - Especially more prominent for more obscure Destinations
+- Takes time for trips to generate (this should get better with time)
+- Can be expensive to deploy at scale
 
 ## Prototypes
 
