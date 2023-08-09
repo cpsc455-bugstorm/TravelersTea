@@ -30,6 +30,11 @@ movie theater, a cute park), and information regarding that stageLocation (e.g. 
 Given this data, users will be able to have meaningful thought out trips. Additional functionalities include a social
 aspect (e.g. sharing plans, rating plans).
 
+## Limitations
+
+- Some locations don't necessarily have a corresponding coordinate; please try a different location if you run into
+  this.
+
 ## Team Members
 
 - Lymeng Naret

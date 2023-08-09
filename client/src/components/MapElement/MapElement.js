@@ -85,7 +85,6 @@ export function MapElement({ className }) {
   useEffect(() => {
     const map = new mapboxgl.Map({
       container: mapContainerRef.current,
-      style: 'mapbox://styles/mapbox/navigation-night-v1',
       center: [LONG_START, LAT_START],
       zoom: ZOOM_GLOBE_LEVEL,
       projection: 'globe',
@@ -176,19 +175,15 @@ export function MapElement({ className }) {
   }, [])
 
   useEffect(() => {
-    async function setMapStyle() {
+    if (map) {
       try {
         const styleToSet = isLightMode
           ? 'mapbox://styles/mapbox/navigation-day-v1'
           : 'mapbox://styles/mapbox/navigation-night-v1'
-        await map.setStyle(styleToSet)
+        map.setStyle(styleToSet)
       } catch (e) {
         setMapStyleRetryCounter((prev) => prev + 1)
       }
-    }
-
-    if (map) {
-      setMapStyle()
     }
   }, [isLightMode, map, mapStyleRetryCounter])
 
