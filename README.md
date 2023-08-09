@@ -1,5 +1,7 @@
 # TravelersTea
 
+## Project Description
+
 Welcome to Traveler’s Tea, an intuitive and personalized travel planning web app that turns your travel dreams into
 detailed itineraries.
 
@@ -11,37 +13,17 @@ sharing with others, and shaping a dynamic and interactive travel planning exper
 
 ## Table of Contents
 
-- [Project Description](#project-description)
-- [Team Members](#team-members)
 - [Project Requirements](#project-requirements)
   - [Minimal Requirements](#minimal-requirements)
   - [Standard Requirements](#standard-requirements)
   - [Stretch Requirements](#stretch-requirements)
-- [Task Breakdown](#task-breakdown)
+- [Usage of Units](#usage-of-units)
+- [Above and Beyond Functionality](#above-and-beyond-functionality)
+- [Descriptions of Next Steps](#descriptions-of-next-steps)
+- [Team Contributions](#team-contributions)
+- [Limitations](#limitations)
 - [Prototypes](#prototypes)
 - [Instructions](#instructions)
-
-## Project Description
-
-This project is for users who would like to create plans in some location X, and the app will serve as a personal
-assistant. Our app will suggest an itinerary based on the user's preferences to make planning a trip less daunting and
-less time-consuming. We will store information related to travel plans. A plan will consist of stageLocation (e.g. a
-movie theater, a cute park), and information regarding that stageLocation (e.g. description, name, price, location etc).
-Given this data, users will be able to have meaningful thought out trips. Additional functionalities include a social
-aspect (e.g. sharing plans, rating plans).
-
-## Limitations
-
-- Some locations don't necessarily have a corresponding coordinate; please try a different location if you run into
-  this.
-
-## Team Members
-
-- Lymeng Naret
-- Noreen Chan
-- Rithin Kumar
-- Vaishnavi Sinha
-- Andy Liang
 
 ## Project Requirements
 
@@ -69,32 +51,86 @@ aspect (e.g. sharing plans, rating plans).
 - [x] Entire application should be mobile-friendly
 - [x] Share itinerary as a link
 
-## Task Breakdown
+## Usage of Units
 
-#### Users should be able to input a set of preferences (Destination, Number of Days, Budget, Places per day), to generate personalized travel plans.
+**Unit 1**: HTML CSS JS: Our frontend consists of appropriately sized components, where each one involved writing JSX
+using Tailwind CSS. Since these JS language extensions are based on HTML and CSS, we utilized knowledge from all three
+languages to build our app.
 
-- Users will enter the following preferences for example in the form:
-  - Number of days
-  - Number of places per day
-  - Budget
-  - Destination city
-- App will provide Expected Outputs:
-  - Stage
-  - Name of Place
-  - Description
-  - Location
-  - Expense
-- Design the frontend
-  - Mockup for input form
-  - Mockups for output of stages
-- Design the backend routes
+**Unit 2**: React and Redux: Our front end was built using React and Redux. We followed best practices by using thunks
+to handle asynchronous events, segregated the API calls into their own service.js files, and used state hooks to manage
+frontend states.
 
-#### Users can create, read, update, and delete plan metadata
+**Unit 3**: Node/Express: Our backend uses Node and Express. We followed design patterns such as the Model Route
+Controller pattern in order to separate the responsibilities of handling the business logic, route exposure, and
+database models. Express also allowed us to build middlewares for error handling, error logging, general logging,
+authentication, and IP based rate limiting.
 
-- Create: this creates the plan, along with the metadata fields `Name` and `Description`.
-- Read: display the metadata in an UI
-- Update: can update the plan’s metadata or destinations
-- Delete: this deletes the entire plan
+**Unit 4**: MongoDB: Our data is stored in collections inside an Atlas Cluster. We followed model schema design best
+practices such as choosing to not go with the common embedded document pattern by considering how frequently documents
+may be accessed and changed.
+
+**Unit 5**: GitHub Action to format the code before any pushes to main. Two-stage Docker, one to build all dependencies
+for the server and client, then the second to copy over only necessary built-artifacts and run the server that serves
+the client. Deployed using Render with docker.
+
+## Above and Beyond Functionality
+
+- Free form trip generation. This is generally difficult to do in other applications because of the precise requirements
+  needed as inputs to a natural language model like ChatGPT. We solved this by having 2 separate GPT calls
+  - First Call: take the free form request and turn it into trip parameters
+  - Second Call: use those trip parameters to generate our stages (destinations)
+- Averaging set of coordinates for map markers such that all are visible on zoom:
+  - Simple averaging would not work because it would assume Earth is flat.
+  - Resolved by translating to Cartesian coordinates, finding the average, then convert back.
+  - Implementation assumes Earth is a sphere, which is a very good assumption, but not entirely true.
+- Light and Dark mode
+  - Preferences are initialized by fetching the user's OS's preferences, and persisted in localStorage.
+  - To switch the map's theme via a toggle, we tried simply plugging in a new style parameter.
+  - However, we got intermittent mapbox rendering issues that kept slipping through our try/catch blocks, due to
+    mapbox's internal chain of async calls. Therefore, we crafted a more elegant solution using react hooks.
+- Seamless integration of multiple API services
+  - Google Places API
+  - OpenAI API
+  - MapBox API
+
+## Descriptions of Next Steps
+
+We would like to add improved budget considerations when generating trips and implement Global Share Board and Voting
+System between friends and families for itineraries. We would also like to improve popups for markers on the map to have
+more details about the place, such as opening hours and images, and retry Logic for failed stages and trips
+
+## Team Contributions
+
+**Andy** My responsibilities were mainly centered around the backend as I implemented the user system, auth middleware,
+error handling and logging middlewares, share itinerary backend, postman regression tests. I was also responsible for
+the initial implementation and investigation for mapbox-gl, which is the map in our app.
+
+**Noreen**: Most of my tasks were creating UI views in the frontend (React / Redux / Tailwind CSS). To chronologically
+name a few large features, I created the wireframe draft of the app, the regular trip view which includes teacups and
+the side panel, the “see more” drawer, the day view, the compact view, and finally light mode. I also styled and placed
+markers on the map.
+
+**Lymeng**: I set up the mono-repo structure and redux with thunks. Create frontend components such as modals, loaders,
+forms, etc. Engineer the connection between the client and server. Containerized using Docker to ensure the environment
+is the same for the mono-repo and deployed with Render.
+
+**Vaishnavi**: mainly responsible for the integration of Google Places API to fetch coordinates and ratings based on the
+names
+of the places generated by OpenAI’s returned trip plan response. Helped create UI for sign in page and added routing.
+Helped add the spinning feature on Mapbox globe and add FE and BE logic for tea cup ratings for each place on the plan.
+Also improved UI for map marker popups.
+
+**Rithin**: I worked on the complete end to end implementation of the edit stage feature and also worked with Andy to
+deliver the share itinerary feature. I was also responsible for driving team discussions and was involved in code
+reviews. As I had the most experience with GPT, I was also responsible for developing the interfacing logic for GPT API.
+
+## Limitations
+
+- Some locations don't necessarily have corresponding coordinates, this will cause an error
+  - Especially more prominent for more obscure Destinations
+- Takes time for trips to generate (this should get better with time)
+- Can be expensive to deploy at scale
 
 ## Prototypes
 
