@@ -1,6 +1,7 @@
 # TravelersTea
 
 ## Project Description
+
 Welcome to Traveler’s Tea, an intuitive and personalized travel planning web app that turns your travel dreams into
 detailed itineraries.
 
