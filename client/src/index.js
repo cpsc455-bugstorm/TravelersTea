@@ -7,6 +7,7 @@ import { SessionController } from './SessionController'
 import './index.css'
 import { store } from './redux/store'
 import { ShareInterface } from './ShareInterface'
+import AboutPage from './components/About/AboutPage'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
@@ -22,6 +23,7 @@ root.render(
         >
           <Routes>
             <Route path='/share/:id' element={<ShareInterface />} />
+            <Route path='/about' element={<AboutPage />} />
             <Route path='/*' element={<SessionController />} />
           </Routes>
         </SnackbarProvider>

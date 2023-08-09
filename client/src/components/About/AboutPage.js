@@ -1,4 +1,3 @@
-import React from 'react'
 import DeveloperSection from './DeveloperSection'
 
 const AboutPage = () => {
@@ -31,10 +30,10 @@ const AboutPage = () => {
       name: 'Vaishnavi Sinha',
       imageURL: 'https://via.placeholder.com/200',
       socialLinks: [
-        { platform: 'GitHub', url: 'https://github.com/NLmeng' },
+        { platform: 'GitHub', url: 'https://github.com/vee-16' },
         {
           platform: 'LinkedIn',
-          url: 'https://www.linkedin.com/in/lymengnaret/',
+          url: 'https://ca.linkedin.com/in/vaishnavi-sinha',
         },
       ],
     },
@@ -57,7 +56,7 @@ const AboutPage = () => {
   ]
 
   return (
-    <div className='container mx-auto h-auto overflow-y-auto p-4'>
+    <div className='overflow-y-aut container mx-auto h-fit p-4'>
       <h1 className='my-8 text-center text-4xl font-bold'>
         Made with ❤️ by Team BugStorm
       </h1>
