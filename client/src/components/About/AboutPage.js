@@ -22,7 +22,7 @@ const AboutPage = () => {
         { platform: 'GitHub', url: 'https://github.com/Graywing13' },
         {
           platform: 'LinkedIn',
-          url: 'https://www.linkedin.com/in/lymengnaret/',
+          url: 'https://www.linkedin.com/in/noreen-chan-a79607173/',
         },
       ],
     },
@@ -61,7 +61,7 @@ const AboutPage = () => {
       socialLinks: [
         {
           platform: 'GitHub',
-          url: 'https://avatars.githubusercontent.com/u/36722714?v=4',
+          url: 'https://github.com/L0Lmaker',
         },
         {
           platform: 'LinkedIn',
