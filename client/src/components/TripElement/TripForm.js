@@ -56,7 +56,7 @@ export function TripForm({ onSubmit, initialValues = {} }) {
       />
       <TextField
         {...register('budget', { required: true, min: 0 })}
-        label='Budget per Day'
+        label='Budget per Day ($)'
         placeholder='Tell me how much you want to spend...'
         type='number'
         inputProps={{ min: 0 }}
