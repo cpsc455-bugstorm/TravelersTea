@@ -20,10 +20,16 @@ const MugRating = ({ rating }) => {
             <stop offset={fillLevel} stopColor='rgba(245,158,11,0.3)' />
             <stop offset={1} stopColor='rgba(245,158,11,0.3)' />
           </linearGradient>
+          <filter id='shadow'>
+            <feDropShadow dx='0' dy='2' stdDeviation='2' />
+          </filter>
         </svg>
         <LocalCafeIcon
           className={`h-6 w-6`}
-          sx={{ fill: `url(#linearColors-${rating}-${index})` }}
+          sx={{
+            fill: `url(#linearColors-${rating}-${index})`,
+            filter: 'url(#shadow)',
+          }}
         />
       </span>
     )
