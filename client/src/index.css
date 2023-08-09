@@ -6,6 +6,10 @@
   .black-gradient {
     @apply bg-gradient-to-b from-black/0 via-black/20 to-black/100;
   }
+
+  .white-gradient {
+    @apply bg-gradient-to-b from-white/0 via-white/20 to-white/100;
+  }
 }
 
 #root {

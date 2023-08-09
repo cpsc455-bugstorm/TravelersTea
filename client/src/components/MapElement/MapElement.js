@@ -22,7 +22,9 @@ export function MapElement({ className }) {
   const activeDayNumber = useSelector((state) => state.view.activeDayNumber)
   const [map, setMap] = useState(null)
   const mapContainerRef = useRef(null)
-  const [retryCounter, setRetryCounter] = useState(0)
+  const [markerRetryCounter, setMarkerRetryCounter] = useState(0)
+  const [mapStyleRetryCounter, setMapStyleRetryCounter] = useState(0)
+  const isLightMode = useSelector((state) => state.preferences.lightMode)
   mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN
 
   const renderMapForms = useMemo(() => {
@@ -52,18 +54,21 @@ export function MapElement({ className }) {
         }
       }
     } catch (e) {
-      setRetryCounter((prev) => prev + 1)
+      setMarkerRetryCounter((prev) => prev + 1)
     }
     return markers
   }, [activeDayNumber, map, stagesByDay])
 
   useEffect(() => {
-    const markers = addMarkersToMap()
-    return () => {
-      markers.forEach((marker) => marker.remove())
+    try {
+      const markers = addMarkersToMap()
+      return () => {
+        markers.forEach((marker) => marker.remove())
+      }
+    } catch (e) {
+      setMarkerRetryCounter((prev) => prev + 1)
     }
-    // lol
-  }, [stagesByDay, addMarkersToMap, retryCounter])
+  }, [map, stagesByDay, addMarkersToMap, markerRetryCounter])
 
   useEffect(() => {
     const { longitude, latitude, zoom, speed } = mapData
@@ -171,6 +176,23 @@ export function MapElement({ className }) {
   }, [])
 
   useEffect(() => {
+    async function setMapStyle() {
+      try {
+        const styleToSet = isLightMode
+          ? 'mapbox://styles/mapbox/navigation-day-v1'
+          : 'mapbox://styles/mapbox/navigation-night-v1'
+        await map.setStyle(styleToSet)
+      } catch (e) {
+        setMapStyleRetryCounter((prev) => prev + 1)
+      }
+    }
+
+    if (map) {
+      setMapStyle()
+    }
+  }, [isLightMode, map, mapStyleRetryCounter])
+
+  useEffect(() => {
     if (stagesByDay.length > 0) {
       const rightPadding = window.innerWidth / 3 + 50
       const markers = addMarkersToMap()
@@ -212,7 +234,7 @@ export function MapElement({ className }) {
         markers.forEach((marker) => marker.remove())
       }
     }
-  }, [stagesByDay, addMarkersToMap, retryCounter, map, activeDayNumber])
+  }, [stagesByDay, addMarkersToMap, markerRetryCounter, map, activeDayNumber])
 
   return (
     <div className={`fixed left-0 top-0 ${className}`}>

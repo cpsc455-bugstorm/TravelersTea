@@ -17,6 +17,7 @@ export function TripSidePanelSingle() {
   const showDrawer = useSelector((state) => state.view.showDrawer)
   const showSidePanel = useSelector((state) => state.view.showSidePanel)
   const stagesByDay = useSelector((state) => state.stages.stages)
+  const isLightMode = useSelector((state) => state.preferences.lightMode)
   const dispatch = useDispatch()
   const [dayDetails, setDayDetails] = useState()
   const visibilityTimer = useRef(null)
@@ -50,11 +51,11 @@ export function TripSidePanelSingle() {
           className={`bg-gradient-to-r from-transparent ${toColor} px-5 py-6`}
           key={`details-${activeDayNumber}-${index}`}
         >
-          <div className={'text-xl font-semibold text-slate-100'}>
+          <div className={'text-xl font-semibold'}>
             {stage['stageLocation']}
             <MugRating rating={stage['stageRating']} />
           </div>
-          <p className={'text-lg text-slate-100'}>{stage['description']}</p>
+          <p className={'text-lg'}>{stage['description']}</p>
         </div>
       )
     })
@@ -62,12 +63,13 @@ export function TripSidePanelSingle() {
 
   return showSidePanel && dayDetails ? (
     <div
-      className={`pointer-events-auto relative m-4 hidden w-1/3 flex-col items-center justify-center overflow-hidden rounded-md bg-slate-900 text-center drop-shadow-[10px_-10px_15px_rgba(150,150,150,0.25)] transition-all md:flex
+      className={`pointer-events-auto relative m-4 hidden w-1/3 flex-col items-center justify-center overflow-hidden rounded-md text-center drop-shadow-[10px_-10px_15px_rgba(150,150,150,0.25)] transition-all md:flex
         ${
           showSidePanel
             ? 'h-full scale-100 opacity-100'
             : 'h-0 scale-95 opacity-0'
-        }`}
+        }
+        ${isLightMode ? 'bg-slate-200' : 'bg-slate-900'}`}
     >
       <button
         onClick={() => {
@@ -86,7 +88,14 @@ export function TripSidePanelSingle() {
         colorNumber={dayDetails[0]['colorNumber']}
         displayNumber={activeDayNumber}
       />
-      <div className='w-full overflow-y-auto overflow-x-hidden px-8 mac-scrollbar'>
+      <div
+        className={`w-full overflow-y-auto overflow-x-hidden px-8
+        ${
+          isLightMode
+            ? 'text-slate-900 mac-scrollbar-light'
+            : 'text-slate-100 mac-scrollbar'
+        }`}
+      >
         {renderStages}
       </div>
       <div className='h-[5.5rem] w-full shrink-0' />

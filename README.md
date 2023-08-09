@@ -59,7 +59,7 @@ aspect (e.g. sharing plans, rating plans).
 
 #### Stretch Requirements
 
-- [ ] Users' Preferences: Compact Mode, Light Mode
+- [x] Users' Preferences: Compact Mode, Light Mode
 - [x] Users can generate plans based on extra notes (e.g. dietary restrictions, travel preferences)
 - [x] Entire application should be mobile-friendly
 - [x] Share itinerary as a link

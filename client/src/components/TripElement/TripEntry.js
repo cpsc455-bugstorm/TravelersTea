@@ -28,6 +28,7 @@ import {
 import { AlertSnackbar, Button, Modal } from '../common'
 import { resetStages } from '../../redux/reducers/stage/stageSlice'
 import IosShareSharpIcon from '@mui/icons-material/IosShareSharp'
+import { getBlackWhite } from '../../util/lightMode'
 
 TripEntry.propTypes = {
   id: PropTypes.string.isRequired,
@@ -44,10 +45,16 @@ export function TripEntry({ id, buttonClassName, trip }) {
   const [isRenaming, setIsRenaming] = useState(false)
   const [tripName, setTripName] = useState(trip.tripName)
   const [openModal, setOpenModal] = useState(false)
+  const isLightMode = useSelector((state) => state.preferences.lightMode)
   const inputRef = useRef()
 
   const widthForTripEntry = !isSelected ? 'w-[140px]' : 'w-[228px]'
   const widthForButtonsContainer = isRenaming ? 'w-[46px]' : 'w-[92px]'
+
+  const textColor = useMemo(
+    () => getBlackWhite(isLightMode, 'text', 'white'),
+    [isLightMode],
+  )
 
   const proceedToDelete = () => {
     setOpenModal(true)
@@ -169,7 +176,7 @@ export function TripEntry({ id, buttonClassName, trip }) {
     () => (
       <div
         id={`extra-buttons-for-${id}`}
-        className={`absolute right-0 top-[9px] flex ${widthForButtonsContainer} flex-row text-white`}
+        className={`absolute right-0 top-[9px] flex ${widthForButtonsContainer} flex-row ${textColor}`}
       >
         {!isRenaming ? (
           <>
@@ -232,13 +239,13 @@ export function TripEntry({ id, buttonClassName, trip }) {
                 <>
                   <Button
                     onClick={closeModal}
-                    className='bg-slate-800/60 text-white hover:bg-slate-600/60'
+                    className={`bg-slate-800/60 hover:bg-slate-600/60 ${textColor}`}
                   >
                     Cancel
                   </Button>
                   <Button
                     onClick={handleDeleteTrip}
-                    className='bg-red-800/90 text-white hover:bg-red-600/90'
+                    className={`bg-red-800/90 hover:bg-red-600/90 ${textColor}`}
                   >
                     Confirm
                   </Button>
@@ -278,6 +285,7 @@ export function TripEntry({ id, buttonClassName, trip }) {
     ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [
+      textColor,
       isSelected,
       isRenaming,
       handleCheckClick,

@@ -8,7 +8,10 @@ import { SideBar } from './components/sideBar'
 import { AppView } from './constants/enums'
 import { resetMap } from './redux/reducers/mapSlice'
 import { resetModalsDisplayed } from './redux/reducers/modalsSlice'
-import { resetPreferences } from './redux/reducers/preferencesSlice'
+import {
+  resetPreferences,
+  setLightMode,
+} from './redux/reducers/preferencesSlice'
 import {
   clearStagesError,
   resetStages,
@@ -29,6 +32,7 @@ import {
 import { openSidebar, resetView, setAppView } from './redux/reducers/viewSlice'
 import { REQUEST_STATE } from './redux/states'
 import App from './App'
+import { shouldUseLightMode } from './util/lightMode'
 
 SessionController.propTypes = {
   children: PropTypes.node,
@@ -133,7 +137,10 @@ export function SessionController() {
   useEffect(() => {
     if (userStates.status === REQUEST_STATE.LOGGINGIN) {
       dispatch(fetchLimitLeftAsync())
-      delaySetLoadingFalse(2500, () => dispatch(updateAsLoggedIn()))
+      delaySetLoadingFalse(2500, () => {
+        dispatch(updateAsLoggedIn())
+        dispatch(setLightMode(shouldUseLightMode()))
+      })
     } else if (userStates.status === REQUEST_STATE.REJECTED) {
       delaySetLoadingFalse(2500, () => dispatch(updateAsLoggedOut()))
     }
@@ -197,6 +204,20 @@ export function SessionController() {
     }
     return () => clearTimeout(timer)
   }, [enqueueSnackbar, isLoading])
+
+  // credits: https://stackoverflow.com/a/57795518 & ChatGPT
+  useEffect(() => {
+    const lightModeWatcher = window.matchMedia('(prefers-color-scheme: light)')
+    const handleChange = (e) => {
+      dispatch(setLightMode(e.matches))
+    }
+
+    lightModeWatcher.addEventListener('change', handleChange)
+
+    return () => {
+      lightModeWatcher.removeEventListener('change', handleChange)
+    }
+  }, [dispatch])
 
   return (
     <>
