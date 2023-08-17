@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
     "dev": "nodemon -L index.js",
+    "clean:db": "node scripts/cleanDB.js",
     "reset:db": "node scripts/resetDB.js",
     "populate:db": "node scripts/populateDB.js",
     "coordinates:test": "node googleapi/getCoordinateTest.js",

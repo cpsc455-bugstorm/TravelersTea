@@ -4,13 +4,13 @@ require('dotenv').config()
 const MONGO_USERNAME = process.env.MONGO_USERNAME || ''
 const MONGO_PASSWORD = process.env.MONGO_PASSWORD || ''
 const DB_CHOICE = process.env.DB_USER_FLAG || 'BugStormDB'
-
 const MONGO_URI = `mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@cluster0.4bflh41.mongodb.net/${DB_CHOICE}?retryWrites=true&w=majority`
+
 const SERVER_PORT = process.env.PORT ? Number(process.env.PORT) : 5001
 const ENV = process.env.ENV || ''
 const JWT_SECRET = process.env.JWT_SECRET || ''
-
 const CLIENT_URL = process.env.CLIENT_URL
+
 const RATE_LIMIT = process.env.RATE_LIMIT || 10
 const PROXY = process.env.PROXY || 1
 const TIME_LIMT = process.env.TIME_LIMT || 24 * 60 * 60 * 1000 // 1 day
@@ -18,6 +18,7 @@ const TIME_LIMT = process.env.TIME_LIMT || 24 * 60 * 60 * 1000 // 1 day
 const config = {
   mongo: {
     uri: MONGO_URI,
+    flag: DB_CHOICE,
   },
   server: {
     port: SERVER_PORT,
