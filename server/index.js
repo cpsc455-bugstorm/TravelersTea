@@ -70,10 +70,9 @@ const startServer = () => {
 
     if (config.server.env === 'PROD') {
       cron.schedule('*/13 * * * *', () => {
-        console.log('Pinging self...')
         axios
           .get(`${config.server.clientURL}/ping`)
-          .then(() => console.log('Self-ping successful'))
+          .then(() => {})
           .catch((error) => console.error('Self-ping failed:', error))
       })
     }
