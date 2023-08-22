@@ -17,6 +17,7 @@
     "test": "yarn workspace client test && yarn workspace server test",
     "reset:db": "yarn workspace server reset:db",
     "populate:db": "yarn workspace server populate:db",
+    "dupe:db": "yarn workspace server dupe:db",
     "clean:db": "yarn workspace server clean:db",
     "lint": "eslint .",
     "lint:fix": "eslint . --cache --fix",
