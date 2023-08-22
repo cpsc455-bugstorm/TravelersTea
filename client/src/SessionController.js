@@ -140,6 +140,8 @@ export function SessionController() {
       delaySetLoadingFalse(2500, () => {
         dispatch(updateAsLoggedIn())
         dispatch(setLightMode(shouldUseLightMode()))
+        // fix for empty space caused by IOS toolbar
+        window.scrollTo(0, 0)
       })
     } else if (userStates.status === REQUEST_STATE.REJECTED) {
       delaySetLoadingFalse(2500, () => dispatch(updateAsLoggedOut()))
