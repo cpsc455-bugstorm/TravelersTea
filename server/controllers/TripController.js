@@ -2,6 +2,8 @@ const TripModel = require('../models/TripModel')
 const generateTrip = require('../openai/generateTrip')
 const generateTripsMetadata = require('../openai/generateTripMetadata')
 const getCoordinatesFromLocation = require('../googleapi/googleCoordinates')
+const getLatLon = require('../googleapi/getLatLon')
+const DestinationController = require('./DestinationController')
 const mongoose = require('mongoose')
 
 const NUM_TAILWIND_COLORS = 17
@@ -9,6 +11,7 @@ const NUM_TAILWIND_COLORS = 17
 class TripController {
   constructor(stageController) {
     this.stageController = stageController
+    this.destinationController = new DestinationController()
   }
 
   async getTripById(userId, id) {
@@ -149,12 +152,53 @@ class TripController {
       : tripData
 
     let generatedTripWithStages
-    try {
-      generatedTripWithStages = await generateTrip(filteredTripData)
-    } catch (error) {
-      error.message = 'Error while generating trip | ' + error.message
-      throw error
+
+    // try cache
+    const tripLatLon = await getLatLon(filteredTripData.tripLocation)
+    const cachedDestinations =
+      await this.destinationController.findClosestDestinations(
+        tripLatLon.lat,
+        tripLatLon.lng,
+        filteredTripData.numberOfDays * filteredTripData.stagesPerDay,
+      )
+    if (
+      cachedDestinations.length >=
+      filteredTripData.numberOfDays * filteredTripData.stagesPerDay
+    ) {
+      generatedTripWithStages = {
+        days: Array.from(
+          { length: filteredTripData.numberOfDays },
+          (_, dayIndex) => ({
+            day: dayIndex + 1,
+            stages: Array.from(
+              { length: filteredTripData.stagesPerDay },
+              (_, stageIndex) => {
+                const destination =
+                  cachedDestinations[
+                    dayIndex * filteredTripData.stagesPerDay + stageIndex
+                  ]
+                return {
+                  stageIndex: stageIndex + 1,
+                  stageLocationName: destination.alias
+                    ? destination.alias[0]
+                    : destination.name,
+                  stageDescription: destination.description,
+                  stageEmoji: '🏙️',
+                }
+              },
+            ),
+          }),
+        ),
+      }
+    } else {
+      try {
+        generatedTripWithStages = await generateTrip(filteredTripData)
+      } catch (error) {
+        error.message = 'Error while generating trip | ' + error.message
+        throw error
+      }
     }
+    //
 
     try {
       const tripToSave = {
@@ -197,6 +241,13 @@ class TripController {
           filteredTripData.tripLocation,
           userId,
         )
+
+      stagesToAdd.forEach((stage) =>
+        this.destinationController.cacheStage(
+          stage,
+          filteredTripData.tripLocation,
+        ),
+      )
 
       // this adds stages so do the part before this
       await this.stageController.createManyStages(stagesToAdd)
