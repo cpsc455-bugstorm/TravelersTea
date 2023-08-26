@@ -6,6 +6,7 @@ const destinationSchema = new mongoose.Schema({
     coordinates: { type: [Number], required: true }, // [longitude, latitude]
   },
   name: {
+    // usually city/country; the destination user gives
     type: String,
     required: true,
   },
@@ -13,7 +14,7 @@ const destinationSchema = new mongoose.Schema({
   rating: Number,
   description: String,
   emoji: String,
-  tag: String,
+  tag: [String],
 })
 
 // Create a 2dsphere index on the location field

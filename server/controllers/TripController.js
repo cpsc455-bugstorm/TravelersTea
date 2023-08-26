@@ -2,7 +2,6 @@ const TripModel = require('../models/TripModel')
 const generateTrip = require('../openai/generateTrip')
 const generateTripsMetadata = require('../openai/generateTripMetadata')
 const getCoordinatesFromLocation = require('../googleapi/googleCoordinates')
-const getLatLon = require('../googleapi/getLatLon')
 const DestinationController = require('./DestinationController')
 const mongoose = require('mongoose')
 
@@ -151,46 +150,11 @@ class TripController {
       ? await generateTripsMetadata(tripData.colloquialPrompt)
       : tripData
 
-    let generatedTripWithStages
-
-    // try cache
-    const tripLatLon = await getLatLon(filteredTripData.tripLocation)
-    const cachedDestinations =
-      await this.destinationController.findClosestDestinations(
-        tripLatLon.lat,
-        tripLatLon.lng,
-        filteredTripData.numberOfDays * filteredTripData.stagesPerDay,
-      )
-    if (
-      cachedDestinations.length >=
-      filteredTripData.numberOfDays * filteredTripData.stagesPerDay
-    ) {
-      generatedTripWithStages = {
-        days: Array.from(
-          { length: filteredTripData.numberOfDays },
-          (_, dayIndex) => ({
-            day: dayIndex + 1,
-            stages: Array.from(
-              { length: filteredTripData.stagesPerDay },
-              (_, stageIndex) => {
-                const destination =
-                  cachedDestinations[
-                    dayIndex * filteredTripData.stagesPerDay + stageIndex
-                  ]
-                return {
-                  stageIndex: stageIndex + 1,
-                  stageLocationName: destination.alias
-                    ? destination.alias[0]
-                    : destination.name,
-                  stageDescription: destination.description,
-                  stageEmoji: '🏙️',
-                }
-              },
-            ),
-          }),
-        ),
-      }
-    } else {
+    // TODO: 75-25
+    let generatedTripWithStages = await this.destinationController.tryCache(
+      filteredTripData,
+    )
+    if (generatedTripWithStages === null) {
       try {
         generatedTripWithStages = await generateTrip(filteredTripData)
       } catch (error) {
@@ -198,7 +162,6 @@ class TripController {
         throw error
       }
     }
-    //
 
     try {
       const tripToSave = {
@@ -211,12 +174,12 @@ class TripController {
         isPublic: false,
       }
 
+      let savedTrip
       if (!id) {
         tripToSave.userId = userId
-      }
-
-      let savedTrip
-      if (id) {
+        const _savedTrip = await TripModel.create([tripToSave], { session })
+        savedTrip = _savedTrip[0].toObject()
+      } else {
         savedTrip = await TripModel.findOneAndUpdate(
           { userId: userId, _id: new mongoose.Types.ObjectId(id) }, // ensure user1 cannot edit user2's trip
           filteredTripData,
@@ -228,9 +191,6 @@ class TripController {
           throw error
         }
         await this.stageController.deleteStagesByTripId(savedTrip._id, session)
-      } else {
-        const _savedTrip = await TripModel.create([tripToSave], { session })
-        savedTrip = _savedTrip[0].toObject()
       }
 
       const { days } = generatedTripWithStages
@@ -241,13 +201,6 @@ class TripController {
           filteredTripData.tripLocation,
           userId,
         )
-
-      stagesToAdd.forEach((stage) =>
-        this.destinationController.cacheStage(
-          stage,
-          filteredTripData.tripLocation,
-        ),
-      )
 
       // this adds stages so do the part before this
       await this.stageController.createManyStages(stagesToAdd)
@@ -263,6 +216,19 @@ class TripController {
       let savedTripDTO = savedTrip.toObject()
       delete savedTripDTO.userId
 
+      // schedule the caching operation
+      setImmediate(() => {
+        try {
+          stagesToAdd.forEach((stage) =>
+            this.destinationController.cacheStage(
+              stage,
+              filteredTripData.tripLocation,
+            ),
+          )
+        } catch (error) {
+          console.log(error)
+        }
+      })
       return savedTripDTO
     } catch (error) {
       error.message = 'Could not save trip | ' + error.message
