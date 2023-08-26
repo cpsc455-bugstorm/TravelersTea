@@ -1,5 +1,4 @@
 const TripModel = require('../models/TripModel')
-const generateTrip = require('../openai/generateTrip')
 const generateTripsMetadata = require('../openai/generateTripMetadata')
 const getCoordinatesFromLocation = require('../googleapi/googleCoordinates')
 const DestinationController = require('./DestinationController')
@@ -150,24 +149,10 @@ class TripController {
       ? await generateTripsMetadata(tripData.colloquialPrompt)
       : tripData
 
-    /**
-     * TODO:
-     *  if found enough, return 75% cache
-     *  if not found enough, return 100% cache
-     */
-    let generatedTripWithStages = await this.destinationController.tryCache(
-      filteredTripData,
-    )
-    if (generatedTripWithStages === null) {
-      try {
-        generatedTripWithStages = await generateTrip(filteredTripData)
-      } catch (error) {
-        error.message = 'Error while generating trip | ' + error.message
-        throw error
-      }
-    }
-
     try {
+      const generatedTripWithStages =
+        await this.destinationController.generateTripWithCache(filteredTripData)
+
       const tripToSave = {
         tripName: filteredTripData.tripName,
         tripLocation: filteredTripData.tripLocation,

@@ -7,6 +7,7 @@ const openaiClient = require('./openaiClient')
  *
  * @async
  * @param {Object} constraints TripModel Object - The travel constraints.
+ * @param {Object} locationsToAvoid - specifies the places to avoid, optional and defaults to []
  * @param {string} constraints.tripLocation - The destination of the trip.
  * @param {number} constraints.budget - The budget per day for the trip.
  * @param {number} constraints.numberOfDays - The number of days for the trip.
@@ -41,7 +42,7 @@ const openaiClient = require('./openaiClient')
  * }
  * @throws Will throw an error if the openaiClient or AI response fails.
  */
-async function generateTrip(constraints) {
+async function generateTrip(constraints, locationsToAvoid = []) {
   const totalPlaces = constraints.numberOfDays * constraints.stagesPerDay
   if (totalPlaces > 25) {
     throw new Error(
@@ -53,6 +54,7 @@ async function generateTrip(constraints) {
       Budget per Day: $${constraints.budget}
       Days: ${constraints.numberOfDays}
       Stages per Day: ${constraints.stagesPerDay}
+      Specific locations to avoid: ${locationsToAvoid.join(', ')}
    `
   const conversation = [
     {
