@@ -150,7 +150,11 @@ class TripController {
       ? await generateTripsMetadata(tripData.colloquialPrompt)
       : tripData
 
-    // TODO: 75-25
+    /**
+     * TODO:
+     *  if found enough, return 75% cache
+     *  if not found enough, return 100% cache
+     */
     let generatedTripWithStages = await this.destinationController.tryCache(
       filteredTripData,
     )
@@ -223,6 +227,7 @@ class TripController {
             this.destinationController.cacheStage(
               stage,
               filteredTripData.tripLocation,
+              filteredTripData.tripNotes,
             ),
           )
         } catch (error) {

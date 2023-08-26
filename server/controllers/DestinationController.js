@@ -1,5 +1,6 @@
 const DestinationModel = require('../models/DestinationModel')
 const getLatLon = require('../googleapi/getLatLon')
+const nlp = require('compromise')
 const FuzzySearch = require('fuzzy-search')
 
 class DestinationController {
@@ -97,17 +98,20 @@ class DestinationController {
     }
   }
 
-  async cacheStage(stage, name) {
+  async cacheStage(stage, name, notes) {
     try {
       const existingDestination = await DestinationModel.findOne({
         'location.coordinates': [stage.stageLongitude, stage.stageLatitude],
       }).lean()
 
+      const tags = this.extractTags(notes)
+
       if (existingDestination) {
         await DestinationModel.findByIdAndUpdate(existingDestination._id, {
-          $addToSet: { alias: stage.stageLocation },
-          // TODO: Decipher description into tags
-          // tag: decipherTags(stage.description),
+          $addToSet: {
+            alias: stage.stageLocation,
+            tag: { $each: tags },
+          },
         })
       } else {
         const newDestination = {
@@ -118,8 +122,7 @@ class DestinationController {
           alias: [stage.stageLocation],
           description: stage.description,
           emoji: stage.emoji,
-          // TODO: Decipher description into tags
-          // tag: decipherTags(stage.description),
+          tag: tags,
         }
 
         await DestinationModel.create(newDestination)
@@ -128,6 +131,32 @@ class DestinationController {
       error.message = 'Could not cache stage | ' + error.message
       throw error
     }
+  }
+
+  extractTags(notes) {
+    const doc = nlp(notes)
+    let nouns = doc.nouns().out('array')
+
+    const stopWords = [
+      'the',
+      'and',
+      'its',
+      'its',
+      'a',
+      'an',
+      'of',
+      'to',
+      'in',
+      'for',
+      'with',
+      'on',
+      'at',
+      'by',
+      'from',
+    ]
+    nouns = nouns.filter((word) => !stopWords.includes(word.toLowerCase()))
+
+    return nouns
   }
 }
 
