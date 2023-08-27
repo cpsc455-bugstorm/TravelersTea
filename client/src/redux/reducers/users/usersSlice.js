@@ -52,9 +52,6 @@ export const usersSlice = createSlice({
     clearUserError: (state) => {
       state.error = null
     },
-    decrementAttemptsLeft: (state) => {
-      state.attemptLeft = state.attemptLeft - 1
-    },
   },
   extraReducers: (builder) => {
     handleAsyncAction(builder, fetchLimitLeftAsync, {
@@ -97,7 +94,6 @@ export const {
   updateAsLoggedOut,
   updateAsLoggedIn,
   clearUserError,
-  decrementAttemptsLeft,
 } = usersSlice.actions
 
 export default usersSlice.reducer

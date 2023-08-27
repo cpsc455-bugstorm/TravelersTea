@@ -108,6 +108,7 @@ class DestinationController {
     }
   }
 
+  // this could possibly be used to fetch from cache even when user has tripNote
   extractTags(notes) {
     const doc = nlp(notes)
     let nouns = doc.nouns().out('array')
@@ -188,15 +189,15 @@ class DestinationController {
       tripData.numberOfDays * tripData.stagesPerDay * 0.8,
     )
 
+    if (maxStagesToFetch === 0) {
+      return null
+    }
+
     const cachedDestinations = await this.findClosestDestinations(
       tripLatLon.lat,
       tripLatLon.lng,
       maxStagesToFetch,
     )
-
-    if (cachedDestinations.length === 0) {
-      return null
-    }
 
     let index = 0
     const s = []

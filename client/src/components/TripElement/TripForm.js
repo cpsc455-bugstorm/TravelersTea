@@ -1,11 +1,12 @@
-import { TextField } from '@mui/material'
+import LockClockTwoToneIcon from '@mui/icons-material/LockClockTwoTone'
+import { InputAdornment, TextField, Tooltip } from '@mui/material'
 import PropTypes from 'prop-types'
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 import { SLOWER_SPEED, ZOOM_GLOBE_LEVEL } from '../../constants/mapDefaultInfo'
 import { changeSpeed, changeZoom } from '../../redux/reducers/mapSlice'
-import { Button } from '../common'
 import { setActiveDayNumber } from '../../redux/reducers/viewSlice'
+import { Button } from '../common'
 
 TripForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
@@ -70,11 +71,28 @@ export function TripForm({ onSubmit, initialValues = {} }) {
         inputProps={{ min: 0 }}
         error={!!errors.numberOfDays}
       />
-      <TextField
-        {...register('tripNotes', { required: false })}
-        label='Extra Notes'
-        placeholder='Tell me what you would like...'
-      />
+      <Tooltip
+        title="You don't have permission to do this"
+        placement='bottom-start'
+        arrow
+        followCursor
+      >
+        <TextField
+          className='w-full bg-gray-200 text-gray-400 placeholder-gray-400'
+          disabled
+          {...register('tripNotes', { required: false })}
+          label='Extra Notes'
+          placeholder='Tell me what you would like...'
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position='start'>
+                <LockClockTwoToneIcon />
+              </InputAdornment>
+            ),
+          }}
+        />
+      </Tooltip>
+
       <Button
         className='mt-4 w-full rounded bg-slate-300 hover:bg-slate-400'
         type='submit'
