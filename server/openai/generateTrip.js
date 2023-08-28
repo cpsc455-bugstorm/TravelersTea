@@ -65,9 +65,9 @@ async function generateTrip(constraints, locationsToAvoid = []) {
         {
           days: [
             {
-              n: Number (the current index starting from 1),
+              n: Number (the current day index starting from 1),
               s: [
-                [Number (the current index starting from 1), String (the location's name), String (best description less than 25 words), String (best emoji representation of stage)]
+                [Number (the current stage index starting from 1), String (the location's name), String (best description less than 25 words), String (best emoji representation of stage)]
               ]
             }
           ]

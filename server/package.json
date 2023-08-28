@@ -11,6 +11,7 @@
     "reset:db": "node scripts/resetDB.js",
     "populate:db": "node scripts/populateDB.js",
     "dupe:db": "node scripts/dupeDB.js",
+    "cache:db": "node scripts/cacheStages.js",
     "coordinates:test": "node googleapi/getCoordinateTest.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --cache --fix",

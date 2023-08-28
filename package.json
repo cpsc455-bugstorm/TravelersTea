@@ -18,6 +18,7 @@
     "reset:db": "yarn workspace server reset:db",
     "populate:db": "yarn workspace server populate:db",
     "dupe:db": "yarn workspace server dupe:db",
+    "cache:db": "yarn workspace server cache:db",
     "clean:db": "yarn workspace server clean:db",
     "lint": "eslint .",
     "lint:fix": "eslint . --cache --fix",
