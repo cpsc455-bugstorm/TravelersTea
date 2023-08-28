@@ -2,16 +2,33 @@ const express = require('express')
 const controllers = require('../controllers/Controllers')
 const authMiddleware = require('../middlewares/AuthMiddleware')
 const apiLimiter = require('../middlewares/rateLimiter')
+const extraFeatureLimiter = require('../middlewares/extraFeatureRateLimiter')
+
+const setSkipEF = (req, res, next) => {
+  if (req.body.tripNotes || req.body.colloquialPrompt) {
+    res.isExtraFeature = true
+  } else req.skipEF = true
+  next()
+}
 
 class TripRoute {
   constructor() {
     this.router = express.Router()
     this.router.get('', authMiddleware, this.getAllByUserId.bind(this))
-    this.router.post('', authMiddleware, apiLimiter, this.create.bind(this))
+    this.router.post(
+      '',
+      authMiddleware,
+      apiLimiter,
+      setSkipEF,
+      extraFeatureLimiter,
+      this.create.bind(this),
+    )
     this.router.patch(
       '/:id',
       authMiddleware,
       apiLimiter,
+      setSkipEF,
+      extraFeatureLimiter,
       this.update.bind(this),
     )
     this.router.delete('/:id', authMiddleware, this.delete.bind(this))
@@ -41,6 +58,7 @@ class TripRoute {
         req.userId,
         req.body,
       )
+
       res.isTripAPI = true
       res.status(201).json(newTrip)
     } catch (err) {
@@ -55,6 +73,7 @@ class TripRoute {
         req.params.id,
         req.body,
       )
+
       res.isTripAPI = !(
         Object.keys(req.body).length === 1 && 'tripName' in req.body
       )

@@ -1,6 +1,7 @@
 const express = require('express')
 const controllers = require('../controllers/Controllers')
 const apiLimiter = require('../middlewares/rateLimiter')
+const extraFeatureLimiter = require('../middlewares/extraFeatureRateLimiter')
 
 class UserRoute {
   constructor() {
@@ -11,6 +12,11 @@ class UserRoute {
     this.router.post('/register', apiLimiter, this.register.bind(this))
     this.router.post('/login', this.login.bind(this))
     this.router.get('/limit-left', apiLimiter, this.fetchLimitLeft.bind(this))
+    this.router.get(
+      '/ef-limit-left',
+      extraFeatureLimiter,
+      this.fetchEFLimitLeft.bind(this),
+    )
   }
 
   initRoutes(apiRouter) {
@@ -20,6 +26,18 @@ class UserRoute {
     try {
       const response = {
         attemptLeft: req.rateLimit.remaining + 1,
+      }
+
+      res.isTripAPI = false
+      res.json(response)
+    } catch (err) {
+      next(err)
+    }
+  }
+  async fetchEFLimitLeft(req, res, next) {
+    try {
+      const response = {
+        efAttemptLeft: req.rateLimit.remaining + 1,
       }
 
       res.isTripAPI = false

@@ -1,8 +1,9 @@
+import InfoTwoToneIcon from '@mui/icons-material/InfoTwoTone'
 import LockClockTwoToneIcon from '@mui/icons-material/LockClockTwoTone'
 import { InputAdornment, TextField, Tooltip } from '@mui/material'
 import PropTypes from 'prop-types'
 import { useForm } from 'react-hook-form'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { SLOWER_SPEED, ZOOM_GLOBE_LEVEL } from '../../constants/mapDefaultInfo'
 import { changeSpeed, changeZoom } from '../../redux/reducers/mapSlice'
 import { setActiveDayNumber } from '../../redux/reducers/viewSlice'
@@ -15,6 +16,7 @@ TripForm.propTypes = {
 
 export function TripForm({ onSubmit, initialValues = {} }) {
   const dispatch = useDispatch()
+  const efLimit = useSelector((state) => state.users.efAttemptLeft)
   const lastEnteredNote = localStorage.getItem('lastEnteredNote')
 
   const {
@@ -72,23 +74,39 @@ export function TripForm({ onSubmit, initialValues = {} }) {
         error={!!errors.numberOfDays}
       />
       <Tooltip
-        title="You don't have permission to do this"
+        title='You have ran out of this feature for the day, this will not be applied to your next trip'
         placement='bottom-start'
         arrow
         followCursor
+        disableFocusListener
+        disableHoverListener={efLimit >= 1}
+        disableTouchListener
       >
         <TextField
-          className='w-full bg-gray-200 text-gray-400 placeholder-gray-400'
-          disabled
+          className={`w-full ${
+            efLimit <= 0 ? 'bg-gray-200 text-gray-400 placeholder-gray-400' : ''
+          }`}
+          disabled={efLimit <= 0}
           {...register('tripNotes', { required: false })}
           label='Extra Notes'
           placeholder='Tell me what you would like...'
           InputProps={{
-            startAdornment: (
-              <InputAdornment position='start'>
-                <LockClockTwoToneIcon />
-              </InputAdornment>
-            ),
+            startAdornment:
+              efLimit <= 0 ? (
+                <InputAdornment position='start'>
+                  <LockClockTwoToneIcon />
+                </InputAdornment>
+              ) : (
+                <Tooltip
+                  title='You have one use of Extra Notes or Speak Your Mind per day'
+                  placement='bottom-start'
+                  arrow
+                >
+                  <InputAdornment position='start'>
+                    <InfoTwoToneIcon />
+                  </InputAdornment>
+                </Tooltip>
+              ),
           }}
         />
       </Tooltip>

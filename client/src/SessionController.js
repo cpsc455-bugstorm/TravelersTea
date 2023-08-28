@@ -24,7 +24,10 @@ import {
   flagAsFulfilled,
   resetTrips,
 } from './redux/reducers/trips/tripsSlice'
-import { fetchLimitLeftAsync } from './redux/reducers/users/thunks'
+import {
+  fetchEFLimitLeftAsync,
+  fetchLimitLeftAsync,
+} from './redux/reducers/users/thunks'
 import {
   clearUserError,
   updateAsLoggedIn,
@@ -143,13 +146,14 @@ export function SessionController() {
         stagesStates.status === REQUEST_STATE.REJECTED ||
         stagesStates.status === REQUEST_STATE.IDLE)
     ) {
-      delaySetLoadingFalse(1000)
+      delaySetLoadingFalse(1000, () => dispatch(fetchEFLimitLeftAsync()))
     }
-  }, [tripsStates.status, stagesStates.status])
+  }, [tripsStates.status, stagesStates.status, dispatch])
 
   useEffect(() => {
     if (userStates.status === REQUEST_STATE.LOGGINGIN) {
       dispatch(fetchLimitLeftAsync())
+      dispatch(fetchEFLimitLeftAsync())
       delaySetLoadingFalse(2500, () => {
         dispatch(updateAsLoggedIn())
         dispatch(setLightMode(shouldUseLightMode()))

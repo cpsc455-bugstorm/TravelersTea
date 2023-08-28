@@ -15,12 +15,14 @@ async function getCoordinatesFromLocation(
   stageLocationName,
   includeRating,
 ) {
+  console.log()
   const query = `${stageLocationName} ${destinationCity}`
   const apiKey = process.env.GOOGLE_PLACES_API_KEY
   const url = 'https://maps.googleapis.com/maps/api/place/textsearch/json'
 
   try {
-    const response = await axios.get(url, {
+    let response
+    response = await axios.get(url, {
       params: {
         query: query,
         inputtype: 'textquery',
@@ -29,7 +31,18 @@ async function getCoordinatesFromLocation(
       },
     })
     if (!response.data.results.length) {
-      throw new Error('No coordinates found.')
+      console.log(destinationCity, stageLocationName)
+      // retry with just stageLocationName, sometimes it has city in it
+      response = await axios.get(url, {
+        params: {
+          query: `${stageLocationName}`,
+          inputtype: 'textquery',
+          fields: 'geometry',
+          key: apiKey,
+        },
+      })
+      if (!response.data.results.length)
+        throw new Error('No coordinates found.')
     }
     const { location } = response.data.results[0].geometry
     if (includeRating) {

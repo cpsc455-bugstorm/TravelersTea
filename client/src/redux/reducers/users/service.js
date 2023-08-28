@@ -5,6 +5,10 @@ export const fetchLimit = async () => {
   return await axios.get(`${API_URL}/users/limit-left`, {})
 }
 
+export const fetchEFLimit = async () => {
+  return await axios.get(`${API_URL}/users/ef-limit-left`, {})
+}
+
 export const registerUser = async (userData) => {
   return await axios.post(`${API_URL}/users/register`, userData)
 }
@@ -15,6 +19,7 @@ export const loginUser = async (userData) => {
 
 const usersService = {
   fetchLimit,
+  fetchEFLimit,
   registerUser,
   loginUser,
 }

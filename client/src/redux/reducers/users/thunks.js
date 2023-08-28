@@ -16,6 +16,20 @@ export const fetchLimitLeftAsync = createAsyncThunk(
   },
 )
 
+export const fetchEFLimitLeftAsync = createAsyncThunk(
+  actionTypes.FETCH_EF_LIMIT,
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await usersService.fetchEFLimit()
+      return response.data
+    } catch (error) {
+      return rejectWithValue({
+        message: error.response.data.error || error.response.data,
+      })
+    }
+  },
+)
+
 export const registerUserAsync = createAsyncThunk(
   actionTypes.REGISTER_USER,
   async (userData, { rejectWithValue }) => {
