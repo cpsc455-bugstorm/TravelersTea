@@ -1,42 +1,10 @@
 /* eslint-disable node/no-unsupported-features/es-syntax */
 const DestinationModel = require('../models/DestinationModel')
 const getLatLon = require('../googleapi/getLatLon')
-// const generateTrip = require('../openai/generateTrip')
 const generateDestination = require('../openai/generateDestination')
 const nlp = require('compromise')
-const FuzzySearch = require('fuzzy-search')
 
 class DestinationController {
-  async searchDestination(query) {
-    try {
-      // TODO: double check with coordinates
-      // Fetch all destinations
-      const destinations = await DestinationModel.find().lean()
-
-      // Extract names and aliases
-      const namesAndAliases = destinations.flatMap((destination) => [
-        destination.name,
-        ...(destination.alias || []),
-      ])
-
-      // Perform a fuzzy search on the names and aliases
-      const searcher = new FuzzySearch(namesAndAliases)
-      const results = searcher.search(query)
-
-      // Return the destinations that match the search results
-      const matchingDestinations = destinations.filter(
-        (destination) =>
-          results.includes(destination.name) ||
-          (destination.alias || []).some((alias) => results.includes(alias)),
-      )
-
-      return matchingDestinations
-    } catch (error) {
-      error.message = 'Could not search destination | ' + error.message
-      throw error
-    }
-  }
-
   async findClosestDestinations(latitude, longitude, n) {
     try {
       const milesToMeters = 1609.34 // Conversion factor
@@ -135,7 +103,6 @@ class DestinationController {
     return nouns
   }
 
-  // TODO: if there is tripNotes, then generate all
   /**
    * Generates a trip itinerary by combining cached and newly generated stages.
    * It first tries to fetch up to 80% of the whole trip as cached stages based on the trip data.
