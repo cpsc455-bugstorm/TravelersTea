@@ -25,7 +25,7 @@ async function generateDestination(constraints, locationsToAvoid = []) {
             {
               i: Number (the current index starting from 1),
               l: String (the location's name),
-              d: String (best description around 25 words),
+              d: String (best description less than 25 words),
               e: String  (best emoji representation of stage),
             }
           ]
