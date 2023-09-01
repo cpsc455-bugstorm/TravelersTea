@@ -1,6 +1,6 @@
 # TravelersTea
-![image](https://github.com/cpsc455-bugstorm/TravelersTea/assets/36722714/003c241a-a6b2-47c9-976c-d9b709764a3a)
 
+![image](https://github.com/cpsc455-bugstorm/TravelersTea/assets/36722714/003c241a-a6b2-47c9-976c-d9b709764a3a)
 
 ## Project Description
 
