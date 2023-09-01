@@ -15,7 +15,6 @@ async function getCoordinatesFromLocation(
   stageLocationName,
   includeRating,
 ) {
-  console.log()
   const query = `${stageLocationName} ${destinationCity}`
   const apiKey = process.env.GOOGLE_PLACES_API_KEY
   const url = 'https://maps.googleapis.com/maps/api/place/textsearch/json'
