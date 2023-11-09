@@ -1,6 +1,7 @@
 # TravelersTea
 
 ## Demo
+
 [![IMAGE_ALT](https://img.youtube.com/vi/VLibpUpLYPs/0.jpg)](https://www.youtube.com/watch?v=VLibpUpLYPs)
 
 ## Project Description
