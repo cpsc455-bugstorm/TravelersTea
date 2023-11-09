@@ -1,5 +1,8 @@
 # TravelersTea
 
+## Demo
+[![IMAGE_ALT](https://img.youtube.com/vi/VLibpUpLYPs/0.jpg)](https://www.youtube.com/watch?v=VLibpUpLYPs)
+
 ## Project Description
 
 Welcome to Traveler’s Tea, an intuitive and personalized travel planning web app that turns your travel dreams into
