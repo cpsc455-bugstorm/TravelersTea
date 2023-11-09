@@ -3,6 +3,7 @@ import { handleAsyncAction } from '../../handleAsync'
 import { REQUEST_STATE } from '../../states'
 import {
   fetchLimitLeftAsync,
+  fetchEFLimitLeftAsync,
   loginUserAsync,
   registerUserAsync,
 } from './thunks'
@@ -35,6 +36,7 @@ export const usersSlice = createSlice({
     error: null,
     isNewAccount: false,
     attemptLeft: null,
+    efAttemptLeft: null,
   },
   reducers: {
     updateAsLoggedOut: (state) => {
@@ -52,9 +54,6 @@ export const usersSlice = createSlice({
     clearUserError: (state) => {
       state.error = null
     },
-    decrementAttemptsLeft: (state) => {
-      state.attemptLeft = state.attemptLeft - 1
-    },
   },
   extraReducers: (builder) => {
     handleAsyncAction(builder, fetchLimitLeftAsync, {
@@ -64,6 +63,15 @@ export const usersSlice = createSlice({
       },
       rejected: (state) => {
         state.attemptLeft = 0
+      },
+    })
+    handleAsyncAction(builder, fetchEFLimitLeftAsync, {
+      pending: () => {},
+      fulfilled: (state, action) => {
+        state.efAttemptLeft = action.payload.efAttemptLeft
+      },
+      rejected: (state) => {
+        state.efAttemptLeft = 0
       },
     })
     handleAsyncAction(builder, registerUserAsync, {
@@ -97,7 +105,6 @@ export const {
   updateAsLoggedOut,
   updateAsLoggedIn,
   clearUserError,
-  decrementAttemptsLeft,
 } = usersSlice.actions
 
 export default usersSlice.reducer

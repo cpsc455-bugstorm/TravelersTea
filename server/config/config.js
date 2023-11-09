@@ -12,6 +12,7 @@ const JWT_SECRET = process.env.JWT_SECRET || ''
 const CLIENT_URL = process.env.CLIENT_URL
 
 const RATE_LIMIT = process.env.RATE_LIMIT || 10
+const EF_RATE_LIMIT = process.env.EF_RATE_LIMIT || 1
 const PROXY = process.env.PROXY || 1
 const TIME_LIMT = process.env.TIME_LIMT || 24 * 60 * 60 * 1000 // 1 day
 
@@ -27,6 +28,7 @@ const config = {
     jwtSecret: JWT_SECRET,
     clientURL: CLIENT_URL,
     rateLimit: RATE_LIMIT,
+    efRateLimit: EF_RATE_LIMIT,
     proxy: PROXY,
     timeLimit: TIME_LIMT,
   },

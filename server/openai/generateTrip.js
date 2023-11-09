@@ -7,6 +7,7 @@ const openaiClient = require('./openaiClient')
  *
  * @async
  * @param {Object} constraints TripModel Object - The travel constraints.
+ * @param {Object} locationsToAvoid - specifies the places to avoid, optional and defaults to []
  * @param {string} constraints.tripLocation - The destination of the trip.
  * @param {number} constraints.budget - The budget per day for the trip.
  * @param {number} constraints.numberOfDays - The number of days for the trip.
@@ -29,7 +30,6 @@ const openaiClient = require('./openaiClient')
  *           stageLocationName: String,
  *           stageDescription: String,
  *           stageEmoji: String (best emoji representation of stage),
- *           stageColor: Number (Random number between 1-17)
  *         }
  *       ]
  *     }
@@ -41,7 +41,7 @@ const openaiClient = require('./openaiClient')
  * }
  * @throws Will throw an error if the openaiClient or AI response fails.
  */
-async function generateTrip(constraints) {
+async function generateTrip(constraints, locationsToAvoid = []) {
   const totalPlaces = constraints.numberOfDays * constraints.stagesPerDay
   if (totalPlaces > 25) {
     throw new Error(
@@ -53,6 +53,7 @@ async function generateTrip(constraints) {
       Budget per Day: $${constraints.budget}
       Days: ${constraints.numberOfDays}
       Stages per Day: ${constraints.stagesPerDay}
+      Specific locations to avoid: ${locationsToAvoid.join(', ')}
    `
   const conversation = [
     {
@@ -62,16 +63,11 @@ async function generateTrip(constraints) {
         The response needs to be formatted exactly like the following structure and the stageLocationName should be real places names such that Google Maps can find them:
         '''
         {
-          days:[
+          days: [
             {
-              day: Number
-              stages:[
-                {
-                  stageIndex: Number,
-                  stageLocationName: String,
-                  stageDescription: String,
-                  stageEmoji: String (best emoji representation of stage),
-                }
+              n: Number (the current day index starting from 1),
+              s: [
+                [Number (the current stage index starting from 1), String (the location's name), String (best description less than 25 words), String (best emoji representation of stage)]
               ]
             }
           ]
@@ -102,7 +98,32 @@ async function generateTrip(constraints) {
   } else if (response.error) {
     throw new Error(response.error)
   }
-  return response
+  return convertToFullForm(response)
 }
 
+function convertToFullForm(currentForm) {
+  if (!currentForm || !currentForm.days) {
+    return {
+      error: 'Invalid input format',
+    }
+  }
+
+  const desiredForm = {
+    days: currentForm.days.map((day) => {
+      return {
+        day: day.n,
+        stages: day.s.map((stage) => {
+          return {
+            stageIndex: stage[0],
+            stageLocationName: stage[1],
+            stageDescription: stage[2],
+            stageEmoji: stage[3],
+          }
+        }),
+      }
+    }),
+  }
+
+  return desiredForm
+}
 module.exports = generateTrip

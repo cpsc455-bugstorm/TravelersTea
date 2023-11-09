@@ -1,7 +1,8 @@
 const TripModel = require('../models/TripModel')
-const generateTrip = require('../openai/generateTrip')
 const generateTripsMetadata = require('../openai/generateTripMetadata')
+const generateTrip = require('../openai/generateTrip')
 const getCoordinatesFromLocation = require('../googleapi/googleCoordinates')
+const DestinationController = require('./DestinationController')
 const mongoose = require('mongoose')
 
 const NUM_TAILWIND_COLORS = 17
@@ -9,6 +10,7 @@ const NUM_TAILWIND_COLORS = 17
 class TripController {
   constructor(stageController) {
     this.stageController = stageController
+    this.destinationController = new DestinationController()
   }
 
   async getTripById(userId, id) {
@@ -144,19 +146,18 @@ class TripController {
   }
 
   async generateAndSaveTrip(userId, tripData, id = null, session) {
-    let filteredTripData = tripData.colloquialPrompt
-      ? await generateTripsMetadata(tripData.colloquialPrompt)
-      : tripData
-
-    let generatedTripWithStages
     try {
-      generatedTripWithStages = await generateTrip(filteredTripData)
-    } catch (error) {
-      error.message = 'Error while generating trip | ' + error.message
-      throw error
-    }
+      let filteredTripData = tripData.colloquialPrompt
+        ? await generateTripsMetadata(tripData.colloquialPrompt)
+        : tripData
 
-    try {
+      const generatedTripWithStages =
+        tripData.tripNotes || tripData.colloquialPrompt
+          ? await generateTrip(filteredTripData)
+          : await this.destinationController.generateTripWithCache(
+              filteredTripData,
+            )
+
       const tripToSave = {
         tripName: filteredTripData.tripName,
         tripLocation: filteredTripData.tripLocation,
@@ -167,12 +168,12 @@ class TripController {
         isPublic: false,
       }
 
+      let savedTrip
       if (!id) {
         tripToSave.userId = userId
-      }
-
-      let savedTrip
-      if (id) {
+        const _savedTrip = await TripModel.create([tripToSave], { session })
+        savedTrip = _savedTrip[0].toObject()
+      } else {
         savedTrip = await TripModel.findOneAndUpdate(
           { userId: userId, _id: new mongoose.Types.ObjectId(id) }, // ensure user1 cannot edit user2's trip
           filteredTripData,
@@ -184,9 +185,6 @@ class TripController {
           throw error
         }
         await this.stageController.deleteStagesByTripId(savedTrip._id, session)
-      } else {
-        const _savedTrip = await TripModel.create([tripToSave], { session })
-        savedTrip = _savedTrip[0].toObject()
       }
 
       const { days } = generatedTripWithStages
@@ -212,6 +210,20 @@ class TripController {
       let savedTripDTO = savedTrip.toObject()
       delete savedTripDTO.userId
 
+      // schedule the caching operation
+      setImmediate(() => {
+        try {
+          stagesToAdd.forEach((stage) =>
+            this.destinationController.cacheStage(
+              stage,
+              filteredTripData.tripLocation,
+              filteredTripData.tripNotes,
+            ),
+          )
+        } catch (error) {
+          console.log(error)
+        }
+      })
       return savedTripDTO
     } catch (error) {
       error.message = 'Could not save trip | ' + error.message

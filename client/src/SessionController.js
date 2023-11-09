@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import App from './App'
 import { Loader } from './components/common'
 import { SideBar } from './components/sideBar'
 import { AppView } from './constants/enums'
@@ -23,7 +24,10 @@ import {
   flagAsFulfilled,
   resetTrips,
 } from './redux/reducers/trips/tripsSlice'
-import { fetchLimitLeftAsync } from './redux/reducers/users/thunks'
+import {
+  fetchEFLimitLeftAsync,
+  fetchLimitLeftAsync,
+} from './redux/reducers/users/thunks'
 import {
   clearUserError,
   updateAsLoggedIn,
@@ -31,7 +35,6 @@ import {
 } from './redux/reducers/users/usersSlice'
 import { openSidebar, resetView, setAppView } from './redux/reducers/viewSlice'
 import { REQUEST_STATE } from './redux/states'
-import App from './App'
 import { shouldUseLightMode } from './util/lightMode'
 
 SessionController.propTypes = {
@@ -52,6 +55,19 @@ export function SessionController() {
   const delaySetLoadingFalse = (ms, callback = () => {}) => {
     setTimeout(() => {
       setIsLoading(false)
+      callback()
+    }, ms)
+  }
+  const [isLimitAlertOpen, setIsLimitAlertOpen] = useState(false)
+  const delaySetLimitAlertFalse = (ms, callback = () => {}) => {
+    setTimeout(() => {
+      setIsLimitAlertOpen(false)
+      callback()
+    }, ms)
+  }
+  const delaySetLimitAlertTrue = (ms, callback = () => {}) => {
+    setTimeout(() => {
+      setIsLimitAlertOpen(true)
       callback()
     }, ms)
   }
@@ -130,13 +146,14 @@ export function SessionController() {
         stagesStates.status === REQUEST_STATE.REJECTED ||
         stagesStates.status === REQUEST_STATE.IDLE)
     ) {
-      delaySetLoadingFalse(1000)
+      delaySetLoadingFalse(1000, () => dispatch(fetchEFLimitLeftAsync()))
     }
-  }, [tripsStates.status, stagesStates.status])
+  }, [tripsStates.status, stagesStates.status, dispatch])
 
   useEffect(() => {
     if (userStates.status === REQUEST_STATE.LOGGINGIN) {
       dispatch(fetchLimitLeftAsync())
+      dispatch(fetchEFLimitLeftAsync())
       delaySetLoadingFalse(2500, () => {
         dispatch(updateAsLoggedIn())
         dispatch(setLightMode(shouldUseLightMode()))
@@ -175,27 +192,28 @@ export function SessionController() {
 
   useEffect(() => {
     if (
-      modalStates.newTripModalIsOpen ||
-      modalStates.editStageModalIsOpen ||
-      modalStates.editTripModalIsOpen
+      !isLimitAlertOpen &&
+      userStates.status === REQUEST_STATE.LOGGEDIN &&
+      (modalStates.newTripModalIsOpen ||
+        modalStates.editStageModalIsOpen ||
+        modalStates.editTripModalIsOpen)
     ) {
-      enqueueSnackbar(
-        `You have ${userStates.attemptLeft} trip creation/update requests left today`,
-        { variant: userStates.attemptLeft > 3 ? 'info' : 'warning' },
-      )
+      dispatch(fetchLimitLeftAsync())
+      delaySetLimitAlertTrue(500)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [modalStates, enqueueSnackbar])
+  }, [modalStates, userStates.status])
 
   useEffect(() => {
-    if (userStates.status === REQUEST_STATE.LOGGEDIN) {
+    if (userStates.status === REQUEST_STATE.LOGGEDIN && isLimitAlertOpen) {
       enqueueSnackbar(
         `You have ${userStates.attemptLeft} trip creation/update requests left today`,
         { variant: userStates.attemptLeft > 3 ? 'info' : 'warning' },
       )
+      delaySetLimitAlertFalse(5000)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [enqueueSnackbar, userStates.status])
+  }, [isLimitAlertOpen, enqueueSnackbar])
 
   useEffect(() => {
     let timer
